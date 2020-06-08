@@ -15,7 +15,7 @@ export const allAccessResultData = {
     title: "siNET",
     url: "",
     safeFileSize:"35MB",
-    accessRights:"all"
+    userDownloadRights:"full"
 };
 
 export const someAccessResultData = {
@@ -24,7 +24,7 @@ export const someAccessResultData = {
     title: "Gastroblastoma",
     url: "",
     safeFileSize:"4GB",
-    accessRights:"some"
+    userDownloadRights:"partial"
 };
 
 export const viewOnlyResultData = {
@@ -33,7 +33,7 @@ export const viewOnlyResultData = {
     title: "Lung",
     url:"",
     safeFileSize:"0kB",
-    accessRights:"viewOnly"
+    userDownloadRights:"none"
 };
 
 const getResultsProps = (results) => (
