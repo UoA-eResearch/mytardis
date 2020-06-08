@@ -79,7 +79,7 @@ export function ResultRow({result,onSelect,isSelected}){
             <td><a target="_blank" href={result.url}>{resultName}</a></td>
             <td>
                 {result.userDownloadRights != "none" && 
-                    <span style={{paddingRight:"1em"}}>{result.safeFileSize}</span>
+                    <span style={{paddingRight:"1em"}}>{result.size}</span>
                 }
                 {result.userDownloadRights == "partial" &&
                     <span aria-label="Some files in this item cannot be downloaded."><FiPieChart /></span> 

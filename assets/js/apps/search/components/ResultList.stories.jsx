@@ -14,7 +14,7 @@ export const allAccessResultData = {
     type: "experiment",
     title: "siNET",
     url: "",
-    safeFileSize:"35MB",
+    size:"35MB",
     userDownloadRights:"full"
 };
 
@@ -23,7 +23,7 @@ export const someAccessResultData = {
     type:"experiment",
     title: "Gastroblastoma",
     url: "",
-    safeFileSize:"4GB",
+    size:"4GB",
     userDownloadRights:"partial"
 };
 
@@ -32,7 +32,7 @@ export const viewOnlyResultData = {
     type:"experiment",
     title: "Lung",
     url:"",
-    safeFileSize:"0kB",
+    size:"0kB",
     userDownloadRights:"none"
 };
 
