@@ -2,11 +2,13 @@ import React, { useState, useContext } from 'react'
 import Table from 'react-bootstrap/Table';
 import PropTypes from 'prop-types';
 import { FiPieChart, FiLock } from 'react-icons/fi';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import Badge from 'react-bootstrap/Badge';
 import SearchInfoContext from './SearchInfoContext';
 
-export function ResultTabs({counts, selectedType, onChange}) {
+export function ResultTabs({ counts, selectedType, onChange }) {
 
     if (!counts) {
         counts = {
@@ -18,31 +20,31 @@ export function ResultTabs({counts, selectedType, onChange}) {
     }
 
     const handleNavClicked = (key) => {
-        if (key !== selectedType){
+        if (key !== selectedType) {
             onChange(key);
         }
     }
 
-    const renderTab = (key,label) => {
+    const renderTab = (key, label) => {
         // const badgeVariant = selectedType === key ? "primary":"secondary";
         const badgeVariant = "secondary";
         return (
-        <Nav.Item role="tab">
-            <Nav.Link onSelect={handleNavClicked.bind(this,key)} eventKey={key}> 
-            {label} {counts[key] !== null &&
-                <Badge variant={badgeVariant}>
-                    {counts[key]}
-                </Badge>}</Nav.Link>
-        </Nav.Item>
+            <Nav.Item role="tab">
+                <Nav.Link onSelect={handleNavClicked.bind(this, key)} eventKey={key}>
+                    {label} {counts[key] !== null &&
+                        <Badge variant={badgeVariant}>
+                            {counts[key]}
+                        </Badge>}</Nav.Link>
+            </Nav.Item>
         );
     }
 
     return (
         <Nav variant="tabs" activeKey={selectedType}>
-            {renderTab("project","Projects",counts.datafile,selectedType)}
-            {renderTab("experiment","Experiments",counts.experiment,selectedType)}
-            {renderTab("dataset","Datasets",counts.dataset,selectedType)}
-            {renderTab("datafile","Datafiles",counts.datafile,selectedType)}
+            {renderTab("project", "Projects", counts.datafile, selectedType)}
+            {renderTab("experiment", "Experiments", counts.experiment, selectedType)}
+            {renderTab("dataset", "Datasets", counts.dataset, selectedType)}
+            {renderTab("datafile", "Datafiles", counts.datafile, selectedType)}
         </Nav>
     )
 }
@@ -50,7 +52,7 @@ export function ResultTabs({counts, selectedType, onChange}) {
 ResultTabs.propTypes = {
     counts: PropTypes.shape({
         project: PropTypes.number,
-        experiment:PropTypes.number,
+        experiment: PropTypes.number,
         dataset: PropTypes.number,
         datafile: PropTypes.number
     }),
@@ -60,29 +62,41 @@ ResultTabs.propTypes = {
 
 
 const NameColumn = {
-    "project":"name",
-    "experiment":"title",
-    "dataset":"description",
-    "datafile":"filename"
+    "project": "name",
+    "experiment": "title",
+    "dataset": "description",
+    "datafile": "filename"
 };
 
-export function ResultRow({result,onSelect,isSelected}){
+export function ResultRow({ result, onSelect, isSelected }) {
     const type = result.type,
         resultName = result[NameColumn[type]];
     return (
         <tr onClick={onSelect}>
-            <td>
+            <td style={{ width: "100px" }}>
                 {result.userDownloadRights == "none" &&
-                    <span aria-label="This item cannot be downloaded."><FiLock /></span>
+                    <OverlayTrigger overlay={
+                        <Tooltip id="tooltip-no-download">
+                            You can't download this item.
+                        </Tooltip>
+                    }>
+                        <span aria-label="This item cannot be downloaded."><FiLock /></span>
+                    </OverlayTrigger>
+                }
+                {result.userDownloadRights == "partial" &&
+                    <OverlayTrigger overlay={
+                        <Tooltip id="tooltip-partial-download">
+                            You can't download some files in this item.
+                        </Tooltip>
+                    }>
+                        <span aria-label="Some files in this item cannot be downloaded."><FiPieChart /></span>
+                    </OverlayTrigger>
                 }
             </td>
             <td><a target="_blank" href={result.url}>{resultName}</a></td>
             <td>
-                {result.userDownloadRights != "none" && 
-                    <span style={{paddingRight:"1em"}}>{result.size}</span>
-                }
-                {result.userDownloadRights == "partial" &&
-                    <span aria-label="Some files in this item cannot be downloaded."><FiPieChart /></span> 
+                {result.userDownloadRights != "none" &&
+                    <span style={{ paddingRight: "1em" }}>{result.size}</span>
                 }
                 {result.userDownloadRights == "none" &&
                     <span aria-label="Not applicable">&mdash;</span>
@@ -98,25 +112,75 @@ ResultRow.propTypes = {
     isSelected: PropTypes.bool.isRequired
 }
 
-export function PureResultList({results,selectedItem, onItemSelect, error, isLoading}){
-    
-    if (error) {
-        return (<div>An error occurred. Please try searching again.</div>)
-    }
-
-    if (isLoading) {
-        return (<div>Searching...</div>);
-    }
-
-    if (!results || 
-        (Array.isArray(results) && results.length == 0)) {
-            return (<div>No results.</div>)
-    }
-
-
+export function PureResultList({ results, selectedItem, onItemSelect, error, isLoading }) {
+    let body;
     const handleItemSelected = (id) => {
         onItemSelect(id);
     }
+
+    if (error) {
+        return (
+            // If there was an error during the search
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '300px',
+                backgroundColor: 'rgba(0, 0, 0, 0.05)'
+            }}>
+                <p>An error occurred. Please refresh the page and try searching again.</p>
+            </div>
+        );
+    }
+
+    else if (isLoading) {
+        body = (
+            // If the search is in progress.
+            <tr>
+                <td colspan="3">
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '300px'
+                    }}>
+                        <p>Searching...</p>
+                    </div>
+                </td>
+            </tr>
+        );
+    }
+
+    else if (!results ||
+        (Array.isArray(results) && results.length == 0)) {
+        // If the results are empty...
+        body = (
+            <tr>
+                <td colspan="3">
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '300px'
+                    }}>
+                        <p>No results. Please adjust your search and try again.</p>
+                    </div>
+                </td>
+            </tr>
+        )
+    }
+
+    else {
+        // Render the results in table.
+        body = results.map((result) => (
+            <ResultRow key={result.id}
+                onSelect={handleItemSelected.bind(this, result.id)}
+                result={result}
+                isSelected={result.id === selectedItem}
+            />
+        ));
+    }
+
 
     return (
         <Table responsive striped hover bordered>
@@ -128,14 +192,7 @@ export function PureResultList({results,selectedItem, onItemSelect, error, isLoa
                 </tr>
             </thead>
             <tbody>
-            {
-                results.map((result) => 
-                    <ResultRow key={result.id} 
-                        onSelect={handleItemSelected.bind(this,result.id)} 
-                        result={result} 
-                        isSelected={result.id === selectedItem} 
-                    />)
-            }
+                {body}
             </tbody>
         </Table>
     )
@@ -150,18 +207,18 @@ PureResultList.propTypes = {
 }
 
 export function ResultList(props) {
-    const [selected,onSelect] = useState(null)
+    const [selected, onSelect] = useState(null)
     return (
         <PureResultList
             selectedItem={selected}
             onItemSelect={onSelect}
             {...props}
-             />
+        />
     )
 }
 
-export function PureResultSection({resultSets, selected,
-                                   onSelect, isLoading, error}){
+export function PureResultSection({ resultSets, selected,
+    onSelect, isLoading, error }) {
     let counts;
     if (!resultSets) {
         resultSets = {};
@@ -179,14 +236,20 @@ export function PureResultSection({resultSets, selected,
     }
 
     const currentResultSet = resultSets[selected],
-          currentCount = counts[selected];
+        currentCount = counts[selected];
     return (
         <>
             <ResultTabs counts={counts} selectedType={selected} onChange={onSelect} />
-            <div role="tabpanel">
-                {(!isLoading && !error) ?
-                    <p>Showing {currentCount} results</p>
-                    : null
+            <div role="tabpanel"
+            style={{borderLeft: "1px solid #dee2e6",
+                    borderRight: "1px solid #dee2e6",
+                    borderBottom: "1px solid #dee2e6",
+                    padding: "1em",
+                    paddingBottom: "2em"}}>
+                {(!isLoading && !error) &&
+                    <p style={{ padding: '1em 0' }}>
+                        <span>Showing {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
+                    </p>
                 }
                 <ResultList results={currentResultSet} isLoading={isLoading} error={error} />
             </div>
@@ -195,7 +258,7 @@ export function PureResultSection({resultSets, selected,
 }
 
 export default function ResultSection() {
-    const [selectedType, onSelect ] = useState('experiment'),
+    const [selectedType, onSelect] = useState('experiment'),
         searchInfo = useContext(SearchInfoContext);
     return (
         <PureResultSection
