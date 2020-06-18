@@ -171,7 +171,9 @@ class SearchAppResource(Resource):
         ms = MultiSearch(index=index_list)
         for idx, obj in enumerate(index_list):
             query_obj = Q({"match": {match_list[idx]:query_text}})
-            query_obj_meta = Q({"match": {"schemas.value":query_text}}) & Q({"term": {"schemas.pn_id":"2"}})
+            query_obj_meta = Q({"nested" : { "path":"schemas",
+                "query": Q({"bool": {"must":[
+                Q({"match": {"schemas.value":query_text}}), Q({"term": {"schemas.pn_id":"2"}})]}})}})
             query_obj = query_obj | query_obj_meta
             query_obj_oacl = Q("term", objectacls__entityId=user.id) #| \Q("term", public_access=100)
             for group in groups:
