@@ -107,7 +107,7 @@ class ExperimentDocument(Document):
         'entityId': fields.StringField()
     }
     )
-    schemas = fields.ObjectField(attr='getSchemasforIndexing', dynamic=True)
+    schemas = fields.NestedField(attr='getSchemasforIndexing', dynamic=True)
 
     def prepare_schemas(self, instance):
         return list(instance.getSchemasforIndexing())
