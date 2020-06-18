@@ -218,12 +218,12 @@ class SearchAppResource(Resource):
 
                 if not sensitive_bool:
                     for idxx, schema in enumerate(hit["_source"]["schemas"]):
-                        for idx, param in enumerate(schema["parameters"]):
-                            is_sensitive = authz.get_obj_parameter(param["pn_id"],
+                            #for idx, param in enumerate(schema["parameters"]):
+                            is_sensitive = authz.get_obj_parameter(schema["pn_id"],
                                               hit["_source"]["id"], hit["_index"])
 
                             if is_sensitive.sensitive_metadata:
-                                safe_hit["_source"]["schemas"][idxx]["parameters"].pop(idx)
+                                safe_hit["_source"]["schemas"].pop(idxx)
 
                 result_dict[hit["_index"]+"s"].append(safe_hit)
 
