@@ -57,7 +57,12 @@ class ProjectDocument(Document):
         'entityId': fields.StringField()
     }
     )
-    schemas = fields.ObjectField(attr='getSchemasforIndexing', dynamic=True)
+    schemas = fields.NestedField(attr='getSchemasforIndexing', properties={
+        'pn_id': fields.StringField(),
+        'value': fields.StringField(),
+        'data_type': fields.StringField(),
+        'type': fields.StringField()
+    })
 
     def prepare_schemas(self, instance):
         return list(instance.getSchemasforIndexing())
@@ -107,7 +112,7 @@ class ExperimentDocument(Document):
         'entityId': fields.StringField()
     }
     )
-    schemas = fields.ObjectField(attr='getSchemasforIndexing', properties={
+    schemas = fields.NestedField(attr='getSchemasforIndexing', properties={
         'pn_id': fields.StringField(),
         'value': fields.StringField(),
         'data_type': fields.StringField(),
@@ -165,7 +170,12 @@ class DatasetDocument(Document):
     modified_time = fields.DateField()
     tags = fields.StringField(attr='tags_for_indexing')
 
-    schemas = fields.ObjectField(attr='getSchemasforIndexing', dynamic=True)
+    schemas = fields.NestedField(attr='getSchemasforIndexing', properties={
+        'pn_id': fields.StringField(),
+        'value': fields.StringField(),
+        'data_type': fields.StringField(),
+        'type': fields.StringField()
+    })
 
     def prepare_schemas(self, instance):
         return list(instance.getSchemasforIndexing())
@@ -213,7 +223,12 @@ class DataFileDocument(Document):
         )
 
 
-    schemas = fields.ObjectField(attr='getSchemasforIndexing', dynamic=True)
+    schemas = fields.NestedField(attr='getSchemasforIndexing', properties={
+        'pn_id': fields.StringField(),
+        'value': fields.StringField(),
+        'data_type': fields.StringField(),
+        'type': fields.StringField()
+    })
 
     def prepare_schemas(self, instance):
         return list(instance.getSchemasforIndexing())
