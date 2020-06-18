@@ -99,8 +99,8 @@ class Project(models.Model):
             '''schema_dict = {"id":paramset.schema.id,
                            "schema_name" : paramset.schema.name,
                            "parameters":[]
-                           }
-            '''param_type_options = {1 : 'DATETIME', 2 : 'STRING',
+                           }'''
+            param_type_options = {1 : 'DATETIME', 2 : 'STRING',
                                   3 : 'NUMERIC'}
             param_glob = ProjectParameter.objects.filter(
                 parameterset=paramset).all().values_list('name','datetime_value',
