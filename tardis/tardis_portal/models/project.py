@@ -96,12 +96,12 @@ class Project(models.Model):
         paramsets = list(self.getParameterSets())
         schema_list = []
         for paramset in paramsets:
-            schema_dict = {"id":paramset.schema.id,
+            '''schema_dict = {"id":paramset.schema.id,
                            "schema_name" : paramset.schema.name,
                            "parameters":[]
                            }
             param_type_options = {1 : 'DATETIME', 2 : 'STRING',
-                                  3 : 'NUMERIC'}
+                                  3 : 'NUMERIC'}'''
             param_glob = ProjectParameter.objects.filter(
                 parameterset=paramset).all().values_list('name','datetime_value','string_value','numerical_value')
             for sublist in param_glob:
@@ -113,8 +113,8 @@ class Project(models.Model):
                         param_dict['pn_id'] = str(PN_id)
                         param_dict['value'] = str(value)
                         param_dict['data_type'] = param_type_options[idx+1]
-                schema_dict["parameters"].append(param_dict)
-            schema_list.append(schema_dict)
+                #schema_dict["parameters"].append(param_dict)
+                schema_list.append(param_dict)
         return schema_list
 
     def is_embargoed(self):
