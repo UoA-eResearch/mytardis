@@ -132,19 +132,21 @@ class Dataset(models.Model):
                            "schema_name" : paramset.schema.name,
                            "parameters":[]
                            }
-            param_type_options = {1 : 'DATETIME', 2 : 'STRING',
-                                  3 : 'NUMERIC'}'''
+            '''param_type_options = {1 : 'DATETIME', 2 : 'STRING',
+                                  3 : 'NUMERIC'}
             param_glob = DatasetParameter.objects.filter(
-                parameterset=paramset).all().values_list('name','datetime_value','string_value','numerical_value')
+                parameterset=paramset).all().values_list('name','datetime_value',
+                'string_value','numerical_value','sensitive_metadata')
             for sublist in param_glob:
                 PN_id = ParameterName.objects.get(id=sublist[0]).id
                 #string2append = (full_name+'=')
                 param_dict = {}
-                for idx, value in enumerate(sublist[1:]):
+                for idx, value in enumerate(sublist[1:-1]):
                     if value is not None:
                         param_dict['pn_id'] = str(PN_id)
                         param_dict['value'] = str(value)
                         param_dict['data_type'] = param_type_options[idx+1]
+                        param_dict['type'] = sublist[-1]
                 #schema_dict["parameters"].append(param_dict)
                 schema_list.append(param_dict)
         return schema_list
