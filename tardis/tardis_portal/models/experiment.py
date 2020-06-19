@@ -132,7 +132,7 @@ class Experiment(models.Model):
         return self.experimentparameterset_set.filter(
             schema__schema_type=Schema.EXPERIMENT)
 
-    def getSchemasforIndexing(self):
+    def getParametersforIndexing(self):
         """Returns the experiment parameters associated with this
         experiment, formatted for elasticsearch.
 

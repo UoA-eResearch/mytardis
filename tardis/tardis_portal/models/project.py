@@ -87,7 +87,7 @@ class Project(models.Model):
         return self.projectparameterset_set.filter(
             schema__schema_type=Schema.PROJECT)
 
-    def getSchemasforIndexing(self):
+    def getParametersforIndexing(self):
         """Returns the experiment parameters associated with this
         experiment, formatted for elasticsearch.
 

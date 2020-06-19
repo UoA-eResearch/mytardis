@@ -119,7 +119,7 @@ class Dataset(models.Model):
         return self.datasetparameterset_set.filter(
             schema__schema_type=Schema.DATASET)
 
-    def getSchemasforIndexing(self):
+    def getParametersforIndexing(self):
         """Returns the experiment parameters associated with this
         experiment, formatted for elasticsearch.
 

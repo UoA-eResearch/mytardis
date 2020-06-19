@@ -225,7 +225,7 @@ class DataFile(models.Model):
         return "%s %s # %s" % (checksum,
                                self.filename, self.mimetype)
 
-    def getSchemasforIndexing(self):
+    def getParametersforIndexing(self):
         """Returns the experiment parameters associated with this
         experiment, formatted for elasticsearch.
 
