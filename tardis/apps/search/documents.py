@@ -61,7 +61,7 @@ class ProjectDocument(Document):
         'pn_id': fields.StringField(),
         'value': fields.StringField(),
         'data_type': fields.StringField(),
-        'type': fields.StringField()
+        'sensitive': fields.StringField()
     })
 
     def prepare_schemas(self, instance):
@@ -116,7 +116,7 @@ class ExperimentDocument(Document):
         'pn_id': fields.StringField(),
         'value': fields.StringField(),
         'data_type': fields.StringField(),
-        'type': fields.StringField()
+        'sensitive': fields.StringField()
     })
 
     def prepare_schemas(self, instance):
@@ -174,7 +174,7 @@ class DatasetDocument(Document):
         'pn_id': fields.StringField(),
         'value': fields.StringField(),
         'data_type': fields.StringField(),
-        'type': fields.StringField()
+        'sensitive': fields.StringField()
     })
 
     def prepare_schemas(self, instance):
@@ -227,7 +227,7 @@ class DataFileDocument(Document):
         'pn_id': fields.StringField(),
         'value': fields.StringField(),
         'data_type': fields.StringField(),
-        'type': fields.StringField()
+        'sensitive': fields.StringField()
     })
 
     def prepare_schemas(self, instance):
