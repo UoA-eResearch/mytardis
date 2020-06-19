@@ -139,12 +139,8 @@ class Experiment(models.Model):
         """
         from .parameters import ExperimentParameter, ParameterName
         paramsets = list(self.getParameterSets())
-        schema_list = []
+        parameter_list = []
         for paramset in paramsets:
-            '''schema_dict = {"id":paramset.schema.id,
-                           "schema_name" : paramset.schema.name,
-                           "parameters":[]
-                           }'''
             param_type_options = {1 : 'DATETIME', 2 : 'STRING',
                                   3 : 'NUMERIC'}
             param_glob = ExperimentParameter.objects.filter(
@@ -152,7 +148,6 @@ class Experiment(models.Model):
                 'string_value','numerical_value','sensitive_metadata')
             for sublist in param_glob:
                 PN_id = ParameterName.objects.get(id=sublist[0]).id
-                #string2append = (full_name+'=')
                 param_dict = {}
                 for idx, value in enumerate(sublist[1:-1]):
                     if value is not None:
@@ -160,9 +155,8 @@ class Experiment(models.Model):
                         param_dict['value'] = str(value)
                         param_dict['data_type'] = param_type_options[idx+1]
                         param_dict['sensitive'] = str(sublist[-1])
-                #schema_dict["parameters"].append(param_dict)
-                schema_list.append(param_dict)
-        return schema_list
+                parameter_list.append(param_dict)
+        return parameter_list
 
     def __str__(self):
         return self.title

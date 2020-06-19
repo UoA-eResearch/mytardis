@@ -176,14 +176,14 @@ class SearchAppResource(Resource):
 
             # Search on title/keywords + on non-sensitive metadata
             query_obj = Q({"match": {match_list[idx]:query_text}})
-            query_obj_meta = Q({"nested" : { "path":"schemas",
+            query_obj_meta = Q({"nested" : { "path":"parameters",
                 "query": Q({"bool": {"must":[
-                Q({"match": {"schemas.value":query_text}}), Q({"match": {"schemas.sensitive":"False"}})]}})}})
+                Q({"match": {"parameters.value":query_text}}), Q({"match": {"parameters.sensitive":"False"}})]}})}})
             query_obj = query_obj | query_obj_meta
             # Search on sensitive metadata only
-            query_obj_sens = Q({"nested" : { "path":"schemas",
+            query_obj_sens = Q({"nested" : { "path":"parameters",
                 "query": Q({"bool": {"must":[
-                Q({"match": {"schemas.value":query_text}}), Q({"match": {"schemas.sensitive":"True"}})]}})}})
+                Q({"match": {"parameters.value":query_text}}), Q({"match": {"parameters.sensitive":"True"}})]}})}})
             # add user/group criteria to searchers
             query_obj_oacl = Q("term", objectacls__entityId=user.id) #| \Q("term", public_access=100)
             for group in groups:
@@ -243,13 +243,12 @@ class SearchAppResource(Resource):
                             safe_hit["_source"]["userDownloadRights"] = "none"
 
                     if not sensitive_bool:
-                        for idxx, schema in enumerate(hit["_source"]["schemas"]):
-                                #for idx, param in enumerate(schema["parameters"]):
-                                is_sensitive = authz.get_obj_parameter(schema["pn_id"],
-                                                  hit["_source"]["id"], hit["_index"])
+                        for idxx, parameter in enumerate(hit["_source"]["parameters"]):
+                            is_sensitive = authz.get_obj_parameter(parameter["pn_id"],
+                                              hit["_source"]["id"], hit["_index"])
 
-                                if is_sensitive.sensitive_metadata:
-                                    safe_hit["_source"]["schemas"].pop(idxx)
+                            if is_sensitive.sensitive_metadata:
+                                safe_hit["_source"]["parameters"].pop(idxx)
 
                     result_dict[hit["_index"]+"s"].append(safe_hit)
 

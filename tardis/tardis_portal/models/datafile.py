@@ -232,12 +232,8 @@ class DataFile(models.Model):
         """
         from .parameters import DatafileParameter, ParameterName
         paramsets = list(self.getParameterSets())
-        schema_list = []
+        parameter_list = []
         for paramset in paramsets:
-            '''schema_dict = {"id":paramset.schema.id,
-                           "schema_name" : paramset.schema.name,
-                           "parameters":[]
-                           }'''
             param_type_options = {1 : 'DATETIME', 2 : 'STRING',
                                   3 : 'NUMERIC'}
             param_glob = DatafileParameter.objects.filter(
@@ -245,7 +241,6 @@ class DataFile(models.Model):
                 'string_value','numerical_value','sensitive_metadata')
             for sublist in param_glob:
                 PN_id = ParameterName.objects.get(id=sublist[0]).id
-                #string2append = (full_name+'=')
                 param_dict = {}
                 for idx, value in enumerate(sublist[1:-1]):
                     if value is not None:
@@ -253,9 +248,8 @@ class DataFile(models.Model):
                         param_dict['value'] = str(value)
                         param_dict['data_type'] = param_type_options[idx+1]
                         param_dict['sensitive'] = str(sublist[-1])
-                #schema_dict["parameters"].append(param_dict)
-                schema_list.append(param_dict)
-        return schema_list
+                parameter_list.append(param_dict)
+        return parameter_list
 
     def get_mimetype(self):
         if self.mimetype:
