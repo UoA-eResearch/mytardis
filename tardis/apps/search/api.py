@@ -206,7 +206,7 @@ class SearchAppResource(Resource):
 
         result_dict = {k: [] for k in ["projects", "experiments", "datasets", "datafiles"]}
 
-        def clean_response(self, request, results, result_dict, sensitive=False):
+        def clean_response(request, results, result_dict, sensitive=False):
             for item in results:
                 for hit in item.hits.hits:
 
