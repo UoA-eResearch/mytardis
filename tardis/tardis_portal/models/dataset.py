@@ -146,7 +146,7 @@ class Dataset(models.Model):
                         param_dict['pn_id'] = str(PN_id)
                         param_dict['value'] = str(value)
                         param_dict['data_type'] = param_type_options[idx+1]
-                        param_dict['type'] = sublist[-1]
+                        param_dict['type'] = str(sublist[-1])
                 #schema_dict["parameters"].append(param_dict)
                 schema_list.append(param_dict)
         return schema_list
