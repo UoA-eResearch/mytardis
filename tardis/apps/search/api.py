@@ -173,7 +173,7 @@ class SearchAppResource(Resource):
             query_obj = Q({"match": {match_list[idx]:query_text}})
             query_obj_meta = Q({"nested" : { "path":"schemas",
                 "query": Q({"bool": {"must":[
-                Q({"match": {"schemas.value":query_text}}), Q({"term": {"schemas.sensitive":"True"}})]}})}})
+                Q({"match": {"schemas.value":query_text}}), Q({"match": {"schemas.sensitive":"True"}})]}})}})
             query_obj = query_obj | query_obj_meta
             query_obj_oacl = Q("term", objectacls__entityId=user.id) #| \Q("term", public_access=100)
             for group in groups:
