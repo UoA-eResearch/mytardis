@@ -222,8 +222,9 @@ class SearchAppResource(Resource):
                     query_obj_sens = query_obj & query_obj_sens_meta
                     query_obj = query_obj & query_obj_text_meta
 
-
+            filtered = False
             if filters is not None:
+                filtered = True
                 #filter_op = filters['op']     This isn't used for now
                 filterlist = filters["content"]
                 for filter in filterlist:
@@ -288,7 +289,8 @@ class SearchAppResource(Resource):
 
         result_dict = {k: [] for k in ["projects", "experiments", "datasets", "datafiles"]}
 
-        def clean_response(request, results, result_dict, sensitive=False):
+        def clean_response(request, results, result_dict, filtered, sensitive=False):
+            parent_relation = {"experiment":"project", "dataset":"experiments", "datafile":"dataset"}
             for item in results:
                 for hit in item.hits.hits:
 
@@ -300,6 +302,17 @@ class SearchAppResource(Resource):
                     size = 0
                     if not authz.has_access(request, hit["_source"]["id"], hit["_index"]):
                         continue
+
+                    if filtered:
+                        if hit["_index"] in parent_relation.keys():
+                            if hit["_index"] == 'dataset':
+                                if not any(id in [exp['id'] for exp in hit["_source"]["experiments"]] \
+                                           for id in result_dict[parent_relation[hit["_index"]]+"s"]):
+                                    continue
+                            else:
+                                if hit["_source"][parent_relation[hit["_index"]]]['id'] not in \
+                                    [objj["_source"]['id'] for objj in result_dict[parent_relation[hit["_index"]]+"s"]]:
+                                    continue
 
                     if authz.has_sensitive_access(request, hit["_source"]["id"], hit["_index"]):
                         sensitive_bool = True
@@ -337,10 +350,10 @@ class SearchAppResource(Resource):
                         result_dict[hit["_index"]+"s"].append(safe_hit)
 
 
-        clean_response(bundle.request, results, result_dict)
+        clean_response(bundle.request, results, result_dict, filtered)
         if query_text is not None:
             if query_text is not "":
-                clean_response(bundle.request, results_sens, result_dict, sensitive=True)
+                clean_response(bundle.request, results_sens, result_dict, filtered, sensitive=True)
 
         bundle.obj = SearchObject(id=1, hits=result_dict)
         return bundle
