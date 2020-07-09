@@ -307,7 +307,7 @@ class SearchAppResource(Resource):
                         if hit["_index"] in parent_relation.keys():
                             if hit["_index"] == 'dataset':
                                 if not any(id in [exp['id'] for exp in hit["_source"]["experiments"]] \
-                                           for id in result_dict[parent_relation[hit["_index"]]+"s"]):
+                                           for id in result_dict[parent_relation[hit["_index"]]]):
                                     continue
                             else:
                                 if hit["_source"][parent_relation[hit["_index"]]]['id'] not in \
