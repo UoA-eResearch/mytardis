@@ -30,15 +30,13 @@ class ProjectDocument(Document):
         settings = {'number_of_shards': 1,
                     'number_of_replicas': 0}
 
-    id = fields.IntegerField()
+    id = fields.KeywordField()
     name = fields.TextField(
         fields={'raw': fields.KeywordField()},
-        analyzer=analyzer
-    )
+        analyzer=analyzer)
     description = fields.TextField(
         fields={'raw': fields.KeywordField()},
-        analyzer=analyzer
-    )
+        analyzer=analyzer)
     #public_access = fields.IntegerField()
     start_date = fields.DateField()
     end_date = fields.DateField()
@@ -55,12 +53,27 @@ class ProjectDocument(Document):
     objectacls = fields.ObjectField(properties={
         'pluginId': fields.StringField(),
         'entityId': fields.StringField()
-    }
-    )
-    schemas = fields.ObjectField(attr='getSchemasforIndexing', dynamic=True)
+    })
+    parameters = fields.NestedField(attr='getParametersforIndexing', properties={
+        'string' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.StringField(),
+            'sensitive': fields.BooleanField()
+        }),
+        'numerical' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.FloatField(),
+            'sensitive': fields.BooleanField()
+        }),
+        'datetime' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.DateField(),
+            'sensitive': fields.BooleanField()
+        })
+    })
 
-    def prepare_schemas(self, instance):
-        return list(instance.getSchemasforIndexing())
+    def prepare_parameters(self, instance):
+        return dict(instance.getParametersforIndexing())
 
     class Django:
         model = Project
@@ -82,15 +95,13 @@ class ExperimentDocument(Document):
         settings = {'number_of_shards': 1,
                     'number_of_replicas': 0}
 
-    id = fields.IntegerField()
+    id = fields.KeywordField()
     title = fields.TextField(
         fields={'raw': fields.KeywordField()},
-        analyzer=analyzer
-    )
+        analyzer=analyzer)
     description = fields.TextField(
         fields={'raw': fields.KeywordField()},
-        analyzer=analyzer
-    )
+        analyzer=analyzer)
     #public_access = fields.IntegerField()
     created_time = fields.DateField()
     start_time = fields.DateField()
@@ -102,15 +113,33 @@ class ExperimentDocument(Document):
             fields={'raw': fields.KeywordField()},
         )
     })
+    project = fields.NestedField(properties={
+        'id': fields.KeywordField()
+    })
     objectacls = fields.ObjectField(properties={
         'pluginId': fields.StringField(),
         'entityId': fields.StringField()
-    }
-    )
-    schemas = fields.ObjectField(attr='getSchemasforIndexing', dynamic=True)
+    })
+    parameters = fields.NestedField(attr='getParametersforIndexing', properties={
+        'string' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.StringField(),
+            'sensitive': fields.BooleanField()
+        }),
+        'numerical' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.FloatField(),
+            'sensitive': fields.BooleanField()
+        }),
+        'datetime' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.DateField(),
+            'sensitive': fields.BooleanField()
+        })
+    })
 
-    def prepare_schemas(self, instance):
-        return list(instance.getSchemasforIndexing())
+    def prepare_parameters(self, instance):
+        return dict(instance.getParametersforIndexing())
 
     class Django:
         model = Experiment
@@ -132,38 +161,50 @@ class DatasetDocument(Document):
         settings = {'number_of_shards': 1,
                     'number_of_replicas': 0}
 
-    id = fields.IntegerField()
+    id = fields.KeywordField()
     description = fields.TextField(
         fields={'raw': fields.KeywordField()},
-        analyzer=analyzer
-    )
+        analyzer=analyzer)
     experiments = fields.NestedField(properties={
-        'id': fields.IntegerField(),
-        'title': fields.TextField(
-            fields={'raw': fields.KeywordField()}
-        ),
-    }
-    )
+        'id': fields.KeywordField(),
+        'project': fields.NestedField(properties={
+            'id': fields.KeywordField()
+        })
+    })
     objectacls = fields.ObjectField(properties={
             'pluginId': fields.StringField(),
             'entityId': fields.StringField()
-        }
-        )
+        })
     instrument = fields.ObjectField(properties={
-        'id': fields.IntegerField(),
+        'id': fields.KeywordField(),
         'name': fields.TextField(
             fields={'raw': fields.KeywordField()},
-        )
-    }
+        )}
     )
     created_time = fields.DateField()
     modified_time = fields.DateField()
     tags = fields.StringField(attr='tags_for_indexing')
 
-    schemas = fields.ObjectField(attr='getSchemasforIndexing', dynamic=True)
+    parameters = fields.NestedField(attr='getParametersforIndexing', properties={
+        'string' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.StringField(),
+            'sensitive': fields.BooleanField()
+        }),
+        'numerical' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.FloatField(),
+            'sensitive': fields.BooleanField()
+        }),
+        'datetime' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.DateField(),
+            'sensitive': fields.BooleanField()
+        })
+    })
 
-    def prepare_schemas(self, instance):
-        return list(instance.getSchemasforIndexing())
+    def prepare_parameters(self, instance):
+        return dict(instance.getParametersforIndexing())
 
     class Django:
         model = Dataset
@@ -186,32 +227,46 @@ class DataFileDocument(Document):
         name = 'datafile'
         settings = {'number_of_shards': 1,
                     'number_of_replicas': 0}
-    id = fields.IntegerField()
+    id = fields.KeywordField()
     filename = fields.TextField(
         fields={'raw': fields.KeywordField()},
-        analyzer=analyzer
-    )
+        analyzer=analyzer)
     created_time = fields.DateField()
     modification_time = fields.DateField()
     dataset = fields.NestedField(properties={
-        'id': fields.IntegerField(),
+        'id': fields.KeywordField(),
         'experiments': fields.NestedField(properties={
-            'id': fields.IntegerField(),
-        }
-        ),
-    }
-    )
+            'id': fields.KeywordField(),
+            'project':fields.NestedField(properties={
+                'id': fields.KeywordField()
+            }),
+        }),
+    })
     objectacls = fields.ObjectField(properties={
             'pluginId': fields.StringField(),
             'entityId': fields.StringField()
-        }
-        )
+        })
 
+    parameters = fields.NestedField(attr='getParametersforIndexing', properties={
+        'string' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.StringField(),
+            'sensitive': fields.BooleanField()
+        }),
+        'numerical' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.FloatField(),
+            'sensitive': fields.BooleanField()
+        }),
+        'datetime' : fields.NestedField(properties = {
+            'pn_id': fields.KeywordField(),
+            'value': fields.DateField(),
+            'sensitive': fields.BooleanField()
+        })
+    })
 
-    schemas = fields.ObjectField(attr='getSchemasforIndexing', dynamic=True)
-
-    def prepare_schemas(self, instance):
-        return list(instance.getSchemasforIndexing())
+    def prepare_parameters(self, instance):
+        return dict(instance.getParametersforIndexing())
 
     class Django:
         model = DataFile

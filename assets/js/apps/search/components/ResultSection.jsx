@@ -6,9 +6,9 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import Badge from 'react-bootstrap/Badge';
-import SearchInfoContext from './SearchInfoContext';
+import { useSelector } from "react-redux";
 
-export function ResultTabs({ counts, selectedType, onChange }) {
+export function ResultTabs({counts, selectedType, onChange}) {
 
     if (!counts) {
         counts = {
@@ -181,7 +181,6 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
         ));
     }
 
-
     return (
         <Table responsive striped hover bordered>
             <thead>
@@ -258,8 +257,10 @@ export function PureResultSection({ resultSets, selected,
 }
 
 export default function ResultSection() {
-    const [selectedType, onSelect] = useState('experiment'),
-        searchInfo = useContext(SearchInfoContext);
+    const [selectedType, onSelect ] = useState('experiment'),
+        searchInfo = useSelector(
+            (state) => state.search
+        );
     return (
         <PureResultSection
             resultSets={searchInfo.results}
