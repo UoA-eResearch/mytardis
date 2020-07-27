@@ -7,6 +7,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import Badge from 'react-bootstrap/Badge';
 import { useSelector } from "react-redux";
+import './ResultSection.css';
 
 export function ResultTabs({counts, selectedType, onChange}) {
 
@@ -73,7 +74,7 @@ export function ResultRow({ result, onSelect, isSelected }) {
         resultName = result[NameColumn[type]];
     return (
         <tr onClick={onSelect}>
-            <td style={{ width: "100px" }}>
+            <td className="result-row--download-col">
                 {result.userDownloadRights == "none" &&
                     <OverlayTrigger overlay={
                         <Tooltip id="tooltip-no-download">
@@ -96,7 +97,7 @@ export function ResultRow({ result, onSelect, isSelected }) {
             <td><a target="_blank" href={result.url}>{resultName}</a></td>
             <td>
                 {result.userDownloadRights != "none" &&
-                    <span style={{ paddingRight: "1em" }}>{result.size}</span>
+                    <span>{result.size}</span>
                 }
                 {result.userDownloadRights == "none" &&
                     <span aria-label="Not applicable">&mdash;</span>
@@ -121,13 +122,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
     if (error) {
         return (
             // If there was an error during the search
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '300px',
-                backgroundColor: 'rgba(0, 0, 0, 0.05)'
-            }}>
+            <div className="result-section--msg result-section--error-msg">
                 <p>An error occurred. Please refresh the page and try searching again.</p>
             </div>
         );
@@ -138,12 +133,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
             // If the search is in progress.
             <tr>
                 <td colspan="3">
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '300px'
-                    }}>
+                    <div className="result-section--msg">
                         <p>Searching...</p>
                     </div>
                 </td>
@@ -157,12 +147,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
         body = (
             <tr>
                 <td colspan="3">
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '300px'
-                    }}>
+                    <div className="result-section--msg">
                         <p>No results. Please adjust your search and try again.</p>
                     </div>
                 </td>
@@ -239,14 +224,9 @@ export function PureResultSection({ resultSets, selected,
     return (
         <>
             <ResultTabs counts={counts} selectedType={selected} onChange={onSelect} />
-            <div role="tabpanel"
-            style={{borderLeft: "1px solid #dee2e6",
-                    borderRight: "1px solid #dee2e6",
-                    borderBottom: "1px solid #dee2e6",
-                    padding: "1em",
-                    paddingBottom: "2em"}}>
+            <div role="tabpanel" className="result-section--tabpanel">
                 {(!isLoading && !error) &&
-                    <p style={{ padding: '1em 0' }}>
+                    <p className="result-section--count-summary">
                         <span>Showing {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
                     </p>
                 }
