@@ -15,44 +15,44 @@ export default {
 export const filtersData = {
   types: {
     byId: {
-      projects: {
-        attributes: {
-          byId: {
-            schema: {
-              value: { op: "is", content: ["1"] }
+        projects: {
+          attributes: {
+            byId: {
+              schema: {
+                value:{op:"is",content:["1"]}
             }
-          }, allIds: ["schema"]
+          }, allIds: ['schema']
         }
       },
       experiments: {
         attributes: {
           byId: {
             schema: {
-              value: { op: "is", content: ["2"] }
+              value:{op:"is",content:["2"]}
             }
-          }, allIds: ["schema"]
+          }, allIds: ['schema']
         }
       },
       datasets: {
         attributes: {
           byId: {
             schema: {
-              value: { op: "is", content: ["1"] }
+              value: {op:"is",content:["1"]}
             }
-          }, allIds: ["schema"]
+          }, allIds: ['schema']
         }
       },
       datafiles: {
         attributes: {
           byId: {
             schema: {
-              value: { op: "is", content: ["1", "2"] }
+              value:{op:"is",content:["1","2"]}
             }
-          }, allIds: ["schema"]
+          }, allIds: ['schema']
         }
       }
     },
-    allIds: ["projects", "experiments", "datasets", "datafiles"]
+    allIds: ["projects","experiments","datasets","datafiles"]
   },
   schemas: {
     byId: schemaData,
