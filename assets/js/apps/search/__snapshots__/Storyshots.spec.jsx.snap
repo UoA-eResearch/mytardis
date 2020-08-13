@@ -245,6 +245,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -282,6 +283,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -319,6 +321,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -436,6 +439,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -473,6 +477,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -510,6 +515,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -627,6 +633,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -664,6 +671,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -701,6 +709,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -818,6 +827,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -855,6 +865,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -892,6 +903,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -948,6 +960,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -985,6 +998,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -1022,6 +1036,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             className="form-control"
                             onChange={[Function]}
                             placeholder=""
+                            value=""
                           />
                           <div
                             className="input-group-append"
@@ -1493,6 +1508,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -1530,6 +1546,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -1567,6 +1584,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -1684,6 +1702,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -1721,6 +1740,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -1758,6 +1778,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -1875,6 +1896,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -1912,6 +1934,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -1949,6 +1972,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -2066,6 +2090,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -2103,6 +2128,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -2140,6 +2166,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -2196,6 +2223,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -2233,6 +2261,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -2270,6 +2299,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           className="form-control"
                           onChange={[Function]}
                           placeholder=""
+                          value=""
                         />
                         <div
                           className="input-group-append"
@@ -2625,6 +2655,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -2662,6 +2693,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -2699,6 +2731,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -2755,6 +2788,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -2792,6 +2826,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -2829,6 +2864,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -2950,6 +2986,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -2987,6 +3024,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -3024,6 +3062,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -3080,6 +3119,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -3117,6 +3157,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -3154,6 +3195,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -3295,6 +3337,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -3332,6 +3375,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -3369,6 +3413,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
                     className="form-control"
                     onChange={[Function]}
                     placeholder=""
+                    value=""
                   />
                   <div
                     className="input-group-append"
@@ -3485,7 +3530,9 @@ exports[`Storyshots Result list All Access 1`] = `
         <tr
           onClick={[Function]}
         >
-          <td />
+          <td
+            className="result-row--download-col"
+          />
           <td>
             <a
               href=""
@@ -3495,13 +3542,7 @@ exports[`Storyshots Result list All Access 1`] = `
             </a>
           </td>
           <td>
-            <span
-              style={
-                Object {
-                  "paddingRight": "1em",
-                }
-              }
-            >
+            <span>
               35MB
             </span>
           </td>
@@ -3541,7 +3582,9 @@ exports[`Storyshots Result list Default 1`] = `
         <tr
           onClick={[Function]}
         >
-          <td />
+          <td
+            className="result-row--download-col"
+          />
           <td>
             <a
               href=""
@@ -3551,13 +3594,7 @@ exports[`Storyshots Result list Default 1`] = `
             </a>
           </td>
           <td>
-            <span
-              style={
-                Object {
-                  "paddingRight": "1em",
-                }
-              }
-            >
+            <span>
               35MB
             </span>
           </td>
@@ -3565,27 +3602,15 @@ exports[`Storyshots Result list Default 1`] = `
         <tr
           onClick={[Function]}
         >
-          <td />
-          <td>
-            <a
-              href=""
-              target="_blank"
-            >
-              Gastroblastoma
-            </a>
-          </td>
-          <td>
-            <span
-              style={
-                Object {
-                  "paddingRight": "1em",
-                }
-              }
-            >
-              4GB
-            </span>
+          <td
+            className="result-row--download-col"
+          >
             <span
               aria-label="Some files in this item cannot be downloaded."
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
             >
               <svg
                 fill="none"
@@ -3612,13 +3637,32 @@ exports[`Storyshots Result list Default 1`] = `
               </svg>
             </span>
           </td>
+          <td>
+            <a
+              href=""
+              target="_blank"
+            >
+              Gastroblastoma
+            </a>
+          </td>
+          <td>
+            <span>
+              4GB
+            </span>
+          </td>
         </tr>
         <tr
           onClick={[Function]}
         >
-          <td>
+          <td
+            className="result-row--download-col"
+          >
             <span
               aria-label="This item cannot be downloaded."
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
             >
               <svg
                 fill="none"
@@ -3680,8 +3724,39 @@ exports[`Storyshots Result list Empty 1`] = `
     }
   }
 >
-  <div>
-    No results.
+  <div
+    className="table-responsive"
+  >
+    <table
+      className="table table-hover"
+    >
+      <thead>
+        <tr>
+          <th />
+          <th>
+            Name
+          </th>
+          <th>
+            Size
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            colspan="3"
+          >
+            <div
+              className="result-section--msg"
+            >
+              <p>
+                No results. Please adjust your search and try again.
+              </p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 `;
@@ -3694,8 +3769,12 @@ exports[`Storyshots Result list Error 1`] = `
     }
   }
 >
-  <div>
-    An error occurred. Please try searching again.
+  <div
+    className="result-section--msg result-section--error-msg"
+  >
+    <p>
+      An error occurred. Please refresh the page and try searching again.
+    </p>
   </div>
 </div>
 `;
@@ -3708,8 +3787,39 @@ exports[`Storyshots Result list Loading 1`] = `
     }
   }
 >
-  <div>
-    Searching...
+  <div
+    className="table-responsive"
+  >
+    <table
+      className="table table-hover"
+    >
+      <thead>
+        <tr>
+          <th />
+          <th>
+            Name
+          </th>
+          <th>
+            Size
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            colspan="3"
+          >
+            <div
+              className="result-section--msg"
+            >
+              <p>
+                Searching...
+              </p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 `;
@@ -3743,27 +3853,15 @@ exports[`Storyshots Result list Some Access 1`] = `
         <tr
           onClick={[Function]}
         >
-          <td />
-          <td>
-            <a
-              href=""
-              target="_blank"
-            >
-              Gastroblastoma
-            </a>
-          </td>
-          <td>
-            <span
-              style={
-                Object {
-                  "paddingRight": "1em",
-                }
-              }
-            >
-              4GB
-            </span>
+          <td
+            className="result-row--download-col"
+          >
             <span
               aria-label="Some files in this item cannot be downloaded."
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
             >
               <svg
                 fill="none"
@@ -3788,6 +3886,19 @@ exports[`Storyshots Result list Some Access 1`] = `
                   d="M22 12A10 10 0 0 0 12 2v10z"
                 />
               </svg>
+            </span>
+          </td>
+          <td>
+            <a
+              href=""
+              target="_blank"
+            >
+              Gastroblastoma
+            </a>
+          </td>
+          <td>
+            <span>
+              4GB
             </span>
           </td>
         </tr>
@@ -3826,9 +3937,15 @@ exports[`Storyshots Result list View Only Access 1`] = `
         <tr
           onClick={[Function]}
         >
-          <td>
+          <td
+            className="result-row--download-col"
+          >
             <span
               aria-label="This item cannot be downloaded."
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
             >
               <svg
                 fill="none"
@@ -4313,6 +4430,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -4350,6 +4468,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -4387,6 +4506,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -4504,6 +4624,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -4541,6 +4662,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -4578,6 +4700,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -4695,6 +4818,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -4732,6 +4856,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -4769,6 +4894,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -4886,6 +5012,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -4923,6 +5050,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -4960,6 +5088,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -5016,6 +5145,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -5053,6 +5183,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -5090,6 +5221,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -5211,12 +5343,19 @@ exports[`Storyshots Search page Default 1`] = `
         </div>
       </div>
       <div
+        className="result-section--tabpanel"
         role="tabpanel"
       >
-        <p>
-          Showing 
-          3
-           results
+        <p
+          className="result-section--count-summary"
+        >
+          <span>
+            Showing 
+            3
+             
+            results
+            .
+          </span>
         </p>
         <div
           className="table-responsive"
@@ -5239,7 +5378,9 @@ exports[`Storyshots Search page Default 1`] = `
               <tr
                 onClick={[Function]}
               >
-                <td />
+                <td
+                  className="result-row--download-col"
+                />
                 <td>
                   <a
                     href=""
@@ -5249,13 +5390,7 @@ exports[`Storyshots Search page Default 1`] = `
                   </a>
                 </td>
                 <td>
-                  <span
-                    style={
-                      Object {
-                        "paddingRight": "1em",
-                      }
-                    }
-                  >
+                  <span>
                     35MB
                   </span>
                 </td>
@@ -5263,27 +5398,15 @@ exports[`Storyshots Search page Default 1`] = `
               <tr
                 onClick={[Function]}
               >
-                <td />
-                <td>
-                  <a
-                    href=""
-                    target="_blank"
-                  >
-                    Gastroblastoma
-                  </a>
-                </td>
-                <td>
-                  <span
-                    style={
-                      Object {
-                        "paddingRight": "1em",
-                      }
-                    }
-                  >
-                    4GB
-                  </span>
+                <td
+                  className="result-row--download-col"
+                >
                   <span
                     aria-label="Some files in this item cannot be downloaded."
+                    onBlur={[Function]}
+                    onFocus={[Function]}
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
                   >
                     <svg
                       fill="none"
@@ -5310,13 +5433,32 @@ exports[`Storyshots Search page Default 1`] = `
                     </svg>
                   </span>
                 </td>
+                <td>
+                  <a
+                    href=""
+                    target="_blank"
+                  >
+                    Gastroblastoma
+                  </a>
+                </td>
+                <td>
+                  <span>
+                    4GB
+                  </span>
+                </td>
               </tr>
               <tr
                 onClick={[Function]}
               >
-                <td>
+                <td
+                  className="result-row--download-col"
+                >
                   <span
                     aria-label="This item cannot be downloaded."
+                    onBlur={[Function]}
+                    onFocus={[Function]}
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
                   >
                     <svg
                       fill="none"
@@ -5624,6 +5766,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -5661,6 +5804,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -5698,6 +5842,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -5815,6 +5960,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -5852,6 +5998,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -5889,6 +6036,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6006,6 +6154,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6043,6 +6192,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6080,6 +6230,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6197,6 +6348,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6234,6 +6386,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6271,6 +6424,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6327,6 +6481,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6364,6 +6519,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6401,6 +6557,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6502,10 +6659,15 @@ exports[`Storyshots Search page Error 1`] = `
         </div>
       </div>
       <div
+        className="result-section--tabpanel"
         role="tabpanel"
       >
-        <div>
-          An error occurred. Please try searching again.
+        <div
+          className="result-section--msg result-section--error-msg"
+        >
+          <p>
+            An error occurred. Please refresh the page and try searching again.
+          </p>
         </div>
       </div>
     </main>
@@ -6764,6 +6926,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6801,6 +6964,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6838,6 +7002,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6955,6 +7120,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -6992,6 +7158,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -7029,6 +7196,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -7146,6 +7314,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -7183,6 +7352,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -7220,6 +7390,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -7337,6 +7508,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -7374,6 +7546,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -7411,6 +7584,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -7467,6 +7641,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -7504,6 +7679,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -7541,6 +7717,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 className="form-control"
                                 onChange={[Function]}
                                 placeholder=""
+                                value=""
                               />
                               <div
                                 className="input-group-append"
@@ -7642,10 +7819,42 @@ exports[`Storyshots Search page Loading 1`] = `
         </div>
       </div>
       <div
+        className="result-section--tabpanel"
         role="tabpanel"
       >
-        <div>
-          Searching...
+        <div
+          className="table-responsive"
+        >
+          <table
+            className="table table-hover"
+          >
+            <thead>
+              <tr>
+                <th />
+                <th>
+                  Name
+                </th>
+                <th>
+                  Size
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td
+                  colspan="3"
+                >
+                  <div
+                    className="result-section--msg"
+                  >
+                    <p>
+                      Searching...
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </main>
