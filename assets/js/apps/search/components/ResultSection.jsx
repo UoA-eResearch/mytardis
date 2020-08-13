@@ -184,7 +184,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
 
 PureResultList.propTypes = {
     results: PropTypes.arrayOf(Object),
-    error: PropTypes.object,
+    error: PropTypes.string,
     isLoading: PropTypes.bool,
     selectedItem: PropTypes.string,
     onItemSelect: PropTypes.func

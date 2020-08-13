@@ -15,7 +15,7 @@ const TextFilter = ({value,options,onValueChange}) => {
     if (!options.hint) {
         options.hint = "";
     }
-    const initialState = value ? value.content : null;
+    const initialState = value ? value.content : "";
     const [localValue, setLocalValue] = useState( initialState );
     const handleValueChange = (e) => {
         setLocalValue(e.target.value);
@@ -47,7 +47,10 @@ const TextFilter = ({value,options,onValueChange}) => {
 }
 
 TextFilter.propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.shape({
+        content: PropTypes.string.isRequired,
+        op: PropTypes.string.isRequired
+    }),
     options: PropTypes.object,
     onValueChange: PropTypes.func.isRequired
 }

@@ -84,7 +84,7 @@ export function PureFiltersSection({ types, schemas, typeSchemas, isLoading, err
                 allTypeAttrIdsSelector(state.filters,type).filter(filterId => (filterId !== "schema"))
               ));
             return (
-              <Tab eventKey={type} title={<Sticker />}>
+              <Tab key={type} eventKey={type} title={<Sticker />}>
                 {attributeIds.map(
                   id => (
                     <>
@@ -118,7 +118,7 @@ PureFiltersSection.propTypes = {
   }),
   typeSchemas: PropTypes.object,
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.object
+  error: PropTypes.string
 }
 
 export default function FiltersSection() {
