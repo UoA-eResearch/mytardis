@@ -54,20 +54,8 @@ SchemaFilterList.propTypes = {
     schema: PropTypes.object.isRequired 
 }
 
-const TypeSchemaList = ({ typeId }) => {
-    const schemasAsList = useSelector(state => {return state.filters.typeSchemas[typeId]});
-    const { byId: schemas } = useSelector(state => (state.filters.schemas)) || { byId: {}};
-    const schemaValue = useSelector((state) => (
-        typeAttrSelector(state.filters, typeId, "schema").value
-    ));
-    const onValueChange =
-        (value) => {
-            batch(() => {
-                dispatch(updateActiveSchemas({ typeId, value }));
-                dispatch(runSearch());
-            });
-        };
-
+export const PureTypeSchemaList = ({ value: schemaValue, onValueChange, options }) => {
+    const {allIds : schemasAsList, byId : schemas } = options.schemas || {byId: {}, allIds: []};
     let activeSchemas;
     if (!schemaValue) {
         // If there is no filter on what schemas to show, we show all of them.
@@ -127,6 +115,29 @@ const TypeSchemaList = ({ typeId }) => {
         </section>
     );
 };
+
+const TypeSchemaList = ({ typeId }) => {
+    const allIds = useSelector(state => {return state.filters.typeSchemas[typeId]});
+    const { byId } = useSelector(state => (state.filters.schemas)) || { byId: {}};
+    const schemaValue = useSelector((state) => (
+        typeAttrSelector(state.filters, typeId, "schema").value
+    ));
+    const onValueChange =
+        (value) => {
+            batch(() => {
+                dispatch(updateActiveSchemas({ typeId, value }));
+                dispatch(runSearch());
+            });
+        };
+
+    const options = {
+        schemas: {
+            allIds,
+            byId
+        }
+    }
+    return (<PureTypeSchemaList value={schemaValue} onValueChange={onValueChange} options={options} />)
+}
 
 TypeSchemaList.propTypes = {
     typeId: PropTypes.string.isRequired
