@@ -38,6 +38,7 @@ const SchemaFilterList = ({ schema }) => {
                             <section key={parameterId} className="single-schema-list__filter">
                                 <h5 className="single-schema-list__filter-label">{full_name}</h5>
                                 <ApplicableFilter 
+                                    id={schemaId+"."+parameterId}
                                     value={value}
                                     onValueChange={setParamValue} />
                                 <hr />
