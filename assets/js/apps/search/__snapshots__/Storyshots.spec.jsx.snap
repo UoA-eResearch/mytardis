@@ -32,9 +32,11 @@ exports[`Storyshots Filter sidebar Default 1`] = `
       </button>
     </form>
     <section>
-      <h3>
+      <h2
+        className="h3"
+      >
         Filters
-      </h3>
+      </h2>
       <nav
         className="nav nav-tabs"
         onKeyDown={[Function]}
@@ -158,12 +160,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           id="filters-section-tabpane-projects"
           role="tabpanel"
         >
-          <div>
-            <h4
-              className="type-schema-list__title"
+          <section>
+            <h3
+              className="h5"
             >
-              Show me
-            </h4>
+              Schemas
+            </h3>
             <div
               className="form-group"
             >
@@ -214,9 +216,15 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <div
                   className="card-header"
-                  onClick={[Function]}
                 >
-                  Raw data
+                  <button
+                    className="btn btn-link"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Raw data
+                     filters
+                  </button>
                 </div>
                 <div
                   aria-expanded={null}
@@ -225,7 +233,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                   <div
                     className="card-body"
                   >
-                    <div
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -253,7 +261,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -262,8 +270,8 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
-                    <div
+                    </section>
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -291,7 +299,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -300,8 +308,8 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
-                    <div
+                    </section>
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -329,7 +337,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -338,12 +346,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
+                    </section>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         </div>
         <div
           aria-hidden={true}
@@ -352,12 +360,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           id="filters-section-tabpane-experiments"
           role="tabpanel"
         >
-          <div>
-            <h4
-              className="type-schema-list__title"
+          <section>
+            <h3
+              className="h5"
             >
-              Show me
-            </h4>
+              Schemas
+            </h3>
             <div
               className="form-group"
             >
@@ -408,9 +416,15 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <div
                   className="card-header"
-                  onClick={[Function]}
                 >
-                  Biopipeline Output
+                  <button
+                    className="btn btn-link"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Biopipeline Output
+                     filters
+                  </button>
                 </div>
                 <div
                   aria-expanded={null}
@@ -419,7 +433,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                   <div
                     className="card-body"
                   >
-                    <div
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -447,7 +461,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -456,8 +470,8 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
-                    <div
+                    </section>
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -485,7 +499,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -494,8 +508,8 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
-                    <div
+                    </section>
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -523,7 +537,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -532,12 +546,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
+                    </section>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         </div>
         <div
           aria-hidden={true}
@@ -546,12 +560,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           id="filters-section-tabpane-datasets"
           role="tabpanel"
         >
-          <div>
-            <h4
-              className="type-schema-list__title"
+          <section>
+            <h3
+              className="h5"
             >
-              Show me
-            </h4>
+              Schemas
+            </h3>
             <div
               className="form-group"
             >
@@ -602,9 +616,15 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <div
                   className="card-header"
-                  onClick={[Function]}
                 >
-                  Raw data
+                  <button
+                    className="btn btn-link"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Raw data
+                     filters
+                  </button>
                 </div>
                 <div
                   aria-expanded={null}
@@ -613,7 +633,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                   <div
                     className="card-body"
                   >
-                    <div
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -641,7 +661,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -650,8 +670,8 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
-                    <div
+                    </section>
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -679,7 +699,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -688,8 +708,8 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
-                    <div
+                    </section>
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -717,7 +737,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -726,12 +746,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
+                    </section>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         </div>
         <div
           aria-hidden={true}
@@ -740,12 +760,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           id="filters-section-tabpane-datafiles"
           role="tabpanel"
         >
-          <div>
-            <h4
-              className="type-schema-list__title"
+          <section>
+            <h3
+              className="h5"
             >
-              Show me
-            </h4>
+              Schemas
+            </h3>
             <div
               className="form-group"
             >
@@ -796,9 +816,15 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <div
                   className="card-header"
-                  onClick={[Function]}
                 >
-                  Raw data
+                  <button
+                    className="btn btn-link"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Raw data
+                     filters
+                  </button>
                 </div>
                 <div
                   aria-expanded={null}
@@ -807,7 +833,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                   <div
                     className="card-body"
                   >
-                    <div
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -835,7 +861,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -844,8 +870,8 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
-                    <div
+                    </section>
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -873,7 +899,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -882,8 +908,8 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
-                    <div
+                    </section>
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -911,7 +937,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -920,7 +946,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
+                    </section>
                   </div>
                 </div>
               </div>
@@ -929,9 +955,15 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <div
                   className="card-header"
-                  onClick={[Function]}
                 >
-                  Biopipeline Output
+                  <button
+                    className="btn btn-link"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Biopipeline Output
+                     filters
+                  </button>
                 </div>
                 <div
                   aria-expanded={null}
@@ -940,7 +972,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                   <div
                     className="card-body"
                   >
-                    <div
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -968,7 +1000,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -977,8 +1009,8 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
-                    <div
+                    </section>
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -1006,7 +1038,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -1015,8 +1047,8 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
-                    <div
+                    </section>
+                    <section
                       className="single-schema-list__filter"
                     >
                       <h5
@@ -1044,7 +1076,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                             <button
                               aria-label="Filter results"
                               className="btn btn-outline-secondary"
-                              disabled={true}
+                              disabled={false}
                               type="submit"
                             >
                               Filter
@@ -1053,12 +1085,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                         </div>
                       </form>
                       <hr />
-                    </div>
+                    </section>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>
@@ -1295,9 +1327,11 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
   }
 >
   <section>
-    <h3>
+    <h2
+      className="h3"
+    >
       Filters
-    </h3>
+    </h2>
     <nav
       className="nav nav-tabs"
       onKeyDown={[Function]}
@@ -1421,12 +1455,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         id="filters-section-tabpane-projects"
         role="tabpanel"
       >
-        <div>
-          <h4
-            className="type-schema-list__title"
+        <section>
+          <h3
+            className="h5"
           >
-            Show me
-          </h4>
+            Schemas
+          </h3>
           <div
             className="form-group"
           >
@@ -1477,9 +1511,15 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <div
                 className="card-header"
-                onClick={[Function]}
               >
-                Raw data
+                <button
+                  className="btn btn-link"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Raw data
+                   filters
+                </button>
               </div>
               <div
                 aria-expanded={null}
@@ -1488,7 +1528,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                 <div
                   className="card-body"
                 >
-                  <div
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -1516,7 +1556,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -1525,8 +1565,8 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
-                  <div
+                  </section>
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -1554,7 +1594,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -1563,8 +1603,8 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
-                  <div
+                  </section>
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -1592,7 +1632,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -1601,12 +1641,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
+                  </section>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
       <div
         aria-hidden={true}
@@ -1615,12 +1655,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         id="filters-section-tabpane-experiments"
         role="tabpanel"
       >
-        <div>
-          <h4
-            className="type-schema-list__title"
+        <section>
+          <h3
+            className="h5"
           >
-            Show me
-          </h4>
+            Schemas
+          </h3>
           <div
             className="form-group"
           >
@@ -1671,9 +1711,15 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <div
                 className="card-header"
-                onClick={[Function]}
               >
-                Biopipeline Output
+                <button
+                  className="btn btn-link"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Biopipeline Output
+                   filters
+                </button>
               </div>
               <div
                 aria-expanded={null}
@@ -1682,7 +1728,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                 <div
                   className="card-body"
                 >
-                  <div
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -1710,7 +1756,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -1719,8 +1765,8 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
-                  <div
+                  </section>
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -1748,7 +1794,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -1757,8 +1803,8 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
-                  <div
+                  </section>
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -1786,7 +1832,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -1795,12 +1841,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
+                  </section>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
       <div
         aria-hidden={true}
@@ -1809,12 +1855,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         id="filters-section-tabpane-datasets"
         role="tabpanel"
       >
-        <div>
-          <h4
-            className="type-schema-list__title"
+        <section>
+          <h3
+            className="h5"
           >
-            Show me
-          </h4>
+            Schemas
+          </h3>
           <div
             className="form-group"
           >
@@ -1865,9 +1911,15 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <div
                 className="card-header"
-                onClick={[Function]}
               >
-                Raw data
+                <button
+                  className="btn btn-link"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Raw data
+                   filters
+                </button>
               </div>
               <div
                 aria-expanded={null}
@@ -1876,7 +1928,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                 <div
                   className="card-body"
                 >
-                  <div
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -1904,7 +1956,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -1913,8 +1965,8 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
-                  <div
+                  </section>
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -1942,7 +1994,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -1951,8 +2003,8 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
-                  <div
+                  </section>
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -1980,7 +2032,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -1989,12 +2041,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
+                  </section>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
       <div
         aria-hidden={true}
@@ -2003,12 +2055,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         id="filters-section-tabpane-datafiles"
         role="tabpanel"
       >
-        <div>
-          <h4
-            className="type-schema-list__title"
+        <section>
+          <h3
+            className="h5"
           >
-            Show me
-          </h4>
+            Schemas
+          </h3>
           <div
             className="form-group"
           >
@@ -2059,9 +2111,15 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <div
                 className="card-header"
-                onClick={[Function]}
               >
-                Raw data
+                <button
+                  className="btn btn-link"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Raw data
+                   filters
+                </button>
               </div>
               <div
                 aria-expanded={null}
@@ -2070,7 +2128,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                 <div
                   className="card-body"
                 >
-                  <div
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -2098,7 +2156,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -2107,8 +2165,8 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
-                  <div
+                  </section>
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -2136,7 +2194,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -2145,8 +2203,8 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
-                  <div
+                  </section>
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -2174,7 +2232,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -2183,7 +2241,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
+                  </section>
                 </div>
               </div>
             </div>
@@ -2192,9 +2250,15 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <div
                 className="card-header"
-                onClick={[Function]}
               >
-                Biopipeline Output
+                <button
+                  className="btn btn-link"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Biopipeline Output
+                   filters
+                </button>
               </div>
               <div
                 aria-expanded={null}
@@ -2203,7 +2267,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                 <div
                   className="card-body"
                 >
-                  <div
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -2231,7 +2295,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -2240,8 +2304,8 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
-                  <div
+                  </section>
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -2269,7 +2333,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -2278,8 +2342,8 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
-                  <div
+                  </section>
+                  <section
                     className="single-schema-list__filter"
                   >
                     <h5
@@ -2307,7 +2371,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                           <button
                             aria-label="Filter results"
                             className="btn btn-outline-secondary"
-                            disabled={true}
+                            disabled={false}
                             type="submit"
                           >
                             Filter
@@ -2316,12 +2380,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                       </div>
                     </form>
                     <hr />
-                  </div>
+                  </section>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   </section>
@@ -2472,7 +2536,7 @@ exports[`Storyshots Filters/Number range filter Empty 1`] = `
     <button
       aria-label="Filter results"
       className="num-range-filter__button btn btn-outline-secondary"
-      disabled={true}
+      disabled={false}
       type="submit"
     >
       Filter
@@ -2548,7 +2612,7 @@ exports[`Storyshots Filters/Text filter Empty 1`] = `
         <button
           aria-label="Filter results"
           className="btn btn-outline-secondary"
-          disabled={true}
+          disabled={false}
           type="submit"
         >
           Filter
@@ -2568,12 +2632,12 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
     }
   }
 >
-  <div>
-    <h4
-      className="type-schema-list__title"
+  <section>
+    <h3
+      className="h5"
     >
-      Show me
-    </h4>
+      Schemas
+    </h3>
     <div
       className="form-group"
     >
@@ -2624,9 +2688,15 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
       >
         <div
           className="card-header"
-          onClick={[Function]}
         >
-          Raw data
+          <button
+            className="btn btn-link"
+            onClick={[Function]}
+            type="button"
+          >
+            Raw data
+             filters
+          </button>
         </div>
         <div
           aria-expanded={null}
@@ -2635,7 +2705,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
           <div
             className="card-body"
           >
-            <div
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -2663,7 +2733,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -2672,8 +2742,8 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
-            <div
+            </section>
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -2701,7 +2771,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -2710,8 +2780,8 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
-            <div
+            </section>
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -2739,7 +2809,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -2748,7 +2818,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
+            </section>
           </div>
         </div>
       </div>
@@ -2757,9 +2827,15 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
       >
         <div
           className="card-header"
-          onClick={[Function]}
         >
-          Biopipeline Output
+          <button
+            className="btn btn-link"
+            onClick={[Function]}
+            type="button"
+          >
+            Biopipeline Output
+             filters
+          </button>
         </div>
         <div
           aria-expanded={null}
@@ -2768,7 +2844,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
           <div
             className="card-body"
           >
-            <div
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -2796,7 +2872,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -2805,8 +2881,8 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
-            <div
+            </section>
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -2834,7 +2910,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -2843,8 +2919,8 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
-            <div
+            </section>
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -2872,7 +2948,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -2881,12 +2957,12 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
+            </section>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </div>
 `;
 
@@ -2899,12 +2975,12 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
     }
   }
 >
-  <div>
-    <h4
-      className="type-schema-list__title"
+  <section>
+    <h3
+      className="h5"
     >
-      Show me
-    </h4>
+      Schemas
+    </h3>
     <div
       className="form-group"
     >
@@ -2955,9 +3031,15 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
       >
         <div
           className="card-header"
-          onClick={[Function]}
         >
-          Raw data
+          <button
+            className="btn btn-link"
+            onClick={[Function]}
+            type="button"
+          >
+            Raw data
+             filters
+          </button>
         </div>
         <div
           aria-expanded={null}
@@ -2966,7 +3048,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
           <div
             className="card-body"
           >
-            <div
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -2994,7 +3076,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -3003,8 +3085,8 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
-            <div
+            </section>
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -3032,7 +3114,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -3041,8 +3123,8 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
-            <div
+            </section>
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -3070,7 +3152,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -3079,7 +3161,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
+            </section>
           </div>
         </div>
       </div>
@@ -3088,9 +3170,15 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
       >
         <div
           className="card-header"
-          onClick={[Function]}
         >
-          Biopipeline Output
+          <button
+            className="btn btn-link"
+            onClick={[Function]}
+            type="button"
+          >
+            Biopipeline Output
+             filters
+          </button>
         </div>
         <div
           aria-expanded={null}
@@ -3099,7 +3187,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
           <div
             className="card-body"
           >
-            <div
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -3127,7 +3215,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -3136,8 +3224,8 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
-            <div
+            </section>
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -3165,7 +3253,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -3174,8 +3262,8 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
-            <div
+            </section>
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -3203,7 +3291,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -3212,12 +3300,12 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
+            </section>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </div>
 `;
 
@@ -3229,16 +3317,7 @@ exports[`Storyshots Filters/Type schema list No Schemas 1`] = `
       "width": "400px",
     }
   }
->
-  <div>
-    <div
-      className="form-group"
-    />
-    <div
-      className="accordion"
-    />
-  </div>
-</div>
+/>
 `;
 
 exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
@@ -3250,12 +3329,12 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
     }
   }
 >
-  <div>
-    <h4
-      className="type-schema-list__title"
+  <section>
+    <h3
+      className="h5"
     >
-      Show me
-    </h4>
+      Schemas
+    </h3>
     <div
       className="form-group"
     >
@@ -3306,9 +3385,15 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
       >
         <div
           className="card-header"
-          onClick={[Function]}
         >
-          Raw data
+          <button
+            className="btn btn-link"
+            onClick={[Function]}
+            type="button"
+          >
+            Raw data
+             filters
+          </button>
         </div>
         <div
           aria-expanded={null}
@@ -3317,7 +3402,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
           <div
             className="card-body"
           >
-            <div
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -3345,7 +3430,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -3354,8 +3439,8 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
-            <div
+            </section>
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -3383,7 +3468,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -3392,8 +3477,8 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
-            <div
+            </section>
+            <section
               className="single-schema-list__filter"
             >
               <h5
@@ -3421,7 +3506,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
                     <button
                       aria-label="Filter results"
                       className="btn btn-outline-secondary"
-                      disabled={true}
+                      disabled={false}
                       type="submit"
                     >
                       Filter
@@ -3430,12 +3515,12 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
                 </div>
               </form>
               <hr />
-            </div>
+            </section>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </div>
 `;
 
@@ -3528,7 +3613,11 @@ exports[`Storyshots Result list All Access 1`] = `
       </thead>
       <tbody>
         <tr
+          className="result-section--row"
           onClick={[Function]}
+          onKeyUp={[Function]}
+          role="button"
+          tabIndex="0"
         >
           <td
             className="result-row--download-col"
@@ -3580,7 +3669,11 @@ exports[`Storyshots Result list Default 1`] = `
       </thead>
       <tbody>
         <tr
+          className="result-section--row"
           onClick={[Function]}
+          onKeyUp={[Function]}
+          role="button"
+          tabIndex="0"
         >
           <td
             className="result-row--download-col"
@@ -3600,13 +3693,16 @@ exports[`Storyshots Result list Default 1`] = `
           </td>
         </tr>
         <tr
+          className="result-section--row"
           onClick={[Function]}
+          onKeyUp={[Function]}
+          role="button"
+          tabIndex="0"
         >
           <td
             className="result-row--download-col"
           >
             <span
-              aria-label="Some files in this item cannot be downloaded."
               onBlur={[Function]}
               onFocus={[Function]}
               onMouseOut={[Function]}
@@ -3628,6 +3724,9 @@ exports[`Storyshots Result list Default 1`] = `
                 width="1em"
                 xmlns="http://www.w3.org/2000/svg"
               >
+                <title>
+                  Some files cannot be downloaded.
+                </title>
                 <path
                   d="M21.21 15.89A10 10 0 1 1 8 2.83"
                 />
@@ -3652,13 +3751,16 @@ exports[`Storyshots Result list Default 1`] = `
           </td>
         </tr>
         <tr
+          className="result-section--row"
           onClick={[Function]}
+          onKeyUp={[Function]}
+          role="button"
+          tabIndex="0"
         >
           <td
             className="result-row--download-col"
           >
             <span
-              aria-label="This item cannot be downloaded."
               onBlur={[Function]}
               onFocus={[Function]}
               onMouseOut={[Function]}
@@ -3680,6 +3782,9 @@ exports[`Storyshots Result list Default 1`] = `
                 width="1em"
                 xmlns="http://www.w3.org/2000/svg"
               >
+                <title>
+                  This item cannot be downloaded.
+                </title>
                 <rect
                   height="11"
                   rx="2"
@@ -3744,7 +3849,7 @@ exports[`Storyshots Result list Empty 1`] = `
       <tbody>
         <tr>
           <td
-            colspan="3"
+            colSpan="3"
           >
             <div
               className="result-section--msg"
@@ -3773,7 +3878,7 @@ exports[`Storyshots Result list Error 1`] = `
     className="result-section--msg result-section--error-msg"
   >
     <p>
-      An error occurred. Please refresh the page and try searching again.
+      An error occurred. Please try another query, or refresh the page and try searching again.
     </p>
   </div>
 </div>
@@ -3807,7 +3912,7 @@ exports[`Storyshots Result list Loading 1`] = `
       <tbody>
         <tr>
           <td
-            colspan="3"
+            colSpan="3"
           >
             <div
               className="result-section--msg"
@@ -3851,13 +3956,16 @@ exports[`Storyshots Result list Some Access 1`] = `
       </thead>
       <tbody>
         <tr
+          className="result-section--row"
           onClick={[Function]}
+          onKeyUp={[Function]}
+          role="button"
+          tabIndex="0"
         >
           <td
             className="result-row--download-col"
           >
             <span
-              aria-label="Some files in this item cannot be downloaded."
               onBlur={[Function]}
               onFocus={[Function]}
               onMouseOut={[Function]}
@@ -3879,6 +3987,9 @@ exports[`Storyshots Result list Some Access 1`] = `
                 width="1em"
                 xmlns="http://www.w3.org/2000/svg"
               >
+                <title>
+                  Some files cannot be downloaded.
+                </title>
                 <path
                   d="M21.21 15.89A10 10 0 1 1 8 2.83"
                 />
@@ -3935,13 +4046,16 @@ exports[`Storyshots Result list View Only Access 1`] = `
       </thead>
       <tbody>
         <tr
+          className="result-section--row"
           onClick={[Function]}
+          onKeyUp={[Function]}
+          role="button"
+          tabIndex="0"
         >
           <td
             className="result-row--download-col"
           >
             <span
-              aria-label="This item cannot be downloaded."
               onBlur={[Function]}
               onFocus={[Function]}
               onMouseOut={[Function]}
@@ -3963,6 +4077,9 @@ exports[`Storyshots Result list View Only Access 1`] = `
                 width="1em"
                 xmlns="http://www.w3.org/2000/svg"
               >
+                <title>
+                  This item cannot be downloaded.
+                </title>
                 <rect
                   height="11"
                   rx="2"
@@ -4029,6 +4146,12 @@ exports[`Storyshots Result tabs Default 1`] = `
           className="badge badge-secondary"
         >
           4
+           
+          <span
+            className="sr-only"
+          >
+            results
+          </span>
         </span>
       </a>
     </div>
@@ -4050,6 +4173,12 @@ exports[`Storyshots Result tabs Default 1`] = `
           className="badge badge-secondary"
         >
           14
+           
+          <span
+            className="sr-only"
+          >
+            results
+          </span>
         </span>
       </a>
     </div>
@@ -4071,6 +4200,12 @@ exports[`Storyshots Result tabs Default 1`] = `
           className="badge badge-secondary"
         >
           5
+           
+          <span
+            className="sr-only"
+          >
+            results
+          </span>
         </span>
       </a>
     </div>
@@ -4092,6 +4227,12 @@ exports[`Storyshots Result tabs Default 1`] = `
           className="badge badge-secondary"
         >
           80
+           
+          <span
+            className="sr-only"
+          >
+            results
+          </span>
         </span>
       </a>
     </div>
@@ -4217,9 +4358,11 @@ exports[`Storyshots Search page Default 1`] = `
           </button>
         </form>
         <section>
-          <h3>
+          <h2
+            className="h3"
+          >
             Filters
-          </h3>
+          </h2>
           <nav
             className="nav nav-tabs"
             onKeyDown={[Function]}
@@ -4343,12 +4486,12 @@ exports[`Storyshots Search page Default 1`] = `
               id="filters-section-tabpane-projects"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -4399,9 +4542,15 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Raw data
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Raw data
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -4410,7 +4559,7 @@ exports[`Storyshots Search page Default 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -4438,7 +4587,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -4447,8 +4596,8 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -4476,7 +4625,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -4485,8 +4634,8 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -4514,7 +4663,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -4523,12 +4672,12 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
             <div
               aria-hidden={true}
@@ -4537,12 +4686,12 @@ exports[`Storyshots Search page Default 1`] = `
               id="filters-section-tabpane-experiments"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -4593,9 +4742,15 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Biopipeline Output
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Biopipeline Output
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -4604,7 +4759,7 @@ exports[`Storyshots Search page Default 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -4632,7 +4787,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -4641,8 +4796,8 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -4670,7 +4825,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -4679,8 +4834,8 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -4708,7 +4863,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -4717,12 +4872,12 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
             <div
               aria-hidden={true}
@@ -4731,12 +4886,12 @@ exports[`Storyshots Search page Default 1`] = `
               id="filters-section-tabpane-datasets"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -4787,9 +4942,15 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Raw data
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Raw data
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -4798,7 +4959,7 @@ exports[`Storyshots Search page Default 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -4826,7 +4987,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -4835,8 +4996,8 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -4864,7 +5025,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -4873,8 +5034,8 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -4902,7 +5063,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -4911,12 +5072,12 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
             <div
               aria-hidden={true}
@@ -4925,12 +5086,12 @@ exports[`Storyshots Search page Default 1`] = `
               id="filters-section-tabpane-datafiles"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -4981,9 +5142,15 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Raw data
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Raw data
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -4992,7 +5159,7 @@ exports[`Storyshots Search page Default 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -5020,7 +5187,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -5029,8 +5196,8 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -5058,7 +5225,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -5067,8 +5234,8 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -5096,7 +5263,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -5105,7 +5272,7 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
@@ -5114,9 +5281,15 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Biopipeline Output
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Biopipeline Output
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -5125,7 +5298,7 @@ exports[`Storyshots Search page Default 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -5153,7 +5326,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -5162,8 +5335,8 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -5191,7 +5364,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -5200,8 +5373,8 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -5229,7 +5402,7 @@ exports[`Storyshots Search page Default 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -5238,12 +5411,12 @@ exports[`Storyshots Search page Default 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
           </div>
         </section>
@@ -5275,6 +5448,12 @@ exports[`Storyshots Search page Default 1`] = `
               className="badge badge-secondary"
             >
               1
+               
+              <span
+                className="sr-only"
+              >
+                result
+              </span>
             </span>
           </a>
         </div>
@@ -5296,6 +5475,12 @@ exports[`Storyshots Search page Default 1`] = `
               className="badge badge-secondary"
             >
               3
+               
+              <span
+                className="sr-only"
+              >
+                results
+              </span>
             </span>
           </a>
         </div>
@@ -5317,6 +5502,12 @@ exports[`Storyshots Search page Default 1`] = `
               className="badge badge-secondary"
             >
               1
+               
+              <span
+                className="sr-only"
+              >
+                result
+              </span>
             </span>
           </a>
         </div>
@@ -5338,6 +5529,12 @@ exports[`Storyshots Search page Default 1`] = `
               className="badge badge-secondary"
             >
               1
+               
+              <span
+                className="sr-only"
+              >
+                result
+              </span>
             </span>
           </a>
         </div>
@@ -5376,7 +5573,11 @@ exports[`Storyshots Search page Default 1`] = `
             </thead>
             <tbody>
               <tr
+                className="result-section--row"
                 onClick={[Function]}
+                onKeyUp={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <td
                   className="result-row--download-col"
@@ -5396,13 +5597,16 @@ exports[`Storyshots Search page Default 1`] = `
                 </td>
               </tr>
               <tr
+                className="result-section--row"
                 onClick={[Function]}
+                onKeyUp={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <td
                   className="result-row--download-col"
                 >
                   <span
-                    aria-label="Some files in this item cannot be downloaded."
                     onBlur={[Function]}
                     onFocus={[Function]}
                     onMouseOut={[Function]}
@@ -5424,6 +5628,9 @@ exports[`Storyshots Search page Default 1`] = `
                       width="1em"
                       xmlns="http://www.w3.org/2000/svg"
                     >
+                      <title>
+                        Some files cannot be downloaded.
+                      </title>
                       <path
                         d="M21.21 15.89A10 10 0 1 1 8 2.83"
                       />
@@ -5448,13 +5655,16 @@ exports[`Storyshots Search page Default 1`] = `
                 </td>
               </tr>
               <tr
+                className="result-section--row"
                 onClick={[Function]}
+                onKeyUp={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <td
                   className="result-row--download-col"
                 >
                   <span
-                    aria-label="This item cannot be downloaded."
                     onBlur={[Function]}
                     onFocus={[Function]}
                     onMouseOut={[Function]}
@@ -5476,6 +5686,9 @@ exports[`Storyshots Search page Default 1`] = `
                       width="1em"
                       xmlns="http://www.w3.org/2000/svg"
                     >
+                      <title>
+                        This item cannot be downloaded.
+                      </title>
                       <rect
                         height="11"
                         rx="2"
@@ -5553,9 +5766,11 @@ exports[`Storyshots Search page Error 1`] = `
           </button>
         </form>
         <section>
-          <h3>
+          <h2
+            className="h3"
+          >
             Filters
-          </h3>
+          </h2>
           <nav
             className="nav nav-tabs"
             onKeyDown={[Function]}
@@ -5679,12 +5894,12 @@ exports[`Storyshots Search page Error 1`] = `
               id="filters-section-tabpane-projects"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -5735,9 +5950,15 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Raw data
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Raw data
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -5746,7 +5967,7 @@ exports[`Storyshots Search page Error 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -5774,7 +5995,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -5783,8 +6004,8 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -5812,7 +6033,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -5821,8 +6042,8 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -5850,7 +6071,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -5859,12 +6080,12 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
             <div
               aria-hidden={true}
@@ -5873,12 +6094,12 @@ exports[`Storyshots Search page Error 1`] = `
               id="filters-section-tabpane-experiments"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -5929,9 +6150,15 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Biopipeline Output
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Biopipeline Output
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -5940,7 +6167,7 @@ exports[`Storyshots Search page Error 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -5968,7 +6195,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -5977,8 +6204,8 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6006,7 +6233,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6015,8 +6242,8 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6044,7 +6271,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6053,12 +6280,12 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
             <div
               aria-hidden={true}
@@ -6067,12 +6294,12 @@ exports[`Storyshots Search page Error 1`] = `
               id="filters-section-tabpane-datasets"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -6123,9 +6350,15 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Raw data
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Raw data
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -6134,7 +6367,7 @@ exports[`Storyshots Search page Error 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6162,7 +6395,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6171,8 +6404,8 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6200,7 +6433,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6209,8 +6442,8 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6238,7 +6471,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6247,12 +6480,12 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
             <div
               aria-hidden={true}
@@ -6261,12 +6494,12 @@ exports[`Storyshots Search page Error 1`] = `
               id="filters-section-tabpane-datafiles"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -6317,9 +6550,15 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Raw data
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Raw data
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -6328,7 +6567,7 @@ exports[`Storyshots Search page Error 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6356,7 +6595,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6365,8 +6604,8 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6394,7 +6633,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6403,8 +6642,8 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6432,7 +6671,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6441,7 +6680,7 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
@@ -6450,9 +6689,15 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Biopipeline Output
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Biopipeline Output
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -6461,7 +6706,7 @@ exports[`Storyshots Search page Error 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6489,7 +6734,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6498,8 +6743,8 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6527,7 +6772,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6536,8 +6781,8 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6565,7 +6810,7 @@ exports[`Storyshots Search page Error 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6574,12 +6819,12 @@ exports[`Storyshots Search page Error 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
           </div>
         </section>
@@ -6666,7 +6911,7 @@ exports[`Storyshots Search page Error 1`] = `
           className="result-section--msg result-section--error-msg"
         >
           <p>
-            An error occurred. Please refresh the page and try searching again.
+            An error occurred. Please try another query, or refresh the page and try searching again.
           </p>
         </div>
       </div>
@@ -6713,9 +6958,11 @@ exports[`Storyshots Search page Loading 1`] = `
           </button>
         </form>
         <section>
-          <h3>
+          <h2
+            className="h3"
+          >
             Filters
-          </h3>
+          </h2>
           <nav
             className="nav nav-tabs"
             onKeyDown={[Function]}
@@ -6839,12 +7086,12 @@ exports[`Storyshots Search page Loading 1`] = `
               id="filters-section-tabpane-projects"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -6895,9 +7142,15 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Raw data
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Raw data
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -6906,7 +7159,7 @@ exports[`Storyshots Search page Loading 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6934,7 +7187,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6943,8 +7196,8 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -6972,7 +7225,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -6981,8 +7234,8 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7010,7 +7263,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7019,12 +7272,12 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
             <div
               aria-hidden={true}
@@ -7033,12 +7286,12 @@ exports[`Storyshots Search page Loading 1`] = `
               id="filters-section-tabpane-experiments"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -7089,9 +7342,15 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Biopipeline Output
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Biopipeline Output
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -7100,7 +7359,7 @@ exports[`Storyshots Search page Loading 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7128,7 +7387,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7137,8 +7396,8 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7166,7 +7425,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7175,8 +7434,8 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7204,7 +7463,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7213,12 +7472,12 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
             <div
               aria-hidden={true}
@@ -7227,12 +7486,12 @@ exports[`Storyshots Search page Loading 1`] = `
               id="filters-section-tabpane-datasets"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -7283,9 +7542,15 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Raw data
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Raw data
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -7294,7 +7559,7 @@ exports[`Storyshots Search page Loading 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7322,7 +7587,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7331,8 +7596,8 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7360,7 +7625,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7369,8 +7634,8 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7398,7 +7663,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7407,12 +7672,12 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
             <div
               aria-hidden={true}
@@ -7421,12 +7686,12 @@ exports[`Storyshots Search page Loading 1`] = `
               id="filters-section-tabpane-datafiles"
               role="tabpanel"
             >
-              <div>
-                <h4
-                  className="type-schema-list__title"
+              <section>
+                <h3
+                  className="h5"
                 >
-                  Show me
-                </h4>
+                  Schemas
+                </h3>
                 <div
                   className="form-group"
                 >
@@ -7477,9 +7742,15 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Raw data
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Raw data
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -7488,7 +7759,7 @@ exports[`Storyshots Search page Loading 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7516,7 +7787,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7525,8 +7796,8 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7554,7 +7825,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7563,8 +7834,8 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7592,7 +7863,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7601,7 +7872,7 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
@@ -7610,9 +7881,15 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <div
                       className="card-header"
-                      onClick={[Function]}
                     >
-                      Biopipeline Output
+                      <button
+                        className="btn btn-link"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Biopipeline Output
+                         filters
+                      </button>
                     </div>
                     <div
                       aria-expanded={null}
@@ -7621,7 +7898,7 @@ exports[`Storyshots Search page Loading 1`] = `
                       <div
                         className="card-body"
                       >
-                        <div
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7649,7 +7926,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7658,8 +7935,8 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7687,7 +7964,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7696,8 +7973,8 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
-                        <div
+                        </section>
+                        <section
                           className="single-schema-list__filter"
                         >
                           <h5
@@ -7725,7 +8002,7 @@ exports[`Storyshots Search page Loading 1`] = `
                                 <button
                                   aria-label="Filter results"
                                   className="btn btn-outline-secondary"
-                                  disabled={true}
+                                  disabled={false}
                                   type="submit"
                                 >
                                   Filter
@@ -7734,12 +8011,12 @@ exports[`Storyshots Search page Loading 1`] = `
                             </div>
                           </form>
                           <hr />
-                        </div>
+                        </section>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
           </div>
         </section>
@@ -7842,7 +8119,7 @@ exports[`Storyshots Search page Loading 1`] = `
             <tbody>
               <tr>
                 <td
-                  colspan="3"
+                  colSpan="3"
                 >
                   <div
                     className="result-section--msg"
