@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import PropTypes from "prop-types";
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-import { updateSchemaParameter } from "../filterSlice";
-import { useDispatch } from "react-redux";
+import { updateSchemaParameter, typeAttrSelector } from "../filterSlice";
+import { useDispatch, useSelector } from "react-redux";
 import CategoryFilter from '../category-filter/CategoryFilter';
 import { runSearch } from '../../searchSlice';
 import { mapTypeToFilter } from "../index";
@@ -54,8 +54,20 @@ SchemaFilterList.propTypes = {
     schema: PropTypes.object.isRequired 
 }
 
-const TypeSchemaList = ({ value: schemaValue, options, onValueChange }) => {
-    const {allIds : schemasAsList, byId : schemas } = options.schemas || {byId: {}, allIds: []};
+const TypeSchemaList = ({ typeId }) => {
+    const schemasAsList = useSelector(state => {return state.filters.typeSchemas[typeId]});
+    const { byId: schemas } = useSelector(state => (state.filters.schemas)) || { byId: {}};
+    const schemaValue = useSelector((state) => (
+        typeAttrSelector(state.filters, typeId, "schema").value
+    ));
+    const onValueChange =
+        (value) => {
+            batch(() => {
+                dispatch(updateActiveSchemas({ typeId, value }));
+                dispatch(runSearch());
+            });
+        };
+
     let activeSchemas;
     if (!schemaValue) {
         // If there is no filter on what schemas to show, we show all of them.
@@ -117,14 +129,7 @@ const TypeSchemaList = ({ value: schemaValue, options, onValueChange }) => {
 };
 
 TypeSchemaList.propTypes = {
-    value: PropTypes.object,
-    options: PropTypes.shape({
-        schemas: PropTypes.shape({
-            allIds: PropTypes.array,
-            byId: PropTypes.object
-        })
-    }),
-    onValueChange: PropTypes.func.isRequired
+    typeId: PropTypes.string.isRequired
 };
 
 export default TypeSchemaList;
