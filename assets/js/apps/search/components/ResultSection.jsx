@@ -143,7 +143,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
             <tr>
                 <td colSpan="3">
                     <div className="result-section--msg">
-                        <p>Searching...</p>
+                        <p>Loading...</p>
                     </div>
                 </td>
             </tr>
@@ -232,9 +232,11 @@ export function PureResultSection({ resultSets, selectedType,
                     }
                     <div className="tabpanel__container--horizontal">
                         <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
-                        <EntryPreviewCard
-                            data={selectedEntry}
-                        />
+                        {(!isLoading && !error && currentCount > 0) &&
+                            <EntryPreviewCard
+                                data={selectedEntry}
+                            />
+                        }
                     </div>
                 </div>
             </>
