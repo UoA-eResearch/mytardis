@@ -73,9 +73,16 @@ const NameColumn = {
 
 export function ResultRow({ result, onSelect, isSelected }) {
     const type = result.type,
-        resultName = result[NameColumn[type]];
+        resultName = result[NameColumn[type]],
+        onKeyboardSelect = (e) => {
+            // Only respond to Enter key selects.
+            if (e.key !== "Enter") {
+                return;
+            }
+            onSelect(e);
+        };
     return (
-        <tr className="result-section--row" onClick={onSelect} onKeyUp={onSelect} tabIndex="0" role="button">
+        <tr className="result-section--row" onClick={onSelect} onKeyUp={onKeyboardSelect} tabIndex="0" role="button">
             <td className="result-row--download-col">
                 {result.userDownloadRights == "none" &&
                     <OverlayTrigger overlay={
