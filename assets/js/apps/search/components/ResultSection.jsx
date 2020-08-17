@@ -176,7 +176,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
     }
 
     return (
-        <Table responsive hover>
+        <Table className="result-section__container" responsive hover>
             <thead>
                 <tr>
                     <th></th>
@@ -195,18 +195,8 @@ PureResultList.propTypes = {
     results: PropTypes.arrayOf(Object),
     error: PropTypes.string,
     isLoading: PropTypes.bool,
-    selectedItem: PropTypes.string,
+    selectedItem: PropTypes.number,
     onItemSelect: PropTypes.func
-}
-
-export function ResultList(props) {
-    return (
-        <div className="result-section__container">
-            <PureResultList
-                {...props}
-            />
-        </div >
-    )
 }
 
 export function PureResultSection({ resultSets, selectedType,
@@ -241,7 +231,7 @@ export function PureResultSection({ resultSets, selectedType,
                         </p>
                     }
                     <div className="tabpanel__container--horizontal">
-                        <ResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
+                        <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
                         <EntryPreviewCard
                             data={selectedEntry}
                         />

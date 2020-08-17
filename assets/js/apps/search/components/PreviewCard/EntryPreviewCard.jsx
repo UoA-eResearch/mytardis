@@ -12,7 +12,6 @@ import {
 
 export default function EntryPreviewCard(props) {
     let { data, onClick } = props;
-    console.log(data);
     let type;
     if (data) {
         type = data.type;
