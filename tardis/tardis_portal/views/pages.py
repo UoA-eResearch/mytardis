@@ -153,6 +153,10 @@ class IndexView(TemplateView):
         c['public_experiments'] = public_experiments
         c['exps_expand_accordion'] = 1
 
+        private_projects = Project.safe.owned_and_shared(
+                    request.user).order_by('-update_time')
+        c['private_projects'] = 1
+
         return c
 
     def get(self, request, *args, **kwargs):
