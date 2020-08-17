@@ -123,6 +123,7 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
           href="idk/"
           onClick={[Function]}
           onKeyDown={[Function]}
+          target="_blank"
         >
           View details
         </a>
@@ -260,6 +261,7 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
           href="idk/"
           onClick={[Function]}
           onKeyDown={[Function]}
+          target="_blank"
         >
           View details
         </a>
@@ -397,6 +399,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
           href="idk/"
           onClick={[Function]}
           onKeyDown={[Function]}
+          target="_blank"
         >
           View details
         </a>
@@ -570,6 +573,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
           href="idk/"
           onClick={[Function]}
           onKeyDown={[Function]}
+          target="_blank"
         >
           View details
         </a>
