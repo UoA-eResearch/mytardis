@@ -6,10 +6,12 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import Badge from 'react-bootstrap/Badge';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateSelectedResult, updateSelectedType } from "./searchSlice";
 import './ResultSection.css';
+import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 
-export function ResultTabs({counts, selectedType, onChange}) {
+export function ResultTabs({ counts, selectedType, onChange }) {
 
     if (!counts) {
         counts = {
@@ -71,9 +73,16 @@ const NameColumn = {
 
 export function ResultRow({ result, onSelect, isSelected }) {
     const type = result.type,
-        resultName = result[NameColumn[type]];
+        resultName = result[NameColumn[type]],
+        onKeyboardSelect = (e) => {
+            // Only respond to Enter key selects.
+            if (e.key !== "Enter") {
+                return;
+            }
+            onSelect(e);
+        };
     return (
-        <tr className="result-section--row" onClick={onSelect} onKeyUp={onSelect} tabIndex="0" role="button">
+        <tr className={isSelected ? "result-section--row table-active" : "result-section--row" } onClick={onSelect} onKeyUp={onKeyboardSelect} tabIndex="0" role="button">
             <td className="result-row--download-col">
                 {result.userDownloadRights == "none" &&
                     <OverlayTrigger overlay={
@@ -134,7 +143,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
             <tr>
                 <td colSpan="3">
                     <div className="result-section--msg">
-                        <p>Searching...</p>
+                        <p>Loading...</p>
                     </div>
                 </td>
             </tr>
@@ -167,7 +176,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
     }
 
     return (
-        <Table responsive hover>
+        <Table className="result-section__container" responsive hover>
             <thead>
                 <tr>
                     <th></th>
@@ -186,23 +195,12 @@ PureResultList.propTypes = {
     results: PropTypes.arrayOf(Object),
     error: PropTypes.string,
     isLoading: PropTypes.bool,
-    selectedItem: PropTypes.string,
+    selectedItem: PropTypes.number,
     onItemSelect: PropTypes.func
 }
 
-export function ResultList(props) {
-    const [selected, onSelect] = useState(null)
-    return (
-        <PureResultList
-            selectedItem={selected}
-            onItemSelect={onSelect}
-            {...props}
-        />
-    )
-}
-
-export function PureResultSection({ resultSets, selected,
-    onSelect, isLoading, error }) {
+export function PureResultSection({ resultSets, selectedType,
+    onSelectType, selectedResult, onSelectResult, isLoading, error }) {
     let counts;
     if (!resultSets) {
         resultSets = {};
@@ -219,35 +217,69 @@ export function PureResultSection({ resultSets, selected,
         }
     }
 
-    const currentResultSet = resultSets[selected],
-        currentCount = counts[selected];
-    return (
-        <>
-            <ResultTabs counts={counts} selectedType={selected} onChange={onSelect} />
-            <div role="tabpanel" className="result-section--tabpanel">
-                {(!isLoading && !error) &&
-                    <p className="result-section--count-summary">
-                        <span>Showing {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
-                    </p>
-                }
-                <ResultList results={currentResultSet} isLoading={isLoading} error={error} />
-            </div>
-        </>
-    )
+        let selectedEntry = getSelectedEntry(resultSets, selectedResult, selectedType);
+
+        const currentResultSet = resultSets[selectedType],
+            currentCount = counts[selectedType];
+        return (
+            <>
+                <ResultTabs counts={counts} selectedType={selectedType} onChange={onSelectType} />
+                <div role="tabpanel" className="result-section--tabpanel">
+                    {(!isLoading && !error) &&
+                        <p className="result-section--count-summary">
+                            <span>Showing {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
+                        </p>
+                    }
+                    <div className="tabpanel__container--horizontal">
+                        <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
+                        {(!isLoading && !error && currentCount > 0) &&
+                            <EntryPreviewCard
+                                data={selectedEntry}
+                            />
+                        }
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+
+/**
+ * Returns the data of the selected row. Returns null if it cannot get find the selected result.
+ * @param {*} resultSets 
+ * @param {*} selectedResult 
+ * @param {*} selectedType 
+ */
+function getSelectedEntry(resultSets, selectedResult, selectedType) {
+    let selectedEntry = null;
+    if (resultSets && selectedResult) {
+        selectedEntry = resultSets[selectedType].filter(result => result.id === selectedResult)[0];
+    }
+    return selectedEntry;
 }
 
-export default function ResultSection() {
-    const [selectedType, onSelect ] = useState('experiment'),
-        searchInfo = useSelector(
-            (state) => state.search
-        );
-    return (
-        <PureResultSection
-            resultSets={searchInfo.results}
-            error={searchInfo.error}
-            isLoading={searchInfo.isLoading}
-            selected={selectedType}
-            onSelect={onSelect}
-        />
-    )
-}
+    export default function ResultSection() {
+        const selectedType = useSelector(state => state.search.selectedType),
+            selectedResult = useSelector(state => state.search.selectedResult),
+            dispatch = useDispatch(),
+            onSelectType = (type) => {
+                dispatch(updateSelectedType(type));
+            },
+            onSelectResult = (selectedResult) => {
+                dispatch(updateSelectedResult(selectedResult));
+            },
+            searchInfo = useSelector(
+                (state) => state.search
+            );
+        return (
+            <PureResultSection
+                resultSets={searchInfo.results}
+                error={searchInfo.error}
+                isLoading={searchInfo.isLoading}
+                selectedType={selectedType}
+                onSelectType={onSelectType}
+                selectedResult={selectedResult}
+                onSelectResult={onSelectResult}
+            />
+        )
+    }

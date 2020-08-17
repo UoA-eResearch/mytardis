@@ -1,5 +1,588 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots EntryPreviewCard Data File 1`] = `
+<div
+  style={
+    Object {
+      "border": "2px solid black",
+    }
+  }
+>
+  <div
+    className="preview-card__body"
+  >
+    <span
+      aria-label="Close preview panel"
+      className="preview-card__close"
+    />
+    <div
+      className="preview-card__header"
+    >
+      <div>
+        <div
+          className="tab-sticker"
+          style={
+            Object {
+              "backgroundColor": "#70ffae",
+            }
+          }
+        >
+          <div
+            className="tab-stick--content"
+          >
+            DF
+          </div>
+        </div>
+      </div>
+      <h5>
+        Mikes_test_datafile_1
+      </h5>
+    </div>
+    <div
+      className="preview-card__access-status"
+    >
+      <span
+        aria-label="This item can be downloaded."
+      >
+        <svg
+          fill="none"
+          height="1em"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          style={
+            Object {
+              "color": undefined,
+            }
+          }
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            height="11"
+            rx="2"
+            ry="2"
+            width="18"
+            x="3"
+            y="11"
+          />
+          <path
+            d="M7 11V7a5 5 0 0 1 9.9-1"
+          />
+        </svg>
+      </span>
+      Full access
+    </div>
+    <div
+      className="preview-card__count-detail"
+    >
+      460.3 KB.
+    </div>
+    <div
+      className="preview-card__date-added"
+    >
+      Added on the 
+      Unknown
+    </div>
+    <table
+      className="preview-card__parameter-table table table-sm table-striped table-bordered table-hover"
+    >
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Value
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="parameter-table__row"
+        >
+          <td>
+            12
+          </td>
+          <td>
+            My name is
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      className="preview-card__button-wrapper--right"
+    >
+      <div
+        className="preview-card__inline-block-wrapper"
+      >
+        <a
+          className="preview-card__button--right btn btn-primary"
+          href="idk/"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          target="_blank"
+        >
+          View details
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots EntryPreviewCard Data Set 1`] = `
+<div
+  style={
+    Object {
+      "border": "2px solid black",
+    }
+  }
+>
+  <div
+    className="preview-card__body"
+  >
+    <span
+      aria-label="Close preview panel"
+      className="preview-card__close"
+    />
+    <div
+      className="preview-card__header"
+    >
+      <div>
+        <div
+          className="tab-sticker"
+          style={
+            Object {
+              "backgroundColor": "#ffcce8",
+            }
+          }
+        >
+          <div
+            className="tab-stick--content"
+          >
+            DS
+          </div>
+        </div>
+      </div>
+      <h5>
+        Some ACL-testing dataset #1
+      </h5>
+    </div>
+    <div
+      className="preview-card__access-status"
+    >
+      <span
+        aria-label="This item can be downloaded."
+      >
+        <svg
+          fill="none"
+          height="1em"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          style={
+            Object {
+              "color": undefined,
+            }
+          }
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.21 15.89A10 10 0 1 1 8 2.83"
+          />
+          <path
+            d="M22 12A10 10 0 0 0 12 2v10z"
+          />
+        </svg>
+      </span>
+      Partial access
+    </div>
+    <div
+      className="preview-card__count-detail"
+    >
+      460.3 KB.
+    </div>
+    <div
+      className="preview-card__date-added"
+    >
+      Added on the 
+      7th May 2020.
+    </div>
+    <table
+      className="preview-card__parameter-table table table-sm table-striped table-bordered table-hover"
+    >
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Value
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="parameter-table__row"
+        >
+          <td>
+            4
+          </td>
+          <td>
+            My Name
+          </td>
+        </tr>
+        <tr
+          className="parameter-table__row"
+        >
+          <td>
+            5
+          </td>
+          <td>
+            is
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      className="preview-card__button-wrapper--right"
+    >
+      <div
+        className="preview-card__inline-block-wrapper"
+      >
+        <a
+          className="preview-card__button--right btn btn-primary"
+          href="idk/"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          target="_blank"
+        >
+          View details
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots EntryPreviewCard Experiment 1`] = `
+<div
+  style={
+    Object {
+      "border": "2px solid black",
+    }
+  }
+>
+  <div
+    className="preview-card__body"
+  >
+    <span
+      aria-label="Close preview panel"
+      className="preview-card__close"
+    />
+    <div
+      className="preview-card__header"
+    >
+      <div>
+        <div
+          className="tab-sticker"
+          style={
+            Object {
+              "backgroundColor": "#abe2ff",
+            }
+          }
+        >
+          <div
+            className="tab-stick--content"
+          >
+            E
+          </div>
+        </div>
+      </div>
+      <h5>
+        Test_ACLs
+      </h5>
+    </div>
+    <div
+      className="preview-card__access-status"
+    >
+      <span
+        aria-label="This item can be downloaded."
+      >
+        <svg
+          fill="none"
+          height="1em"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          style={
+            Object {
+              "color": undefined,
+            }
+          }
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.21 15.89A10 10 0 1 1 8 2.83"
+          />
+          <path
+            d="M22 12A10 10 0 0 0 12 2v10z"
+          />
+        </svg>
+      </span>
+      Partial access
+    </div>
+    <div
+      className="preview-card__count-detail"
+    >
+      460.3 KB.
+    </div>
+    <div
+      className="preview-card__date-added"
+    >
+      Added on the 
+      7th May 2020.
+    </div>
+    <table
+      className="preview-card__parameter-table table table-sm table-striped table-bordered table-hover"
+    >
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Value
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="parameter-table__row"
+        >
+          <td>
+            1
+          </td>
+          <td>
+            kiwi
+          </td>
+        </tr>
+        <tr
+          className="parameter-table__row"
+        >
+          <td>
+            3
+          </td>
+          <td>
+            forbidden fruit
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      className="preview-card__button-wrapper--right"
+    >
+      <div
+        className="preview-card__inline-block-wrapper"
+      >
+        <a
+          className="preview-card__button--right btn btn-primary"
+          href="idk/"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          target="_blank"
+        >
+          View details
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots EntryPreviewCard No Preview Data 1`] = `
+<div
+  style={
+    Object {
+      "border": "2px solid black",
+    }
+  }
+>
+  <div
+    className="preview-card__body"
+  >
+    Please select a row to view the details.
+  </div>
+</div>
+`;
+
+exports[`Storyshots EntryPreviewCard Project 1`] = `
+<div
+  style={
+    Object {
+      "border": "2px solid black",
+    }
+  }
+>
+  <div
+    className="preview-card__body"
+  >
+    <span
+      aria-label="Close preview panel"
+      className="preview-card__close"
+    />
+    <div
+      className="preview-card__header"
+    >
+      <div>
+        <div
+          className="tab-sticker"
+          style={
+            Object {
+              "backgroundColor": "#f7db8d",
+            }
+          }
+        >
+          <div
+            className="tab-stick--content"
+          >
+            P
+          </div>
+        </div>
+      </div>
+      <h5>
+        Mikes_ACL_Project
+      </h5>
+    </div>
+    <div
+      className="preview-card__access-status"
+    >
+      <span
+        aria-label="This item can be downloaded."
+      >
+        <svg
+          fill="none"
+          height="1em"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          style={
+            Object {
+              "color": undefined,
+            }
+          }
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.21 15.89A10 10 0 1 1 8 2.83"
+          />
+          <path
+            d="M22 12A10 10 0 0 0 12 2v10z"
+          />
+        </svg>
+      </span>
+      Partial access
+    </div>
+    <div
+      className="preview-card__count-detail"
+    >
+      460.3 KB.
+    </div>
+    <div
+      className="preview-card__date-added"
+    >
+      Added on the 
+      7th May 2020.
+    </div>
+    <table
+      className="preview-card__parameter-table table table-sm table-striped table-bordered table-hover"
+    >
+      <thead>
+        <tr>
+          <th>
+            Parameter
+          </th>
+          <th>
+            Value
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="parameter-table__row"
+        >
+          <td>
+            18
+          </td>
+          <td>
+            
+          </td>
+        </tr>
+        <tr
+          className="parameter-table__row"
+        >
+          <td>
+            19
+          </td>
+          <td>
+            7.0
+          </td>
+        </tr>
+        <tr
+          className="parameter-table__row"
+        >
+          <td>
+            15
+          </td>
+          <td>
+            Kiwi
+          </td>
+        </tr>
+        <tr
+          className="parameter-table__row"
+        >
+          <td>
+            16
+          </td>
+          <td>
+            Orange
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      className="preview-card__button-wrapper--right"
+    >
+      <div
+        className="preview-card__inline-block-wrapper"
+      >
+        <a
+          className="preview-card__button--right btn btn-primary"
+          href="idk/"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          target="_blank"
+        >
+          View details
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Storyshots Filter sidebar Default 1`] = `
 <div
   style={
@@ -3598,7 +4181,7 @@ exports[`Storyshots Result list All Access 1`] = `
     className="table-responsive"
   >
     <table
-      className="table table-hover"
+      className="result-section__container table table-hover"
     >
       <thead>
         <tr>
@@ -3654,7 +4237,7 @@ exports[`Storyshots Result list Default 1`] = `
     className="table-responsive"
   >
     <table
-      className="table table-hover"
+      className="result-section__container table table-hover"
     >
       <thead>
         <tr>
@@ -3833,7 +4416,7 @@ exports[`Storyshots Result list Empty 1`] = `
     className="table-responsive"
   >
     <table
-      className="table table-hover"
+      className="result-section__container table table-hover"
     >
       <thead>
         <tr>
@@ -3896,7 +4479,7 @@ exports[`Storyshots Result list Loading 1`] = `
     className="table-responsive"
   >
     <table
-      className="table table-hover"
+      className="result-section__container table table-hover"
     >
       <thead>
         <tr>
@@ -3918,7 +4501,7 @@ exports[`Storyshots Result list Loading 1`] = `
               className="result-section--msg"
             >
               <p>
-                Searching...
+                Loading...
               </p>
             </div>
           </td>
@@ -3941,7 +4524,7 @@ exports[`Storyshots Result list Some Access 1`] = `
     className="table-responsive"
   >
     <table
-      className="table table-hover"
+      className="result-section__container table table-hover"
     >
       <thead>
         <tr>
@@ -4031,7 +4614,7 @@ exports[`Storyshots Result list View Only Access 1`] = `
     className="table-responsive"
   >
     <table
-      className="table table-hover"
+      className="result-section__container table table-hover"
     >
       <thead>
         <tr>
@@ -5555,172 +6138,181 @@ exports[`Storyshots Search page Default 1`] = `
           </span>
         </p>
         <div
-          className="table-responsive"
+          className="tabpanel__container--horizontal"
         >
-          <table
-            className="table table-hover"
+          <div
+            className="table-responsive"
           >
-            <thead>
-              <tr>
-                <th />
-                <th>
-                  Name
-                </th>
-                <th>
-                  Size
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                className="result-section--row"
-                onClick={[Function]}
-                onKeyUp={[Function]}
-                role="button"
-                tabIndex="0"
-              >
-                <td
-                  className="result-row--download-col"
-                />
-                <td>
-                  <a
-                    href=""
-                    target="_blank"
-                  >
-                    siNET
-                  </a>
-                </td>
-                <td>
-                  <span>
-                    35MB
-                  </span>
-                </td>
-              </tr>
-              <tr
-                className="result-section--row"
-                onClick={[Function]}
-                onKeyUp={[Function]}
-                role="button"
-                tabIndex="0"
-              >
-                <td
-                  className="result-row--download-col"
+            <table
+              className="result-section__container table table-hover"
+            >
+              <thead>
+                <tr>
+                  <th />
+                  <th>
+                    Name
+                  </th>
+                  <th>
+                    Size
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="result-section--row"
+                  onClick={[Function]}
+                  onKeyUp={[Function]}
+                  role="button"
+                  tabIndex="0"
                 >
-                  <span
-                    onBlur={[Function]}
-                    onFocus={[Function]}
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
-                  >
-                    <svg
-                      fill="none"
-                      height="1em"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      style={
-                        Object {
-                          "color": undefined,
-                        }
-                      }
-                      viewBox="0 0 24 24"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
+                  <td
+                    className="result-row--download-col"
+                  />
+                  <td>
+                    <a
+                      href=""
+                      target="_blank"
                     >
-                      <title>
-                        Some files cannot be downloaded.
-                      </title>
-                      <path
-                        d="M21.21 15.89A10 10 0 1 1 8 2.83"
-                      />
-                      <path
-                        d="M22 12A10 10 0 0 0 12 2v10z"
-                      />
-                    </svg>
-                  </span>
-                </td>
-                <td>
-                  <a
-                    href=""
-                    target="_blank"
-                  >
-                    Gastroblastoma
-                  </a>
-                </td>
-                <td>
-                  <span>
-                    4GB
-                  </span>
-                </td>
-              </tr>
-              <tr
-                className="result-section--row"
-                onClick={[Function]}
-                onKeyUp={[Function]}
-                role="button"
-                tabIndex="0"
-              >
-                <td
-                  className="result-row--download-col"
+                      siNET
+                    </a>
+                  </td>
+                  <td>
+                    <span>
+                      35MB
+                    </span>
+                  </td>
+                </tr>
+                <tr
+                  className="result-section--row"
+                  onClick={[Function]}
+                  onKeyUp={[Function]}
+                  role="button"
+                  tabIndex="0"
                 >
-                  <span
-                    onBlur={[Function]}
-                    onFocus={[Function]}
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
+                  <td
+                    className="result-row--download-col"
                   >
-                    <svg
-                      fill="none"
-                      height="1em"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      style={
-                        Object {
-                          "color": undefined,
-                        }
-                      }
-                      viewBox="0 0 24 24"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
+                    <span
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
                     >
-                      <title>
-                        This item cannot be downloaded.
-                      </title>
-                      <rect
-                        height="11"
-                        rx="2"
-                        ry="2"
-                        width="18"
-                        x="3"
-                        y="11"
-                      />
-                      <path
-                        d="M7 11V7a5 5 0 0 1 10 0v4"
-                      />
-                    </svg>
-                  </span>
-                </td>
-                <td>
-                  <a
-                    href=""
-                    target="_blank"
+                      <svg
+                        fill="none"
+                        height="1em"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        style={
+                          Object {
+                            "color": undefined,
+                          }
+                        }
+                        viewBox="0 0 24 24"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>
+                          Some files cannot be downloaded.
+                        </title>
+                        <path
+                          d="M21.21 15.89A10 10 0 1 1 8 2.83"
+                        />
+                        <path
+                          d="M22 12A10 10 0 0 0 12 2v10z"
+                        />
+                      </svg>
+                    </span>
+                  </td>
+                  <td>
+                    <a
+                      href=""
+                      target="_blank"
+                    >
+                      Gastroblastoma
+                    </a>
+                  </td>
+                  <td>
+                    <span>
+                      4GB
+                    </span>
+                  </td>
+                </tr>
+                <tr
+                  className="result-section--row"
+                  onClick={[Function]}
+                  onKeyUp={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <td
+                    className="result-row--download-col"
                   >
-                    Lung
-                  </a>
-                </td>
-                <td>
-                  <span
-                    aria-label="Not applicable"
-                  >
-                    —
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                    <span
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
+                    >
+                      <svg
+                        fill="none"
+                        height="1em"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        style={
+                          Object {
+                            "color": undefined,
+                          }
+                        }
+                        viewBox="0 0 24 24"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>
+                          This item cannot be downloaded.
+                        </title>
+                        <rect
+                          height="11"
+                          rx="2"
+                          ry="2"
+                          width="18"
+                          x="3"
+                          y="11"
+                        />
+                        <path
+                          d="M7 11V7a5 5 0 0 1 10 0v4"
+                        />
+                      </svg>
+                    </span>
+                  </td>
+                  <td>
+                    <a
+                      href=""
+                      target="_blank"
+                    >
+                      Lung
+                    </a>
+                  </td>
+                  <td>
+                    <span
+                      aria-label="Not applicable"
+                    >
+                      —
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            className="preview-card__body"
+          >
+            Please select a row to view the details.
+          </div>
         </div>
       </div>
     </main>
@@ -6908,11 +7500,15 @@ exports[`Storyshots Search page Error 1`] = `
         role="tabpanel"
       >
         <div
-          className="result-section--msg result-section--error-msg"
+          className="tabpanel__container--horizontal"
         >
-          <p>
-            An error occurred. Please try another query, or refresh the page and try searching again.
-          </p>
+          <div
+            className="result-section--msg result-section--error-msg"
+          >
+            <p>
+              An error occurred. Please try another query, or refresh the page and try searching again.
+            </p>
+          </div>
         </div>
       </div>
     </main>
@@ -8100,38 +8696,42 @@ exports[`Storyshots Search page Loading 1`] = `
         role="tabpanel"
       >
         <div
-          className="table-responsive"
+          className="tabpanel__container--horizontal"
         >
-          <table
-            className="table table-hover"
+          <div
+            className="table-responsive"
           >
-            <thead>
-              <tr>
-                <th />
-                <th>
-                  Name
-                </th>
-                <th>
-                  Size
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td
-                  colSpan="3"
-                >
-                  <div
-                    className="result-section--msg"
+            <table
+              className="result-section__container table table-hover"
+            >
+              <thead>
+                <tr>
+                  <th />
+                  <th>
+                    Name
+                  </th>
+                  <th>
+                    Size
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td
+                    colSpan="3"
                   >
-                    <p>
-                      Searching...
-                    </p>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                    <div
+                      className="result-section--msg"
+                    >
+                      <p>
+                        Loading...
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
