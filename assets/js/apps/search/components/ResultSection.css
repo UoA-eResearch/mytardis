@@ -7,6 +7,9 @@
     align-items: center;
     justify-content: center;
     height: 300px;
+    flex: 1;
+    height: 100%;
+    padding: 2em;
 }
 
 .result-section--error-msg {
