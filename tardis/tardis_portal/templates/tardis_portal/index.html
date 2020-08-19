@@ -151,6 +151,23 @@
         {% endfor %}
         </div> {% comment %}id="public-experiments" class="panel-group experiments"{% endcomment %}
     </div> {% comment %}class="col-md-12"{% endcomment %}
+    <div class="col-md-12">
+      {% if is_authenticated %}
+      <h3>
+        Your projects
+      </h3>
+
+      <div id="private-projects" class="panel-group projects">
+        {% for project in private_projects %}
+        <div class="card mb-2">
+        </div> {% comment %}class="card"{% endcomment %}
+        {% empty %}
+        <p>There are no projects available on this server.</p>
+        {% endfor %}
+
+      </div>
+      {% endif %}
+    </div>
   </div> {% comment %}class="row"{% endcomment %}
 </div> {% comment %}id="content"{% endcomment %}
 <input type="hidden" id="exps-expand-accordion" value="{{ exps_expand_accordion }}">

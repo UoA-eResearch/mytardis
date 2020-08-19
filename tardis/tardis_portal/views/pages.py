@@ -154,8 +154,8 @@ class IndexView(TemplateView):
         c['exps_expand_accordion'] = 1
 
         private_projects = Project.safe.owned_and_shared(
-                    request.user).order_by('-update_time')
-        c['private_projects'] = 1
+                    request.user).order_by('-start_date')
+        c['private_projects'] = private_projects
 
         return c
 
