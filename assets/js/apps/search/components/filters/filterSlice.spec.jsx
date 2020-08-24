@@ -376,7 +376,7 @@ describe('Schema parameter selector', () => {
     })
 })
 
-describe('Reset and update filter state by query URL', () => {
+describe('Reset and update filter state by query body', () => {
     const twoValueQuery = {
         content: [
             {
