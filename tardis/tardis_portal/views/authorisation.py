@@ -283,7 +283,8 @@ def get_user_from_upi(upi):
                           search_filter,
                           attributes=['*'])
         if len(connection.entries) > 1:
-            error_message = "More than one person with {}: {} has been found in the LDAP".format(settings.LDAP_USER_LOGIN_ATTR, upi)
+            error_message = "More than one person with {}: {} has been found in the LDAP".format(
+                settings.LDAP_USER_LOGIN_ATTR, upi)
             if logger:
                 logger.error(error_message)
             raise Exception(error_message)
@@ -308,6 +309,7 @@ def get_user_from_upi(upi):
                        'first_name': first_name,
                        'last_name': last_name,
                        'email': email}
+            logger.error('Details for LDAP')
             logger.error(details)
             return details
 
@@ -330,10 +332,14 @@ def add_user_to_group(request, group_id, username):
     except User.DoesNotExist:
         try:
             new_user = get_user_from_upi(username)
+            logger.error('New User')
+            logger.error(new_user)
             user = User.objects.create(username=new_user['username'],
                                        first_name=new_user['first_name'],
                                        last_name=new_user['last_name'],
                                        email=new_user['email'])
+            logger.error('User')
+            logger.error(user)
             user.set_password(gen_random_password())
             view_project_perm = Permission.objects.get(codename='view_project')
             view_experiment_perm = Permission.objects.get(
@@ -351,6 +357,7 @@ def add_user_to_group(request, group_id, username):
                                                 authenticationMethod=settings.LDAP_METHOD)
             authentication.save()
         except Exception as error:
+            logger.error(error)
             return JsonResponse(
                 dict(
                     message='User %s does not exist.' % username,
