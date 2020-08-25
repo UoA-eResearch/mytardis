@@ -171,6 +171,18 @@ const dataFile = {
   "userDownloadRights":"full"
 }
 
+const projectWithNoChildren = Object.assign({},project,{
+  counts: {
+    experiments: 0,
+    datasets: 0,
+    datafiles: 0
+  }
+})
+
+const projectWithNoDate = Object.assign({}, project, {
+  start_date: null
+})
+
 export const Project = () => (
   <EntryPreviewCard type="project" data={project} />
 );
@@ -190,3 +202,11 @@ export const DataFile = () => (
 export const NoPreviewData = () => (
   <EntryPreviewCard type="datafile" data={null} />
 );
+
+export const NoChildren = () => (
+  <EntryPreviewCard type="project" data={projectWithNoChildren} />
+)
+
+export const NoDate = () => (
+  <EntryPreviewCard type="project" data={projectWithNoDate} />
+)
