@@ -275,6 +275,7 @@ def gen_random_password():
 def get_user_from_upi(upi):
     server = ldap3.Server(settings.LDAP_URL)
     search_filter = "({}={})".format(settings.LDAP_USER_LOGIN_ATTR, upi)
+    logger.error('LDAP search: {}'.format(search_filter))
     with ldap3.Connection(server,
                           auto_bind=True,
                           user=settings.LDAP_ADMIN_USER,
@@ -289,7 +290,8 @@ def get_user_from_upi(upi):
                 logger.error(error_message)
             raise Exception(error_message)
         elif len(connection.entries) == 0:
-            error_message = "No one with {}: {} has been found in the LDAP".format(settings.LDAP_USER_LOGIN_ATTR, upi)
+            error_message = "No one with {}: {} has been found in the LDAP".format(
+                settings.LDAP_USER_LOGIN_ATTR, upi)
             if logger:
                 logger.warning(error_message)
             return None
