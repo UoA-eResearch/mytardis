@@ -63,7 +63,10 @@ export function TypeAttributesList({ typeId }) {
   );
 }
 
-export function PureFiltersSection({ types, schemas, typeSchemas, isLoading, error }) {
+export default function FiltersSection() {
+  const typeIds = useSelector((state) => (state.filters.types.allIds));
+  const isLoading = useSelector((state) => (state.filters.isLoading));
+  const error = useSelector((state) => (state.filters.error));
 
   if (isLoading) {
     return <p>Loading filters...</p>
@@ -71,17 +74,13 @@ export function PureFiltersSection({ types, schemas, typeSchemas, isLoading, err
   if (error) {
     return <p>An error occurred while loading filters.</p>
   }
-  if (!typeSchemas || !typeof typeSchemas == "object") {
-    return null;
-  }
-
 
   return (
     <section>
       <h2 className="h3">Filters</h2>
       <Tabs defaultActiveKey="projects" id="filters-section">
         {
-          types.allIds.map(type => {
+          typeIds.map(type => {
             const Sticker = OBJECT_TYPE_STICKERS[type];
 
             return (
@@ -95,24 +94,4 @@ export function PureFiltersSection({ types, schemas, typeSchemas, isLoading, err
       </Tabs>
     </section>
   )
-}
-
-PureFiltersSection.propTypes = {
-  types: PropTypes.shape({
-    byId: PropTypes.object.isRequired,
-    allIds: PropTypes.array.isRequired
-  }),
-  schemas: PropTypes.shape({
-    byId: PropTypes.object.isRequired,
-    allIds: PropTypes.array.isRequired
-  }),
-  typeSchemas: PropTypes.object,
-  isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.string
-}
-
-export default function FiltersSection() {
-  const dispatch = useDispatch();
-  const filters = useSelector((state) => (state.filters));
-  return (<PureFiltersSection {...filters} />);
 }

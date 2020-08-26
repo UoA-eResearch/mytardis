@@ -3334,17 +3334,6 @@ exports[`Storyshots Filters/Filters section Loading 1`] = `
 </div>
 `;
 
-exports[`Storyshots Filters/Filters section No Filters 1`] = `
-<div
-  style={
-    Object {
-      "padding": "3rem",
-      "width": "400px",
-    }
-  }
-/>
-`;
-
 exports[`Storyshots Filters/Number range filter Default 1`] = `
 <div
   style={
