@@ -160,6 +160,21 @@
       <div id="private-projects" class="panel-group projects">
         {% for project in private_projects %}
         <div class="card mb-2">
+          {{ project.name }}
+          <div class="card-header accordion-toggle py-2" data-toggle="collapse" data-parent="private-projects">
+            <div class="row">
+              <div class="col-md-8 px-1 pb-1">
+                <div class="col">
+                  <ul class="list-inline float-right list-unstyled">
+                    <li class="list-inline-item m-0">{{ project.start_date }}</li>
+                  </ul>
+                </div>
+                <div class="col">
+
+                </div>
+              </div>
+            </div>
+          </div>
         </div> {% comment %}class="card"{% endcomment %}
         {% empty %}
         <p>There are no projects available on this server.</p>
