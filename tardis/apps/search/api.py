@@ -597,7 +597,8 @@ class SearchAppResource(Resource):
                                 hit["_source"]["parameters"][idxx].pop("sensitive")
 
                         else:
-                            hit["_source"]["parameters"][idxx].pop("sensitive")
+                            if not parameter['sensitive']:
+                                hit["_source"]["parameters"][idxx].pop("sensitive")
 
                     # Append hit to final results if not already in results.
                     # Due to non-identical scores in hits for non-sensitive vs sensitive search,

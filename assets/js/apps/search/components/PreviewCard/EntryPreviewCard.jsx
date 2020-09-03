@@ -75,12 +75,21 @@ export default function EntryPreviewCard(props) {
      */
     const previewParameterTable = (parameters) => {
         return parameters.map((param, idx) => {
-            return (
+            if (param.hasOwnProperty("sensitive")) {
+                return (
                 <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
-                    <td>{param.pn_name}</td>
-                    <td>{param.value}</td>
-                </tr>
-            );
+                    <td style={{backgroundColor:'#fcfba2'}}><i class="fa fa-unlock-alt o-6"></i>{" "+param.pn_name}</td>
+                    <td style={{backgroundColor:'#fcfba2'}}><i class="fa fa-unlock-alt o-6"></i>{" "+param.value}</td>
+                    </tr>
+                  )
+                } else {
+                  return (
+                  <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
+                      <td>{param.pn_name}</td>
+                      <td>{param.value}</td>
+                      </tr>
+                    )
+                }
         });
     }
 
