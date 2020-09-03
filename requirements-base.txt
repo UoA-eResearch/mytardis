@@ -16,8 +16,8 @@ git+https://github.com/mytardis/django-tastypie-swagger.git@mytardis-dj2.0#egg=d
 django-user-agents==0.4.0
 django-webpack-loader==0.6.0
 django-widget-tweaks==1.4.5
-elasticsearch==6.4.0 # pyup: <7.0
-#elasticsearch>=7.0.0, <8.0.0
+#elasticsearch==6.4.0 # pyup: <7.0
+elasticsearch>=7.0.0, <8.0.0
 django-storages==1.7.2
 gunicorn==19.9.0
 gevent==1.4.0
@@ -40,3 +40,4 @@ uritemplate==3.0.0
 django-webpack-loader==0.6.0
 django-taggit==0.24.0; python_version < "3.0" # pyup: <1.0
 django-taggit==1.1.0; python_version >= "3.5"
+logstash_formatter
