@@ -503,7 +503,9 @@ class SearchAppResource(Resource):
 
         def clean_response(request, results, result_dict, sensitive=False):
             for item in results:
-                for hit in item.hits.hits:
+                for hit_attrdict in item.hits.hits:
+
+                    hit = hit_attrdict.to_dict()
 
                     # Default sensitive permission and size of object
                     sensitive_bool = False
