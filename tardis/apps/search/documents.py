@@ -45,14 +45,14 @@ class ProjectDocument(Document):
     start_date = fields.DateField()
     end_date = fields.DateField()
     institution = fields.NestedField(properties={
-        'name': fields.StringField(
+        'name': fields.TextField(
             fields={'raw': fields.KeywordField()},
         )
     })
     lead_researcher = fields.NestedField(properties={
-        'username': fields.StringField(
+        'username': fields.TextField(
             fields={'raw': fields.KeywordField()}),
-        'fullname': fields.StringField(
+        'fullname': fields.TextField(
             fields={'raw': fields.KeywordField()})
     })
     objectacls = fields.NestedField(properties={
@@ -63,7 +63,7 @@ class ProjectDocument(Document):
         'string': fields.NestedField(properties={
             'pn_id': fields.KeywordField(),
             'pn_name': fields.KeywordField(),
-            'value': fields.StringField(),
+            'value': fields.TextField(),
             'sensitive': fields.BooleanField()
         }),
         'numerical': fields.NestedField(properties={
@@ -133,9 +133,9 @@ class ExperimentDocument(Document):
     start_time = fields.DateField()
     end_time = fields.DateField()
     update_time = fields.DateField()
-    #institution_name = fields.StringField()
+    #institution_name = fields.TextField()
     created_by = fields.ObjectField(properties={
-        'username': fields.StringField(
+        'username': fields.TextField(
             fields={'raw': fields.KeywordField()},
         )
     })
@@ -152,7 +152,7 @@ class ExperimentDocument(Document):
         'string': fields.NestedField(properties={
             'pn_id': fields.KeywordField(),
             'pn_name': fields.KeywordField(),
-            'value': fields.StringField(),
+            'value': fields.TextField(),
             'sensitive': fields.BooleanField()
         }),
         'numerical': fields.NestedField(properties={
@@ -212,7 +212,7 @@ class DatasetDocument(Document):
         analyzer=analyzer)
     experiments = fields.NestedField(properties={
         'id': fields.KeywordField(),
-        'title': fields.StringField(
+        'title': fields.TextField(
             fields={'raw': fields.KeywordField()}
         ),
         'project': fields.NestedField(properties={
@@ -225,19 +225,19 @@ class DatasetDocument(Document):
     })
     instrument = fields.NestedField(properties={
         'id': fields.KeywordField(),
-        'name': fields.StringField(
+        'name': fields.TextField(
             fields={'raw': fields.KeywordField()},
         )}
     )
     created_time = fields.DateField()
     modified_time = fields.DateField()
-    tags = fields.StringField(attr='tags_for_indexing')
+    tags = fields.TextField(attr='tags_for_indexing')
 
     parameters = fields.NestedField(attr='getParametersforIndexing', properties={
         'string': fields.NestedField(properties={
             'pn_id': fields.KeywordField(),
             'pn_name': fields.KeywordField(),
-            'value': fields.StringField(),
+            'value': fields.TextField(),
             'sensitive': fields.BooleanField()
         }),
         'numerical': fields.NestedField(properties={
@@ -303,7 +303,7 @@ class DataFileDocument(Document):
     size = fields.IntegerField()
     dataset = fields.NestedField(properties={
         'id': fields.KeywordField(),
-        'description': fields.StringField(
+        'description': fields.TextField(
             fields={'raw': fields.KeywordField()}
         ),
         'experiments': fields.NestedField(properties={
@@ -322,7 +322,7 @@ class DataFileDocument(Document):
         'string': fields.NestedField(properties={
             'pn_id': fields.KeywordField(),
             'pn_name': fields.KeywordField(),
-            'value': fields.StringField(),
+            'value': fields.TextField(),
             'sensitive': fields.BooleanField()
         }),
         'numerical': fields.NestedField(properties={

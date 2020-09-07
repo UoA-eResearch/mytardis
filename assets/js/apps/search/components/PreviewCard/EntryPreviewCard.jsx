@@ -66,7 +66,7 @@ export default function EntryPreviewCard(props) {
                 date = data.created_time;
                 break;
         }
-        return (!!date ? formatDate(date) : 'Unknown');
+        return (!!date ? formatDate(date) : null);
     }
 
     /**
@@ -75,12 +75,21 @@ export default function EntryPreviewCard(props) {
      */
     const previewParameterTable = (parameters) => {
         return parameters.map((param, idx) => {
-            return (
+            if (param.hasOwnProperty("sensitive")) {
+                return (
                 <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
-                    <td>{param.pn_name}</td>
-                    <td>{param.value}</td>
-                </tr>
-            );
+                    <td style={{backgroundColor:'#fcfba2'}}><i class="fa fa-unlock-alt o-6"></i>{" "+param.pn_name}</td>
+                    <td style={{backgroundColor:'#fcfba2'}}><i class="fa fa-unlock-alt o-6"></i>{" "+param.value}</td>
+                    </tr>
+                  )
+                } else {
+                  return (
+                  <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
+                      <td>{param.pn_name}</td>
+                      <td>{param.value}</td>
+                      </tr>
+                    )
+                }
         });
     }
 
@@ -228,9 +237,11 @@ export default function EntryPreviewCard(props) {
                 {getDataSize(data, type)}
             </div>
             <FileCountSummary data={data} type={type}></FileCountSummary>
-            <div className="preview-card__date-added">
-                Added on the {getDateAdded(data, type)}
-            </div>
+            { !getDateAdded(data,type) ? null :
+                <div className="preview-card__date-added">
+                    Added on the {getDateAdded(data, type)}
+                </div>
+            }
             <ParameterTable parameters={data.parameters} />
             <div className="preview-card__button-wrapper--right">
                 <div className="preview-card__inline-block-wrapper">
