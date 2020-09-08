@@ -16,6 +16,9 @@
         {% if not parameter.sensitive_metadata or can_view_sensitive %}
             {% if parameter.name.is_json %}
                 <tr>
+                    {% if parameter.sensitive_metadata %}
+                      <i class="fa fa-unlock-alt o-6"></i>
+                    {% endif %}
                     <td class="parameter_name">{{ parameter.name.full_name }}</td>
                     <td class="parameter_value">
                 {% if parameter.name.units == 'fcs-table' %}
@@ -44,19 +47,42 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td class="parameter_name">{{ parameter.name.full_name }}</td>
-                    <td class="parameter_value">
+                    {% if parameter.sensitive_metadata %}
+                      <td class="parameter_name" style='background-color:#fcfba2'>
+                      <i class="fa fa-unlock-alt o-6"></i>
+                    {% else %}
+                      <td class="parameter_name">
+                    {% endif %}
+                    {{ parameter.name.full_name }}
+                    </td>
+                    {% if parameter.sensitive_metadata %}
+                      <td class="parameter_value" style='background-color:#fcfba2'>
+                    {% else %}
+                      <td class="parameter_value">
+                    {% endif %}
                         {% if parameter.name.isLongString %}
+                            {% if parameter.sensitive_metadata %}
+                              <i class="fa fa-unlock-alt o-6"></i>
+                            {% endif %}
                             {{ parameter.get|linebreaks }}
                         {% elif parameter.name.isLink and parameter.link_url %}
                             <a href="{{ parameter.link_url }}">
                               {% if parameter.link_gfk %}
+                                {% if parameter.sensitive_metadata %}
+                                  <i class="fa fa-unlock-alt o-6"></i>
+                                {% endif %}
                                 {{ parameter.link_gfk }}
                               {% elif parameter.link_url %}
+                                {% if parameter.sensitive_metadata %}
+                                  <i class="fa fa-unlock-alt o-6"></i>
+                                {% endif %}
                                 {{ parameter.link_url }}
                               {% endif %}
                             </a>
                         {% else %}
+                            {% if parameter.sensitive_metadata %}
+                              <i class="fa fa-unlock-alt o-6"></i>
+                            {% endif %}
                             {{ parameter.get }}
                         {% endif %}
                     </td>
