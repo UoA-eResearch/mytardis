@@ -17,7 +17,7 @@
             {% if parameter.name.is_json %}
                 <tr>
                     {% if parameter.sensitive_metadata %}
-                      <i class="fa fa-unlock-alt o-6"></i>
+                      <i class="fa fa-exclamation-circle o-6"></i>
                     {% endif %}
                     <td class="parameter_name">{{ parameter.name.full_name }}</td>
                     <td class="parameter_value">
@@ -49,7 +49,7 @@
                 <tr>
                     {% if parameter.sensitive_metadata %}
                       <td class="parameter_name" style='background-color:#fcfba2'>
-                      <i class="fa fa-unlock-alt o-6"></i>
+                      <i class="fa fa-exclamation-circle o-6" title="This parameter is sensitive and may not be visible to other Users"></i>
                     {% else %}
                       <td class="parameter_name">
                     {% endif %}
@@ -62,26 +62,26 @@
                     {% endif %}
                         {% if parameter.name.isLongString %}
                             {% if parameter.sensitive_metadata %}
-                              <i class="fa fa-unlock-alt o-6"></i>
+                              <i class="fa fa-exclamation-circle o-6" title="This parameter is sensitive and may not be visible to other Users"></i>
                             {% endif %}
                             {{ parameter.get|linebreaks }}
                         {% elif parameter.name.isLink and parameter.link_url %}
                             <a href="{{ parameter.link_url }}">
                               {% if parameter.link_gfk %}
                                 {% if parameter.sensitive_metadata %}
-                                  <i class="fa fa-unlock-alt o-6"></i>
+                                  <i class="fa fa-exclamation-circle o-6" title="This parameter is sensitive and may not be visible to other Users"></i>
                                 {% endif %}
                                 {{ parameter.link_gfk }}
                               {% elif parameter.link_url %}
                                 {% if parameter.sensitive_metadata %}
-                                  <i class="fa fa-unlock-alt o-6"></i>
+                                  <i class="fa fa-exclamation-circle o-6" title="This parameter is sensitive and may not be visible to other Users"></i>
                                 {% endif %}
                                 {{ parameter.link_url }}
                               {% endif %}
                             </a>
                         {% else %}
                             {% if parameter.sensitive_metadata %}
-                              <i class="fa fa-unlock-alt o-6"></i>
+                              <i class="fa fa-exclamation-circle o-6" title="This parameter is sensitive and may not be visible to other Users"></i>
                             {% endif %}
                             {{ parameter.get }}
                         {% endif %}
