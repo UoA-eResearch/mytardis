@@ -2,6 +2,7 @@
 {% load static from staticfiles %}
 {% load render_bundle from webpack_loader %}
 {% load experiment_tags %}
+{% load project_tags %}
 {% load experimentstats %}
 {% load bleach_tag %}
 
@@ -158,11 +159,6 @@
       </h3>
 
       <div id="private-projects" class="panel-group projects">
-        {% for exp in project.experiments %}
-        <div>
-          {{ exp.name }}
-        </div>
-        {% endfor %}
         {% for project in private_projects %}
         <!-- project.experiments_set - Wont pass through safe manager. (top 5) -->
         <div class="card mb-2">
@@ -171,14 +167,13 @@
               <div class="col-md-8 px-1 pb-1">
                 <div class="col">
                   <ul class="list-inline float-right list-unstyled">
-                    <a href="{% url 'tardis_portal.views.react_project' project.id %}" class="card-project">{{ project.name }}</a>
+                    <a href="{% url 'tardis_portal.view_project' project.id %}" class="card-project">{{ project.name }}</a>
                   </ul>
                 </div>
                 <div class="col">
                   <ul class="list-inline float-right list-unstyled">
                     <li class="list-inline-item m-0">{{ project.start_date }}</li>
                     <li class="list-inline-item m-0">{{ project.created_by }}</li>
-                    <li class="list-inline-item m-0">{{ project.url }}</li>
                   </ul>
                 </div>
               </div>
@@ -188,6 +183,14 @@
                 </div>
               </div>
             </div>
+            {% project_get_experiments project.id request.user as project_experiments %}
+
+            {% for exp in project_experiments %}
+            <div>
+              <a class="card-title explink"
+                 href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
+            </div>
+            {% endfor %}
           </div>
         </div> {% comment %}class="card"{% endcomment %}
         {% empty %}
