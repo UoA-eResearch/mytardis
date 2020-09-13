@@ -1067,8 +1067,22 @@ class ProjectResource(MyTardisModelResource):
         '''
         user = bundle.request.user
         bundle.data['created_by'] = user
-        logger.error('Pre processed bundle')
-        logger.error(bundle.data)
+        if not User.objects.filter(username=bundle.data['lead_researcher']).exists():
+            new_user = get_user_from_upi(bundle.data['lead_researcher'])
+            if not new_user:
+                logger.error('No one found for upi: {member}')
+            user = User.objects.create(username=new_user['username'],
+                                       first_name=new_user['first_name'],
+                                       last_name=new_user['last_name'],
+                                       email=new_user['email'])
+            user.set_password(gen_random_password())
+            for permission in member_perms:
+                user.user_permissions.add(permission)
+            user.save()
+            authentication = UserAuthentication(userProfile=user.userprofile,
+                                                username=new_user['username'],
+                                                authenticationMethod=settings.LDAP_METHOD)
+            authentication.save()
         project_lead = User.objects.get(
             username=bundle.data['lead_researcher'])
         bundle.data['lead_researcher'] = project_lead
@@ -1242,7 +1256,6 @@ class ExperimentResource(MyTardisModelResource):
             if 'admins' in bundle.data.keys():
                 if bundle.data['admins'] != []:
                     for admin in bundle.data['admins']:
-                        logger.error(admin)
                         if not User.objects.filter(username=admin).exists():
                             new_user = get_user_from_upi(admin)
                             user = User.objects.create(username=new_user['username'],
@@ -1297,7 +1310,6 @@ class ExperimentResource(MyTardisModelResource):
                 if bundle.data['members'] != []:
                     members = bundle.data['members']
                     for member in members:
-                        logger.error(member)
                         member_name = member[0]
                         sensitive_flg = member[1]
                         download_flg = member[2]
@@ -1349,7 +1361,6 @@ class ExperimentResource(MyTardisModelResource):
                                sensitive=sensitive,
                                admin=False)
         for group in experiment_groups:
-            logger.error("Creating group admin for {}".format(group))
             group_admin, _ = GroupAdmin.objects.get_or_create(user=bundle.request.user,
                                                               group=group)
             for admin in experiment_admin_groups:
