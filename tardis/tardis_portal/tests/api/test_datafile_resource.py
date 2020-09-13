@@ -33,6 +33,18 @@ class DataFileResourceTest(MyTardisResourceTestCase):
         self.testds = Dataset()
         self.testds.description = "test dataset"
         self.testds.save()
+        acl = ObjectACL(
+            pluginId=django_user,
+            entityId=str(self.user.id),
+            content_object=self.testds,
+            canRead=True,
+            canDownload=True,
+            canWrite=True,
+            canSensitive=True,
+            isOwner=True,
+            aclOwnershipType=ObjectACL.OWNER_OWNED,
+        )
+        acl.save()
         self.testds.experiments.add(self.testexp)
         df_schema_name = "http://datafileshop.com/"
         self.test_schema = Schema(namespace=df_schema_name,
@@ -51,7 +63,18 @@ class DataFileResourceTest(MyTardisResourceTestCase):
                                  filename="testfile.txt",
                                  size="42", md5sum='bogus')
         self.datafile.save()
-
+        acl = ObjectACL(
+            pluginId=django_user,
+            entityId=str(self.user.id),
+            content_object=self.datafile,
+            canRead=True,
+            canDownload=True,
+            canWrite=True,
+            canSensitive=True,
+            isOwner=True,
+            aclOwnershipType=ObjectACL.OWNER_OWNED,
+        )
+        acl.save()
     def test_post_single_file(self):
         ds_id = Dataset.objects.first().id
         post_data = """{
