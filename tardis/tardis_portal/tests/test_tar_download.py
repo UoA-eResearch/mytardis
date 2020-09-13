@@ -81,6 +81,18 @@ class TarDownloadTestCase(TestCase):
                     'testdir%d' % i
                     for i in range(i, i + 4)
                 ]))
+            acl = ObjectACL(
+                pluginId=django_user,
+                entityId=str(self.testuser.id),
+                content_object=df,
+                canRead=True,
+                canDownload=True,
+                canWrite=True,
+                canSensitive=True,
+                isOwner=True,
+                aclOwnershipType=ObjectACL.OWNER_OWNED,
+            )
+            acl.save()
             df.file_object = BytesIO(datafile_content)
             df.refresh_from_db()
             self.dfs.append(df)
