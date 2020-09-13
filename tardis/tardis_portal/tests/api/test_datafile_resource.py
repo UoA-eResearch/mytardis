@@ -77,7 +77,7 @@ class DataFileResourceTest(MyTardisResourceTestCase):
         )
         acl.save()
     def test_post_single_file(self):
-        ds_id = Dataset.objects.first().id
+        ds_id = self.testds.id
         post_data = """{
     "dataset": "/api/v1/dataset/%d/",
     "filename": "mytestfile.txt",
