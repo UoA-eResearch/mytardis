@@ -13,7 +13,8 @@ from ...models.datafile import DataFile
 from ...models.dataset import Dataset
 from ...models.experiment import Experiment
 from ...models.instrument import Instrument
-
+from ...models.access_control import ObjectACL
+from ...auth.localdb_auth import django_user
 from . import MyTardisResourceTestCase
 
 
@@ -27,16 +28,52 @@ class DatasetResourceTest(MyTardisResourceTestCase):
         self.ds_no_instrument = Dataset()
         self.ds_no_instrument.description = "Dataset no instrument"
         self.ds_no_instrument.save()
+        acl = ObjectACL(
+            pluginId=django_user,
+            entityId=str(self.user.id),
+            content_object=self.ds_no_instrument,
+            canRead=True,
+            canDownload=True,
+            canWrite=True,
+            canSensitive=True,
+            isOwner=True,
+            aclOwnershipType=ObjectACL.OWNER_OWNED,
+        )
+        acl.save()
         self.ds_no_instrument.experiments.add(self.testexp)
         self.ds_with_instrument = Dataset()
         self.ds_with_instrument.description = "Dataset with instrument"
         self.ds_with_instrument.instrument = self.testinstrument
         self.ds_with_instrument.save()
+        acl = ObjectACL(
+            pluginId=django_user,
+            entityId=str(self.user.id),
+            content_object=self.ds_with_instrument,
+            canRead=True,
+            canDownload=True,
+            canWrite=True,
+            canSensitive=True,
+            isOwner=True,
+            aclOwnershipType=ObjectACL.OWNER_OWNED,
+        )
+        acl.save()
         self.ds_with_instrument.experiments.add(self.testexp)
         self.ds_with_instrument2 = Dataset()
         self.ds_with_instrument2.description = "Dataset with a different instrument"
         self.ds_with_instrument2.instrument = self.extra_instrument
         self.ds_with_instrument2.save()
+        acl = ObjectACL(
+            pluginId=django_user,
+            entityId=str(self.user.id),
+            content_object=self.ds_with_instrument2,
+            canRead=True,
+            canDownload=True,
+            canWrite=True,
+            canSensitive=True,
+            isOwner=True,
+            aclOwnershipType=ObjectACL.OWNER_OWNED,
+        )
+        acl.save()
         self.ds_with_instrument2.experiments.add(self.testexp)
 
     def test_get_dataset_no_instrument(self):

@@ -106,7 +106,8 @@ class DataFileResourceTest(MyTardisResourceTestCase):
         dfo_count = DataFileObject.objects.count()
         self.assertHttpCreated(self.django_client.post(
             '/api/v1/dataset_file/',
-            data={"json_data": post_data, "attached_file": post_file}))
+            data={"json_data": post_data, "attached_file": post_file}),
+            authentication=self.get_credentials())
         self.assertEqual(datafile_count + 1, DataFile.objects.count())
         self.assertEqual(dfo_count + 1, DataFileObject.objects.count())
         new_file = DataFile.objects.order_by('-pk')[0]

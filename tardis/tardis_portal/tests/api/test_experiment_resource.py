@@ -102,6 +102,12 @@ class ExperimentResourceTest(MyTardisResourceTestCase):
         user_id = User.objects.first().id
         project_id = Project.objects.first().id
 
+            "manager_group": {
+                "id": test_group_id,
+                "name": "Test Group",
+                "resource_uri": "/api/v1/group/%d/" % test_group_id
+            },
+
         expected_output = {
             "approved": True,
             "created_by": "/api/v1/user/%d/" % user_id,
@@ -117,7 +123,12 @@ class ExperimentResourceTest(MyTardisResourceTestCase):
             "title": "test exp",
             "update_time": "2013-05-29T13:00:26.626609",
             "url": None,
-            "project": "/api/v1/project/%d/" % project_id
+            "project": {
+                "name" : "test project",
+                "raid" : "test raid",
+                "created_by": "/api/v1/user/%d/" % user_id,
+                "lead_researcher": "/api/v1/user/%d/" % user_id,
+             }
         } # "handle": None,
         output = self.api_client.get('/api/v1/experiment/%d/' % exp_id,
                                      authentication=self.get_credentials())
