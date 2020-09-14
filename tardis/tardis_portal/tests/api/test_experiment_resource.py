@@ -102,12 +102,6 @@ class ExperimentResourceTest(MyTardisResourceTestCase):
         user_id = User.objects.first().id
         project_id = Project.objects.first().id
 
-            "manager_group": {
-                "id": test_group_id,
-                "name": "Test Group",
-                "resource_uri": "/api/v1/group/%d/" % test_group_id
-            },
-
         expected_output = {
             "approved": True,
             "created_by": "/api/v1/user/%d/" % user_id,
