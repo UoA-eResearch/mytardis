@@ -143,7 +143,8 @@ class ExperimentResourceTest(MyTardisResourceTestCase):
         for key, value in expected_output.items():
             self.assertTrue(key in returned_data)
             if not key.endswith("_time"):
-                self.assertEqual(returned_data[key], value)
+                if not key.endswith("_date"):
+                    self.assertEqual(returned_data[key], value)
 
     def test_get_experiment_author(self):
         exp = Experiment.objects.first()
