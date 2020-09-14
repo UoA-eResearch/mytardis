@@ -104,10 +104,9 @@ class DataFileResourceTest(MyTardisResourceTestCase):
         post_file.seek(0)
         datafile_count = DataFile.objects.count()
         dfo_count = DataFileObject.objects.count()
-        self.assertHttpCreated(self.api_client.post(
+        self.assertHttpCreated(self.django_client.post(
             '/api/v1/dataset_file/',
-            data={"json_data": post_data, "attached_file": post_file},
-            authentication=self.get_credentials()))
+            data={"json_data": post_data, "attached_file": post_file}))
         self.assertEqual(datafile_count + 1, DataFile.objects.count())
         self.assertEqual(dfo_count + 1, DataFileObject.objects.count())
         new_file = DataFile.objects.order_by('-pk')[0]
@@ -126,11 +125,10 @@ class DataFileResourceTest(MyTardisResourceTestCase):
 
         datafile_count = DataFile.objects.count()
         dfo_count = DataFileObject.objects.count()
-        response = self.api_client.post(
+        response = self.django_client.post(
             '/api/v1/dataset_file/',
             json.dumps(post_data),
-            content_type='application/json',
-            authentication=self.get_credentials())
+            content_type='application/json')
         self.assertHttpCreated(response)
         self.assertEqual(datafile_count + 1, DataFile.objects.count())
         self.assertEqual(dfo_count + 1, DataFileObject.objects.count())
@@ -139,9 +137,9 @@ class DataFileResourceTest(MyTardisResourceTestCase):
         self.assertEqual(response.content, new_dfo.get_full_path().encode())
 
         # Now check we can submit a verification request for that file:
-        response = self.api_client.get(
+        response = self.django_client.get(
             '/api/v1/dataset_file/%s/verify/'
-            % new_datafile.id, authentication=self.get_credentials())
+            % new_datafile.id)
         self.assertHttpOK(response)
 
     def test_shared_fs_single_file(self):
@@ -259,12 +257,11 @@ class DataFileResourceTest(MyTardisResourceTestCase):
             # We just want to test the case where Tastypie returns a JSON response
             # with 500 status, so we change the SERVER_NAME:
             with self.assertRaises(DatabaseError):
-                response = self.api_client.post(
+                response = self.django_client.post(
                     "/api/v1/dataset_file/",
                     json.dumps(post_data),
                     content_type="application/json",
-                    SERVER_NAME="not-testserver",
-                    authentication=self.get_credentials()
+                    SERVER_NAME="not-testserver"
                 )
                 self.assertHttpApplicationError(response)
 
