@@ -133,7 +133,7 @@ class ExperimentResourceTest(MyTardisResourceTestCase):
                 'public_access': 1,
                 "raid" : "test raid",
                 'resource_uri': "/api/v1/project/%d/" % project_id,
-                'start_date': self.testproject.start_date,
+                'start_date': self.testproject.start_date.strftime("%d-%b-%Y (%H:%M:%S.%f)"),
                 'url': None
              }
         } # "handle": None,
