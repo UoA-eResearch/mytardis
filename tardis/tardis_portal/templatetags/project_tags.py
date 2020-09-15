@@ -35,13 +35,11 @@ def project_experiments_badge(project_id, user):
     })
 
 @register.simple_tag
-def project_datafiles_badge(project_id, user):
+def project_datafiles_badge(project, user):
     """
     Displays a badge with the number of datafiles for this project.
     """
-    count = 0;
-    for experiment in get_all_project_experiments(project_id, user):
-        count += experiment.get_datafiles(user).count()
+    count = project.get_datafiles(user).count()
     return render_mustache('tardis_portal/badges/datafile_count', {
         'title': "%d file%s" % (count, pluralize(count)),
         'count': count,
@@ -75,4 +73,4 @@ def project_public_access_badge(project):
     """
     Displays a badge the level of public access for this experiment
     """
-    return render_public_access_badge(project)
+    # return render_public_access_badge(project)

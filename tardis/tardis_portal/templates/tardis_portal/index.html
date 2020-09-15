@@ -155,7 +155,7 @@
     <div class="col-md-12">
       {% if is_authenticated %}
       <h3>
-        Your projects
+        Your most recent projects
       </h3>
 
       <div id="private-projects" class="panel-group projects">
@@ -175,8 +175,8 @@
                     <li class="list-inline-item m-0">{{ project|project_last_updated_badge }}</li>
                     <li class="list-inline-item m-0">{% project_experiments_badge project.id request.user %}</li>
                     <li class="list-inline-item m-0">{% project_datasets_badge project.id request.user %}</li>
-                    <li class="list-inline-item m-0">{% project_datafiles_badge project.id request.user %}</li>
-                    <li class="list-inline-item m-0">{{ project.created_by }}</li>
+                    <li class="list-inline-item m-0">{% project_datafiles_badge project request.user %}</li>
+                    <!-- <li class="list-inline-item m-0">{{ project|project_public_access_badge }}</li> -->
                   </ul>
                 </div>
               </div>
