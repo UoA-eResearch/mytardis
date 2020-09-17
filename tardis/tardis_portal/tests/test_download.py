@@ -376,6 +376,21 @@ class DownloadTestCase(TestCase):
         # Check datafile2 download with second experiment to public
         self.experiment2.public_access = Experiment.PUBLIC_ACCESS_FULL
         self.experiment2.save()
+
+        # simulate public access
+        acl = ObjectACL(
+            pluginId=django_user,
+            entityId=str(self.user.id),
+            content_object=self.datafile2,
+            canRead=True,
+            canDownload=True,
+            canWrite=True,
+            canSensitive=True,
+            isOwner=True,
+            aclOwnershipType=ObjectACL.OWNER_OWNED,
+        )
+        acl.save()
+
         response = client.get('/download/datafile/%i/' % self.datafile2.id)
         self.assertEqual(response.status_code, 200)
         # This should be a TIFF (which often starts with "II\x2a\x00")
