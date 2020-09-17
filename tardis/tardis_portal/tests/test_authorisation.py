@@ -256,7 +256,7 @@ class ObjectACLTestCase(TestCase):
         # user2 *IS* allowed to modify acls for experiment1, since they are part
         # of an owning group (we add then remove access for user3)
         response = self.client1.get('/experiment/control_panel/%i/access_list'
-                                    '/add/user/%s/?authMethod=%s'
+                                    '/add/user/%s/?authMethod=%s&canRead=true'
                                     % (self.experiment1.id,
                                        self.user3.username,
                                        localdb_auth_key))
