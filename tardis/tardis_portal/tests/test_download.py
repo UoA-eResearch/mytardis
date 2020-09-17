@@ -164,6 +164,19 @@ class DownloadTestCase(TestCase):
         self.datafile1 = self._build_datafile(testfile1, filename1,
                                               self.dataset1)
 
+        acl = ObjectACL(
+            pluginId=django_user,
+            entityId=str(self.user.id),
+            content_object=self.datafile1,
+            canRead=True,
+            canDownload=True,
+            canWrite=True,
+            canSensitive=True,
+            isOwner=True,
+            aclOwnershipType=ObjectACL.OWNER_OWNED,
+        )
+        acl.save()
+
         self.datafile2 = self._build_datafile(testfile2, filename2,
                                               self.dataset2)
 
@@ -175,19 +188,6 @@ class DownloadTestCase(TestCase):
                             size=size if size is not None else filesize,
                             sha512sum=(checksum if checksum else sha512sum))
         datafile.save()
-
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=datafile,
-            canRead=True,
-            canDownload=True,
-            canWrite=True,
-            canSensitive=True,
-            isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
-        )
-        acl.save()
 
         dfo = DataFileObject(
             datafile=datafile,
