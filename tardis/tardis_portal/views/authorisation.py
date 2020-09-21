@@ -289,7 +289,7 @@ def get_user_from_upi(upi):
             if logger:
                 logger.error(error_message)
             raise Exception(error_message)
-        elif len(connection.entries) == 0:
+        if len(connection.entries) == 0:
             error_message = "No one with {}: {} has been found in the LDAP".format(
                 settings.LDAP_USER_LOGIN_ATTR, upi)
             if logger:

@@ -256,7 +256,7 @@ class S3Downloader():
             return None
         return url
 
-    def dowload_datafile(self):
+    def download_datafile(self):
         url = self.__mint_time_limited_url()
         if url is not None:
             response = requests.get(url)
