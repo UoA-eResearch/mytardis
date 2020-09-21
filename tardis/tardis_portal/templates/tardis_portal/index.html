@@ -38,13 +38,17 @@
             <div class="card mb-2">
               <div id="private-toggle-{{exp.id}}"
                    class="card-header accordion-toggle private-experiment py-2"
-                   data-toggle="collapse" data-parent="#private-experiments">
+                   data-toggle="collapse" 
+                   data-parent="#private-experiments"
+                  >
                   <div class="row">
+
                     <div class="col-md-8 px-1 pb-1">
                       <input type="hidden" class="exp-index" value="{{ forloop.counter }}">
                       <a class="card-title explink"
                          href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
                     </div>
+
                     <div class="col">
                       <ul class="list-inline float-right list-unstyled">
                         <li class="list-inline-item m-0">{{ exp|experiment_last_updated_badge }}</li>
@@ -53,6 +57,7 @@
                         <li class="list-inline-item m-0">{{ exp|experiment_public_access_badge }}</li>
                       </ul>
                     </div>
+
                   </div>
                   <div class="row">
                     <div class="card-subtitle text-muted small col-6 px-1">
@@ -162,14 +167,19 @@
         {% for project in private_projects %}
         <!-- project.experiments_set - Wont pass through safe manager. (top 5) -->
         <div class="card mb-2">
-          <div class="card-header accordion-toggle py-2" data-toggle="collapse" data-parent="private-projects">
+          <div id="private-toggle-{{project.id}}" 
+            class="card-header accordion-toggle py-2" 
+            data-toggle="collapse" 
+            data-parent="private-projects"
+          >
             <div class="row">
+
               <div class="col-md-8 px-1 pb-1">
-                <div class="col">
-                  <ul class="list-inline float-right list-unstyled">
-                    <a href="{% url 'tardis_portal.view_project' project.id %}" class="card-project">{{ project.name }}</a>
-                  </ul>
-                </div>
+                <input class="project-index" type="hidden" value="{{ forloop.counter }}">
+                <a class="card-title explink" 
+                  href="{% url 'tardis_portal.view_project' project.id %}">{{ project.name }}</a>
+              </div>
+
                 <div class="col">
                   <ul class="list-inline float-right list-unstyled">
                     <li class="list-inline-item m-0">{{ project|project_last_updated_badge }}</li>
@@ -179,6 +189,7 @@
                     <!-- <li class="list-inline-item m-0">{{ project|project_public_access_badge }}</li> -->
                   </ul>
                 </div>
+
               </div>
               <div class="row">
                 <div class="card-subtitle text-muted small col-6 px-1">
@@ -186,8 +197,21 @@
                 </div>
               </div>
             </div>
-            {% project_get_recent_experiments project.id request.user as project_experiments %}
 
+            <div class="collapse-{{project.id}}"
+              class="card-body py-2 collapse"
+              data-parent="#private-projects"
+            >
+              <div class="row">
+                <div class="col-md-9 px-1">
+                  <div class="accordion-inner">
+                    <p class="card-text small mb-1">{{project.description|default:"<em>No description</em>|bleach"}}</p>
+                    <div id="private-recent-datasets-{{project.id}}"></div>
+                  </div>  {% comment %}class="accordion-inner"{% endcomment %}
+                </div>
+              </div>
+            </div>
+            {% project_get_recent_experiments project.id request.user as project_experiments %}
             {% for exp in project_experiments %}
             <div>
               <a class="card-title explink"
@@ -195,6 +219,8 @@
             </div>
             {% endfor %}
           </div>
+
+          <!-- card end -->
         </div> {% comment %}class="card"{% endcomment %}
         {% empty %}
         <p>There are no projects available on this server.</p>
