@@ -27,6 +27,11 @@ from tarfile import TarFile
 import gzip
 import io
 from wsgiref.util import FileWrapper
+import boto3
+import requests
+import backoff
+from urllib.parse import urljoin
+from botocore.exceptions import ClientError
 
 from django.http import StreamingHttpResponse
 from django.conf import settings
@@ -84,7 +89,7 @@ def _create_download_response(request, datafile_id, disposition='attachment'):  
         logger.info('Datafile size: {dfs}'.format(dfs=datafile.get_size()))
         if datafile.get_size() > 10*1024*1024: # 10 MB
             logger.info('Going into S3')
-            s3factory = S3Downloader(datafile)
+            s3factory = S3Downloader(datafile, verified_only)
             response = s3factory.download_datafile()
         else:
             # Get file object for datafile
@@ -215,19 +220,15 @@ class S3Downloader():
     Using Python requests, call this url
     '''
 
-    import boto3
-    import requests
-    import backoff
-    from urllib.parse import urljoin
-
     def __init__(self,
-                 datafile):
+                 datafile, verified_only):
         self.access_key = getattr(settings, 'AWS_S3_ACCESS_KEY_ID')
         self.secret_key = getattr(settings, 'AWS_S3_SECRET_ACCESS_KEY')
         self.endpoint_url = getattr(settings, 'AWS_S3_HOST')
         self.session_token = getattr(settings, 'AWS_SESSION_TOKEN')
         endpoint_url = getattr(settings, 'AWS_S3_ENDPOINT_URL')
         self.datafile = datafile
+        self.verified_only = verified_only
         self.s3_client = boto3.client('s3',
                                       aws_access_key = self.access_key,
                                       aws_secret_access = self.secret_key,
@@ -235,7 +236,7 @@ class S3Downloader():
                                       endpoint_url = endpoint_url)
 
     def __get_bucket_from_datafile(self):
-        self.dfo = self.datafile.get_file(verified_only=verified_only)
+        self.dfo = self.datafile.get_file(verified_only=self.verified_only)
         self.storage_box = self.dfo.storage_box
         options = self.storage_box.options
         for option in options:
@@ -246,10 +247,10 @@ class S3Downloader():
 
     def __mint_time_limited_url(self):
         try:
-            url = sself.s3_client.generate_presigned_url('get_object',
-                                                         Params={'Bucket': self.__get_bucket_from_datafile(self.datafile),
-                                                                 'Key':self.dfo.get_full_path()},
-                                                         ExpiresIn=3600)
+            url = self.s3_client.generate_presigned_url('get_object',
+                                                        Params={'Bucket': self.__get_bucket_from_datafile(),
+                                                                'Key':self.dfo.get_full_path()},
+                                                        ExpiresIn=3600)
             logger.info(url)
         except ClientError as e:
             logger.error(e)

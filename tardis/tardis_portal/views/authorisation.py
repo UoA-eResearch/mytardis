@@ -295,26 +295,26 @@ def get_user_from_upi(upi):
             if logger:
                 logger.warning(error_message)
             return None
-        else:
-            person = connection.entries[0]
-            logger.error(person)
-            first_name_key = 'givenName'
-            last_name_key = 'sn'
-            email_key = 'mail'
-            username = person[settings.LDAP_USER_LOGIN_ATTR].value
-            first_name = person[first_name_key].value
-            last_name = person[last_name_key].value
-            try:
-                email = person[email_key].value
-            except KeyError:
-                email = ''
-            details = {'username': username,
-                       'first_name': first_name,
-                       'last_name': last_name,
-                       'email': email}
-            logger.error('Details for LDAP')
-            logger.error(details)
-            return details
+
+        person = connection.entries[0]
+        logger.error(person)
+        first_name_key = 'givenName'
+        last_name_key = 'sn'
+        email_key = 'mail'
+        username = person[settings.LDAP_USER_LOGIN_ATTR].value
+        first_name = person[first_name_key].value
+        last_name = person[last_name_key].value
+        try:
+            email = person[email_key].value
+        except KeyError:
+            email = ''
+        details = {'username': username,
+                   'first_name': first_name,
+                   'last_name': last_name,
+                   'email': email}
+        logger.error('Details for LDAP')
+        logger.error(details)
+        return details
 
 
 @never_cache  # too complex # noqa

@@ -143,7 +143,7 @@ def get_user_from_upi(upi):
             if logger:
                 logger.warning(error_message)
             return None
-        
+
         person = connection.entries[0]
         first_name_key = 'givenName'
         last_name_key = 'sn'
