@@ -1,4 +1,4 @@
-# pylint: disable=C0302
+# pylint: disable=C0302,R1702
 '''
 RESTful API for MyTardis models and data.
 Implemented with Tastypie.
@@ -138,7 +138,7 @@ def get_user_from_upi(upi):
             if logger:
                 logger.error(error_message)
             raise Exception(error_message)
-        elif len(connection.entries) == 0:
+        if len(connection.entries) == 0:
             error_message = "No one with {}: {} has been found in the LDAP".format(settings.LDAP_USER_LOGIN_ATTR, upi)
             if logger:
                 logger.warning(error_message)
@@ -1167,6 +1167,7 @@ class ExperimentResource(MyTardisModelResource):
                 project = ProjectResource.get_via_uri(
                     ProjectResource(), bundle.data['project'], bundle.request)
             except NotFound:
+                logger.error("Unable to locate parent project for {}".format(bundle.data["title"]))
                 raise  # This probably should raise an error
         experiment_groups = []
         experiment_admin_groups = []
