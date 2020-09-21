@@ -29,8 +29,6 @@ import io
 from wsgiref.util import FileWrapper
 import boto3
 import requests
-import backoff
-from urllib.parse import urljoin
 from botocore.exceptions import ClientError
 
 from django.http import StreamingHttpResponse
