@@ -8,6 +8,7 @@ Implemented with Tastypie.
 import json
 import re
 from wsgiref.util import FileWrapper
+import logging
 
 from django.conf import settings
 from django.conf.urls import url
@@ -38,6 +39,8 @@ from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 
 from uritemplate import URITemplate
 
+import ldap3
+
 from tardis.analytics.tracker import IteratorTracker
 from . import tasks
 from .auth.decorators import (
@@ -46,7 +49,6 @@ from .auth.decorators import (
     has_download_access,
     has_write,
     has_delete_permissions,
-    has_sensitive_access
 )
 from .auth.localdb_auth import django_user, django_group
 from .models.access_control import ObjectACL, UserProfile, UserAuthentication, GroupAdmin
@@ -70,8 +72,6 @@ from .models.facility import Facility, facilities_managed_by
 from .models.instrument import Instrument
 from .models.institution import Institution
 
-import ldap3
-import logging
 
 logger = logging.getLogger('__name__')
 

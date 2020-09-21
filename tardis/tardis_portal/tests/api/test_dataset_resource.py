@@ -9,7 +9,6 @@ import json
 
 from urllib.parse import quote
 
-from ...models.datafile import DataFile
 from ...models.dataset import Dataset
 from ...models.experiment import Experiment
 from ...models.instrument import Instrument

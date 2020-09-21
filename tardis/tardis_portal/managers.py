@@ -64,6 +64,9 @@ class SafeManager(models.Manager):
         anonymous - is allowed to see and search
 
         :param User user: a User instance
+        :param bool downloadable: Boolean flag to return downloadable objects
+        :param bool viewsensitive: Boolean flag to return viewsensitive objects
+
         :returns: QuerySet of objects
         :rtype: QuerySet
         """
@@ -293,8 +296,8 @@ class SafeManager(models.Manager):
         """
         Returns a list of ACL rules associated with this proj/exp/set/file.
 
-        :param experiment_id: the ID of the proj/exp/set/file
-        :type experiment_id: string
+        :param obj_id: the ID of the proj/exp/set/file
+        :type obj_id: string
         :returns: QuerySet of ACLs
         :rtype: QuerySet
         """
@@ -323,8 +326,8 @@ class SafeManager(models.Manager):
         """
         Returns a list of ACL rules associated with this proj/exp/set/file.
 
-        :param experiment_id: the ID of the proj/exp/set/file
-        :type experiment_id: string
+        :param obj_id: the ID of the proj/exp/set/file
+        :type obj_id: string
         :returns: QuerySet of ACLs
         :rtype: QuerySet
         """

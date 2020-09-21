@@ -39,7 +39,6 @@ from .models import Dataset
 from .models import DataFile
 from .models import DataFileObject
 from .models import Experiment
-from .models import StorageBox, StorageBoxOption
 from .auth.decorators import has_download_access
 from .auth.decorators import experiment_download_required
 from .auth.decorators import dataset_download_required

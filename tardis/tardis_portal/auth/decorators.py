@@ -76,18 +76,18 @@ def get_accessible_datafiles_for_user(request):
 
 def get_obj_parameter(pn_id, obj_id, ct_type):
     if ct_type == "project":
-        param = ProjectParameter.objects.get(name__id=pn_id,
+        return ProjectParameter.objects.get(name__id=pn_id,
                                              parameterset__project__id=obj_id)
     if ct_type == "experiment":
-        param = ExperimentParameter.objects.get(name__id=pn_id,
+        return ExperimentParameter.objects.get(name__id=pn_id,
                                              parameterset__experiment__id=obj_id)
     if ct_type == "dataset":
-        param = DatasetParameter.objects.get(name__id=pn_id,
+        return DatasetParameter.objects.get(name__id=pn_id,
                                              parameterset__dataset__id=obj_id)
     if ct_type == "datafile":
-        param = DatafileParameter.objects.get(name__id=pn_id,
+        return DatafileParameter.objects.get(name__id=pn_id,
                                              parameterset__datafile__id=obj_id)
-    return param
+    return None
 
 
 def has_ownership(request, obj_id, ct_type):
@@ -99,7 +99,7 @@ def has_ownership(request, obj_id, ct_type):
         return Dataset.safe.owned(request.user).filter(pk=obj_id).exists()
     if ct_type == 'datafile':
         return DataFile.safe.owned(request.user).filter(pk=obj_id).exists()
-
+    return None
 
 def has_access(request, obj_id, ct_type):
     try:
