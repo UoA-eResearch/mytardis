@@ -205,18 +205,22 @@
               <div class="row">
                 <div class="col-md-9 px-1">
                   <div class="accordion-inner">
-                    <p class="card-text small mb-1">{{project.description|default:"<em>No description</em>|bleach"}}</p>
-                    <div id="private-recent-datasets-{{project.id}}"></div>
+                    {% comment %} <p class="card-text small mb-1">{{project.description|default:"<em>No description</em>|bleach"}}</p>
+                    <div id="private-recent-datasets-{{project.id}}"></div> {% endcomment %}
                   </div>  {% comment %}class="accordion-inner"{% endcomment %}
                 </div>
               </div>
             </div>
+            {% comment %} <p class="card-text small mb-1">{{project.description|default:"<em>No description</em>|bleach"}}</p> {% endcomment %}
+            <p class="card-text small mb-1">{{project.description|truncatewords:20|default:"<em>No description</em>|bleach"}} (description has been truncated)</p>
             {% project_get_recent_experiments project.id request.user as project_experiments %}
             {% for exp in project_experiments %}
-            <div>
-              <a class="card-title explink"
-                 href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
-            </div>
+            <ul>
+              <li>
+                <a class="card-title explink"
+                  href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
+              </li>
+            </ul>
             {% endfor %}
           </div>
 
