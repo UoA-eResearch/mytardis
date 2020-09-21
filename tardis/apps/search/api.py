@@ -4,27 +4,29 @@ Implemented with Tastypie.
 
 .. moduleauthor:: Manish Kumar <rishimanish123@gmail.com>
 '''
+
+# pylint: disable=R1702
+# disabling nested blocks due to elasticsearch query building
+
 import json
-import datetime
+import logging
+
 import pytz
 
 from django.conf import settings
+from django.template.defaultfilters import filesizeformat
 
 from tastypie import fields
 from tastypie.resources import Resource, Bundle
 from tastypie.serializers import Serializer
 from django_elasticsearch_dsl.search import Search
 from elasticsearch_dsl import MultiSearch, Q
-from django.template.defaultfilters import filesizeformat
 
 from tardis.tardis_portal.api import default_authentication
-from tardis.tardis_portal.auth import decorators as authz
-from tardis.tardis_portal.models import (Project, Experiment, Dataset, DataFile,
-                                         Instrument, ExperimentParameter,
-                                         DatasetParameter, DatafileParameter,
-                                         Schema, ParameterName)
+#from tardis.tardis_portal.auth import decorators as authz
+from tardis.tardis_portal.models import (Project, Experiment, Dataset,
+                                         DataFile, Schema, ParameterName)
 
-import logging
 
 LOCAL_TZ = pytz.timezone(settings.TIME_ZONE)
 MAX_SEARCH_RESULTS = settings.MAX_SEARCH_RESULTS
@@ -82,7 +84,7 @@ class SchemasAppResource(Resource):
         return kwargs
 
     def get_object_list(self, request):
-        logging.warn("Testing search app: get schemas")
+        logging.warning("Testing search app: get schemas")
         if not request.user.is_authenticated:
             result_dict = {
                            "projects" : None,
@@ -179,7 +181,7 @@ class SearchAppResource(Resource):
 
 
     def dehydrate(self, bundle):
-        logging.warn("Testing search app")
+        logging.warning("Testing search app")
         user = bundle.request.user
 
         query_text = bundle.data.get('query', None)
@@ -223,7 +225,7 @@ class SearchAppResource(Resource):
 
 
             if query_text is not None:
-                if query_text is not "":
+                if query_text != "":
 
                     # Search on title/keywords + on non-sensitive metadata
                     query_obj_text = Q({"match": {match_list[idx]:query_text}})
@@ -358,7 +360,7 @@ class SearchAppResource(Resource):
                                         query_obj_filt = Q({oper: {target_fieldtype:filter["content"]}})
 
                                 elif filter["type"] == "DATETIME":
-                                        query_obj_filt = Q({"range": {target_fieldtype: {oper:filter["content"]}}})
+                                    query_obj_filt = Q({"range": {target_fieldtype: {oper:filter["content"]}}})
 
 
                                 query_obj = query_obj & query_obj_filt

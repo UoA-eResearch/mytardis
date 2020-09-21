@@ -25,7 +25,6 @@ class ListEndpointsTest(MyTardisResourceTestCase):
             'facility': {'list_endpoint': '/api/v1/facility/', 'schema': '/api/v1/facility/schema/'},
             'group': {'list_endpoint': '/api/v1/group/', 'schema': '/api/v1/group/schema/'},
             'instrument': {'list_endpoint': '/api/v1/instrument/', 'schema': '/api/v1/instrument/schema/'},
-            'location': {'list_endpoint': '/api/v1/location/', 'schema': '/api/v1/location/schema/'},
             'objectacl': {'list_endpoint': '/api/v1/objectacl/', 'schema': '/api/v1/objectacl/schema/'},
             'parametername': {'list_endpoint': '/api/v1/parametername/', 'schema': '/api/v1/parametername/schema/'},
             'replica': {'list_endpoint': '/api/v1/replica/', 'schema': '/api/v1/replica/schema/'},
