@@ -119,6 +119,17 @@ class ParameterSetManager(object):
 
                 self.blank_param = ExperimentParameter
 
+            elif isinstance(parentObject, Project):
+                self.parameterset = ProjectParameterSet(
+                    schema=self.get_schema(), experiment=parentObject)
+
+                self.parameterset.save()
+
+                self.parameters = ProjectParameter.objects.filter(
+                    parameterset=self.parameterset)
+
+                self.blank_param = ProjectParameter
+
             else:
                 raise TypeError("Invalid parent object." +
                                 "Must be an experiment/dataset/datafile not "

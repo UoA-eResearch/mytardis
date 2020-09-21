@@ -1,4 +1,4 @@
-# pylint: disable=C0302
+# pylint: disable=C0302,R1702
 '''
 RESTful API for MyTardis models and data.
 Implemented with Tastypie.
@@ -8,6 +8,7 @@ Implemented with Tastypie.
 import json
 import re
 from wsgiref.util import FileWrapper
+import logging
 
 from django.conf import settings
 from django.conf.urls import url
@@ -38,6 +39,8 @@ from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 
 from uritemplate import URITemplate
 
+import ldap3
+
 from tardis.analytics.tracker import IteratorTracker
 from . import tasks
 from .auth.decorators import (
@@ -46,7 +49,6 @@ from .auth.decorators import (
     has_download_access,
     has_write,
     has_delete_permissions,
-    has_sensitive_access
 )
 from .auth.localdb_auth import django_user, django_group
 from .models.access_control import ObjectACL, UserProfile, UserAuthentication, GroupAdmin
@@ -70,8 +72,6 @@ from .models.facility import Facility, facilities_managed_by
 from .models.instrument import Instrument
 from .models.institution import Institution
 
-import ldap3
-import logging
 
 logger = logging.getLogger('__name__')
 
@@ -138,29 +138,29 @@ def get_user_from_upi(upi):
             if logger:
                 logger.error(error_message)
             raise Exception(error_message)
-        elif len(connection.entries) == 0:
+        if len(connection.entries) == 0:
             error_message = "No one with {}: {} has been found in the LDAP".format(settings.LDAP_USER_LOGIN_ATTR, upi)
             if logger:
                 logger.warning(error_message)
             return None
-        else:
-            person = connection.entries[0]
-            first_name_key = 'givenName'
-            last_name_key = 'sn'
-            email_key = 'mail'
-            username = person[settings.LDAP_USER_LOGIN_ATTR].value
-            first_name = person[first_name_key].value
-            last_name = person[last_name_key].value
-            try:
-                email = person[email_key].value
-            except KeyError:
-                email = ''
-            details = {'username': username,
-                       'first_name': first_name,
-                       'last_name': last_name,
-                       'email': email}
-            logger.error(details)
-            return details
+
+        person = connection.entries[0]
+        first_name_key = 'givenName'
+        last_name_key = 'sn'
+        email_key = 'mail'
+        username = person[settings.LDAP_USER_LOGIN_ATTR].value
+        first_name = person[first_name_key].value
+        last_name = person[last_name_key].value
+        try:
+            email = person[email_key].value
+        except KeyError:
+            email = ''
+        details = {'username': username,
+                   'first_name': first_name,
+                   'last_name': last_name,
+                   'email': email}
+        logger.error(details)
+        return details
 
 
 def gen_random_password():
@@ -1067,8 +1067,22 @@ class ProjectResource(MyTardisModelResource):
         '''
         user = bundle.request.user
         bundle.data['created_by'] = user
-        logger.error('Pre processed bundle')
-        logger.error(bundle.data)
+        if not User.objects.filter(username=bundle.data['lead_researcher']).exists():
+            new_user = get_user_from_upi(bundle.data['lead_researcher'])
+            if not new_user:
+                logger.error('No one found for upi: {member}')
+            user = User.objects.create(username=new_user['username'],
+                                       first_name=new_user['first_name'],
+                                       last_name=new_user['last_name'],
+                                       email=new_user['email'])
+            user.set_password(gen_random_password())
+            for permission in member_perms:
+                user.user_permissions.add(permission)
+            user.save()
+            authentication = UserAuthentication(userProfile=user.userprofile,
+                                                username=new_user['username'],
+                                                authenticationMethod=settings.LDAP_METHOD)
+            authentication.save()
         project_lead = User.objects.get(
             username=bundle.data['lead_researcher'])
         bundle.data['lead_researcher'] = project_lead
@@ -1167,6 +1181,7 @@ class ExperimentResource(MyTardisModelResource):
                 project = ProjectResource.get_via_uri(
                     ProjectResource(), bundle.data['project'], bundle.request)
             except NotFound:
+                logger.error("Unable to locate parent project for {}".format(bundle.data["title"]))
                 raise  # This probably should raise an error
         experiment_groups = []
         experiment_admin_groups = []
@@ -1242,7 +1257,6 @@ class ExperimentResource(MyTardisModelResource):
             if 'admins' in bundle.data.keys():
                 if bundle.data['admins'] != []:
                     for admin in bundle.data['admins']:
-                        logger.error(admin)
                         if not User.objects.filter(username=admin).exists():
                             new_user = get_user_from_upi(admin)
                             user = User.objects.create(username=new_user['username'],
@@ -1297,7 +1311,6 @@ class ExperimentResource(MyTardisModelResource):
                 if bundle.data['members'] != []:
                     members = bundle.data['members']
                     for member in members:
-                        logger.error(member)
                         member_name = member[0]
                         sensitive_flg = member[1]
                         download_flg = member[2]
@@ -1349,7 +1362,6 @@ class ExperimentResource(MyTardisModelResource):
                                sensitive=sensitive,
                                admin=False)
         for group in experiment_groups:
-            logger.error("Creating group admin for {}".format(group))
             group_admin, _ = GroupAdmin.objects.get_or_create(user=bundle.request.user,
                                                               group=group)
             for admin in experiment_admin_groups:

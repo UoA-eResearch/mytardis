@@ -1,21 +1,17 @@
 import logging
-from os import path
 from datetime import datetime
 
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.db import models
-from django.utils.safestring import SafeText
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now as django_time_now
 from .institution import Institution
 # from ..models import DataManagementPlan # Hook in place for future proofing
 from ..managers import OracleSafeManager, SafeManager
 from .access_control import ObjectACL
-from .license import License
 
 
 logger = logging.getLogger(__name__)

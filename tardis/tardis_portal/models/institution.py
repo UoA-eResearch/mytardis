@@ -1,6 +1,5 @@
 import logging
 from django.db import models
-from django.utils import timezone
 from django.contrib.auth.models import Group
 
 logger = logging.getLogger(__name__)
@@ -33,5 +32,4 @@ class Institution(models.Model):
 
     def is_institution_manager(self,
                                user):
-        return self.manager_group in user_obj.groups.all()
-
+        return self.manager_group in user.groups.all()
