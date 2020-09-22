@@ -97,11 +97,85 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
         <tr
           className="parameter-table__row"
         >
-          <td>
-            12
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             12
           </td>
-          <td>
-            My name is
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             My name is
           </td>
         </tr>
       </tbody>
@@ -230,21 +304,169 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
         <tr
           className="parameter-table__row"
         >
-          <td>
-            4
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             4
           </td>
-          <td>
-            My Name
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             My Name
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
-          <td>
-            5
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             5
           </td>
-          <td>
-            is
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             is
           </td>
         </tr>
       </tbody>
@@ -373,21 +595,169 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
         <tr
           className="parameter-table__row"
         >
-          <td>
-            1
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             1
           </td>
-          <td>
-            kiwi
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             kiwi
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
-          <td>
-            3
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             3
           </td>
-          <td>
-            forbidden fruit
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             forbidden fruit
           </td>
         </tr>
       </tbody>
@@ -516,41 +886,337 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
         <tr
           className="parameter-table__row"
         >
-          <td>
-            18
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             18
           </td>
-          <td>
-            
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
-          <td>
-            19
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             19
           </td>
-          <td>
-            7.0
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             7.0
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
-          <td>
-            15
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             15
           </td>
-          <td>
-            Kiwi
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             Kiwi
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
-          <td>
-            16
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             16
           </td>
-          <td>
-            Orange
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             Orange
           </td>
         </tr>
       </tbody>
@@ -673,41 +1339,337 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
         <tr
           className="parameter-table__row"
         >
-          <td>
-            18
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             18
           </td>
-          <td>
-            
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
-          <td>
-            19
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             19
           </td>
-          <td>
-            7.0
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             7.0
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
-          <td>
-            15
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             15
           </td>
-          <td>
-            Kiwi
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             Kiwi
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
-          <td>
-            16
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             16
           </td>
-          <td>
-            Orange
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             Orange
           </td>
         </tr>
       </tbody>
@@ -852,41 +1814,337 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
         <tr
           className="parameter-table__row"
         >
-          <td>
-            18
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             18
           </td>
-          <td>
-            
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
-          <td>
-            19
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             19
           </td>
-          <td>
-            7.0
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             7.0
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
-          <td>
-            15
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             15
           </td>
-          <td>
-            Kiwi
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             Kiwi
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
-          <td>
-            16
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             16
           </td>
-          <td>
-            Orange
+          <td
+            style={
+              Object {
+                "backgroundColor": "#fcfba2",
+              }
+            }
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This parameter is sensitive and may not be visible to other Users
+              </title>
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
+              />
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
+              />
+            </svg>
+             Orange
           </td>
         </tr>
       </tbody>

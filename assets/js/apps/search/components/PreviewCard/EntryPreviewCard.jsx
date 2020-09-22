@@ -78,8 +78,8 @@ export default function EntryPreviewCard(props) {
             if (param.hasOwnProperty("sensitive")) {
                 return (
                 <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
-                    <td style={{backgroundColor:'#fcfba2'}}><i class="fa fa-unlock-alt o-6"></i>{" "+param.pn_name}</td>
-                    <td style={{backgroundColor:'#fcfba2'}}><i class="fa fa-unlock-alt o-6"></i>{" "+param.value}</td>
+                    <td style={{backgroundColor:'#fcfba2'}}><FiUnlock title="This parameter is sensitive and may not be visible to other Users" />{" "+param.pn_name}</td>
+                    <td style={{backgroundColor:'#fcfba2'}}><FiUnlock title="This parameter is sensitive and may not be visible to other Users" />{" "+param.value}</td>
                     </tr>
                   )
                 } else {
