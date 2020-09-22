@@ -123,22 +123,16 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              12
@@ -169,22 +163,16 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              My name is
@@ -342,22 +330,16 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              4
@@ -388,22 +370,16 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              My Name
@@ -438,22 +414,16 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              5
@@ -484,22 +454,16 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              is
@@ -657,22 +621,16 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              1
@@ -703,22 +661,16 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              kiwi
@@ -753,22 +705,16 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              3
@@ -799,22 +745,16 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              forbidden fruit
@@ -972,22 +912,16 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              18
@@ -1018,22 +952,16 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              
@@ -1068,22 +996,16 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              19
@@ -1114,22 +1036,16 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              7.0
@@ -1164,22 +1080,16 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              15
@@ -1210,22 +1120,16 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              Kiwi
@@ -1260,22 +1164,16 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              16
@@ -1306,22 +1204,16 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              Orange
@@ -1473,22 +1365,16 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              18
@@ -1519,22 +1405,16 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              
@@ -1569,22 +1449,16 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              19
@@ -1615,22 +1489,16 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              7.0
@@ -1665,22 +1533,16 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              15
@@ -1711,22 +1573,16 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              Kiwi
@@ -1761,22 +1617,16 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              16
@@ -1807,22 +1657,16 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              Orange
@@ -1996,22 +1840,16 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              18
@@ -2042,22 +1880,16 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              
@@ -2092,22 +1924,16 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              19
@@ -2138,22 +1964,16 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              7.0
@@ -2188,22 +2008,16 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              15
@@ -2234,22 +2048,16 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              Kiwi
@@ -2284,22 +2092,16 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              16
@@ -2330,22 +2132,16 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               <title>
                 This parameter is sensitive and may not be visible to other Users
               </title>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
+              <rect
+                height="11"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="11"
               />
-              <line
-                x1="12"
-                x2="12"
-                y1="8"
-                y2="12"
-              />
-              <line
-                x1="12"
-                x2="12"
-                y1="16"
-                y2="16"
+              <path
+                d="M7 11V7a5 5 0 0 1 9.9-1"
               />
             </svg>
              Orange
