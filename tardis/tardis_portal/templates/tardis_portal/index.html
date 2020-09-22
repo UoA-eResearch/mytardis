@@ -178,7 +178,7 @@
 
               <div class="col-md-8 px-1 pb-1">
                 <input class="project-index" type="hidden" value="{{ forloop.counter }}">
-                <a class="card-title explink" 
+                <a class="card-title projectlink" 
                   href="{% url 'tardis_portal.view_project' project.id %}">{{ project.name }}</a>
               </div>
 
@@ -201,20 +201,21 @@
             </div>
 
             {% comment %} <p class="card-text small mb-1">{{project.description|default:"<em>No description</em>|bleach"}}</p> {% endcomment %}
-            <div class="card-body py-2 collapse show"
+            <div class="card-body py-2 collapse"
               id="project-collapse-{{project.id}}"
               data-parent="#private-projects"
             >
               <div class="row">
                 <div class="col-md-9 px-1">
                   <div class="accordion-inner">
-                      <p class="card-text small mb-1">{{project.description|truncatewords:20|default:"<em>No description</em>|bleach"}} (description has been truncated)</p>
+                      <p class="card-text small mb-1">{{project.description|truncatewords:20|default:"<em>No description</em>|bleach"}}</p>
                       {% project_get_recent_experiments project.id request.user as project_experiments %}
                       <ul class="list-group borderless mt-2">
                       {% for exp in project_experiments %}
                         <li class="list-group-item dataset-list-header small px-2 py-1">
-
-                          <a class="card-title explink"
+                          <i class="fa fa-cogs o-6">
+                          </i>
+                          <a class="card-title projectlink"
                             href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
                         </li>
                       {% endfor %}
@@ -223,7 +224,6 @@
                 </div>
               </div>
             </div>
-          </div>
 
           <!-- card end -->
         </div> {% comment %}class="card"{% endcomment %}
@@ -231,6 +231,7 @@
         <p>There are no projects available on this server.</p>
         {% endfor %}
 
+          </div>
       </div>
       {% endif %}
     </div>
