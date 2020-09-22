@@ -208,7 +208,11 @@
               <div class="row">
                 <div class="col-md-9 px-1">
                   <div class="accordion-inner">
-                      <p class="card-text small mb-1">{{project.description|truncatewords:20|default:"<em>No description</em>|bleach"}}</p>
+                      <p class="card-text small mb-1">
+                        {{project.description|truncatewords:20|default:"<em>No description</em>|bleach"}}
+                        <a 
+                          href="{% url 'tardis_portal.view_project' project.id %}">read more</a>
+                      </p>
                       {% project_get_recent_experiments project.id request.user as project_experiments %}
                       <ul class="list-group borderless mt-2">
                       {% for exp in project_experiments %}
