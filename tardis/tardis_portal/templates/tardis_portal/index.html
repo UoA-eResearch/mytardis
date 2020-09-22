@@ -101,7 +101,7 @@
         {% for exp in public_experiments %}
           <div class="card mb-2">
             <div id="public-toggle-{{exp.id}}"
-                 class="card-header accordion-toggle public-experiment py-2"
+                 class="card-header accordion-toggle public-project py-2"
                  data-toggle="collapse" data-parent="#public-experiments">
               <div class="row">
                 <div class="col-md-8 px-1 pb-1">
@@ -168,9 +168,9 @@
         <!-- project.experiments_set - Wont pass through safe manager. (top 5) -->
         <div class="card mb-2">
           <div id="private-toggle-{{project.id}}" 
-            class="card-header accordion-toggle py-2" 
+            class="card-header accordion-toggle private-project py-2" 
             data-toggle="collapse" 
-            data-parent="private-projects"
+            data-parent="#private-projects"
           >
             <div class="row">
 
@@ -198,30 +198,28 @@
               </div>
             </div>
 
-            <div class="collapse-{{project.id}}"
-              class="card-body py-2 collapse"
+            {% comment %} <p class="card-text small mb-1">{{project.description|default:"<em>No description</em>|bleach"}}</p> {% endcomment %}
+            <div class="collapse-{{project.id}} card-body py-2 collapse show"
               data-parent="#private-projects"
             >
               <div class="row">
                 <div class="col-md-9 px-1">
                   <div class="accordion-inner">
-                    {% comment %} <p class="card-text small mb-1">{{project.description|default:"<em>No description</em>|bleach"}}</p>
-                    <div id="private-recent-datasets-{{project.id}}"></div> {% endcomment %}
+                      <p class="card-text small mb-1">{{project.description|truncatewords:20|default:"<em>No description</em>|bleach"}} (description has been truncated)</p>
+                      {% project_get_recent_experiments project.id request.user as project_experiments %}
+                      <ul class="list-group borderless mt-2">
+                      {% for exp in project_experiments %}
+                        <li class="list-group-item dataset-list-header small px-2 py-1">
+
+                          <a class="card-title explink"
+                            href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
+                        </li>
+                      {% endfor %}
+                      </ul>
                   </div>  {% comment %}class="accordion-inner"{% endcomment %}
                 </div>
               </div>
             </div>
-            {% comment %} <p class="card-text small mb-1">{{project.description|default:"<em>No description</em>|bleach"}}</p> {% endcomment %}
-            <p class="card-text small mb-1">{{project.description|truncatewords:20|default:"<em>No description</em>|bleach"}} (description has been truncated)</p>
-            {% project_get_recent_experiments project.id request.user as project_experiments %}
-            {% for exp in project_experiments %}
-            <ul>
-              <li>
-                <a class="card-title explink"
-                  href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
-              </li>
-            </ul>
-            {% endfor %}
           </div>
 
           <!-- card end -->
