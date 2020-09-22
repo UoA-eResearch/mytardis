@@ -167,8 +167,10 @@
         {% for project in private_projects %}
         <!-- project.experiments_set - Wont pass through safe manager. (top 5) -->
         <div class="card mb-2">
-          <div id="private-toggle-{{project.id}}" 
+          <div id="private-toggle-{{project.id}}"
+            role="button"
             class="card-header accordion-toggle private-project py-2" 
+            data-target="#project-collapse-{{project.id}}"
             data-toggle="collapse" 
             data-parent="#private-projects"
           >
@@ -199,7 +201,8 @@
             </div>
 
             {% comment %} <p class="card-text small mb-1">{{project.description|default:"<em>No description</em>|bleach"}}</p> {% endcomment %}
-            <div class="collapse-{{project.id}} card-body py-2 collapse show"
+            <div class="card-body py-2 collapse show"
+              id="project-collapse-{{project.id}}"
               data-parent="#private-projects"
             >
               <div class="row">
