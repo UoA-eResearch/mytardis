@@ -113,6 +113,14 @@ const buildQueryBody = (state) => {
     return queryBody;
 }
 
+const buildSingleQueryBody = (state) => {
+    const query = buildQueryBody(state),
+        currentType = state.search.selectedType;
+    return Object.assign(query,{
+        type: currentType
+    });
+}
+
 const runSearchWithQuery = (queryBody) => {
     return (dispatch) => {
         dispatch(getResultsStart());
@@ -171,6 +179,7 @@ const updateWithQuery = (queryBody) => {
     }
 }
 
+
 export const runSearch = () => {
     return (dispatch, getState) => {
         const state = getState();
@@ -180,6 +189,17 @@ export const runSearch = () => {
     }
 }
 
+/**
+ * An async action for running a search that only returns the results for
+ * a single result type. Used for sending sorting or pagination queries.
+ */
+export const runSingleTypeSearch = () => {
+    return (dispatch, getState) => {
+        const state = getState();
+        const queryBody = buildSingleQueryBody(state);
+        dispatch(runSearchWithQuery(queryBody));
+    }
+}
 
 export const restoreSearchFromHistory = (restoredState) => {
     return (dispatch) => {
