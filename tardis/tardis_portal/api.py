@@ -140,7 +140,8 @@ def get_user_from_upi(upi):
                 logger.error(error_message)
             raise Exception(error_message)
         if len(connection.entries) == 0:
-            error_message = "No one with {}: {} has been found in the LDAP".format(settings.LDAP_USER_LOGIN_ATTR, upi)
+            error_message = "No one with {}: {} has been found in the LDAP".format(
+                settings.LDAP_USER_LOGIN_ATTR, upi)
             if logger:
                 logger.warning(error_message)
             return None
@@ -1182,11 +1183,19 @@ class ExperimentResource(MyTardisModelResource):
                 project = ProjectResource.get_via_uri(
                     ProjectResource(), bundle.data['project'], bundle.request)
             except NotFound:
-                logger.error("Unable to locate parent project for {}".format(bundle.data["title"]))
+                logger.error("Unable to locate parent project for {}".format(
+                    bundle.data["title"]))
                 raise  # This probably should raise an error
         experiment_groups = []
         experiment_admin_groups = []
         experiment_admin_users = []
+        request_method=bundle.request.META['REQUEST_METHOD']
+        if request_method == 'POST':
+            logger.debug('POSTING')
+            logger.debug(bundle.data)
+        if request_method == 'PUT':
+            logger.debug('PUTTING')
+            logger.debug(bundle.data)
         if getattr(bundle.obj, 'id', False):
             experiment = bundle.obj
             project_lead = project.lead_researcher
@@ -1382,9 +1391,6 @@ class ExperimentResource(MyTardisModelResource):
         bundle.data['created_by'] = user
         bundle = super().obj_create(bundle, **kwargs)
         return bundle
-
-    def obj_update(self, bundle, **kwargs):
-        return self.obj_create(bundle, kwargs)
 
 
 class ExperimentAuthorResource(MyTardisModelResource):
