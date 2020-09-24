@@ -134,7 +134,8 @@ def get_user_from_upi(upi):
                           search_filter,
                           attributes=['*'])
         if len(connection.entries) > 1:
-            error_message = "More than one person with {}: {} has been found in the LDAP".format(settings.LDAP_USER_LOGIN_ATTR, upi)
+            error_message = "More than one person with {}: {} has been found in the LDAP".format(
+                settings.LDAP_USER_LOGIN_ATTR, upi)
             if logger:
                 logger.error(error_message)
             raise Exception(error_message)
@@ -1381,6 +1382,9 @@ class ExperimentResource(MyTardisModelResource):
         bundle.data['created_by'] = user
         bundle = super().obj_create(bundle, **kwargs)
         return bundle
+
+    def obj_update(self, bundle, **kwargs):
+        return self.obj_create(bundle, kwargs)
 
 
 class ExperimentAuthorResource(MyTardisModelResource):
