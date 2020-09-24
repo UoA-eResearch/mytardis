@@ -40,7 +40,7 @@ from ..models import Project, Experiment, Dataset, DataFile, GroupAdmin, \
     ProjectParameter, ExperimentParameter, DatasetParameter, \
     DatafileParameter, ObjectACL
 from ..shortcuts import return_response_error
-from .auth.localdb_auth import django_user, django_group
+from .localdb_auth import django_user, django_group
 
 
 #1) this should probably go elsewhere
