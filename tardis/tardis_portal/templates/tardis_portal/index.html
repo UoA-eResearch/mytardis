@@ -164,8 +164,16 @@
       </h3>
 
       <div id="private-projects" class="panel-group projects">
+        {% if private_projects_count <= 3 %}
+        <div class="card mb-2">
+        <div class="card-body py"> 
+          <p class="card-text mb-1 "> 
+            You have no recent projects.
+          </p>
+        </div>
+        </div>
+        {% else %}
         {% for project in private_projects %}
-        <!-- project.experiments_set - Wont pass through safe manager. (top 5) -->
         <div class="card mb-2">
           <div id="private-toggle-{{project.id}}"
             role="button"
@@ -188,7 +196,6 @@
                     <li class="list-inline-item m-0">{% project_experiments_badge project.id request.user %}</li>
                     <li class="list-inline-item m-0">{% project_datasets_badge project.id request.user %}</li>
                     <li class="list-inline-item m-0">{% project_datafiles_badge project request.user %}</li>
-                    <!-- <li class="list-inline-item m-0">{{ project|project_public_access_badge }}</li> -->
                   </ul>
                 </div>
 
@@ -200,7 +207,6 @@
               </div>
             </div>
 
-            {% comment %} <p class="card-text small mb-1">{{project.description|default:"<em>No description</em>|bleach"}}</p> {% endcomment %}
             <div class="card-body py-2 collapse"
               id="project-collapse-{{project.id}}"
               data-parent="#private-projects"
@@ -234,6 +240,7 @@
         {% empty %}
         <p>There are no projects available on this server.</p>
         {% endfor %}
+        {% endif %}
 
           </div>
       </div>
