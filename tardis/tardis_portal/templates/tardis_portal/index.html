@@ -164,7 +164,7 @@
       </h3>
 
       <div id="private-projects" class="panel-group projects">
-        {% if private_projects_count <= 3 %}
+        {% if private_projects_count <= 0 %}
         <div class="card mb-2">
         <div class="card-body py"> 
           <p class="card-text mb-1 "> 
@@ -215,9 +215,13 @@
                 <div class="col-md-9 px-1">
                   <div class="accordion-inner">
                       <p class="card-text small mb-1">
+                        {% if project.description|length > 20 %}
                         {{project.description|truncatewords:20|default:"<em>No description</em>|bleach"}}
                         <a 
                           href="{% url 'tardis_portal.view_project' project.id %}">read more</a>
+                        {% else %}
+                        {{project.description|default:"<em>No description</em>|bleach"}}
+                        {% endif %}
                       </p>
                       {% project_get_recent_experiments project.id request.user as project_experiments %}
                       <ul class="list-group borderless mt-2">
