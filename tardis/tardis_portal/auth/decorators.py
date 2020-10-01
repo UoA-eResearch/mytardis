@@ -38,8 +38,119 @@ from django.conf import settings
 
 from ..models import Project, Experiment, Dataset, DataFile, GroupAdmin, \
     ProjectParameter, ExperimentParameter, DatasetParameter, \
-    DatafileParameter
+    DatafileParameter, ObjectACL
 from ..shortcuts import return_response_error
+from .localdb_auth import django_user, django_group
+
+
+#1) this should probably go elsewhere
+#2) this is pretty inefficient with its database queries
+def bulk_replace_existing_acls(some_request):
+
+    """ assume some default structure
+        [
+            {
+            "content_type": "project",  "data file"
+            "id": 1,
+            "users": [
+                        {"id": str(1),
+                         "canRead":False,
+                         "canWrite":False,
+                         "canDownload":False,
+                         "canSensitive":False,
+                         "canDelete":False,
+                         "isOwner":False}
+                     ],
+            "groups": [
+                        {"id": str(1),
+                         "canRead":False,
+                         "canWrite":False,
+                         "canDownload":False,
+                         "canSensitive":False,
+                         "canDelete":False,
+                         "isOwner":False}
+                     ]
+            }
+        ]
+    """
+
+    for new_acls in some_request:
+
+        old_acls = ObjectACL.objects.filter(
+            object_id=new_acls["id"],
+            content_type=new_acls["content_type"],
+            aclOwnershipType=ObjectACL.OWNER_OWNED)     #pluginId=django_user,
+
+        for old_acl in old_acls:
+            if old_acl.pluginId == "django_user":
+                if old_acl.entityId not in [d['id'] for d in new_acls["users"]]:
+                    old_acl.delete()
+                else:
+                    matched_idx = [d['id'] for d in new_acls["users"]].index(old_acl.entityId)
+                    old_acl.canRead = new_acls["users"][matched_idx]["canRead"]
+                    old_acl.canDownload = new_acls["users"][matched_idx]["canDownload"]
+                    old_acl.canWrite = new_acls["users"][matched_idx]["canWrite"]
+                    old_acl.canSensitive = new_acls["users"][matched_idx]["canSensitive"]
+                    old_acl.canDelete = new_acls["users"][matched_idx]["canDelete"]
+                    old_acl.isOwner = new_acls["users"][matched_idx]["isOwner"]
+                    old_acl.save()
+
+            if old_acl.pluginId == "django_user":
+                if old_acl.entityId not in [d['id'] for d in new_acls["groups"]]:
+                    old_acl.delete()
+                else:
+                    matched_idx = [d['id'] for d in new_acls["groups"]].index(old_acl.entityId)
+                    old_acl.canRead = new_acls["groups"][matched_idx]["canRead"]
+                    old_acl.canDownload = new_acls["groups"][matched_idx]["canDownload"]
+                    old_acl.canWrite = new_acls["groups"][matched_idx]["canWrite"]
+                    old_acl.canSensitive = new_acls["groups"][matched_idx]["canSensitive"]
+                    old_acl.canDelete = new_acls["groups"][matched_idx]["canDelete"]
+                    old_acl.isOwner = new_acls["groups"][matched_idx]["isOwner"]
+                    old_acl.save()
+
+        # likely inefficient to partially "duplicate" the first query
+        old_acls_user_ids = ObjectACL.objects.filter(
+                    pluginId=django_user,
+                    object_id=new_acls["id"],
+                    content_type=new_acls["content_type"],
+                    aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId')
+
+        # likely inefficient to partially "duplicate" the first query
+        old_acls_group_ids = ObjectACL.objects.filter(
+                    pluginId=django_group,
+                    object_id=new_acls["id"],
+                    content_type=new_acls["content_type"],
+                    aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId')
+
+        for new_acl in new_acls["users"]:
+            if new_acl["id"] not in old_acls_user_ids:
+                acl = ObjectACL(content_type=new_acls["content_type"],
+                                object_id=new_acls["id"],
+                                pluginId=django_user,
+                                entityId=str(new_acl["id"]),
+                                canRead=new_acl["canRead"],
+                                canDownload=new_acl["canDownload"],
+                                canWrite=new_acl["canWrite"],
+                                canDelete=new_acl["canDelete"],
+                                canSensitive=new_acl["canSensitive"],
+                                isOwner=new_acl["isOwner"],
+                                aclOwnershipType=ObjectACL.OWNER_OWNED)
+                acl.save()
+
+        for new_acl in new_acls["groups"]:
+            if new_acl["id"] not in old_acls_group_ids:
+                acl = ObjectACL(content_type=new_acls["content_type"],
+                                object_id=new_acls["id"],
+                                pluginId=django_group,
+                                entityId=str(new_acl["id"]),
+                                canRead=new_acl["canRead"],
+                                canDownload=new_acl["canDownload"],
+                                canWrite=new_acl["canWrite"],
+                                canDelete=new_acl["canDelete"],
+                                canSensitive=new_acl["canSensitive"],
+                                isOwner=new_acl["isOwner"],
+                                aclOwnershipType=ObjectACL.OWNER_OWNED)
+                acl.save()
 
 
 def get_accessible_experiments(request):
@@ -76,18 +187,18 @@ def get_accessible_datafiles_for_user(request):
 
 def get_obj_parameter(pn_id, obj_id, ct_type):
     if ct_type == "project":
-        param = ProjectParameter.objects.get(name__id=pn_id,
+        return ProjectParameter.objects.get(name__id=pn_id,
                                              parameterset__project__id=obj_id)
     if ct_type == "experiment":
-        param = ExperimentParameter.objects.get(name__id=pn_id,
+        return ExperimentParameter.objects.get(name__id=pn_id,
                                              parameterset__experiment__id=obj_id)
     if ct_type == "dataset":
-        param = DatasetParameter.objects.get(name__id=pn_id,
+        return DatasetParameter.objects.get(name__id=pn_id,
                                              parameterset__dataset__id=obj_id)
     if ct_type == "datafile":
-        param = DatafileParameter.objects.get(name__id=pn_id,
+        return DatafileParameter.objects.get(name__id=pn_id,
                                              parameterset__datafile__id=obj_id)
-    return param
+    return None
 
 
 def has_ownership(request, obj_id, ct_type):
@@ -99,7 +210,7 @@ def has_ownership(request, obj_id, ct_type):
         return Dataset.safe.owned(request.user).filter(pk=obj_id).exists()
     if ct_type == 'datafile':
         return DataFile.safe.owned(request.user).filter(pk=obj_id).exists()
-
+    return None
 
 def has_access(request, obj_id, ct_type):
     try:
