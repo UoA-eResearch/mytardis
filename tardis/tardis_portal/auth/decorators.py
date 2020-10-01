@@ -122,7 +122,7 @@ def bulk_replace_existing_acls(some_request):
                     content_type=new_acls["content_type"],
                     aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId')
 
-        for new_acl in ew_acls["users"]:
+        for new_acl in new_acls["users"]:
             if new_acl["id"] not in old_acls_user_ids:
                 acl = ObjectACL(content_type=new_acls["content_type"],
                                 object_id=new_acls["id"],
@@ -137,7 +137,7 @@ def bulk_replace_existing_acls(some_request):
                                 aclOwnershipType=ObjectACL.OWNER_OWNED)
                 acl.save()
 
-        for new_acl in ew_acls["groups"]:
+        for new_acl in new_acls["groups"]:
             if new_acl["id"] not in old_acls_group_ids:
                 acl = ObjectACL(content_type=new_acls["content_type"],
                                 object_id=new_acls["id"],
