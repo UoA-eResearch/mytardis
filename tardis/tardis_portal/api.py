@@ -309,7 +309,7 @@ def process_acls(bundle):
     member_groups = None
     logger.debug('Processing ACLs')
     if getattr(bundle.obj, 'id', False):
-        project = None
+        project_lead = None
         experiment = None
         dataset = None
         obj = bundle.obj
@@ -320,6 +320,7 @@ def process_acls(bundle):
                                    is_admin=True))
         if ct == 'project':
             project = obj
+            project_lead = project.lead_researcher
         else:
             if ct == 'experiment':
                 logger.debug('Experiment found')
@@ -331,6 +332,7 @@ def process_acls(bundle):
                         bundle.data["title"]))
                     raise  # This probably should raise an error
                 parent = project
+                project_lead = project.lead_researcher
                 logger.debug('Parent project: {}'.format(parent.name))
             elif ct == 'dataset':
                 logger.debug('Dataset found')
@@ -344,6 +346,7 @@ def process_acls(bundle):
                     raise
                 logger.debug('Parent experiment: {}'.format(experiment.title))
                 project = experiment.project
+                project_lead = project.lead_researcher
                 logger.debug('Parent project: {}'.format(project.name))
                 parent = experiment
             elif ct == 'datafile':
@@ -360,11 +363,13 @@ def process_acls(bundle):
                 experiment = dataset.experiments.all()[0]
                 logger.debug('Parent experiment: {}'.format(experiment.title))
                 project = experiment.project
+                project_lead = project.lead_researcher
                 logger.debug('Parent project: {}'.format(project.name))
                 parent = dataset
             else:
-                pass  # should never get here
-        user = check_and_create_user(project.lead_researcher)
+                logger.debug('Bad Stuff')
+                raise ValueError  # should never get here
+        user = check_and_create_user(project_lead)
         users.append(package_perms(user.id,
                                    is_admin=True))
         admin_users.append(user)
