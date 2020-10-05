@@ -273,8 +273,8 @@ def create_traverse_perms(plugin_id,
             if dataset:
                 if entity not in Dataset.safe.groups(dataset.id):
                     create_acl(dataset.get_ct(),
-                               dataset.id
-                               plugin_id
+                               dataset.id,
+                               plugin_id,
                                entity_id)
     return True
 
@@ -380,7 +380,7 @@ def process_acls(bundle):
         else:
             logger.debug('Admins not found')
             # Cascade from parent unless project
-            if ct not 'project':
+            if ct != 'project':
                 logger.debug('Cascading from parent')
                 parent_admins = parent.get_owners()
                 logger.debug('{}'.format(parent_admins))
@@ -413,7 +413,7 @@ def process_acls(bundle):
                                                 is_admin=True))
                     admin_groups.append(group)
         else:
-            if ct not 'project':
+            if ct != 'project':
                 parent_admins = parent.get_admins()
                 for admin in parent_admins:
                     group, created = Group.objects.get_or_create(name=admin)
@@ -436,7 +436,7 @@ def process_acls(bundle):
             members = bundle.data['members']
         else:
             logger.debug('Members not found')
-            if ct not 'project':
+            if ct != 'project':
                 logger.debug('Cascading from parents')
                 # Cascading from parent
                 members = parent.get_users_and_perms()
@@ -460,7 +460,7 @@ def process_acls(bundle):
             member_groups = bundle.data['member_groups']
         else:
             logger.debug('Member groups not found')
-            if ct not 'project':
+            if ct != 'project':
                 logger.debug('Cascading from parent')
                 member_groups = parent.get_groups_and_perms()
         if member_groups and member_groups != []:
@@ -476,7 +476,7 @@ def process_acls(bundle):
                                             write=True,
                                             download=download,
                                             sensitive=sensitive))
-        if ct not project:
+        if ct != 'project':
             # Build traverse ACLs and add GroupAdmins
             for user_dict in users:
                 user_id = int(user_dict['id'])
