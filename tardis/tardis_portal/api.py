@@ -237,13 +237,13 @@ def create_traverse_perms(plugin_id,
             create_acl(project.get_ct(),
                        project.id,
                        plugin_id,
-                       entity_id)
+                       entity.id)
         if experiment:
             if entity not in Experiment.safe.users(experiment.id):
                 create_acl(experiment.get_ct(),
                            experiment.id,
                            plugin_id,
-                           entity_id)
+                           entity.id)
             # Wrapping the dataset into the experiment
             # if to minimise errors since if a dataset
             # traverse is needed then an experiment one
@@ -253,19 +253,19 @@ def create_traverse_perms(plugin_id,
                     create_acl(dataset.get_ct(),
                                dataset.id,
                                plugin_id,
-                               entity_id)
+                               entity.id)
     elif plugin_id == django_group:
         if entity not in Project.safe.groups(project.id):
             create_acl(project.get_ct(),
                        project.id,
                        plugin_id,
-                       entity_id)
+                       entity.id)
         if experiment:
             if entity not in Experiment.safe.groups(experiment.id):
                 create_acl(experiment.get_ct(),
                            experiment.id,
                            plugin_id,
-                           entity_id)
+                           entity.id)
             # Wrapping the dataset into the experiment
             # if to minimise errors since if a dataset
             # traverse is needed then an experiment one
@@ -275,7 +275,7 @@ def create_traverse_perms(plugin_id,
                     create_acl(dataset.get_ct(),
                                dataset.id,
                                plugin_id,
-                               entity_id)
+                               entity.id)
     return True
 
 
@@ -358,7 +358,7 @@ def process_acls(bundle):
                         DatasetResource(), dataset_uri, bundle.request)
                 except NotFound:
                     logger.error(
-                        "Unable to locate parent dataset for {}".format(retval.data["filename"]))
+                        "Unable to locate parent dataset for {}".format(bundle.data["filename"]))
                     raise
                 logger.debug('Parent dataset: {}'.format(dataset.description))
                 experiment = dataset.experiments.all()[0]
@@ -393,10 +393,8 @@ def process_acls(bundle):
                 logger.debug('{}'.format(parent_admins))
                 member_flg = False
                 for admin in parent_admins:
-                    if admin.username == project.lead_researcher:
-                        # They are good to go so don't downgrade perms
-                        continue
-                    else:
+                    # If admin is lead_researcher don't downgrade perms
+                    if admin.username != project.lead_researcher:
                         # Check if user is explicitly defined as a member
                         # in which case they lose admin status
                         if 'members' in bundle.data.keys():
@@ -526,6 +524,7 @@ def process_acls(bundle):
                     'users': users,
                     'groups': groups}
         return [acl_dict]
+    return False
 
 
 class PrettyJSONSerializer(Serializer):
