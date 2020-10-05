@@ -113,14 +113,14 @@ def bulk_replace_existing_acls(some_request):
                     pluginId=django_user,
                     object_id=new_acls["id"],
                     content_type=new_acls["content_type"],
-                    aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId')
+                    aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
 
         # likely inefficient to partially "duplicate" the first query
         old_acls_group_ids = ObjectACL.objects.filter(
                     pluginId=django_group,
                     object_id=new_acls["id"],
                     content_type=new_acls["content_type"],
-                    aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId')
+                    aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
 
         for new_acl in new_acls["users"]:
             if new_acl["id"] not in old_acls_user_ids:
