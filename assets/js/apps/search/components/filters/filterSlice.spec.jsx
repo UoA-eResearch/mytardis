@@ -14,7 +14,11 @@ const mockStoreState = {
             projects: {
                 attributes: {
                     byId: {
-                        schema: {},
+                        schema: {
+                            "data_type": "STRING",
+                            "id": "schema",
+                            "full_name": "Schema"
+                        },
                     },
                     allIds: ["schema"]
                 }
@@ -26,7 +30,10 @@ const mockStoreState = {
                             value: {
                                 op: "is",
                                 content: ["1"]
-                            }
+                            },
+                            "data_type": "STRING",
+                            "id": "schema",
+                            "full_name": "Schema"
                         },
                         createdDate: {
                             data_type: "DATETIME",
@@ -41,7 +48,12 @@ const mockStoreState = {
             datasets: {
                 attributes: {
                     byId: {
-                        schema: {},
+                        schema: {
+                            "data_type": "STRING",
+                            "id": "schema",
+                            "full_name": "Schema"
+
+                        },
                         createdDate: {
                             data_type: "DATETIME",
                             id: "createdDate",
@@ -55,7 +67,11 @@ const mockStoreState = {
             datafiles: {
                 attributes: {
                     byId: {
-                        schema: {}
+                        schema: {
+                            "data_type": "STRING",
+                            "id": "schema",
+                            "full_name": "Schema"
+                        }
                     },
                     allIds: ["schema"]
                 }
@@ -444,6 +460,6 @@ describe("Filter query builder", ()=> {
                 }
             ]
         };
-        expect(buildFilterQuery(mockStoreState, "experiments")).toBe(expectedValue);
+        expect(buildFilterQuery(mockStoreState, "experiments")).toEqual(expectedValue);
     });
 });
