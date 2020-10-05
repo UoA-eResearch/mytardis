@@ -100,10 +100,14 @@ const fetchSearchResults = (queryBody) => {
     })
 };
 
-const buildQueryBody = (state) => {
+const buildQueryBody = (state, typeToSearch) => {
     const term = state.search.searchTerm,
-        filters = buildFilterQuery(state.filters),
+        filters = buildFilterQuery(state.filters, typeToSearch),
         queryBody = {};
+    if (typeToSearch) {
+        // If doing a single type search, include type in query body.
+        queryBody.type = typeToSearch;
+    }
     if (term !== null && term !== "") {
         queryBody.query = term;
     }
@@ -111,15 +115,7 @@ const buildQueryBody = (state) => {
         queryBody.filters = filters;
     }
     return queryBody;
-}
-
-const buildSingleQueryBody = (state) => {
-    const query = buildQueryBody(state),
-        currentType = state.search.selectedType;
-    return Object.assign(query,{
-        type: currentType
-    });
-}
+};
 
 const runSearchWithQuery = (queryBody) => {
     return (dispatch) => {
@@ -130,8 +126,8 @@ const runSearchWithQuery = (queryBody) => {
             }).catch((e) => {
                 dispatch(getResultsFailure(e));
             });
-    }
-}
+    };
+};
 
 const getDisplayQueryString = (queryBody) => {
     // Determine how to show the query in the URL, depending on what's in the query body.
@@ -190,13 +186,14 @@ export const runSearch = () => {
 }
 
 /**
- * An async action for running a search that only returns the results for
- * a single result type. Used for sending sorting or pagination queries.
+ * An async reducer for running a single type search. This is usually
+ * used for sort and pagination requests.
+ * @param {string} typeToSearch - the MyTardis object type to run search on.
  */
-export const runSingleTypeSearch = () => {
+export const runSingleTypeSearch = (typeToSearch) => {
     return (dispatch, getState) => {
         const state = getState();
-        const queryBody = buildSingleQueryBody(state);
+        const queryBody = buildQueryBody(state, typeToSearch);
         dispatch(runSearchWithQuery(queryBody));
     }
 }

@@ -180,16 +180,24 @@ const mockStoreState = {
             '14'
         ]
     },
-    activeFilters: [{
-        kind: 'typeAttribute',
-        target: ['datasets', 'createdDate'],
-    }, {
-        kind: 'schemaParameter',
-        target: ['2', '4'],
-    }, {
-        kind: 'typeAttribute',
-        target: ['experiments','schema'],
-    }],
+    activeFilters: {
+        projects: [], 
+        experiments: [{
+            kind: 'typeAttribute',
+            target: ['experiments','schema'],
+        }],
+        datasets: [
+            {
+                kind: 'typeAttribute',
+                target: ['datasets', 'createdDate'],
+            }, 
+            {
+            kind: 'schemaParameter',
+            target: ['2', '4'],
+            }
+        ],
+        datafiles: []
+    },
     isLoading: false,
     error: null
 };
@@ -201,7 +209,7 @@ describe('Type attribute reducer', () => {
             attribute = "createdDate",
             newValue = { op: ">=", content: "2020-01-23" },
             expectedNewState = createNextState(mockStoreState, draft => {
-                draft.activeFilters.push({
+                draft.activeFilters[type].push({
                     kind: 'typeAttribute',
                     target: [type, attribute]
                 });
@@ -219,7 +227,7 @@ describe('Type attribute reducer', () => {
             attribute = "createdDate",
             newValue = null,
             expectedNewState = createNextState(mockStoreState, draft => {
-                draft.activeFilters = draft.activeFilters.filter(
+                draft.activeFilters[type] = draft.activeFilters[type].filter(
                     f => (
                         f.target[0] != "datasets" && f.target[1] != "createdDate"
                     )
@@ -254,7 +262,7 @@ describe('Schema parameter reducer', () => {
             parameter = "2",
             newValue = { op: 'contains', content: 'Blue' },
             expectedNewState = createNextState(mockStoreState, draft => {
-                draft.activeFilters.push({
+                draft.activeFilters["experiments"].push({
                     kind: "schemaParameter",
                     target: [schema, parameter]
                 });
@@ -272,7 +280,7 @@ describe('Schema parameter reducer', () => {
             parameter = "4",
             newValue = null,
             expectedNewState = createNextState(mockStoreState, draft => {
-                draft.activeFilters = draft.activeFilters.filter(
+                draft.activeFilters["datasets"] = draft.activeFilters["datasets"].filter(
                     f => (
                         f.target[0] != "2" && f.target[1] != "4"
                     )
@@ -308,7 +316,7 @@ describe('Active schema reducer', () => {
             value = {op: "is",content:["2"]},
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.types.byId[typeId].attributes.byId.schema.value = value;
-                draft.activeFilters.push({
+                draft.activeFilters[typeId].push({
                     kind: "typeAttribute",
                     target: [typeId, "schema"]
                 });
@@ -324,7 +332,7 @@ describe('Active schema reducer', () => {
             value = null,
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.types.byId[typeId].attributes.byId.schema.value = value;
-                draft.activeFilters = draft.activeFilters.filter( filter => (
+                draft.activeFilters[typeId] = draft.activeFilters[typeId].filter( filter => (
                     !(
                         filter.kind === "typeAttribute" &&
                         filter.target[0] === typeId &&
@@ -343,7 +351,7 @@ describe('Active schema reducer', () => {
             value = {op: "is",content:["14"]},
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.types.byId[typeId].attributes.byId.schema.value = value;
-                draft.activeFilters.push({
+                draft.activeFilters[typeId].push({
                     kind: "typeAttribute",
                     target: [typeId, "schema"]
                 });
@@ -351,7 +359,7 @@ describe('Active schema reducer', () => {
                 // Because schema ID "2" is also a dataset schema.
                 // By setting the active schema to only 14, this implicitly removes schema
                 // ID "2". 
-                draft.activeFilters = draft.activeFilters.filter( filter => 
+                draft.activeFilters[typeId] = draft.activeFilters[typeId].filter( filter => 
                     (!(
                         filter.kind === "schemaParameter" &&
                         filter.target[0] === "2" &&
@@ -415,7 +423,7 @@ describe('Reset and update filter state by query body', () => {
                     op: '<=', content: '15'
                 }
             ];
-            draft.activeFilters = [{kind: 'schemaParameter', target: ['1','11']}];
+            draft.activeFilters = {projects: [], datasets: [], datafiles: [], experiments: [{kind: 'schemaParameter', target: ['1','11']}]};
         });
         expect(reducer(mockStoreState,updateFiltersByQuery(twoValueQuery))).toEqual(expectedNewState);
     })
