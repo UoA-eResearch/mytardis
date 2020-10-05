@@ -529,7 +529,7 @@ def process_acls(bundle):
                     'id': obj_id,
                     'users': users,
                     'groups': groups}
-        return acl_dict
+        return [acl_dict]
 
 
 class PrettyJSONSerializer(Serializer):
