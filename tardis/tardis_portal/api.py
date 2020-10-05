@@ -314,7 +314,7 @@ def process_acls(bundle):
         dataset = None
         obj = bundle.obj
         ct = obj.get_ct()
-        ct_string = ct.model
+        ct_string = ct  # .model
         logger.error('CT = {}'.format(ct))
         obj_id = obj.id
         users.append(package_perms(bundle.request.user.id,
@@ -477,7 +477,7 @@ def process_acls(bundle):
                 group_name = member_group[0]
                 sensitive = member_group[1]
                 download = member_group[2]
-                group, created = Group.objects.get_or_create(name=grp_name)
+                group, created = Group.objects.get_or_create(name=group_name)
                 if created:
                     group.permissions.set(member_perms)
                 groups.append(package_perms(group.id,
