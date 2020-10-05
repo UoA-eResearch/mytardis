@@ -43,8 +43,8 @@ from ..shortcuts import return_response_error
 from .localdb_auth import django_user, django_group
 
 
-#1) this should probably go elsewhere
-#2) this is pretty inefficient with its database queries
+# 1) this should probably go elsewhere
+# 2) this is pretty inefficient with its database queries
 def bulk_replace_existing_acls(some_request):
 
     """ assume some default structure
@@ -95,7 +95,7 @@ def bulk_replace_existing_acls(some_request):
                     old_acl.isOwner = new_acls["users"][matched_idx]["isOwner"]
                     old_acl.save()
 
-            if old_acl.pluginId == "django_user":
+            if old_acl.pluginId == "django_group":
                 if old_acl.entityId not in [d['id'] for d in new_acls["groups"]]:
                     old_acl.delete()
                 else:
@@ -122,7 +122,7 @@ def bulk_replace_existing_acls(some_request):
                     content_type=new_acls["content_type"],
                     aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId')
 
-        for new_acl in ew_acls["users"]:
+        for new_acl in new_acls["users"]:
             if new_acl["id"] not in old_acls_user_ids:
                 acl = ObjectACL(content_type=new_acls["content_type"],
                                 object_id=new_acls["id"],
@@ -137,7 +137,7 @@ def bulk_replace_existing_acls(some_request):
                                 aclOwnershipType=ObjectACL.OWNER_OWNED)
                 acl.save()
 
-        for new_acl in ew_acls["groups"]:
+        for new_acl in new_acls["groups"]:
             if new_acl["id"] not in old_acls_group_ids:
                 acl = ObjectACL(content_type=new_acls["content_type"],
                                 object_id=new_acls["id"],
