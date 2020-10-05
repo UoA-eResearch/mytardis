@@ -6,7 +6,6 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 
 const _getValueContent = (value) => {
-    let valueContent = "";
     if (value) {
         if (value.op === "is") {
             // If this is an exact match filter,
