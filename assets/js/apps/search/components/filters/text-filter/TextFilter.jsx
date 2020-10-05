@@ -8,13 +8,13 @@ import PropTypes from 'prop-types';
 const _getValueContent = (value) => {
     let valueContent = "";
     if (value) {
-        if (value.op == "is") {
+        if (value.op === "is") {
             // If this is an exact match filter,
             // the value would be the first array element of content. 
             // This is because an "IS" operator filter
             // uses filters for values.
             return value.content[0];
-        } else if (value.op == "contains") {
+        } else if (value.op === "contains") {
             // If this is a fuzzy match filter,
             // the value would just be the content string.
             return value.content;
