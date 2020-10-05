@@ -164,6 +164,35 @@ def get_user_from_upi(upi):
         return details
 
 
+def create_acl(content_type,
+               object_id,
+               plugin_id,
+               entity_id,
+               write=False,
+               download=False,
+               sensitive=False,
+               owner=False,
+               admin=False):
+    if admin:
+        download = True
+        sensitive = True
+        owner = True
+        write = True
+    acl = ObjectACL(content_type=content_type,
+                    object_id=object_id,
+                    pluginId=plugin_id,
+                    entityId=str(entity_id),
+                    canRead=True,
+                    canDownload=download,
+                    canWrite=write,
+                    canDelete=False,
+                    canSensitive=sensitive,
+                    isOwner=owner,
+                    aclOwnershipType=ObjectACL.OWNER_OWNED)
+    acl.save()
+    return True
+
+
 def check_and_create_user(username,
                           is_admin=False):
     if not User.objects.filter(username=username).exists():
@@ -222,8 +251,8 @@ def create_traverse_perms(plugin_id,
             if dataset:
                 if entity not in Dataset.safe.users(dataset.id):
                     create_acl(dataset.get_ct(),
-                               dataset.id
-                               plugin_id
+                               dataset.id,
+                               plugin_id,
                                entity_id)
     elif plugin_id == django_group:
         if entity not in Project.safe.groups(project.id):
