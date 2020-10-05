@@ -522,7 +522,7 @@ def process_acls(bundle):
 
 
 class PrettyJSONSerializer(Serializer):
-    json_indent = 4
+    json_indent = 2
 
     def to_json(self, data, options=None):
         options = options or {}
