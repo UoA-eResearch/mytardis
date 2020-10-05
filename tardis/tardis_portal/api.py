@@ -314,15 +314,16 @@ def process_acls(bundle):
         dataset = None
         obj = bundle.obj
         ct = obj.get_ct()
-        logger.debug('CT = {}'.format(ct))
+        ct_string = ct.model
+        logger.error('CT = {}'.format(ct))
         obj_id = obj.id
         users.append(package_perms(bundle.request.user.id,
                                    is_admin=True))
-        if ct == 'project':
+        if ct_string == 'project':
             project = obj
             project_lead = project.lead_researcher
         else:
-            if ct == 'experiment':
+            if ct_string == 'experiment':
                 logger.debug('Experiment found')
                 try:
                     project = ProjectResource.get_via_uri(
@@ -334,7 +335,7 @@ def process_acls(bundle):
                 parent = project
                 project_lead = project.lead_researcher
                 logger.debug('Parent project: {}'.format(parent.name))
-            elif ct == 'dataset':
+            elif ct_string == 'dataset':
                 logger.debug('Dataset found')
                 try:
                     experiment_uri = bundle.data['experiments'][0]
@@ -349,7 +350,8 @@ def process_acls(bundle):
                 project_lead = project.lead_researcher
                 logger.debug('Parent project: {}'.format(project.name))
                 parent = experiment
-            elif ct == 'datafile':
+            elif ct_string == 'data file':
+                ct = 'datafile'
                 logger.debug('Datafile found')
                 try:
                     dataset_uri = bundle.data['dataset']
