@@ -11,7 +11,7 @@ const _getValueContent = (value) => {
             // If this is an exact match filter,
             // the value would be the first array element of content. 
             // This is because an "IS" operator filter
-            // uses filters for values.
+            // uses an array for value.
             return value.content[0];
         } else if (value.op === "contains") {
             // If this is a fuzzy match filter,
