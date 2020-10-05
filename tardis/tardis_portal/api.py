@@ -309,6 +309,7 @@ def process_acls(bundle):
     member_groups = None
     logger.debug('Processing ACLs')
     if getattr(bundle.obj, 'id', False):
+        project = None
         experiment = None
         dataset = None
         obj = bundle.obj
