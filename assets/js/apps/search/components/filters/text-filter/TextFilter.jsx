@@ -5,6 +5,27 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 
+const _getValueContent = (value) => {
+    let valueContent = "";
+    if (value) {
+        if (value.op == "is") {
+            // If this is an exact match filter,
+            // the value would be the first array element of content. 
+            // This is because an "IS" operator filter
+            // uses filters for values.
+            return value.content[0];
+        } else if (value.op == "contains") {
+            // If this is a fuzzy match filter,
+            // the value would just be the content string.
+            return value.content;
+        } else {
+            return "";
+        }
+    } else {
+        return "";
+    }
+}
+
 const TextFilter = ({value,options,onValueChange}) => { 
     // Make a copy of the options first.
     options = Object.assign({},options);
@@ -14,10 +35,17 @@ const TextFilter = ({value,options,onValueChange}) => {
     if (!options.hint) {
         options.hint = "";
     }
-    const initialState = value ? value.content : "";
+    const initialState = _getValueContent(value);
     const [localValue, setLocalValue] = useState( initialState );
     useEffect(() => {
-        setLocalValue(value ? value.content : "");
+        // After the filter is initialised, the value may be
+        // updated externally - for example, we might restore an old value from
+        // query string in shareable URL.
+        // We update the local value when it is updated.
+        const newValue = _getValueContent(value);
+        if (newValue !== localValue){
+            setLocalValue(newValue);
+        }
     },[value])
     const handleValueChange = (e) => {
         setLocalValue(e.target.value);
