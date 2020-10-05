@@ -3,7 +3,8 @@ import reducer, {
     updateSchemaParameter,
     schemaParamSelector,
     updateActiveSchemas,
-    updateFiltersByQuery
+    updateFiltersByQuery,
+    buildFilterQuery
 } from "./filterSlice";
 import { createNextState } from "@reduxjs/toolkit";
 
@@ -428,3 +429,21 @@ describe('Reset and update filter state by query body', () => {
         expect(reducer(mockStoreState,updateFiltersByQuery(twoValueQuery))).toEqual(expectedNewState);
     })
 })
+
+describe("Filter query builder", ()=> {
+    it("should only include relevant filters in single type queries", () => {
+        const expectedValue = {
+            op: "and",
+            content: [
+                {
+                    kind: 'typeAttribute',
+                    target: ['experiments','schema'],
+                    type: "STRING",
+                    op: "is",
+                    content: ["1"]
+                }
+            ]
+        };
+        expect(buildFilterQuery(mockStoreState, "experiments")).toBe(expectedValue);
+    });
+});
