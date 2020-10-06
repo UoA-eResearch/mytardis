@@ -40,7 +40,8 @@ const initialState = {
     results:null,
     activeFilters: [],
     selectedType: "experiment",
-    selectedResult: null
+    selectedResult: null,
+    hideSensitive: true
 };
 
 const search = createSlice({
