@@ -88,7 +88,7 @@ def bulk_replace_existing_acls(some_request):
                 if old_acl.entityId not in [d['id'] for d in new_acls["users"]]:
                     old_acl.delete()
                 else:
-                    if old_acl.entityID in [d['entityId'] for d in modified_user_acls]:
+                    if old_acl.entityId in [d['entityId'] for d in modified_user_acls]:
                         old_acl.delete()
                     else:
                         matched_idx = [d['id'] for d in new_acls["users"]].index(
@@ -106,7 +106,7 @@ def bulk_replace_existing_acls(some_request):
                 if old_acl.entityId not in [d['id'] for d in new_acls["groups"]]:
                     old_acl.delete()
                 else:
-                    if old_acl.entityID in [d['entityId'] for d in modified_group_acls]:
+                    if old_acl.entityId in [d['entityId'] for d in modified_group_acls]:
                         old_acl.delete()
                     else:
                         matched_idx = [d['id'] for d in new_acls["groups"]].index(
