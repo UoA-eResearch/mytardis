@@ -363,7 +363,7 @@ def process_acls(bundle):
                 logger.debug('Parent dataset: {}'.format(dataset.description))
                 experiment = dataset.experiments.all()[0]
                 logger.debug('Parent experiment: {}'.format(experiment.title))
-4                project = experiment.project
+                project = experiment.project
                 project_lead = project.lead_researcher
                 logger.debug('Parent project: {}'.format(project.name))
                 parent = dataset
