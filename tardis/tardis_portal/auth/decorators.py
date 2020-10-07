@@ -46,7 +46,6 @@ from .localdb_auth import django_user, django_group
 # 1) this should probably go elsewhere
 # 2) this is pretty inefficient with its database queries
 def bulk_replace_existing_acls(some_request):
-
     """ assume some default structure
         [
             {
@@ -79,48 +78,61 @@ def bulk_replace_existing_acls(some_request):
         old_acls = ObjectACL.objects.filter(
             object_id=new_acls["id"],
             content_type=new_acls["content_type"],
-            aclOwnershipType=ObjectACL.OWNER_OWNED)     #pluginId=django_user,
+            aclOwnershipType=ObjectACL.OWNER_OWNED)  # pluginId=django_user,
+
+        modified_user_acls = []
+        modified_group_acls = []
 
         for old_acl in old_acls:
             if old_acl.pluginId == "django_user":
                 if old_acl.entityId not in [d['id'] for d in new_acls["users"]]:
                     old_acl.delete()
                 else:
-                    matched_idx = [d['id'] for d in new_acls["users"]].index(old_acl.entityId)
-                    old_acl.canRead = new_acls["users"][matched_idx]["canRead"]
-                    old_acl.canDownload = new_acls["users"][matched_idx]["canDownload"]
-                    old_acl.canWrite = new_acls["users"][matched_idx]["canWrite"]
-                    old_acl.canSensitive = new_acls["users"][matched_idx]["canSensitive"]
-                    old_acl.canDelete = new_acls["users"][matched_idx]["canDelete"]
-                    old_acl.isOwner = new_acls["users"][matched_idx]["isOwner"]
-                    old_acl.save()
+                    if old_acl.enitityID in [d['entityId'] for d in modified_user_acls]:
+                        old_acl.delete()
+                    else:
+                        matched_idx = [d['id'] for d in new_acls["users"]].index(
+                            old_acl.entityId)
+                        old_acl.canRead = new_acls["users"][matched_idx]["canRead"]
+                        old_acl.canDownload = new_acls["users"][matched_idx]["canDownload"]
+                        old_acl.canWrite = new_acls["users"][matched_idx]["canWrite"]
+                        old_acl.canSensitive = new_acls["users"][matched_idx]["canSensitive"]
+                        old_acl.canDelete = new_acls["users"][matched_idx]["canDelete"]
+                        old_acl.isOwner = new_acls["users"][matched_idx]["isOwner"]
+                        old_acl.save()
+                        modified_user_acls.append(old_acl)
 
             if old_acl.pluginId == "django_group":
                 if old_acl.entityId not in [d['id'] for d in new_acls["groups"]]:
                     old_acl.delete()
                 else:
-                    matched_idx = [d['id'] for d in new_acls["groups"]].index(old_acl.entityId)
-                    old_acl.canRead = new_acls["groups"][matched_idx]["canRead"]
-                    old_acl.canDownload = new_acls["groups"][matched_idx]["canDownload"]
-                    old_acl.canWrite = new_acls["groups"][matched_idx]["canWrite"]
-                    old_acl.canSensitive = new_acls["groups"][matched_idx]["canSensitive"]
-                    old_acl.canDelete = new_acls["groups"][matched_idx]["canDelete"]
-                    old_acl.isOwner = new_acls["groups"][matched_idx]["isOwner"]
-                    old_acl.save()
+                    if old_acl.enitityID in [d['entityId'] for d in modified_group_acls]:
+                        old_acl.delete()
+                    else:
+                        matched_idx = [d['id'] for d in new_acls["groups"]].index(
+                            old_acl.entityId)
+                        old_acl.canRead = new_acls["groups"][matched_idx]["canRead"]
+                        old_acl.canDownload = new_acls["groups"][matched_idx]["canDownload"]
+                        old_acl.canWrite = new_acls["groups"][matched_idx]["canWrite"]
+                        old_acl.canSensitive = new_acls["groups"][matched_idx]["canSensitive"]
+                        old_acl.canDelete = new_acls["groups"][matched_idx]["canDelete"]
+                        old_acl.isOwner = new_acls["groups"][matched_idx]["isOwner"]
+                        old_acl.save()
+                        modified_group_acls.append(old_acl)
 
         # likely inefficient to partially "duplicate" the first query
         old_acls_user_ids = ObjectACL.objects.filter(
-                    pluginId=django_user,
-                    object_id=new_acls["id"],
-                    content_type=new_acls["content_type"],
-                    aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
+            pluginId=django_user,
+            object_id=new_acls["id"],
+            content_type=new_acls["content_type"],
+            aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
 
         # likely inefficient to partially "duplicate" the first query
         old_acls_group_ids = ObjectACL.objects.filter(
-                    pluginId=django_group,
-                    object_id=new_acls["id"],
-                    content_type=new_acls["content_type"],
-                    aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
+            pluginId=django_group,
+            object_id=new_acls["id"],
+            content_type=new_acls["content_type"],
+            aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
 
         for new_acl in new_acls["users"]:
             if new_acl["id"] not in old_acls_user_ids:
@@ -188,13 +200,13 @@ def get_accessible_datafiles_for_user(request):
 def get_obj_parameter(pn_id, obj_id, ct_type):
     if ct_type == "project":
         return ProjectParameter.objects.get(name__id=pn_id,
-                                             parameterset__project__id=obj_id)
+                                            parameterset__project__id=obj_id)
     if ct_type == "experiment":
         return ExperimentParameter.objects.get(name__id=pn_id,
-                                             parameterset__experiment__id=obj_id)
+                                               parameterset__experiment__id=obj_id)
     if ct_type == "dataset":
         return DatasetParameter.objects.get(name__id=pn_id,
-                                             parameterset__dataset__id=obj_id)
+                                            parameterset__dataset__id=obj_id)
     if ct_type == "datafile":
         return DatafileParameter.objects.get(name__id=pn_id,
                                              parameterset__datafile__id=obj_id)
@@ -211,6 +223,7 @@ def has_ownership(request, obj_id, ct_type):
     if ct_type == 'datafile':
         return DataFile.safe.owned(request.user).filter(pk=obj_id).exists()
     return None
+
 
 def has_access(request, obj_id, ct_type):
     try:
@@ -309,10 +322,10 @@ def has_read_or_owner_ACL(request, obj_id, ct_type):
                pluginId=django_user,
                entityId=str(request.user.id),
                canRead=True)\
-               & (Q(effectiveDate__lte=datetime.today())
-                  | Q(effectiveDate__isnull=True))\
-               & (Q(expiryDate__gte=datetime.today())
-                  | Q(expiryDate__isnull=True))
+        & (Q(effectiveDate__lte=datetime.today())
+           | Q(effectiveDate__isnull=True))\
+        & (Q(expiryDate__gte=datetime.today())
+           | Q(expiryDate__isnull=True))
 
     # and finally check all the group based authorisation roles
     for name, group in request.user.userprofile.ext_groups:
@@ -321,10 +334,10 @@ def has_read_or_owner_ACL(request, obj_id, ct_type):
                    content_type=obj.get_ct(),
                    object_id=obj.id,
                    canRead=True)\
-                   & (Q(effectiveDate__lte=datetime.today())
-                      | Q(effectiveDate__isnull=True))\
-                   & (Q(expiryDate__gte=datetime.today())
-                      | Q(expiryDate__isnull=True))
+            & (Q(effectiveDate__lte=datetime.today())
+               | Q(effectiveDate__isnull=True))\
+            & (Q(expiryDate__gte=datetime.today())
+               | Q(expiryDate__isnull=True))
 
     # is there at least one ACL rule which satisfies the rules?
     from ..models.access_control import ObjectACL
