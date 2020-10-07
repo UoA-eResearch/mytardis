@@ -363,7 +363,7 @@ def process_acls(bundle):
                 logger.debug('Parent dataset: {}'.format(dataset.description))
                 experiment = dataset.experiments.all()[0]
                 logger.debug('Parent experiment: {}'.format(experiment.title))
-                project = experiment.project
+4                project = experiment.project
                 project_lead = project.lead_researcher
                 logger.debug('Parent project: {}'.format(project.name))
                 parent = dataset
@@ -379,11 +379,13 @@ def process_acls(bundle):
             logger.debug(bundle.data['admins'])
             if bundle.data['admins'] != []:
                 for admin in bundle.data['admins']:
-                    user = check_and_create_user(admin,
-                                                 is_admin=True)
-                    users.append(package_perms(user.id,
-                                               is_admin=True))
-                    admin_users.append(user)
+                    if admin != project_lead:
+                        user = check_and_create_user(admin,
+                                                     is_admin=True)
+                        if user.id not in [d['id'] for d in users]:
+                            users.append(package_perms(user.id,
+                                                       is_admin=True))
+                            admin_users.append(user)
         else:
             logger.debug('Admins not found')
             # Cascade from parent unless project
@@ -394,17 +396,18 @@ def process_acls(bundle):
                 member_flg = False
                 for admin in parent_admins:
                     # If admin is lead_researcher don't downgrade perms
-                    if admin.username != project.lead_researcher:
+                    if admin.username != project_lead:
                         # Check if user is explicitly defined as a member
                         # in which case they lose admin status
                         if 'members' in bundle.data.keys():
                             for member in bundle.data['members']:
                                 if member[0] == admin.username:
                                     member_flg = True
-                    if not member_flg:
-                        users.append(package_perms(admin.id,
-                                                   is_admin=True))
-                        admin_users.append(admin)
+                    if not member_flg and admin.username != project_lead:
+                        if user.id not in [d['id'] for d in users]:
+                            users.append(package_perms(admin.id,
+                                                       is_admin=True))
+                            admin_users.append(admin)
         if 'admin_groups' in bundle.data.keys():
             logger.debug('Admin Groups found')
             logger.debug(bundle.data['admin_groups'])
