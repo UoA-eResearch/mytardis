@@ -7,7 +7,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import Badge from 'react-bootstrap/Badge';
 import { useSelector, useDispatch } from "react-redux";
-import { updateSelectedResult, updateSelectedType } from "./searchSlice";
+import { updateSelectedResult, updateSelectedType,updateHideSensitiveData } from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 
@@ -200,7 +200,7 @@ PureResultList.propTypes = {
 }
 
 export function PureResultSection({ resultSets, selectedType,
-    onSelectType, selectedResult, onSelectResult, isLoading, error }) {
+    onSelectType, selectedResult, onSelectResult, isLoading, error, hideSensitiveData, onToggleSensitiveData }) {
     let counts;
     if (!resultSets) {
         resultSets = {};
@@ -235,6 +235,8 @@ export function PureResultSection({ resultSets, selectedType,
                     {(!isLoading && !error && currentCount > 0) &&
                         <EntryPreviewCard
                             data={selectedEntry}
+                            hideSensitiveData={hideSensitiveData}
+                            onToggleSensitiveData={onToggleSensitiveData}
                         />
                     }
                 </div>
@@ -271,6 +273,12 @@ export default function ResultSection() {
         searchInfo = useSelector(
             (state) => state.search
         );
+
+    const hideSensitiveData = useSelector(state => state.search.hideSensitiveData),
+        onToggleSensitiveData = () => {
+            dispatch(updateHideSensitiveData(hideSensitiveData))
+        };
+
     return (
         <PureResultSection
             resultSets={searchInfo.results}
@@ -280,6 +288,8 @@ export default function ResultSection() {
             onSelectType={onSelectType}
             selectedResult={selectedResult}
             onSelectResult={onSelectResult}
+            hideSensitiveData={hideSensitiveData}
+            onToggleSensitiveData={onToggleSensitiveData}
         />
     )
 }

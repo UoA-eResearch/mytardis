@@ -1,5 +1,6 @@
 import { Button, Table } from 'react-bootstrap';
 import React, { useState } from 'react';
+import { updateHideSensitiveData } from "../searchSlice";
 import './EntryPreviewCard.css'
 import moment from 'moment';
 import { FiUnlock, FiLock, FiX, FiPieChart } from 'react-icons/fi';
@@ -9,9 +10,10 @@ import {
     DatasetTabSticker,
     DatafileTabSticker
 } from '../TabStickers/TabSticker';
+// import { useSelector, useDispatch } from "react-redux";
 
 export default function EntryPreviewCard(props) {
-    let { data, onClick } = props;
+    let { data, onToggleSensitiveData, hideSensitiveData } = props;
     let type;
     if (data) {
         type = data.type;
@@ -74,10 +76,9 @@ export default function EntryPreviewCard(props) {
      * @param {Object} parameters The parameter section of the response data.
      */
     const previewParameterTable = (parameters) => {
-        let hideSensitive = false;
         return parameters.map((param, idx) => {
             if (param.hasOwnProperty("sensitive")) {
-                if (hideSensitive) {
+                if (hideSensitiveData) {
                     return (
                         <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
                             <td style={{ backgroundColor: '#fcfba2' }}><i class="fa fa-unlock-alt o-6"></i>{" " + param.pn_name}</td>
@@ -264,7 +265,7 @@ export default function EntryPreviewCard(props) {
                     Added on the {getDateAdded(data, type)}
                 </div>
             }
-            <Button onClick={toggleHideSensitiveState}>Show sensitive fields</Button>
+            <Button onClick={onToggleSensitiveData}>Show sensitive fields</Button>
             <ParameterTable parameters={data.parameters} />
             <div className="preview-card__button-wrapper--right">
                 <div className="preview-card__inline-block-wrapper">

@@ -41,7 +41,7 @@ const initialState = {
     activeFilters: [],
     selectedType: "experiment",
     selectedResult: null,
-    hideSensitive: true
+    hideSensitiveData: true
 };
 
 const search = createSlice({
@@ -80,6 +80,9 @@ const search = createSlice({
         },
         updateSelectedResult: (state, {payload: selectedResult}) => {
             state.selectedResult = selectedResult;
+        },
+        updateHideSensitiveData: (state) => {
+            state.hideSensitiveData = !state.hideSensitiveData;
         }
     }
 })
@@ -210,7 +213,8 @@ export const {
     getResultsFailure,
     updateSearchTerm,
     updateSelectedType,
-    updateSelectedResult
+    updateSelectedResult,
+    updateHideSensitiveData
 } = search.actions;
 
 export default search.reducer;
