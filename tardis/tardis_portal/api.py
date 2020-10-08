@@ -530,6 +530,46 @@ def process_acls(bundle):
     return False
 
 
+def clean_up_parameter_sets(bundle):
+    if getattr(bundle.obj, 'id', False):
+        parameterset = bundle.obj
+        existing_parameters = []
+        new_parameters = bundle.data['parameters']
+        return_params = []
+        if hasattr(bundle.obj, ProjectParameterSet):
+            old_parameters = ProjectParameter.objects.filter(
+                parameterset=parameterset)
+        elif hasattr(bundle.obj, ExperimentParameterSet):
+            old_parameters = ExperimentParameter.objects.filter(
+                parameterset=parameterset)
+        elif hasattr(bundle.obj, DatasetParameterSet):
+            old_parameters = DatasetParameter.objects.filter(
+                parameterset=parameterset)
+        elif hasattr(bundle.obj, DatafileParameterSet):
+            old_parameters = DatafileParameter.objects.filter(
+                parameterset=parameterset)
+        else:
+            return bundle
+        for parameter in old_parameters:
+            test_par = {}
+            if parameter.name.isNumeric():
+                test_par['value'] = str(parameter.numerical_value)
+            elif parameter.name.isDateTime():
+                test_par['value'] = str(parameter.datetime_value)
+            else:
+                test_par['value'] = parameter.string_value
+            test_par['name'] = parameter.name.name
+            if test_par not in existing_parameters:
+                existing_parameters.append(test_par)
+            else:
+                parameter.delete()
+        for parameter in new_parameters:
+            if parameter not in existing_parameters:
+                return_params.append(parameter)
+        bundle.data['parameters'] = return_params
+        return bundle
+
+
 class PrettyJSONSerializer(Serializer):
     json_indent = 2
 
@@ -1939,6 +1979,10 @@ class ParameterResource(MyTardisModelResource):
 
 class ParameterSetResource(MyTardisModelResource):
     schema = fields.ForeignKey(SchemaResource, 'schema', full=True)
+
+    def hydrate(self, bundle):
+        bundle = clean_up_parameter_sets(bundle)
+        return bundle
 
     def hydrate_schema(self, bundle):
         try:
