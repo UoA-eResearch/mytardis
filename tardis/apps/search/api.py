@@ -198,12 +198,12 @@ class SearchAppResource(Resource):
         #Mock input
         #request_for_pag = True
         #if request_for_pag:
-        #    request_offset = 20
+        #    request_offset = 37
         #    request_size = 50
-        #    request_sorting = [{ 'field': ["experiment","title"], 'order': "desc" },
-        #                       { 'field': ["project","name"], 'order': "desc" },
+        #    request_sorting = [#{ 'field': ["title"], 'order': "desc" },
+        #                       #{ 'field': ["experiments","title"], 'order': "desc" },
         #                       { 'field': ["size"], 'order': "desc" }]
-        #    request_type = 'dataset'
+        #    request_type = 'datafile'
         if request_type is None:
             index_list = ['project', 'experiment', 'dataset', 'datafile']
             match_list = ['name','title','description','filename']
@@ -444,19 +444,35 @@ class SearchAppResource(Resource):
 
             ######TODO (5) Do some sorting
             # Default sorting
-            sort_dict = {match_list[idx]+".raw" : {"order" : "asc"}}
-            if request_sorting is not None:
-                for sort in request_sorting:
-                    if len(sort["field"]) > 1:
-                        if obj == sort["field"][0]:
-                            if sort["field"][1] in match_list:
-                                sort_dict[sort["field"][1]+".raw"] = {"order": sort["order"]}
-                            else:
-                                sort_dict[sort["field"][1]] = {"order": sort["order"]}
-                    if len(sort["field"]) == 1:
-                        if sort["field"][0] == 'size':
-                            #DO SOME SORTING AFTER ELASTICSEARCH
-                            pass
+            sort_dict = {}
+            if request_type is not None:
+                if request_sorting is not None:
+                    for sort in request_sorting:
+                        if obj == request_type:
+                            if len(sort["field"]) > 1:
+                                if sort["field"][-1] in match_list:
+                                    search_field = ".".join(sort["field"])+".raw"
+                                else:
+                                    search_field = ".".join(sort["field"])
+                                sort_dict[search_field] = {"order": sort["order"],
+                                                           "nested_path" : ".".join(sort["field"][:-1])}
+
+                            if len(sort["field"]) == 1:
+                                if sort["field"][0] in match_list:
+                                    sort_dict[sort["field"][0]+".raw"] = {"order": sort["order"]}
+                                elif sort["field"][0] == 'size':
+                                    if obj == 'datafile':
+                                        sort_dict[sort["field"][0]] = {"order": sort["order"]}
+                                    else:
+                                        #DO SOME SORTING AFTER ELASTICSEARCH
+                                        pass
+                                else:
+                                    sort_dict[sort["field"][0]] = {"order": sort["order"]}
+
+            # If sort dict is still empty even after filters, add in the defaults
+            if not sort_dict:
+                sort_dict = {match_list[idx]+".raw" : {"order" : "asc"}}
+
 
             # (6) Add the search to the multi-search object, ready for execution
             ms = ms.add(Search(index=obj).sort(sort_dict)
