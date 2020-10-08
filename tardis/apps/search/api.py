@@ -51,8 +51,9 @@ else:
 
 
 class SearchObject(object):
-    def __init__(self, hits=None, id=None):
+    def __init__(self, hits=None, total_hits=None, id=None):
         self.hits = hits
+        self.total_hits = total_hits
         self.id = id
 
 
@@ -148,6 +149,7 @@ class SchemasAppResource(Resource):
 class SearchAppResource(Resource):
     """Tastypie resource for simple-search"""
     hits = fields.ApiField(attribute='hits', null=True)
+    total_hits = fields.ApiField(attribute='total_hits', null=True)
 
     class Meta:
         resource_name = 'simple-search'
@@ -546,11 +548,17 @@ class SearchAppResource(Resource):
 
         # Create the result object which will be returned to the front-end
         result_dict = {k: [] for k in ["projects", "experiments", "datasets", "datafiles"]}
+        total_hits = {}
 
         # Clean and prepare the results "hit" objects and append them to the results_dict
         for item in results:
             for hit_attrdict in item.hits.hits:
                 hit = hit_attrdict.to_dict()
+
+                # Add total search results of object type in not already added
+                if hit["_index"] not in total_hits.keys():
+                    total_hits[hit["_index"]+'s'] = item.hits.total.value
+
                 # Default sensitive permission and size of object
                 sensitive_bool = False
                 size = 0
@@ -664,9 +672,10 @@ class SearchAppResource(Resource):
         # If individual object type requested, limit the returned values to that object type
         if request_type is not None:
             result_dict = {request_type+'s' : result_dict.pop(request_type+'s')}
+            total_hits = {request_type+'s' : total_hits.pop(request_type+'s')}
 
         # add search results to bundle, and return bundle
-        bundle.obj = SearchObject(id=1, hits=result_dict)
+        bundle.obj = SearchObject(id=1, hits=result_dict, total_hits=total_hits)
         return bundle
 
 
