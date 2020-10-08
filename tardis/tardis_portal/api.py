@@ -536,16 +536,16 @@ def clean_up_parameter_sets(bundle):
         existing_parameters = []
         new_parameters = bundle.data['parameters']
         return_params = []
-        if hasattr(bundle.obj, ProjectParameterSet):
+        if isinstance(bundle.obj, ProjectParameterSet):
             old_parameters = ProjectParameter.objects.filter(
                 parameterset=parameterset)
-        elif hasattr(bundle.obj, ExperimentParameterSet):
+        elif isinstance(bundle.obj, ExperimentParameterSet):
             old_parameters = ExperimentParameter.objects.filter(
                 parameterset=parameterset)
-        elif hasattr(bundle.obj, DatasetParameterSet):
+        elif isinstance(bundle.obj, DatasetParameterSet):
             old_parameters = DatasetParameter.objects.filter(
                 parameterset=parameterset)
-        elif hasattr(bundle.obj, DatafileParameterSet):
+        elif isinstance(bundle.obj, DatafileParameterSet):
             old_parameters = DatafileParameter.objects.filter(
                 parameterset=parameterset)
         else:
