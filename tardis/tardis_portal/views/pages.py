@@ -99,25 +99,20 @@ def use_rapid_connect(fn):
              output context.
     :rtype: types.FunctionType
     """
-
     def add_rapid_connect_settings(cxt, *args, **kwargs):
         c = fn(cxt, *args, **kwargs)
-
         c['RAPID_CONNECT_ENABLED'] = getattr(settings,
                                              'RAPID_CONNECT_ENABLED', False)
-
         if c['RAPID_CONNECT_ENABLED']:
             c['RAPID_CONNECT_LOGIN_URL'] = \
                 getattr(settings, 'RAPID_CONNECT_CONFIG', {}).get(
                     'authnrequest_url',
                     None)
-
             if not c['RAPID_CONNECT_LOGIN_URL']:
                 raise ImproperlyConfigured(
                     "RAPID_CONNECT_CONFIG['authnrequest_url'] must be "
                     "configured in settings if RAPID_CONNECT_ENABLED is True.")
         return c
-
     return add_rapid_connect_settings
 
 
@@ -175,15 +170,12 @@ class IndexView(TemplateView):
         :return: The Django response object
         :rtype: :class:`django.http.HttpResponse`
         """
-
         c = self.get_context_data(request, **kwargs)
-
         return render_response_index(request, self.template_name, c)
 
 
 class DatasetView(TemplateView):
     template_name = 'tardis_portal/view_dataset.html'
-
     # TODO: Can me make this a generic function like site_routed_view
     #       that will take an Experiment, Dataset or DataFile and
     #       the associated routing list from settings ?
@@ -235,19 +227,15 @@ class DatasetView(TemplateView):
         :return: A dictionary of values for the view/template.
         :rtype: dict
         """
-
         def get_datafiles_page():
             # pagination was removed by someone in the interface but not here.
             # need to fix.
             pgresults = 100
-
             paginator = Paginator(dataset.datafile_set.all(), pgresults)
-
             try:
                 page = int(request.GET.get('page', '1'))
             except ValueError:
                 page = 1
-
             # If page request is out of range (eg 9999), deliver last page of
             # results.
             try:
@@ -295,7 +283,6 @@ class DatasetView(TemplateView):
              'carousel_slice': carousel_slice,
              }
         )
-
         # Enables UI elements for the push_to app
         if c['push_to_enabled']:
             push_to_args = {
@@ -303,9 +290,7 @@ class DatasetView(TemplateView):
             }
             c['push_to_url'] = reverse('tardis.apps.push_to.views.initiate_push_dataset',
                                        kwargs=push_to_args)
-
         _add_protocols_and_organizations(request, dataset, c)
-
         return c
 
     def get(self, request, *args, **kwargs):
@@ -325,7 +310,6 @@ class DatasetView(TemplateView):
         dataset_id = kwargs.get('dataset_id', None)
         if dataset_id is None:
             return return_response_error(request)
-
         try:
             dataset = Dataset.safe.get(request.user, dataset_id)
         except PermissionDenied:
@@ -336,25 +320,16 @@ class DatasetView(TemplateView):
         view_override = self.find_custom_view_override(request, dataset)
         if view_override is not None:
             return view_override
-
         c = self.get_context_data(request, dataset, **kwargs)
 
         template_name = kwargs.get('template_name', None)
         if template_name is None:
             template_name = self.template_name
-
         return render_response_index(request, template_name, c)
 
 
-#class ProjectDetails(TemplateView):
-#    template_name = 'tardis_portal/project_details.html'
-
-#=================================
-#Project View
-#=================================
 class ProjectView(TemplateView):
     template_name = 'tardis_portal/project_details.html'
-
     # TODO: Can me make this a generic function like site_routed_view
     #       that will take an Experiment, Dataset or DataFile and
     #       the associated routing list from settings ?
@@ -364,14 +339,14 @@ class ProjectView(TemplateView):
     def find_custom_view_override(self, request, project):
         """
         Determines if any custom view overrides have been defined in
-        settings.DATASET_VIEWS and returns the view function if a match
-        to one the schemas for the dataset is found.
+        settings.PROJECT_VIEWS and returns the view function if a match
+        to one the schemas for the project is found.
         (DATASET_VIEWS is a list of (schema_namespace, view_function) tuples).
 
         :param request:
         :type request:
-        :param dataset:
-        :type dataset:
+        :param project:
+        :type project:
         :return:
         :rtype:
         """
@@ -400,29 +375,23 @@ class ProjectView(TemplateView):
 
         :param request: a HTTP request object
         :type request: :class:`django.http.HttpRequest`
-        :param dataset: the Dataset model instance
-        :type dataset: tardis.tardis_portal.models.dataset.Dataset
+        :param project: the Project model instance
+        :type project: tardis.tardis_portal.models.project.Project
         :param dict kwargs:
         :return: A dictionary of values for the view/template.
         :rtype: dict
         """
 
         # This might need to be more complex to account for users
-
         c = super().get_context_data(**kwargs)
-
         c['subtitle'] = project.name
         c['project'] = project
-
-
         c.update(
             {'project': project,
              'subtitle': project.name,
              }
         )
-
         #_add_protocols_and_organizations(request, project, c)
-
         return c
 
     def get(self, request, *args, **kwargs):
@@ -442,27 +411,21 @@ class ProjectView(TemplateView):
         project_id = kwargs.get('project_id', None)
         if project_id is None:
             return return_response_error(request)
-
         try:
             project = Project.safe.get(request.user, project_id)
         except PermissionDenied:
             return return_response_error(request)
         except Project.DoesNotExist:
             return return_response_not_found(request)
-
         view_override = self.find_custom_view_override(request, project)
         if view_override is not None:
             return view_override
-
         c = self.get_context_data(request, Project, **kwargs)
-
         template_name = kwargs.get('template_name', None)
         if template_name is None:
             template_name = self.template_name
-
         return render_response_index(request, template_name, c)
 
-    #=================================
 
 def about(request):
 
@@ -488,11 +451,9 @@ def my_data(request):
     '''
     show owned data with credential-based access
     '''
-
     owned_experiments = \
         Experiment.safe.owned(request.user).order_by('-update_time')
     exps_expand_accordion = getattr(settings, 'EXPS_EXPAND_ACCORDION', 5)
-
     c = {
         'owned_experiments': owned_experiments,
         'exps_expand_accordion': exps_expand_accordion
@@ -505,11 +466,9 @@ def shared(request):
     '''
     show shared data with credential-based access
     '''
-
     shared_experiments = \
         Experiment.safe.shared(request.user).order_by('-update_time')
     exps_expand_accordion = getattr(settings, 'EXPS_EXPAND_ACCORDION', 5)
-
     c = {
         'shared_experiments': shared_experiments,
         'exps_expand_accordion': exps_expand_accordion
@@ -545,10 +504,8 @@ def _resolve_view(view_function_or_string):
         obj = view_function_or_string
     else:
         raise TypeError("Must provide a string or a view function")
-
     if inspect.isclass(obj) and issubclass(obj, View):
         obj = obj.as_view()
-
     return obj
 
 

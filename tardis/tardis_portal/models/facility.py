@@ -28,7 +28,7 @@ class Facility(models.Model):
     url = models.URLField(max_length=255,
                           null=True, blank=True)
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
-    
+
     class Meta:
         app_label = 'tardis_portal'
         verbose_name_plural = 'Facilities'
