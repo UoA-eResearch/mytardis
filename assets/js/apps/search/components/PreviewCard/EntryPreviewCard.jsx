@@ -4,6 +4,7 @@ import { updateHideSensitiveData, updateSelectedResult } from "../searchSlice";
 import './EntryPreviewCard.css'
 import moment from 'moment';
 import { FiUnlock, FiLock, FiX, FiPieChart } from 'react-icons/fi';
+import { Switch } from "react-switch";
 import {
     ProjectTabSticker,
     ExperimentTabSticker,
@@ -87,19 +88,19 @@ export default function EntryPreviewCard(props) {
      */
     const previewParameterTable = (parameters) => {
         return parameters.map((param, idx) => {
-            if (param.hasOwnProperty("sensitive")) {
-                if (hideSensitiveData) {
+            if (param.hasOwnProperty("sensitive") || true) {
+                if (!hideSensitiveData) {
                     return (
                         <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
-                            <td style={{ backgroundColor: '#fcfba2' }}><i class="fa fa-unlock-alt o-6"></i>{" " + param.pn_name}</td>
+                            <td style={{ backgroundColor: '#fcfba2' }}>{" " + param.pn_name}</td>
                             <td style={{ backgroundColor: '#fcfba2' }}><i class="fa fa-unlock-alt o-6"></i>{" " + param.value}</td>
                         </tr>
                     )
                 } else {
                     return (
                         <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
-                            <td style={{ backgroundColor: '#fcfba2' }}><FiLock aria-label="Sensitive parameter name"></FiLock>{" " + param.pn_name}</td>
-                            <td style={{ backgroundColor: '#fcfba2' }}><FiLock aria-label="Sensitive parameter value"></FiLock><i> Hidden. Click to show.</i></td>
+                            <td >{" " + param.pn_name}</td>
+                            <td ><FiLock aria-label="Sensitive parameter value"></FiLock><i> Hidden. Click to show.</i></td>
                         </tr>
                     )
                 }
@@ -271,6 +272,7 @@ export default function EntryPreviewCard(props) {
                 </div>
             }
             <Button onClick={toggleSensitiveData}>Show sensitive fields</Button>
+            <Switch onChange={toggleSensitiveData} checked={hideSensitiveData}></Switch>
             <ParameterTable parameters={data.parameters} />
             <div className="preview-card__button-wrapper--right">
                 <div className="preview-card__inline-block-wrapper">
