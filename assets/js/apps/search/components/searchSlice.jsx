@@ -82,8 +82,7 @@ const search = createSlice({
             state.selectedResult = selectedResult;
         },
         updateHideSensitiveData: (state) => {
-            // state.hideSensitiveData = !state.hideSensitiveData;
-            state.hideSensitiveData = true;
+            state.hideSensitiveData = !state.hideSensitiveData;
         }
     }
 })
