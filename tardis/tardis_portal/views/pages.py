@@ -147,6 +147,11 @@ class IndexView(TemplateView):
                 '-update_time')[:limit]
         c['public_experiments'] = public_experiments
         c['exps_expand_accordion'] = 1
+
+        private_projects = Project.safe.owned_and_shared(
+                    request.user).order_by('-start_date')
+        c['private_projects'] = private_projects
+        c['private_projects_count'] = private_projects.count()
         return c
 
     def get(self, request, *args, **kwargs):

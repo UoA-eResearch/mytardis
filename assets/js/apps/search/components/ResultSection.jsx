@@ -82,7 +82,7 @@ export function ResultRow({ result, onSelect, isSelected }) {
             onSelect(e);
         };
     return (
-        <tr className={isSelected ? "result-section--row table-active" : "result-section--row" } onClick={onSelect} onKeyUp={onKeyboardSelect} tabIndex="0" role="button">
+        <tr className={isSelected ? "result-section--row table-active" : "result-section--row"} onClick={onSelect} onKeyUp={onKeyboardSelect} tabIndex="0" role="button">
             <td className="result-row--download-col">
                 {result.userDownloadRights == "none" &&
                     <OverlayTrigger overlay={
@@ -217,31 +217,31 @@ export function PureResultSection({ resultSets, selectedType,
         }
     }
 
-        let selectedEntry = getSelectedEntry(resultSets, selectedResult, selectedType);
+    let selectedEntry = getSelectedEntry(resultSets, selectedResult, selectedType);
 
-        const currentResultSet = resultSets[selectedType],
-            currentCount = counts[selectedType];
-        return (
-            <>
-                <ResultTabs counts={counts} selectedType={selectedType} onChange={onSelectType} />
-                <div role="tabpanel" className="result-section--tabpanel">
-                    {(!isLoading && !error) &&
-                        <p className="result-section--count-summary">
-                            <span>Showing {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
-                        </p>
+    const currentResultSet = resultSets[selectedType],
+        currentCount = counts[selectedType];
+    return (
+        <>
+            <ResultTabs counts={counts} selectedType={selectedType} onChange={onSelectType} />
+            <div role="tabpanel" className="result-section--tabpanel">
+                {(!isLoading && !error) &&
+                    <p className="result-section--count-summary">
+                        <span>Showing {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
+                    </p>
+                }
+                <div className="tabpanel__container--horizontal">
+                    <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
+                    {(!isLoading && !error && currentCount > 0) &&
+                        <EntryPreviewCard
+                            data={selectedEntry}
+                        />
                     }
-                    <div className="tabpanel__container--horizontal">
-                        <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
-                        {(!isLoading && !error && currentCount > 0) &&
-                            <EntryPreviewCard
-                                data={selectedEntry}
-                            />
-                        }
-                    </div>
                 </div>
-            </>
-        )
-    }
+            </div>
+        </>
+    )
+}
 
 
 /**
@@ -258,28 +258,28 @@ function getSelectedEntry(resultSets, selectedResult, selectedType) {
     return selectedEntry;
 }
 
-    export default function ResultSection() {
-        const selectedType = useSelector(state => state.search.selectedType),
-            selectedResult = useSelector(state => state.search.selectedResult),
-            dispatch = useDispatch(),
-            onSelectType = (type) => {
-                dispatch(updateSelectedType(type));
-            },
-            onSelectResult = (selectedResult) => {
-                dispatch(updateSelectedResult(selectedResult));
-            },
-            searchInfo = useSelector(
-                (state) => state.search
-            );
-        return (
-            <PureResultSection
-                resultSets={searchInfo.results}
-                error={searchInfo.error}
-                isLoading={searchInfo.isLoading}
-                selectedType={selectedType}
-                onSelectType={onSelectType}
-                selectedResult={selectedResult}
-                onSelectResult={onSelectResult}
-            />
-        )
-    }
+export default function ResultSection() {
+    const selectedType = useSelector(state => state.search.selectedType),
+        selectedResult = useSelector(state => state.search.selectedResult),
+        dispatch = useDispatch(),
+        onSelectType = (type) => {
+            dispatch(updateSelectedType(type));
+        },
+        onSelectResult = (selectedResult) => {
+            dispatch(updateSelectedResult(selectedResult));
+        },
+        searchInfo = useSelector(
+            (state) => state.search
+        );
+    return (
+        <PureResultSection
+            resultSets={searchInfo.results}
+            error={searchInfo.error}
+            isLoading={searchInfo.isLoading}
+            selectedType={selectedType}
+            onSelectType={onSelectType}
+            selectedResult={selectedResult}
+            onSelectResult={onSelectResult}
+        />
+    )
+}
