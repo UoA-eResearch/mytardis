@@ -1,6 +1,6 @@
 import { Button, Table } from 'react-bootstrap';
 import React, { useState } from 'react';
-import { updateHideSensitiveData } from "../searchSlice";
+import { updateHideSensitiveData, updateSelectedResult } from "../searchSlice";
 import './EntryPreviewCard.css'
 import moment from 'moment';
 import { FiUnlock, FiLock, FiX, FiPieChart } from 'react-icons/fi';
@@ -10,14 +10,23 @@ import {
     DatasetTabSticker,
     DatafileTabSticker
 } from '../TabStickers/TabSticker';
-// import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function EntryPreviewCard(props) {
-    let { data, onToggleSensitiveData, hideSensitiveData } = props;
+    let { data } = props;
     let type;
     if (data) {
         type = data.type;
     }
+
+    // setting up redux logic
+    let hideSensitiveData = useSelector(state => state.search.hideSensitiveData);
+    const dispatch = useDispatch(),
+    toggleSensitiveData = () => {
+        console.log('from', hideSensitiveData);
+        dispatch(updateHideSensitiveData());
+        console.log('to', hideSensitiveData);
+    };
 
     /**
      * Simply cuts of the time portion of the date
@@ -70,6 +79,7 @@ export default function EntryPreviewCard(props) {
         }
         return (!!date ? formatDate(date) : null);
     }
+
 
     /**
      * Returns an table of parameters.
@@ -226,13 +236,6 @@ export default function EntryPreviewCard(props) {
         }
     }
 
-    /**
-     * Changes the hide sensitive data state to the opposite it's current state.    
-     */
-    const toggleHideSensitiveState = () => {
-        alert('hide sens data');
-    }
-
     if (data === null) {
         return (
             <div className="preview-card__body">
@@ -240,6 +243,8 @@ export default function EntryPreviewCard(props) {
             </div>
         )
     }
+
+
     return (
         <div className="preview-card__body">
             <span className="preview-card__close" aria-label="Close preview panel">
@@ -265,7 +270,7 @@ export default function EntryPreviewCard(props) {
                     Added on the {getDateAdded(data, type)}
                 </div>
             }
-            <Button onClick={onToggleSensitiveData}>Show sensitive fields</Button>
+            <Button onClick={toggleSensitiveData}>Show sensitive fields</Button>
             <ParameterTable parameters={data.parameters} />
             <div className="preview-card__button-wrapper--right">
                 <div className="preview-card__inline-block-wrapper">
