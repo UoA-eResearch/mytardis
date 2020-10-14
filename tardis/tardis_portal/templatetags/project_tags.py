@@ -30,7 +30,7 @@ def project_experiments_badge(project_id, user):
     """
     count = Experiment.safe.all(user).filter(project__id=project_id).count()
     return render_mustache('tardis_portal/badges/experiment_count', {
-        'title': "%d file%s" % (count, pluralize(count)),
+        'title': "%d experiment%s" % (count, pluralize(count)),
         'count': count,
     })
 
