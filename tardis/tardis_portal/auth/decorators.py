@@ -43,11 +43,18 @@ from ..shortcuts import return_response_error
 from .localdb_auth import django_user, django_group
 
 
-# 1) this should probably go elsewhere
-# 2) this is pretty inefficient with its database queries
-# 3) should probably be refactored to separate users/groups out a bit more
-#    efficiently than the current "if" statements
 def bulk_replace_existing_acls(some_request, admin_flag=False):
+    # 1) To work on users(groups), supply users(groups) key in request_dict
+    # 2) lead_researchers/created_by users are treated as immutable by this function
+    # 3) "admins"(users/groups with isOwner permission), are treated as immutable
+    #    unless admin_flag is True
+    # 4) Empty lists will delete all old acls (obeying immutability)
+
+    # --- Issues ---
+    # 1) this should probably go elsewhere
+    # 2) this is pretty inefficient with its database queries
+    # 3) should probably be refactored to separate users/groups out a bit more
+    #    efficiently than the current "if" statements
     """ assume some default structure
         [
             {
