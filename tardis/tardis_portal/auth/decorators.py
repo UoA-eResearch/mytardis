@@ -43,8 +43,6 @@ from ..shortcuts import return_response_error
 from .localdb_auth import django_user, django_group
 
 
-# Todo: don't delete owners/project lead ACLs
-
 # 1) this should probably go elsewhere
 # 2) this is pretty inefficient with its database queries
 def bulk_replace_existing_acls(some_request, admin_flag=False):
@@ -74,6 +72,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
             }
         ]
     """
+
     # used for heirarchical look up of lead_researcher/creator, in order to
     # preserve their ACLs from being edited
     createdby_lead_dict = {"project": ["created_by__id","lead_researcher__id"],
@@ -103,7 +102,9 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
         #Used to filter out any duplicate ACLs
         modified_user_acls = []
         modified_group_acls = []
+
         for old_acl in old_acls:
+
             if old_acl.pluginId == "django_user":
                 # If old ACL user_entity is a project_lead or creator (created_by)
                 # for any (parent) projects or experiments, then we do not wish to
@@ -150,6 +151,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                         # any further duplicate entries of it in the database
                         modified_user_acls.append(old_acl)
 
+
             if old_acl.pluginId == "django_group":
                 # If requested list is empty: delete old ACLs
                 if not new_acls["groups"]:
@@ -177,6 +179,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                         # Add old ACL to "processed" list, in order to delete
                         # any further duplicate entries of it in the database
                         modified_group_acls.append(old_acl)
+
 
         # likely inefficient to partially "duplicate" the first query,
         # but convenient flat list of IDs
