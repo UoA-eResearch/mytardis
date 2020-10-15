@@ -121,7 +121,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                 if new_acls["content_type"] == 'data file':
                     protected_users = list(DataFile.objects.get(id=new_acls["id"]
                                            ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
-                protected_users = [str(id) for user_id_dict.values() for user_id_dict in protected_users]
+                protected_users = [str(id) for id in user_id_dict.values() for user_id_dict in protected_users]
                 if old_acl.entityId in protected_users:
                     continue
                 # If requested list is empty: delete old ACLs
