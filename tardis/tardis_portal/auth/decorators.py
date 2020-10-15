@@ -45,6 +45,8 @@ from .localdb_auth import django_user, django_group
 
 # 1) this should probably go elsewhere
 # 2) this is pretty inefficient with its database queries
+# 3) should probably be refactored to separate users/groups out a bit more
+#    efficiently than the current "if" statements
 def bulk_replace_existing_acls(some_request, admin_flag=False):
     """ assume some default structure
         [
@@ -106,128 +108,132 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
         for old_acl in old_acls:
 
             if old_acl.pluginId == "django_user":
-                # If old ACL user_entity is a project_lead or creator (created_by)
-                # for any (parent) projects or experiments, then we do not wish to
-                # change their permissions in any way, so we skip this old ACL
-                if new_acls["content_type"] == 'project':
-                    protected_users = list(Project.objects.get(id=new_acls["id"]
-                                           ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
-                if new_acls["content_type"] == 'experiment':
-                    protected_users = list(Experiment.objects.get(id=new_acls["id"]
-                                           ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
-                if new_acls["content_type"] == 'dataset':
-                    protected_users = list(Dataset.objects.get(id=new_acls["id"]
-                                           ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
-                if new_acls["content_type"] == 'data file':
-                    protected_users = list(DataFile.objects.get(id=new_acls["id"]
-                                           ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
-                protected_users = [str(id) for id in user_id_dict.values() for user_id_dict in protected_users]
-                if old_acl.entityId in protected_users:
-                    continue
-                # If requested list is empty: delete old ACLs
-                if not new_acls["users"]:
-                    old_acl.delete()
-                    continue
-                # If old ACL user is not in new list of users, delete ACL
-                if old_acl.entityId not in [d['id'] for d in new_acls["users"]]:
-                    old_acl.delete()
-                else:
-                    # If this ACL is a duplicate, delete it
-                    if old_acl.entityId in [d.entityId for d in modified_user_acls]:
+                if "users" in new_acls.keys():
+                    # If old ACL user_entity is a project_lead or creator (created_by)
+                    # for any (parent) projects or experiments, then we do not wish to
+                    # change their permissions in any way, so we skip this old ACL
+                    if new_acls["content_type"] == 'project':
+                        protected_users = list(Project.objects.get(id=new_acls["id"]
+                                               ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
+                    if new_acls["content_type"] == 'experiment':
+                        protected_users = list(Experiment.objects.get(id=new_acls["id"]
+                                               ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
+                    if new_acls["content_type"] == 'dataset':
+                        protected_users = list(Dataset.objects.get(id=new_acls["id"]
+                                               ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
+                    if new_acls["content_type"] == 'data file':
+                        protected_users = list(DataFile.objects.get(id=new_acls["id"]
+                                               ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
+                    protected_users = [str(id) for id in user_id_dict.values() for user_id_dict in protected_users]
+                    if old_acl.entityId in protected_users:
+                        continue
+                    # If requested list is empty: delete old ACLs
+                    if not new_acls["users"]:
+                        old_acl.delete()
+                        continue
+                    # If old ACL user is not in new list of users, delete ACL
+                    if old_acl.entityId not in [d['id'] for d in new_acls["users"]]:
                         old_acl.delete()
                     else:
-                        # If user already has permissions, update old ACL
-                        # according to new permissions
-                        matched_idx = [d['id'] for d in new_acls["users"]].index(
-                            old_acl.entityId)
-                        old_acl.canRead = new_acls["users"][matched_idx]["canRead"]
-                        old_acl.canDownload = new_acls["users"][matched_idx]["canDownload"]
-                        old_acl.canWrite = new_acls["users"][matched_idx]["canWrite"]
-                        old_acl.canSensitive = new_acls["users"][matched_idx]["canSensitive"]
-                        old_acl.canDelete = new_acls["users"][matched_idx]["canDelete"]
-                        old_acl.isOwner = new_acls["users"][matched_idx]["isOwner"]
-                        old_acl.save()
-                        # Add old ACL to "processed" list, in order to delete
-                        # any further duplicate entries of it in the database
-                        modified_user_acls.append(old_acl)
-
+                        # If this ACL is a duplicate, delete it
+                        if old_acl.entityId in [d.entityId for d in modified_user_acls]:
+                            old_acl.delete()
+                        else:
+                            # If user already has permissions, update old ACL
+                            # according to new permissions
+                            matched_idx = [d['id'] for d in new_acls["users"]].index(
+                                old_acl.entityId)
+                            old_acl.canRead = new_acls["users"][matched_idx]["canRead"]
+                            old_acl.canDownload = new_acls["users"][matched_idx]["canDownload"]
+                            old_acl.canWrite = new_acls["users"][matched_idx]["canWrite"]
+                            old_acl.canSensitive = new_acls["users"][matched_idx]["canSensitive"]
+                            old_acl.canDelete = new_acls["users"][matched_idx]["canDelete"]
+                            old_acl.isOwner = new_acls["users"][matched_idx]["isOwner"]
+                            old_acl.save()
+                            # Add old ACL to "processed" list, in order to delete
+                            # any further duplicate entries of it in the database
+                            modified_user_acls.append(old_acl)
 
             if old_acl.pluginId == "django_group":
-                # If requested list is empty: delete old ACLs
-                if not new_acls["groups"]:
-                    old_acl.delete()
-                    continue
-                # If old ACL group is not in new list of groups, delete ACL
-                if old_acl.entityId not in [d['id'] for d in new_acls["groups"]]:
-                    old_acl.delete()
-                else:
-                    # If this ACL is a duplicate, delete it
-                    if old_acl.entityId in [d.entityId for d in modified_group_acls]:
+                if "groups" in new_acls.keys():
+                    # If requested list is empty: delete old ACLs
+                    if not new_acls["groups"]:
+                        old_acl.delete()
+                        continue
+                    # If old ACL group is not in new list of groups, delete ACL
+                    if old_acl.entityId not in [d['id'] for d in new_acls["groups"]]:
                         old_acl.delete()
                     else:
-                        # If group already has permissions, update old ACL
-                        # according to new permissions
-                        matched_idx = [d['id'] for d in new_acls["groups"]].index(
-                            old_acl.entityId)
-                        old_acl.canRead = new_acls["groups"][matched_idx]["canRead"]
-                        old_acl.canDownload = new_acls["groups"][matched_idx]["canDownload"]
-                        old_acl.canWrite = new_acls["groups"][matched_idx]["canWrite"]
-                        old_acl.canSensitive = new_acls["groups"][matched_idx]["canSensitive"]
-                        old_acl.canDelete = new_acls["groups"][matched_idx]["canDelete"]
-                        old_acl.isOwner = new_acls["groups"][matched_idx]["isOwner"]
-                        old_acl.save()
-                        # Add old ACL to "processed" list, in order to delete
-                        # any further duplicate entries of it in the database
-                        modified_group_acls.append(old_acl)
+                        # If this ACL is a duplicate, delete it
+                        if old_acl.entityId in [d.entityId for d in modified_group_acls]:
+                            old_acl.delete()
+                        else:
+                            # If group already has permissions, update old ACL
+                            # according to new permissions
+                            matched_idx = [d['id'] for d in new_acls["groups"]].index(
+                                old_acl.entityId)
+                            old_acl.canRead = new_acls["groups"][matched_idx]["canRead"]
+                            old_acl.canDownload = new_acls["groups"][matched_idx]["canDownload"]
+                            old_acl.canWrite = new_acls["groups"][matched_idx]["canWrite"]
+                            old_acl.canSensitive = new_acls["groups"][matched_idx]["canSensitive"]
+                            old_acl.canDelete = new_acls["groups"][matched_idx]["canDelete"]
+                            old_acl.isOwner = new_acls["groups"][matched_idx]["isOwner"]
+                            old_acl.save()
+                            # Add old ACL to "processed" list, in order to delete
+                            # any further duplicate entries of it in the database
+                            modified_group_acls.append(old_acl)
 
+        if "users" in new_acls.keys():
+            # likely inefficient to partially "duplicate" the first query,
+            # but convenient flat list of IDs
+            old_acls_user_ids = ObjectACL.objects.filter(
+                pluginId=django_user,
+                object_id=new_acls["id"],
+                content_type=new_acls["content_type"],
+                aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
 
-        # likely inefficient to partially "duplicate" the first query,
-        # but convenient flat list of IDs
-        old_acls_user_ids = ObjectACL.objects.filter(
-            pluginId=django_user,
-            object_id=new_acls["id"],
-            content_type=new_acls["content_type"],
-            aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
-        # likely inefficient to partially "duplicate" the first query,
-        # but convenient flat list of IDs
-        old_acls_group_ids = ObjectACL.objects.filter(
-            pluginId=django_group,
-            object_id=new_acls["id"],
-            content_type=new_acls["content_type"],
-            aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
+            if new_acls["users"]:
+                for new_acl in new_acls["users"]:
+                    # if user doesn't already have an ACL for this object, create one
+                    if new_acl["id"] not in old_acls_user_ids:
+                        acl = ObjectACL(content_type=new_acls["content_type"],
+                                        object_id=new_acls["id"],
+                                        pluginId=django_user,
+                                        entityId=str(new_acl["id"]),
+                                        canRead=new_acl["canRead"],
+                                        canDownload=new_acl["canDownload"],
+                                        canWrite=new_acl["canWrite"],
+                                        canDelete=new_acl["canDelete"],
+                                        canSensitive=new_acl["canSensitive"],
+                                        isOwner=new_acl["isOwner"],
+                                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        acl.save()
 
-        if new_acls["users"]:
-            for new_acl in new_acls["users"]:
-                # if user doesn't already have an ACL for this object, create one
-                if new_acl["id"] not in old_acls_user_ids:
-                    acl = ObjectACL(content_type=new_acls["content_type"],
-                                    object_id=new_acls["id"],
-                                    pluginId=django_user,
-                                    entityId=str(new_acl["id"]),
-                                    canRead=new_acl["canRead"],
-                                    canDownload=new_acl["canDownload"],
-                                    canWrite=new_acl["canWrite"],
-                                    canDelete=new_acl["canDelete"],
-                                    canSensitive=new_acl["canSensitive"],
-                                    isOwner=new_acl["isOwner"],
-                                    aclOwnershipType=ObjectACL.OWNER_OWNED)
-                    acl.save()
-        if new_acls["groups"]:
-            for new_acl in new_acls["groups"]:
-                # if group doesn't already have an ACL for this object, create one
-                if new_acl["id"] not in old_acls_group_ids:
-                    acl = ObjectACL(content_type=new_acls["content_type"],
-                                    object_id=new_acls["id"],
-                                    pluginId=django_group,
-                                    entityId=str(new_acl["id"]),
-                                    canRead=new_acl["canRead"],
-                                    canDownload=new_acl["canDownload"],
-                                    canWrite=new_acl["canWrite"],
-                                    canDelete=new_acl["canDelete"],
-                                    canSensitive=new_acl["canSensitive"],
-                                    isOwner=new_acl["isOwner"],
-                                    aclOwnershipType=ObjectACL.OWNER_OWNED)
-                    acl.save()
+        if "groups" in new_acls.keys():
+            # likely inefficient to partially "duplicate" the first query,
+            # but convenient flat list of IDs
+            old_acls_group_ids = ObjectACL.objects.filter(
+                pluginId=django_group,
+                object_id=new_acls["id"],
+                content_type=new_acls["content_type"],
+                aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
+
+            if new_acls["groups"]:
+                for new_acl in new_acls["groups"]:
+                    # if group doesn't already have an ACL for this object, create one
+                    if new_acl["id"] not in old_acls_group_ids:
+                        acl = ObjectACL(content_type=new_acls["content_type"],
+                                        object_id=new_acls["id"],
+                                        pluginId=django_group,
+                                        entityId=str(new_acl["id"]),
+                                        canRead=new_acl["canRead"],
+                                        canDownload=new_acl["canDownload"],
+                                        canWrite=new_acl["canWrite"],
+                                        canDelete=new_acl["canDelete"],
+                                        canSensitive=new_acl["canSensitive"],
+                                        isOwner=new_acl["isOwner"],
+                                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        acl.save()
 
 
 def get_accessible_experiments(request):
