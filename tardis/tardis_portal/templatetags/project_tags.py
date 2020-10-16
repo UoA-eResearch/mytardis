@@ -1,9 +1,9 @@
 from django import template
-from django.template.defaultfilters import pluralize, filesizeformat
+from django.template.defaultfilters import pluralize
 from django.contrib.humanize.templatetags.humanize import naturalday
 
 from ..util import get_local_time
-from ..util import render_mustache, render_public_access_badge
+from ..util import render_mustache # render_public_access_badge
 from ..models.experiment import Experiment
 from ..models.dataset import Dataset
 
@@ -50,7 +50,7 @@ def project_datasets_badge(project_id, user):
     """
     Displays a badge with the number of datafiles for this project
     """
-    count = 0;
+    count = 0
     for experiment in get_all_project_experiments(project_id, user):
         count += Dataset.safe.all(user).filter(experiments__id=experiment.id).count()
     return render_mustache('tardis_portal/badges/dataset_count', {
