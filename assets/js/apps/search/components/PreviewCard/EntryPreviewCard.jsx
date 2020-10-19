@@ -264,7 +264,7 @@ export default function EntryPreviewCard(props) {
                     Added on the {getDateAdded(data, type)}
                 </div>
             }
-            <Button onClick={toggleHideSensitiveState}>Show sensitive fields</Button>
+            {/* <Button onClick={toggleHideSensitiveState}>Show sensitive fields</Button> */}
             <ParameterTable parameters={data.parameters} />
             <div className="preview-card__button-wrapper--right">
                 <div className="preview-card__inline-block-wrapper">
