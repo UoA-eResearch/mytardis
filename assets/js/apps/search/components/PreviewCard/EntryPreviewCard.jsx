@@ -1,6 +1,6 @@
 import { Button, Table } from 'react-bootstrap';
 import React, { useState } from 'react';
-import { updateHideSensitiveData, updateSelectedResult } from "../searchSlice";
+import { toggleShowSensitiveData, updateSelectedResult } from "../searchSlice";
 import './EntryPreviewCard.css'
 import moment from 'moment';
 import { FiUnlock, FiLock, FiX, FiPieChart } from 'react-icons/fi';
@@ -21,10 +21,10 @@ export default function EntryPreviewCard(props) {
     }
 
     // setting up redux logic
-    let hideSensitiveData = useSelector(state => state.search.hideSensitiveData);
+    let showSensitiveData = useSelector(state => state.search.showSensitiveData);
     const dispatch = useDispatch(),
     toggleSensitiveData = () => {
-        dispatch(updateHideSensitiveData());
+        dispatch(toggleShowSensitiveData());
     };
 
     /**
@@ -87,7 +87,7 @@ export default function EntryPreviewCard(props) {
     const previewParameterTable = (parameters) => {
         return parameters.map((param, idx) => {
             if (param.hasOwnProperty("sensitive")) {
-                if (!hideSensitiveData) {
+                if (showSensitiveData) {
                     return (
                         <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
                             <td style={{ backgroundColor: '#fcfba2' }}>{" " + param.pn_name}</td>
@@ -270,9 +270,9 @@ export default function EntryPreviewCard(props) {
                 </div>
             }
             {/* <Button onClick={toggleSensitiveData}>Show sensitive fields</Button> */}
-            <label htmlFor="hideSensitiveSwitch" aria-label="Toggle sensitive data label" className="switch__label">
-                <span>Show hidden fields</span>
-                <Switch id="hideSensitiveSwitch" aria-label="Toggle sensitive data switch" onChange={toggleSensitiveData} checked={hideSensitiveData} />
+            <label htmlFor="showSensitiveData" aria-label="Toggle sensitive data label" className="switch__label">
+                <span>Show senstive values</span>
+                <Switch id="showSensitiveData" aria-label="Toggle sensitive data switch" onChange={toggleSensitiveData} checked={showSensitiveData} />
             </label>
             <ParameterTable parameters={data.parameters} />
             <div className="preview-card__button-wrapper--right">
