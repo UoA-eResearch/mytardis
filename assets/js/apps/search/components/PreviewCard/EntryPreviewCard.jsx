@@ -4,7 +4,7 @@ import { updateHideSensitiveData, updateSelectedResult } from "../searchSlice";
 import './EntryPreviewCard.css'
 import moment from 'moment';
 import { FiUnlock, FiLock, FiX, FiPieChart } from 'react-icons/fi';
-import { Switch } from "react-switch";
+import Switch from "react-switch";
 import {
     ProjectTabSticker,
     ExperimentTabSticker,
@@ -86,12 +86,11 @@ export default function EntryPreviewCard(props) {
      */
     const previewParameterTable = (parameters) => {
         return parameters.map((param, idx) => {
-            if (param.hasOwnProperty("sensitive") || true) {
+            if (param.hasOwnProperty("sensitive")) {
                 if (!hideSensitiveData) {
                     return (
                         <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
                             <td style={{ backgroundColor: '#fcfba2' }}>{" " + param.pn_name}</td>
-                            {/* <td style={{ backgroundColor: '#fcfba2' }}><i class="fa fa-unlock-alt o-6"></i>{" " + param.value}</td> */}
                             <td style={{ backgroundColor: '#fcfba2' }}><FiUnlock></FiUnlock>{" " + param.value}</td>
                         </tr>
                     )
@@ -99,7 +98,7 @@ export default function EntryPreviewCard(props) {
                     return (
                         <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
                             <td >{" " + param.pn_name}</td>
-                            <td ><FiLock aria-label="Sensitive parameter value"></FiLock><i> Hidden. Click to show.</i></td>
+                            <td ><FiLock aria-label="Sensitive parameter value"></FiLock><i> Hidden. Toggle to show.</i></td>
                         </tr>
                     )
                 }
@@ -270,8 +269,11 @@ export default function EntryPreviewCard(props) {
                     Added on the {getDateAdded(data, type)}
                 </div>
             }
-            <Button onClick={toggleSensitiveData}>Show sensitive fields</Button>
-            {/* <Switch onChange={toggleSensitiveData} checked={hideSensitiveData}></Switch> */}
+            {/* <Button onClick={toggleSensitiveData}>Show sensitive fields</Button> */}
+            <label aria-label="Toggle sensitive data label" className="switch__label">
+                <span>Show hidden fields</span>
+                <Switch aria-label="Toggle sensitive data switch" onChange={toggleSensitiveData} checked={hideSensitiveData} />
+            </label>
             <ParameterTable parameters={data.parameters} />
             <div className="preview-card__button-wrapper--right">
                 <div className="preview-card__inline-block-wrapper">
