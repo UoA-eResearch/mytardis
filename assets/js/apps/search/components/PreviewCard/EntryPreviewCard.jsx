@@ -270,9 +270,9 @@ export default function EntryPreviewCard(props) {
                 </div>
             }
             {/* <Button onClick={toggleSensitiveData}>Show sensitive fields</Button> */}
-            <label aria-label="Toggle sensitive data label" className="switch__label">
+            <label htmlFor="hideSensitiveSwitch" aria-label="Toggle sensitive data label" className="switch__label">
                 <span>Show hidden fields</span>
-                <Switch aria-label="Toggle sensitive data switch" onChange={toggleSensitiveData} checked={hideSensitiveData} />
+                <Switch id="hideSensitiveSwitch" aria-label="Toggle sensitive data switch" onChange={toggleSensitiveData} checked={hideSensitiveData} />
             </label>
             <ParameterTable parameters={data.parameters} />
             <div className="preview-card__button-wrapper--right">
