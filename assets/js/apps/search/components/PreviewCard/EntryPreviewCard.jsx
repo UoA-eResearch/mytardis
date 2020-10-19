@@ -24,9 +24,7 @@ export default function EntryPreviewCard(props) {
     let hideSensitiveData = useSelector(state => state.search.hideSensitiveData);
     const dispatch = useDispatch(),
     toggleSensitiveData = () => {
-        console.log('from', hideSensitiveData);
         dispatch(updateHideSensitiveData());
-        console.log('to', hideSensitiveData);
     };
 
     /**
@@ -93,7 +91,8 @@ export default function EntryPreviewCard(props) {
                     return (
                         <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
                             <td style={{ backgroundColor: '#fcfba2' }}>{" " + param.pn_name}</td>
-                            <td style={{ backgroundColor: '#fcfba2' }}><i class="fa fa-unlock-alt o-6"></i>{" " + param.value}</td>
+                            {/* <td style={{ backgroundColor: '#fcfba2' }}><i class="fa fa-unlock-alt o-6"></i>{" " + param.value}</td> */}
+                            <td style={{ backgroundColor: '#fcfba2' }}><FiUnlock></FiUnlock>{" " + param.value}</td>
                         </tr>
                     )
                 } else {
@@ -272,7 +271,7 @@ export default function EntryPreviewCard(props) {
                 </div>
             }
             <Button onClick={toggleSensitiveData}>Show sensitive fields</Button>
-            <Switch onChange={toggleSensitiveData} checked={hideSensitiveData}></Switch>
+            {/* <Switch onChange={toggleSensitiveData} checked={hideSensitiveData}></Switch> */}
             <ParameterTable parameters={data.parameters} />
             <div className="preview-card__button-wrapper--right">
                 <div className="preview-card__inline-block-wrapper">
