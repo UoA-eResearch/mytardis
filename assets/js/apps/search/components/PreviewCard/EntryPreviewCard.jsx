@@ -23,9 +23,9 @@ export default function EntryPreviewCard(props) {
     // setting up redux logic
     let showSensitiveData = useSelector(state => state.search.showSensitiveData);
     const dispatch = useDispatch(),
-    toggleSensitiveData = () => {
-        dispatch(toggleShowSensitiveData());
-    };
+        toggleSensitiveData = () => {
+            dispatch(toggleShowSensitiveData());
+        };
 
     /**
      * Simply cuts of the time portion of the date
@@ -266,23 +266,25 @@ export default function EntryPreviewCard(props) {
                     Added on the {getDateAdded(data, type)}
                 </div>
             }
-            <label htmlFor="showSensitiveDataSwitch" aria-label="Toggle sensitive data label" className="switch__label">
-                <span><b>Show sensitive values</b></span>
-                <Switch 
-                    id="showSensitiveDataSwitch" 
-                    aria-label="Toggle sensitive data switch" 
-                    onChange={toggleSensitiveData} 
-                    checked={showSensitiveData} 
-                    checkedIcon={false}
-                    uncheckedIcon={false}
-                    height={20}
-                    width={40}
-                    handleDiameter={25}
-                    onHandleColor={'#007bff'}
-                    onColor={'#a3cfff'}
-                    boxShadow={'0 0 1px 1px #8a8a8a'}
-                />
-            </label>
+            { data.parameters.length < 1 ? null :
+                <label htmlFor="showSensitiveDataSwitch" aria-label="Toggle sensitive data label" className="switch__label">
+                    <span><b>Show sensitive values</b></span>
+                    <Switch
+                        id="showSensitiveDataSwitch"
+                        aria-label="Toggle sensitive data switch"
+                        onChange={toggleSensitiveData}
+                        checked={showSensitiveData}
+                        checkedIcon={false}
+                        uncheckedIcon={false}
+                        height={20}
+                        width={40}
+                        handleDiameter={25}
+                        onHandleColor={'#007bff'}
+                        onColor={'#a3cfff'}
+                        boxShadow={'0 0 1px 1px #8a8a8a'}
+                    />
+                </label>
+            }
             <ParameterTable parameters={data.parameters} />
             <div className="preview-card__button-wrapper--right">
                 <div className="preview-card__inline-block-wrapper">
