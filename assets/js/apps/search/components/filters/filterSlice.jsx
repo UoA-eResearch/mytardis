@@ -380,7 +380,7 @@ const getFilterQueryValue = (filtersSlice, filterFieldInfo) => {
  * @param filtersSlice - Filters state slice.  
  * @param {string} matchesType - If null, returns query with all filters. 
  * If a MyTardis object type is specified, then only filters of that type
- * and filters of types that will be cross-filtered.
+ * and filters of types that will be cross-filtered will be returned.
  */
 export const buildFilterQuery = (filtersSlice, matchesType) => {
     let typesToInclude = [];
@@ -411,7 +411,7 @@ export const initialiseFilters = () => (dispatch) => {
     return fetchFilterList().then(filters => {
         dispatch(getFiltersSuccess(filters));
     }).catch((e) => {
-        dispatch(getFiltersFailure(e))
+        dispatch(getFiltersFailure(e));
     });
 }
 
