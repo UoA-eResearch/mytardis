@@ -49,7 +49,7 @@ export default function EntryPreviewCard(props) {
             case 'experiment':
                 return data.title;
             case 'dataset':
-                return `${data.description} #${data.id}`
+                return data.description
             case 'datafile':
                 return data.filename;
         }
@@ -247,9 +247,6 @@ export default function EntryPreviewCard(props) {
     return (
         <div className="preview-card__body">
             <span className="preview-card__close" aria-label="Close preview panel">
-                {/* <button onClick={onClick}>
-                    <FiX />
-                </button> */}
             </span>
             <div className="preview-card__header">
                 <div >
@@ -269,9 +266,8 @@ export default function EntryPreviewCard(props) {
                     Added on the {getDateAdded(data, type)}
                 </div>
             }
-            {/* <Button onClick={toggleSensitiveData}>Show sensitive fields</Button> */}
             <label htmlFor="showSensitiveData" aria-label="Toggle sensitive data label" className="switch__label">
-                <span>Show senstive values</span>
+                <span><b>Show sensitive values</b></span>
                 <Switch id="showSensitiveData" aria-label="Toggle sensitive data switch" onChange={toggleSensitiveData} checked={showSensitiveData} />
             </label>
             <ParameterTable parameters={data.parameters} />
