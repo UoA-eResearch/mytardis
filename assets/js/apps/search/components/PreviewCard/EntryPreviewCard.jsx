@@ -268,7 +268,7 @@ export default function EntryPreviewCard(props) {
             }
             { data.parameters.length < 1 ? null :
                 <label htmlFor="showSensitiveDataSwitch" aria-label="Toggle sensitive data label" className="switch__label">
-                    <span><b>Show sensitive values</b></span>
+                    <span className="sensitive__label-text"><b>Show sensitive values</b></span>
                     <Switch
                         id="showSensitiveDataSwitch"
                         aria-label="Toggle sensitive data switch"
