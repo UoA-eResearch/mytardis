@@ -385,9 +385,10 @@ class DataFileDocument(Document):
             return DataFile.objects.filter(datafileparameterset__schema=related_instance)
         if isinstance(related_instance, ParameterName):
             return DataFile.objects.filter(datafileparameterset__schema__parametername=related_instance)
-        return None
         if isinstance(related_instance, DataFileObject):
             return related_instance.datafile
+        return None
+
 
 # @suspendingreceiver(post_save, sender=Project)
 # @suspendingreceiver(post_save, sender=Experiment)
