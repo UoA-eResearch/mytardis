@@ -2,6 +2,7 @@
 {% load static from staticfiles %}
 {% load render_bundle from webpack_loader %}
 {% load experiment_tags %}
+{% load project_tags %}
 {% load experimentstats %}
 {% load bleach_tag %}
 
@@ -29,6 +30,97 @@
     <div class="col-md-12">
       {% if is_authenticated %}
       <h3>
+        Your most recent projects
+      </h3>
+
+      <div id="private-projects" class="panel-group projects">
+        {% if private_projects_count <= 0 %}
+        <div class="card mb-2">
+        <div class="card-body py"> 
+          <p class="card-text mb-1 "> 
+            You have no recent projects.
+          </p>
+        </div>
+        </div>
+        {% else %}
+        {% for project in private_projects %}
+        <div class="card mb-2">
+          <div id="private-toggle-{{project.id}}"
+            role="button"
+            class="card-header accordion-toggle private-project py-2" 
+            data-target="#project-collapse-{{project.id}}"
+            data-toggle="collapse" 
+            data-parent="#private-projects"
+          >
+            <div class="row">
+
+              <div class="col-md-8 px-1 pb-1">
+                <input class="project-index" type="hidden" value="{{ forloop.counter }}">
+                <a class="card-title projectlink" 
+                  href="{% url 'tardis_portal.view_project' project.id %}">{{ project.name }}</a>
+              </div>
+
+                <div class="col">
+                  <ul class="list-inline float-right list-unstyled">
+                    <li class="list-inline-item m-0">{{ project|project_last_updated_badge }}</li>
+                    <li class="list-inline-item m-0">{% project_experiments_badge project.id request.user %}</li>
+                    <li class="list-inline-item m-0">{% project_datasets_badge project.id request.user %}</li>
+                    <li class="list-inline-item m-0">{% project_datafiles_badge project request.user %}</li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="card-subtitle text-muted small col-6 px-1">
+                  <!-- author info here. -->
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body py-2 collapse"
+              id="project-collapse-{{project.id}}"
+              data-parent="#private-projects"
+            >
+              <div class="row">
+                <div class="col-md-9 px-1">
+                  <div class="accordion-inner">
+                      <p class="card-text small mb-1">
+                        {% if project.description|length > 20 %}
+                        {{project.description|truncatewords:20|default:"<em>No description</em>|bleach"}}
+                        <a 
+                          href="{% url 'tardis_portal.view_project' project.id %}">read more</a>
+                        {% else %}
+                        {{project.description|default:"<em>No description</em>|bleach"}}
+                        {% endif %}
+                      </p>
+                      {% project_get_recent_experiments project.id request.user as project_experiments %}
+                      <ul class="list-group borderless mt-2">
+                      {% for exp in project_experiments %}
+                        <li class="list-group-item dataset-list-header small px-2 py-1">
+                          <i class="fa fa-cogs o-6">
+                          </i>
+                          <a class="card-title projectlink"
+                            href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
+                        </li>
+                      {% endfor %}
+                      </ul>
+                  </div>  {% comment %}class="accordion-inner"{% endcomment %}
+                </div>
+              </div>
+            </div>
+
+          <!-- card end -->
+        </div> {% comment %}class="card"{% endcomment %}
+        {% empty %}
+        <p>There are no projects available on this server.</p>
+        {% endfor %}
+        {% endif %}
+
+          </div>
+      </div>
+    <div class="col-md-12">
+      {% if is_authenticated %}
+      <h3>
         Your most recent experiments
         <small>(<a href="{% url 'tardis.tardis_portal.views.my_data' %}">view all</a>)</small>
       </h3>
@@ -37,13 +129,17 @@
             <div class="card mb-2">
               <div id="private-toggle-{{exp.id}}"
                    class="card-header accordion-toggle private-experiment py-2"
-                   data-toggle="collapse" data-parent="#private-experiments">
+                   data-toggle="collapse" 
+                   data-parent="#private-experiments"
+                  >
                   <div class="row">
+
                     <div class="col-md-8 px-1 pb-1">
                       <input type="hidden" class="exp-index" value="{{ forloop.counter }}">
                       <a class="card-title explink"
                          href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
                     </div>
+
                     <div class="col">
                       <ul class="list-inline float-right list-unstyled">
                         <li class="list-inline-item m-0">{{ exp|experiment_last_updated_badge }}</li>
@@ -52,6 +148,7 @@
                         <li class="list-inline-item m-0">{{ exp|experiment_public_access_badge }}</li>
                       </ul>
                     </div>
+
                   </div>
                   <div class="row">
                     <div class="card-subtitle text-muted small col-6 px-1">
@@ -95,7 +192,7 @@
         {% for exp in public_experiments %}
           <div class="card mb-2">
             <div id="public-toggle-{{exp.id}}"
-                 class="card-header accordion-toggle public-experiment py-2"
+                 class="card-header accordion-toggle public-project py-2"
                  data-toggle="collapse" data-parent="#public-experiments">
               <div class="row">
                 <div class="col-md-8 px-1 pb-1">
@@ -151,6 +248,8 @@
         {% endfor %}
         </div> {% comment %}id="public-experiments" class="panel-group experiments"{% endcomment %}
     </div> {% comment %}class="col-md-12"{% endcomment %}
+      {% endif %}
+    </div>
   </div> {% comment %}class="row"{% endcomment %}
 </div> {% comment %}id="content"{% endcomment %}
 <input type="hidden" id="exps-expand-accordion" value="{{ exps_expand_accordion }}">

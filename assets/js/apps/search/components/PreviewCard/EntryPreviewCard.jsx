@@ -1,5 +1,5 @@
 import { Button, Table } from 'react-bootstrap';
-import React from 'react';
+import React, { useState } from 'react';
 import './EntryPreviewCard.css'
 import moment from 'moment';
 import { FiUnlock, FiLock, FiX, FiPieChart } from 'react-icons/fi';
@@ -70,26 +70,36 @@ export default function EntryPreviewCard(props) {
     }
 
     /**
-     * Returns an html table of parameters.
+     * Returns an table of parameters.
      * @param {Object} parameters The parameter section of the response data.
      */
     const previewParameterTable = (parameters) => {
+        let hideSensitive = false;
         return parameters.map((param, idx) => {
             if (param.hasOwnProperty("sensitive")) {
-                return (
-                <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
-                    <td style={{backgroundColor:'#fcfba2'}}><FiUnlock title="This parameter is sensitive and may not be visible to other Users" />{" "+param.pn_name}</td>
-                    <td style={{backgroundColor:'#fcfba2'}}><FiUnlock title="This parameter is sensitive and may not be visible to other Users" />{" "+param.value}</td>
-                    </tr>
-                  )
+                if (hideSensitive) {
+                    return (
+                        <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
+                            <td style={{ backgroundColor: '#fcfba2' }}><i class="fa fa-unlock-alt o-6"></i>{" " + param.pn_name}</td>
+                            <td style={{ backgroundColor: '#fcfba2' }}><i class="fa fa-unlock-alt o-6"></i>{" " + param.value}</td>
+                        </tr>
+                    )
                 } else {
-                  return (
-                  <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
-                      <td>{param.pn_name}</td>
-                      <td>{param.value}</td>
-                      </tr>
+                    return (
+                        <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
+                            <td style={{ backgroundColor: '#fcfba2' }}><FiLock aria-label="Sensitive parameter name"></FiLock>{" " + param.pn_name}</td>
+                            <td style={{ backgroundColor: '#fcfba2' }}><FiLock aria-label="Sensitive parameter value"></FiLock><i> Hidden. Click to show.</i></td>
+                        </tr>
                     )
                 }
+            } else {
+                return (
+                    <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
+                        <td>{param.pn_name}</td>
+                        <td>{param.value}</td>
+                    </tr>
+                )
+            }
         });
     }
 
@@ -149,46 +159,51 @@ export default function EntryPreviewCard(props) {
                 )
         }
     }
-    /**
-         *
-         * @param {*} data project/exp/datafile/dataset json response data
-         * @param {*} type project/exp/datafile/dataset
-         */
-        const FileCountSummary = (props) => {
-            let { data, type } = props;
-            let summary;
-            let datafilePlural;
-            let datasetPlural;
-            let experimentPlural;
-            if (data.counts) {
-                datafilePlural = data.counts.datafiles <= 1 ? 'datafile' : 'datafiles';
-                datasetPlural = data.counts.datasets <= 1 ? 'dataset' : 'datasets';
-                experimentPlural = data.counts.experiments <= 1 ? 'experiment' : 'experiments';
-            }
-            switch (type) {
-                case 'project':
-                    summary = `Contains ${data.counts.datafiles} ${datafilePlural} from ${data.counts.datasets} ${datasetPlural}, across ${data.counts.experiments} ${experimentPlural}.`;
-                    break;
-                case 'experiment':
-                    summary = `Contains ${data.counts.datafiles} ${datafilePlural} from ${data.counts.datasets} ${datasetPlural}.`;
-                    break;
-                case 'dataset':
-                    summary = `Contains ${data.counts.datafiles} ${datafilePlural}.`;
-                    break;
-                default:
-                    summary = null;
-                    break;
-            }
-            if (summary) {
-                return (
-                    <div className="preview-card__count-detail">
-                        {summary}
-                    </div>
-                )
-            }
-            return null;
-        }
 
+    /**
+     *
+     * @param {*} data project/exp/datafile/dataset json response data
+     * @param {*} type project/exp/datafile/dataset
+     */
+    const FileCountSummary = (props) => {
+        let { data, type } = props;
+        let summary;
+        let datafilePlural;
+        let datasetPlural;
+        let experimentPlural;
+        if (data.counts) {
+            datafilePlural = data.counts.datafiles <= 1 ? 'datafile' : 'datafiles';
+            datasetPlural = data.counts.datasets <= 1 ? 'dataset' : 'datasets';
+            experimentPlural = data.counts.experiments <= 1 ? 'experiment' : 'experiments';
+        }
+        switch (type) {
+            case 'project':
+                summary = `Contains ${data.counts.datafiles} ${datafilePlural} from ${data.counts.datasets} ${datasetPlural}, across ${data.counts.experiments} ${experimentPlural}.`;
+                break;
+            case 'experiment':
+                summary = `Contains ${data.counts.datafiles} ${datafilePlural} from ${data.counts.datasets} ${datasetPlural}.`;
+                break;
+            case 'dataset':
+                summary = `Contains ${data.counts.datafiles} ${datafilePlural}.`;
+                break;
+            default:
+                summary = null;
+                break;
+        }
+        if (summary) {
+            return (
+                <div className="preview-card__count-detail">
+                    {summary}
+                </div>
+            )
+        }
+        return null;
+    }
+
+    /**
+     * The parameter table component
+     * @param {*} props 
+     */
     const ParameterTable = (props) => {
         let { parameters } = props;
         if (parameters.length > 0) {
@@ -208,6 +223,13 @@ export default function EntryPreviewCard(props) {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Changes the hide sensitive data state to the opposite it's current state.    
+     */
+    const toggleHideSensitiveState = () => {
+        alert('hide sens data');
     }
 
     if (data === null) {
@@ -237,11 +259,12 @@ export default function EntryPreviewCard(props) {
                 {getDataSize(data, type)}
             </div>
             <FileCountSummary data={data} type={type}></FileCountSummary>
-            { !getDateAdded(data,type) ? null :
+            { !getDateAdded(data, type) ? null :
                 <div className="preview-card__date-added">
                     Added on the {getDateAdded(data, type)}
                 </div>
             }
+            {/* <Button onClick={toggleHideSensitiveState}>Show sensitive fields</Button> */}
             <ParameterTable parameters={data.parameters} />
             <div className="preview-card__button-wrapper--right">
                 <div className="preview-card__inline-block-wrapper">
