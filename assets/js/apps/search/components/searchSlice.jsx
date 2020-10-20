@@ -101,10 +101,14 @@ const fetchSearchResults = (queryBody) => {
     })
 };
 
-const buildQueryBody = (state) => {
+const buildQueryBody = (state, typeToSearch) => {
     const term = state.search.searchTerm,
-        filters = buildFilterQuery(state.filters),
+        filters = buildFilterQuery(state.filters, typeToSearch),
         queryBody = {};
+    if (typeToSearch) {
+        // If doing a single type search, include type in query body.
+        queryBody.type = typeToSearch;
+    }
     if (term !== null && term !== "") {
         queryBody.query = term;
     }
@@ -112,7 +116,7 @@ const buildQueryBody = (state) => {
         queryBody.filters = filters;
     }
     return queryBody;
-}
+};
 
 const runSearchWithQuery = (queryBody) => {
     return (dispatch) => {
@@ -123,8 +127,8 @@ const runSearchWithQuery = (queryBody) => {
             }).catch((e) => {
                 dispatch(getResultsFailure(e));
             });
-    }
-}
+    };
+};
 
 const getDisplayQueryString = (queryBody) => {
     // Determine how to show the query in the URL, depending on what's in the query body.
@@ -172,6 +176,7 @@ const updateWithQuery = (queryBody) => {
     }
 }
 
+
 export const runSearch = () => {
     return (dispatch, getState) => {
         const state = getState();
@@ -181,6 +186,18 @@ export const runSearch = () => {
     }
 }
 
+/**
+ * An async reducer for running a single type search. This is usually
+ * used for sort and pagination requests.
+ * @param {string} typeToSearch - the MyTardis object type to run search on.
+ */
+export const runSingleTypeSearch = (typeToSearch) => {
+    return (dispatch, getState) => {
+        const state = getState();
+        const queryBody = buildQueryBody(state, typeToSearch);
+        dispatch(runSearchWithQuery(queryBody));
+    }
+}
 
 export const restoreSearchFromHistory = (restoredState) => {
     return (dispatch) => {
