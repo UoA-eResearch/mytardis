@@ -72,10 +72,8 @@
 .switch__label {
     display: flex;
     flex-flow: row wrap;
-    /* justify-content: space-between; */
     justify-content: flex-start;
     align-items: center;
-    /* background-color: pink; */
     width: 100%;
     padding: 1rem 0 0 0;
 }
