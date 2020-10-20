@@ -457,9 +457,39 @@ describe("Filter query builder", ()=> {
                     type: "STRING",
                     op: "is",
                     content: ["1"]
-                }
+                },
+                
             ]
         };
         expect(buildFilterQuery(mockStoreState, "experiments")).toEqual(expectedValue);
+    });
+    it("should include all filters in queries that include all types", () => {
+        const expectedValue = {
+            op: "and",
+            content: [
+                {
+                    kind: 'typeAttribute',
+                    target: ['experiments','schema'],
+                    type: "STRING",
+                    op: "is",
+                    content: ["1"]
+                },
+                {
+                    kind: 'typeAttribute',
+                    target: ['datasets', 'createdDate'],
+                    type: "DATETIME",
+                    op: ">=",
+                    content: "2020-01-01"
+                }, 
+                {
+                    kind: 'schemaParameter',
+                    target: ['2', '4'],
+                    type: 'STRING',
+                    op: "contains",
+                    content: "RNSeq"
+                }
+            ]
+        };
+        expect(buildFilterQuery(mockStoreState)).toEqual(expectedValue);
     });
 });
