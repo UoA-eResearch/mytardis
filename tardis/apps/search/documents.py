@@ -11,7 +11,7 @@ from tardis.tardis_portal.models import Project, Dataset, Experiment, \
     DataFile, Instrument, ObjectACL, ParameterName, Schema, ProjectParameter, \
     ExperimentParameter, DatasetParameter, DatafileParameter, \
     ProjectParameterSet, ExperimentParameterSet, DatasetParameterSet, \
-    DatafileParameterSet
+    DatafileParameterSet, DataFileObject
 
 # from tardis.tardis_portal.tests import suspendingreceiver
 
@@ -318,6 +318,8 @@ class DataFileDocument(Document):
         'entityId': fields.KeywordField()
     })
 
+    verified = fields.BooleanField(attr='verified')
+
     parameters = fields.NestedField(attr='getParametersforIndexing', properties={
         'string': fields.NestedField(properties={
             'pn_id': fields.KeywordField(),
@@ -384,6 +386,8 @@ class DataFileDocument(Document):
         if isinstance(related_instance, ParameterName):
             return DataFile.objects.filter(datafileparameterset__schema__parametername=related_instance)
         return None
+        if isinstance(related_instance, DataFileObject):
+            return related_instance.datafile
 
 # @suspendingreceiver(post_save, sender=Project)
 # @suspendingreceiver(post_save, sender=Experiment)
