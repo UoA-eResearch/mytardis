@@ -567,7 +567,7 @@ def clean_up_parameter_sets(bundle):
             if parameter not in existing_parameters:
                 return_params.append(parameter)
         bundle.data['parameters'] = return_params
-        return bundle
+    return bundle
 
 
 class PrettyJSONSerializer(Serializer):
