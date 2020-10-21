@@ -300,7 +300,7 @@ class DataFileDocument(Document):
     file_extension = fields.KeywordField(attr='filename')
     created_time = fields.DateField()
     modification_time = fields.DateField()
-    size = fields.IntegerField()
+    size = fields.LongField()
     dataset = fields.NestedField(properties={
         'id': fields.KeywordField(),
         'description': fields.TextField(
