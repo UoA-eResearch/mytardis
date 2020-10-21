@@ -104,8 +104,8 @@ def _create_download_response(request, datafile_id, disposition='attachment'):  
             # Replace this with a direct call to s3
             response = StreamingHttpResponse(wrapper,
                                              content_type=datafile.get_mimetype())
-            response['Content-Disposition'] = \
-                '%s; filename="%s"' % (disposition, datafile.filename)
+        response['Content-Disposition'] = \
+            '%s; filename="%s"' % (disposition, datafile.filename)
         return response
     except IOError:
         # If we can't read the file, return not found
@@ -257,7 +257,7 @@ class S3Downloader():
         try:
             url = self.s3_client.generate_presigned_url('get_object',
                                                         Params={'Bucket': self.__get_bucket_from_datafile(),
-                                                                'Key':self.__get_full_path()},
+                                                                'Key': self.__get_full_path()},
                                                         ExpiresIn=3600)
             logger.info(url)
         except ClientError as e:
@@ -267,8 +267,10 @@ class S3Downloader():
 
     def download_datafile(self):
         url = self.__mint_time_limited_url()
-        if url is not None:
-            response = requests.get(url)
+        r = requests.get(url=url, stream=True)
+        r.raise_for_status()
+        response = HttpResponse(r.raw,
+                                content_type=self.datafile.get_mimetype())
         return response
 
 
@@ -328,7 +330,7 @@ class UncachedTarStream(TarFile):
         tarinfo.size = int(df.get_size())
         try:
             dj_mtime = df.modification_time or \
-                       df.get_preferred_dfo().modified_time
+                df.get_preferred_dfo().modified_time
         except Exception as e:
             dj_mtime = None
             logger.debug('cannot read m_time for file id'
