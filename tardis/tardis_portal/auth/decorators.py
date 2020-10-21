@@ -135,7 +135,20 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                                                ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
                     protected_users = [str(id) for id in user_id_dict.values() for user_id_dict in protected_users]
                     if old_acl.entityId in protected_users:
-                        continue
+                        # if we've already dealt with this protected user before, delete any duplicates
+                        if old_acl.entityId in [d.entityId for d in modified_user_acls]:
+                            old_acl.delete()
+                        else:
+                            # For robustness sake, make sure the protected user has every permission
+                            old_acl.canRead = True
+                            old_acl.canDownload = True
+                            old_acl.canWrite = True
+                            old_acl.canSensitive = True
+                            old_acl.canDelete = True
+                            old_acl.isOwner = True
+                            old_acl.save()
+                            modified_user_acls.append(old_acl)
+                            continue
                     # If requested list is empty: delete old ACLs
                     if not new_acls["users"]:
                         old_acl.delete()
