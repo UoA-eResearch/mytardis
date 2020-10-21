@@ -349,7 +349,7 @@ def process_acls(bundle):
                 project_lead = project.lead_researcher
                 logger.debug('Parent project: {}'.format(project.name))
                 parent = experiment
-            elif ct_string == 'data file':
+            elif ct_string == 'datafile':
                 ct = 'datafile'
                 logger.debug('Datafile found')
                 try:
@@ -1717,10 +1717,8 @@ class DataFileResource(MyTardisModelResource):
     def dehydrate(self, bundle):
         datafile = bundle.obj
         admins = datafile.get_admins()
-        logger.error(admins)
         bundle.data['admin_groups'] = [acl.id for acl in admins]
         members = datafile.get_groups()
-        logger.error(members)
         bundle.data['member_groups'] = [acl.id for acl in members]
         return bundle
 
