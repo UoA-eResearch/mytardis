@@ -528,6 +528,7 @@ def process_acls(bundle):
                     'groups': groups}
         if ct == 'datafile':
             acl_dict['content_type'] = 'data file'
+        logger.error(acl_dict)
         return [acl_dict]
     return False
 
