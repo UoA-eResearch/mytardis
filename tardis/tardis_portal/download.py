@@ -104,8 +104,8 @@ def _create_download_response(request, datafile_id, disposition='attachment'):  
             # Replace this with a direct call to s3
             response = StreamingHttpResponse(wrapper,
                                              content_type=datafile.get_mimetype())
-        response['Content-Disposition'] = \
-            '%s; filename="%s"' % (disposition, datafile.filename)
+            response['Content-Disposition'] = \
+                '%s; filename="%s"' % (disposition, datafile.filename)
         return response
     except IOError:
         # If we can't read the file, return not found
@@ -252,7 +252,7 @@ class S3Downloader():
 
     def __get_full_path(self):
         return self.dfo.uri
-        
+
     def __mint_time_limited_url(self):
         try:
             url = self.s3_client.generate_presigned_url('get_object',
