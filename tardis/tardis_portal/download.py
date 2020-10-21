@@ -31,7 +31,7 @@ import boto3
 import requests
 from botocore.exceptions import ClientError
 
-from django.http import StreamingHttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.conf import settings
 from django.utils.dateformat import format as dateformatter
 from django.core.exceptions import ImproperlyConfigured
@@ -501,8 +501,9 @@ def streaming_download_experiment(request, experiment_id, comptype='tgz',
 
     df_ids = DataFileObject.objects.filter(
         datafile__dataset__experiments__id=experiment_id, verified=True) \
-                .values('datafile_id').distinct()
-    datafiles = DataFile.safe.all(request.user, downloadable=True).filter(id__in=df_ids)
+        .values('datafile_id').distinct()
+    datafiles = DataFile.safe.all(
+        request.user, downloadable=True).filter(id__in=df_ids)
     return _streaming_downloader(request, datafiles, rootdir, filename,
                                  comptype, organization)
 
