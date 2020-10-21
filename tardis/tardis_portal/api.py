@@ -1870,6 +1870,7 @@ class DataFileResource(MyTardisModelResource):
             self.temp_url = dfo.get_full_path()
         datafile = new_bundle.obj
         acls = process_acls(new_bundle)
+        logger.error(new_bundle)
         bulk_replace_existing_acls(acls)
         if 'admin_groups' in new_bundle.data.keys():
             admin_groups = new_bundle.data.pop('admin_groups')
