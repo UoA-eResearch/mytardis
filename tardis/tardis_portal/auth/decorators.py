@@ -144,7 +144,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                             old_acl.canDownload = True
                             old_acl.canWrite = True
                             old_acl.canSensitive = True
-                            old_acl.canDelete = True
+                            old_acl.canDelete = False
                             old_acl.isOwner = True
                             old_acl.save()
                             modified_user_acls.append(old_acl)
