@@ -526,6 +526,8 @@ def process_acls(bundle):
                     'id': obj_id,
                     'users': users,
                     'groups': groups}
+        if ct == 'datafile':
+            acl_dict['content_type'] = 'data file'
         return [acl_dict]
     return False
 
