@@ -239,7 +239,7 @@ class S3Downloader():
         )
 
     def __get_bucket_from_datafile(self):
-        self.dfo = self.datafile.get_file(verified_only=self.verified_only)
+        self.dfo = self.datafile.get_preferred_dfo(verified_only=False)#self.verified_only)
         self.storage_box = self.dfo.storage_box
         options = self.storage_box.options
         for option in options:
