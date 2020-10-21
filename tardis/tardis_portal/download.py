@@ -242,7 +242,7 @@ class S3Downloader():
         self.dfo = self.datafile.get_preferred_dfo(verified_only=False)#self.verified_only)
         self.storage_box = self.dfo.storage_box
         options = self.storage_box.options
-        for option in options:
+        for option in self.storage_box.options.all():
             if option.key == 'bucket_name':
                 logger.info(option.value)
                 return option.value
