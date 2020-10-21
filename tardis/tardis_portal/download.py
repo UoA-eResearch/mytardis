@@ -227,11 +227,16 @@ class S3Downloader():
         endpoint_url = getattr(settings, 'AWS_S3_ENDPOINT_URL')
         self.datafile = datafile
         self.verified_only = verified_only
-        self.s3_client = boto3.client('s3',
-                                      aws_access_key = self.access_key,
-                                      aws_secret_access = self.secret_key,
-                                      aws_session_token = self.session_token,
-                                      endpoint_url = endpoint_url)
+        self.s3_session = boto3.Session(aws_access_key_id=self.access_key,
+                                        aws_secret_access_key=self.secret_key)
+        self.s3_client = self.s3_session.client(
+            's3',
+            aws_session_token=None,
+            region_name='us-east-1',
+            use_ssl=True,
+            endpoint_url=endpoint_url,
+            config=None
+        )
 
     def __get_bucket_from_datafile(self):
         self.dfo = self.datafile.get_file(verified_only=self.verified_only)
