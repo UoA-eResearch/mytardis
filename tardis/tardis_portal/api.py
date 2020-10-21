@@ -349,8 +349,8 @@ def process_acls(bundle):
                 project_lead = project.lead_researcher
                 logger.debug('Parent project: {}'.format(project.name))
                 parent = experiment
-            elif ct_string == 'data file':
-                ct = 'datafile'
+            elif ct_string == 'datafile':
+                #ct = 'datafile'
                 logger.debug('Datafile found')
                 try:
                     dataset_uri = bundle.data['dataset']
@@ -526,6 +526,8 @@ def process_acls(bundle):
                     'id': obj_id,
                     'users': users,
                     'groups': groups}
+        if ct == 'datafile':
+            acl_dict['content_type'] = 'data file'
         return [acl_dict]
     return False
 
@@ -1717,10 +1719,8 @@ class DataFileResource(MyTardisModelResource):
     def dehydrate(self, bundle):
         datafile = bundle.obj
         admins = datafile.get_admins()
-        logger.error(admins)
         bundle.data['admin_groups'] = [acl.id for acl in admins]
         members = datafile.get_groups()
-        logger.error(members)
         bundle.data['member_groups'] = [acl.id for acl in members]
         return bundle
 
@@ -1870,6 +1870,7 @@ class DataFileResource(MyTardisModelResource):
             self.temp_url = dfo.get_full_path()
         datafile = new_bundle.obj
         acls = process_acls(new_bundle)
+        logger.error(new_bundle)
         bulk_replace_existing_acls(acls)
         if 'admin_groups' in new_bundle.data.keys():
             admin_groups = new_bundle.data.pop('admin_groups')
