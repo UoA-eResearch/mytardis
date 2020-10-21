@@ -382,7 +382,7 @@ def process_acls(bundle):
                     if admin != project_lead:
                         user = check_and_create_user(admin,
                                                      is_admin=True)
-                        if user.id not in [d['id'] for d in users]:
+                        if str(user.id) not in [d['id'] for d in users]:
                             users.append(package_perms(user.id,
                                                        is_admin=True))
                             admin_users.append(user)
@@ -404,7 +404,7 @@ def process_acls(bundle):
                                 if member[0] == admin.username:
                                     member_flg = True
                     if not member_flg and admin.username != project_lead:
-                        if user.id not in [d['id'] for d in users]:
+                        if str(user.id) not in [d['id'] for d in users]:
                             users.append(package_perms(admin.id,
                                                        is_admin=True))
                             admin_users.append(admin)
@@ -528,7 +528,6 @@ def process_acls(bundle):
                     'groups': groups}
         if ct == 'datafile':
             acl_dict['content_type'] = 'data file'
-        logger.error(acl_dict)
         return [acl_dict]
     return False
 
@@ -1871,7 +1870,6 @@ class DataFileResource(MyTardisModelResource):
             self.temp_url = dfo.get_full_path()
         datafile = new_bundle.obj
         acls = process_acls(new_bundle)
-        logger.error(new_bundle)
         bulk_replace_existing_acls(acls)
         if 'admin_groups' in new_bundle.data.keys():
             admin_groups = new_bundle.data.pop('admin_groups')
