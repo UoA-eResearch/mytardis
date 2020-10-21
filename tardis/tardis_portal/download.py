@@ -85,7 +85,7 @@ def _create_download_response(request, datafile_id, disposition='attachment'):  
         if ignore_verif.lower() in [u'', u'1', u'true']:
             verified_only = False
         logger.info('Datafile size: {dfs}'.format(dfs=datafile.get_size()))
-        if datafile.get_size() > 10*1024*1024: # 10 MB
+        if datafile.get_size() > 10*1024*1024:  # 10 MB
             logger.info('Going into S3')
             s3factory = S3Downloader(datafile, verified_only)
             response = s3factory.download_datafile()
@@ -212,6 +212,7 @@ def _get_datafile_details_for_archive(mapper, datafiles):
             res.append((df, mapper(df)))
     return res
 
+
 class S3Downloader():
     '''
     Mint a time limited url to the S3 object store.
@@ -239,7 +240,8 @@ class S3Downloader():
         )
 
     def __get_bucket_from_datafile(self):
-        self.dfo = self.datafile.get_preferred_dfo(verified_only=False)#self.verified_only)
+        self.dfo = self.datafile.get_preferred_dfo(
+            verified_only=False)  # self.verified_only)
         self.storage_box = self.dfo.storage_box
         options = self.storage_box.options
         for option in self.storage_box.options.all():
@@ -248,11 +250,14 @@ class S3Downloader():
                 return option.value
         return False
 
+    def __get_full_path(self):
+        return self.dfo.uri
+        
     def __mint_time_limited_url(self):
         try:
             url = self.s3_client.generate_presigned_url('get_object',
                                                         Params={'Bucket': self.__get_bucket_from_datafile(),
-                                                                'Key':self.dfo.get_full_path()},
+                                                                'Key':self.__get_full_path()},
                                                         ExpiresIn=3600)
             logger.info(url)
         except ClientError as e:
