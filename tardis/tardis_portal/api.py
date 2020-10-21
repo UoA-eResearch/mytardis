@@ -350,7 +350,7 @@ def process_acls(bundle):
                 logger.debug('Parent project: {}'.format(project.name))
                 parent = experiment
             elif ct_string == 'datafile':
-                ct = 'datafile'
+                #ct = 'datafile'
                 logger.debug('Datafile found')
                 try:
                     dataset_uri = bundle.data['dataset']
