@@ -38,10 +38,21 @@ const initialState = {
     isLoading: false,
     error:null,
     results:null,
-    activeFilters: [],
     selectedType: "experiment",
     selectedResult: null,
-    hideSensitive: true
+    hideSensitive: true,
+    pageSize: {
+        projects: 50,
+        experiments: 50,
+        datasets: 50,
+        datafiles: 50
+    },
+    pageNumber: {
+        projects: 0,
+        experiments: 0,
+        datasets: 0,
+        datafiles: 0
+    }
 };
 
 const search = createSlice({
@@ -80,9 +91,29 @@ const search = createSlice({
         },
         updateSelectedResult: (state, {payload: selectedResult}) => {
             state.selectedResult = selectedResult;
+        },
+        updatePageSize: (state, {payload}) => {
+            const { type, size } = payload;
+            if (type) {
+                state.pageSize[type] = size;
+            } else {
+                Object.keys(state.pageSize).forEach(typeName => {
+                    state.pageSize[typeName] = size;
+                });
+            }
+        },
+        updatePageNumber: (state, {payload}) => {
+            const { type, number } = payload;
+            if (type) {
+                state.pageNumber[type] = number;
+            } else {
+                Object.keys(state.pageNumber).forEach(typeName => {
+                    state.pageNumber[typeName] = number;
+                });
+            }
         }
     }
-})
+});
 
 const fetchSearchResults = (queryBody) => {
     return fetch(`/api/v1/search_simple-search/`,{
@@ -101,10 +132,38 @@ const fetchSearchResults = (queryBody) => {
     })
 };
 
+
+/**
+ * Returns search API pagination query. 
+ * @param {*} searchSlice - Redux search slice
+ * @param {string} type If null, returns pagination for all types. If a MyTardis
+ * type is specified, returns only pagination for that type.
+ */
+const buildPaginationQuery = (searchSlice, type) => {
+    if (type) {
+        return {
+            offset: searchSlice.pageSize[type] * searchSlice.pageNumber[type],
+            limit: searchSlice.pageSize[type]
+        };
+    } else {
+        const offsets = Object.keys(searchSlice.pageSize).reduce((previous, objType) => {
+            previous[objType] = searchSlice.pageSize[objType] * searchSlice.pageNumber[objType];
+            return previous;
+        }, {});
+        return {
+            offset: offsets,
+            limit: searchSlice.pageSize
+        };
+    }
+};
+
 const buildQueryBody = (state, typeToSearch) => {
     const term = state.search.searchTerm,
         filters = buildFilterQuery(state.filters, typeToSearch),
-        queryBody = {};
+        queryBody = {},
+        pagination = buildPaginationQuery(state.search, typeToSearch);
+    // Add pagination query
+    Object.assign(queryBody, pagination);
     if (typeToSearch) {
         // If doing a single type search, include type in query body.
         queryBody.type = typeToSearch;
