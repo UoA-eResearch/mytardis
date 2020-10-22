@@ -364,7 +364,7 @@ class DataFileDocument(Document):
         model = DataFile
         related_models = [Dataset, Experiment, Project, ObjectACL,
                           Schema, ParameterName, DatafileParameter,
-                          DatafileParameterSet]
+                          DatafileParameterSet, DataFileObject]
         queryset_pagination = 100000
 
     def get_instances_from_related(self, related_instance):
