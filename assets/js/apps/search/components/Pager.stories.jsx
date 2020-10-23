@@ -16,6 +16,42 @@ export const paginationData = {
     handlePageNumChange: action("Page number change")
 };
 
+export const lessThanFivePagesData = Object.assign({}, paginationData, {
+    pageNum: 1,
+    totalPages: 4
+});
+
+export const onePageData = Object.assign({}, paginationData, {
+    pageNum: 1,
+    totalPages: 1
+});
+
+export const noPagesData = Object.assign({}, paginationData, {
+    pageNum: 0,
+    totalPages: 0
+});
+
+export const lastPageData = Object.assign({}, paginationData, {
+    pageNum: 10,
+    totalPages: 10
+});
+
 export const Default = () => (
     <PurePager {...paginationData} />
+);
+
+export const LessThanFivePages = () => (
+    <PurePager {...lessThanFivePagesData} />
+);
+
+export const OnePage = () => (
+    <PurePager {...onePageData} />
+);
+
+export const NoPages = () => (
+    <PurePager {...noPagesData} />
+);
+
+export const LastPage = () => (
+    <PurePager {...lastPageData} />
 );

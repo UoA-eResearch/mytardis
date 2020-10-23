@@ -8,17 +8,20 @@ import { useCallback } from 'react';
 const nearbyNums = (number, count = 5, min = 1, max) => {
     const nearby = [],
         half = Math.floor(count / 2);
-    let firstNumber;
+    let firstNumber, howMany;
     if (number - half >= min) {
-        if (half + count <= max) {
+        if (max - number >= count && half + count <= max) {
             firstNumber = number - half;
+            howMany = count;
         } else {
-            firstNumber = max - count;
+            firstNumber = max - count + 1;
+            howMany = max - count;
         }
     } else {
         firstNumber = min;
+        howMany = Math.min(max, number - half + count);
     }
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < howMany; i++) {
         nearby[i] = firstNumber + i;
     }
     return nearby;
@@ -27,7 +30,7 @@ const nearbyNums = (number, count = 5, min = 1, max) => {
 const renderPageItems = (currentPageNum, maxPages, clickCallback) => {
     const renderedPages = nearbyNums(currentPageNum, 5, 1, maxPages);
     let pageItems = [];
-    if (renderedPages[0] !== 2) {
+    if (renderedPages[0] !== undefined && renderedPages[0] !== 1) {
         pageItems.push(<Pagination.Ellipsis key="ellipsis1" active={false} />);
     }
     pageItems = pageItems.concat(renderedPages.map(
@@ -41,7 +44,8 @@ const renderPageItems = (currentPageNum, maxPages, clickCallback) => {
             </Pagination.Item>
         )
     ));
-    if (renderedPages[renderedPages.length - 1] !== maxPages - 1) {
+    if (renderedPages[renderedPages.length - 1] !== undefined &&
+        renderedPages[renderedPages.length - 1] !== maxPages) {
         pageItems.push(<Pagination.Ellipsis key="ellipsis2" active={false} />);
     }
     return pageItems;
