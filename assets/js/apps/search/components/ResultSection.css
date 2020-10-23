@@ -37,6 +37,7 @@
     overflow: hidden;
     /* Make result list and entry card take up available space */
     flex: 1;
+    padding-bottom: 1rem;
 }
 
 .result-section__container {
