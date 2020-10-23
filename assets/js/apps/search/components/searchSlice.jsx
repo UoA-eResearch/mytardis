@@ -52,7 +52,10 @@ export const pageNumberSelector = (searchSlice, type) => {
 };
 
 export const totalPagesSelector = (searchSlice, typeId) => {
-    return searchSlice.results[typeId].length / pageSizeSelector(searchSlice, typeId);
+    if (!searchSlice.results) {
+        return 0;
+    }
+    return Math.ceil(searchSlice.results[typeId].length / pageSizeSelector(searchSlice, typeId));
 };
 
 const initialState = {
@@ -70,10 +73,10 @@ const initialState = {
         datafiles: 50
     },
     pageNumber: {
-        projects: 0,
-        experiments: 0,
-        datasets: 0,
-        datafiles: 0
+        projects: 1,
+        experiments: 1,
+        datasets: 1,
+        datafiles: 1
     }
 };
 
@@ -301,6 +304,17 @@ export const initialiseSearch = () => {
     }
 }
 
+export const updateAndFetchResultsPage = (typeId, number) => {
+    return (dispatch, getState) => {
+        const state = getState();
+        const totalPages = totalPagesSelector(state.search,typeId);
+        if (number < 1 || number > totalPages) {
+            return;
+        }
+        dispatch(search.actions.updatePageNumber(typeId, number));
+        dispatch(runSingleTypeSearch(typeId));
+    };
+};
 
 export const {
     getResultsStart,

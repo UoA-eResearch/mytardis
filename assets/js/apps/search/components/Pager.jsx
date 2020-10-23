@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import { Pagination } from "react-bootstrap";
-import { pageSizeSelector, pageNumberSelector, updatePageSize, totalPagesSelector, updatePageNumber } from "./searchSlice";
+import { 
+    pageSizeSelector,
+    pageNumberSelector, 
+    updatePageSize, 
+    totalPagesSelector, 
+    updateAndFetchResultsPage 
+} from "./searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback } from 'react';
 
@@ -28,9 +34,11 @@ const nearbyNums = (number, count = 5, min = 1, max) => {
 };
 
 const renderPageItems = (currentPageNum, maxPages, clickCallback) => {
-    const renderedPages = nearbyNums(currentPageNum, 5, 1, maxPages);
+    const renderedPages = nearbyNums(currentPageNum, 5, 1, maxPages),
+        renderedMin = renderedPages[0],
+        renderedMax = renderedPages[renderedPages.length - 1];
     let pageItems = [];
-    if (renderedPages[0] !== undefined && renderedPages[0] !== 1) {
+    if (renderedMin !== undefined && renderedMin !== 1) {
         pageItems.push(<Pagination.Ellipsis key="ellipsis1" active={false} />);
     }
     pageItems = pageItems.concat(renderedPages.map(
@@ -44,8 +52,8 @@ const renderPageItems = (currentPageNum, maxPages, clickCallback) => {
             </Pagination.Item>
         )
     ));
-    if (renderedPages[renderedPages.length - 1] !== undefined &&
-        renderedPages[renderedPages.length - 1] !== maxPages) {
+    if (renderedMax !== undefined &&
+        renderedMax !== maxPages) {
         pageItems.push(<Pagination.Ellipsis key="ellipsis2" active={false} />);
     }
     return pageItems;
@@ -83,8 +91,12 @@ function Pager({objectType}) {
         totalPagesSelector(state.search, objectType)
     ));
     const handlePageNumChange = useCallback((newPageNum) => {
-        dispatch(updatePageNumber({typeId: objectType, number: newPageNum}));
-    }, [dispatch, objectType]);
+        if (newPageNum < 1 || newPageNum > totalPages) {
+            // Do not change page if page is out of bounds.
+            return;
+        }
+        dispatch(updateAndFetchResultsPage(objectType, newPageNum));
+    }, [dispatch, objectType, totalPages]);
     return (
         <PurePager 
             pageNum={pageNum} 

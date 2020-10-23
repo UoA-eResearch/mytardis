@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateSelectedResult, updateSelectedType } from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
-
+import Pager from "./Pager";
 export function ResultTabs({ counts, selectedType, onChange }) {
 
     if (!counts) {
@@ -239,6 +239,7 @@ export function PureResultSection({ resultSets, selectedType,
                         />
                     }
                 </div>
+                <Pager objectType={selectedType + "s"} />
             </div>
         </>
     )
