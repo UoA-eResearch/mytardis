@@ -12,10 +12,10 @@ export default {
 export const countsData = {
     selectedType: "project",
     counts: {
-        project: 4,
-        experiment: 14,
-        dataset: 5,
-        datafile: 80
+        projects: 4,
+        experiments: 14,
+        datasets: 5,
+        datafiles: 80
     },
     onChange: action("level change")
 }

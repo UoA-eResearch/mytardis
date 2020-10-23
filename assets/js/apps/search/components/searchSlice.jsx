@@ -26,10 +26,10 @@ const hits = response.hits,
         return getResultFromHit(hit,"datafile","/datafile/view")
     });
 return {
-    project: projectResults,
-    experiment: expResults,
-    dataset: dsResults,
-    datafile: dfResults
+    projects: projectResults,
+    experiments: expResults,
+    datasets: dsResults,
+    datafiles: dfResults
 }
 }
 
@@ -51,6 +51,9 @@ export const pageNumberSelector = (searchSlice, type) => {
     return searchSlice.pageNumber[type];
 };
 
+export const totalPagesSelector = (searchSlice, typeId) => {
+    return searchSlice.results[typeId].length / pageSizeSelector(searchSlice, typeId);
+};
 
 const initialState = {
     searchTerm: null,
@@ -112,9 +115,9 @@ const search = createSlice({
             state.selectedResult = selectedResult;
         },
         updatePageSize: (state, {payload}) => {
-            const { type, size } = payload;
-            if (type) {
-                state.pageSize[type] = size;
+            const { typeId, size } = payload;
+            if (typeId) {
+                state.pageSize[typeId] = size;
             } else {
                 Object.keys(state.pageSize).forEach(typeName => {
                     state.pageSize[typeName] = size;
@@ -305,7 +308,9 @@ export const {
     getResultsFailure,
     updateSearchTerm,
     updateSelectedType,
-    updateSelectedResult
+    updateSelectedResult,
+    updatePageNumber,
+    updatePageSize
 } = search.actions;
 
 export default search.reducer;

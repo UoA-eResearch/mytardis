@@ -15,10 +15,10 @@ export function ResultTabs({ counts, selectedType, onChange }) {
 
     if (!counts) {
         counts = {
-            experiment: null,
-            dataset: null,
-            datafile: null,
-            project: null
+            experiments: null,
+            datasets: null,
+            datafiles: null,
+            projects: null
         }
     }
 
@@ -30,13 +30,14 @@ export function ResultTabs({ counts, selectedType, onChange }) {
 
     const renderTab = (key, label) => {
         // const badgeVariant = selectedType === key ? "primary":"secondary";
+        const typeCollectionName = key + "s";
         const badgeVariant = "secondary";
         return (
             <Nav.Item role="tab">
                 <Nav.Link onSelect={handleNavClicked.bind(this, key)} eventKey={key}>
-                    {label} {counts[key] !== null &&
+                    {label} {counts[typeCollectionName] !== null &&
                         <Badge variant={badgeVariant}>
-                            {counts[key]} <span className="sr-only">{counts[key] > 1 ? "results" : "result"}</span>
+                            {counts[typeCollectionName]} <span className="sr-only">{counts[typeCollectionName] > 1 ? "results" : "result"}</span>
                         </Badge>}</Nav.Link>
             </Nav.Item>
         );
@@ -44,20 +45,20 @@ export function ResultTabs({ counts, selectedType, onChange }) {
 
     return (
         <Nav variant="tabs" activeKey={selectedType}>
-            {renderTab("project", "Projects", counts.datafile, selectedType)}
-            {renderTab("experiment", "Experiments", counts.experiment, selectedType)}
-            {renderTab("dataset", "Datasets", counts.dataset, selectedType)}
-            {renderTab("datafile", "Datafiles", counts.datafile, selectedType)}
+            {renderTab("project", "Projects")}
+            {renderTab("experiment", "Experiments")}
+            {renderTab("dataset", "Datasets")}
+            {renderTab("datafile", "Datafiles")}
         </Nav>
     )
 }
 
 ResultTabs.propTypes = {
     counts: PropTypes.shape({
-        project: PropTypes.number,
-        experiment: PropTypes.number,
-        dataset: PropTypes.number,
-        datafile: PropTypes.number
+        projects: PropTypes.number,
+        experiments: PropTypes.number,
+        datasets: PropTypes.number,
+        datafiles: PropTypes.number
     }),
     selectedType: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
@@ -205,10 +206,10 @@ export function PureResultSection({ resultSets, selectedType,
     if (!resultSets) {
         resultSets = {};
         counts = {
-            project: null,
-            experiment: null,
-            dataset: null,
-            datafile: null
+            projects: null,
+            experiments: null,
+            datasets: null,
+            datafiles: null
         }
     } else {
         counts = {};
@@ -219,8 +220,8 @@ export function PureResultSection({ resultSets, selectedType,
 
     let selectedEntry = getSelectedEntry(resultSets, selectedResult, selectedType);
 
-    const currentResultSet = resultSets[selectedType],
-        currentCount = counts[selectedType];
+    const currentResultSet = resultSets[selectedType + "s"],
+        currentCount = counts[selectedType + "s"];
     return (
         <>
             <ResultTabs counts={counts} selectedType={selectedType} onChange={onSelectType} />
@@ -253,7 +254,7 @@ export function PureResultSection({ resultSets, selectedType,
 function getSelectedEntry(resultSets, selectedResult, selectedType) {
     let selectedEntry = null;
     if (resultSets && selectedResult) {
-        selectedEntry = resultSets[selectedType].filter(result => result.id === selectedResult)[0];
+        selectedEntry = resultSets[selectedType + "s"].filter(result => result.id === selectedResult)[0];
     }
     return selectedEntry;
 }

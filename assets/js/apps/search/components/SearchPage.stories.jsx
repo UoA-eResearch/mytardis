@@ -50,10 +50,10 @@ export const projectResultsData = [
 ]
 
 export const searchResultsData = {
-    project: projectResultsData,
-    experiment: experimentListData,
-    dataset: dsResultsData,
-    datafile: dfResultsData
+    projects: projectResultsData,
+    experiments: experimentListData,
+    datasets: dsResultsData,
+    datafiles: dfResultsData
 }
 
 export const searchInfoData = {
