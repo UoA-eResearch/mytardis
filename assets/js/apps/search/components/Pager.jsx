@@ -33,6 +33,7 @@ const nearbyNums = (number, count = 5, min = 1, max) => {
     return nearby;
 };
 
+
 const renderPageItems = (currentPageNum, maxPages, clickCallback) => {
     const renderedPages = nearbyNums(currentPageNum, 5, 1, maxPages),
         renderedMin = renderedPages[0],
@@ -55,6 +56,15 @@ const renderPageItems = (currentPageNum, maxPages, clickCallback) => {
     if (renderedMax !== undefined &&
         renderedMax !== maxPages) {
         pageItems.push(<Pagination.Ellipsis key="ellipsis2" active={false} />);
+        pageItems.push(
+            <Pagination.Item 
+                key="lastitem"
+                active={false} 
+                onClick={clickCallback.bind(this, maxPages)}
+            >
+                {maxPages}
+            </Pagination.Item>
+        );
     }
     return pageItems;
 };
