@@ -33,6 +33,25 @@ return {
 }
 }
 
+/**
+ * Selector for a type's current page size.
+ * @param {*} searchSlice - The Redux state slice for search
+ * @param {string} type -  MyTardis object type name.
+ */
+export const pageSizeSelector = (searchSlice, type) => {
+    return searchSlice.pageSize[type];
+};
+
+/**
+ * Selector for a type's current page number.
+ * @param {*} searchSlice - The Redux state slice for search
+ * @param {string} type - MyTardis object type name.
+ */
+export const pageNumberSelector = (searchSlice, type) => {
+    return searchSlice.pageNumber[type];
+};
+
+
 const initialState = {
     searchTerm: null,
     isLoading: false,
