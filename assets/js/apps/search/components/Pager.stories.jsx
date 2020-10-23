@@ -25,7 +25,7 @@ export const paginationData = {
     }
 };
 
-const store = makeMockStore(paginationData);
+const store = makeMockStore({search: paginationData});
 
 export const Default = () => (
     <Pager objectType="experiments" />
