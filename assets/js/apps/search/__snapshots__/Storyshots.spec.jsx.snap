@@ -105,6 +105,7 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -120,9 +121,6 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -132,7 +130,7 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              12
@@ -145,6 +143,7 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -160,9 +159,6 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -172,10 +168,12 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             My name is
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
       </tbody>
@@ -312,6 +310,7 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -327,9 +326,6 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -339,7 +335,7 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              4
@@ -352,6 +348,7 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -367,9 +364,6 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -379,10 +373,12 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             My Name
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
         <tr
@@ -396,6 +392,7 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -411,9 +408,6 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -423,7 +417,7 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              5
@@ -436,6 +430,7 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -451,9 +446,6 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -463,10 +455,12 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             is
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
       </tbody>
@@ -603,6 +597,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -618,9 +613,6 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -630,7 +622,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              1
@@ -643,6 +635,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -658,9 +651,6 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -670,10 +660,12 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             kiwi
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
         <tr
@@ -687,6 +679,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -702,9 +695,6 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -714,7 +704,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              3
@@ -727,6 +717,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -742,9 +733,6 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -754,10 +742,12 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             forbidden fruit
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
       </tbody>
@@ -894,6 +884,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -909,9 +900,6 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -921,7 +909,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              18
@@ -934,6 +922,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -949,9 +938,6 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -961,10 +947,12 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
         <tr
@@ -978,6 +966,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -993,9 +982,6 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1005,7 +991,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              19
@@ -1018,6 +1004,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1033,9 +1020,6 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1045,10 +1029,12 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             7.0
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
         <tr
@@ -1062,6 +1048,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1077,9 +1064,6 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1089,7 +1073,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              15
@@ -1102,6 +1086,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1117,9 +1102,6 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1129,10 +1111,12 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             Kiwi
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
         <tr
@@ -1146,6 +1130,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1161,9 +1146,6 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1173,7 +1155,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              16
@@ -1186,6 +1168,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1201,9 +1184,6 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1213,10 +1193,12 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             Orange
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
       </tbody>
@@ -1347,6 +1329,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1362,9 +1345,6 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1374,7 +1354,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              18
@@ -1387,6 +1367,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1402,9 +1383,6 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1414,10 +1392,12 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
         <tr
@@ -1431,6 +1411,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1446,9 +1427,6 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1458,7 +1436,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              19
@@ -1471,6 +1449,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1486,9 +1465,6 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1498,10 +1474,12 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             7.0
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
         <tr
@@ -1515,6 +1493,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1530,9 +1509,6 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1542,7 +1518,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              15
@@ -1555,6 +1531,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1570,9 +1547,6 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1582,10 +1556,12 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             Kiwi
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
         <tr
@@ -1599,6 +1575,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1614,9 +1591,6 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1626,7 +1600,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              16
@@ -1639,6 +1613,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1654,9 +1629,6 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1666,10 +1638,12 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             Orange
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
       </tbody>
@@ -1822,6 +1796,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1837,9 +1812,6 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1849,7 +1821,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              18
@@ -1862,6 +1834,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1877,9 +1850,6 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1889,10 +1859,12 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
         <tr
@@ -1906,6 +1878,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1921,9 +1894,6 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1933,7 +1903,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              19
@@ -1946,6 +1916,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -1961,9 +1932,6 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -1973,10 +1941,12 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             7.0
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
         <tr
@@ -1990,6 +1960,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -2005,9 +1976,6 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -2017,7 +1985,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              15
@@ -2030,6 +1998,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -2045,9 +2014,6 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -2057,10 +2023,12 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             Kiwi
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
         <tr
@@ -2074,6 +2042,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter name"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -2089,9 +2058,6 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -2101,7 +2067,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
              16
@@ -2114,6 +2080,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
             }
           >
             <svg
+              aria-label="Sensitive parameter value"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -2129,9 +2096,6 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>
-                This parameter is sensitive and may not be visible to other Users
-              </title>
               <rect
                 height="11"
                 rx="2"
@@ -2141,10 +2105,12 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
                 y="11"
               />
               <path
-                d="M7 11V7a5 5 0 0 1 9.9-1"
+                d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-             Orange
+            <i>
+               Hidden. Click to show.
+            </i>
           </td>
         </tr>
       </tbody>
@@ -5694,6 +5660,807 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
 </div>
 `;
 
+exports[`Storyshots Pager Default 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+    }
+  }
+>
+  <ul
+    className="pagination"
+  >
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          «
+        </span>
+        <span
+          className="sr-only"
+        >
+          First
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ‹
+        </span>
+        <span
+          className="sr-only"
+        >
+          Previous
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          …
+        </span>
+        <span
+          className="sr-only"
+        >
+          More
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        3
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        4
+      </a>
+    </li>
+    <li
+      className="page-item active"
+    >
+      <span
+        className="page-link"
+        disabled={false}
+        onClick={[Function]}
+      >
+        5
+        <span
+          className="sr-only"
+        >
+          (current)
+        </span>
+      </span>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        6
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        7
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          …
+        </span>
+        <span
+          className="sr-only"
+        >
+          More
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        10
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ›
+        </span>
+        <span
+          className="sr-only"
+        >
+          Next
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          »
+        </span>
+        <span
+          className="sr-only"
+        >
+          Last
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`Storyshots Pager Last Page 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+    }
+  }
+>
+  <ul
+    className="pagination"
+  >
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          «
+        </span>
+        <span
+          className="sr-only"
+        >
+          First
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ‹
+        </span>
+        <span
+          className="sr-only"
+        >
+          Previous
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          …
+        </span>
+        <span
+          className="sr-only"
+        >
+          More
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        6
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        7
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        8
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        9
+      </a>
+    </li>
+    <li
+      className="page-item active"
+    >
+      <span
+        className="page-link"
+        disabled={false}
+        onClick={[Function]}
+      >
+        10
+        <span
+          className="sr-only"
+        >
+          (current)
+        </span>
+      </span>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ›
+        </span>
+        <span
+          className="sr-only"
+        >
+          Next
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          »
+        </span>
+        <span
+          className="sr-only"
+        >
+          Last
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`Storyshots Pager Less Than Five Pages 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+    }
+  }
+>
+  <ul
+    className="pagination"
+  >
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          «
+        </span>
+        <span
+          className="sr-only"
+        >
+          First
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ‹
+        </span>
+        <span
+          className="sr-only"
+        >
+          Previous
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item active"
+    >
+      <span
+        className="page-link"
+        disabled={false}
+        onClick={[Function]}
+      >
+        1
+        <span
+          className="sr-only"
+        >
+          (current)
+        </span>
+      </span>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        2
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        3
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        4
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ›
+        </span>
+        <span
+          className="sr-only"
+        >
+          Next
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          »
+        </span>
+        <span
+          className="sr-only"
+        >
+          Last
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`Storyshots Pager No Pages 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+    }
+  }
+>
+  <ul
+    className="pagination"
+  >
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          «
+        </span>
+        <span
+          className="sr-only"
+        >
+          First
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ‹
+        </span>
+        <span
+          className="sr-only"
+        >
+          Previous
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ›
+        </span>
+        <span
+          className="sr-only"
+        >
+          Next
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          »
+        </span>
+        <span
+          className="sr-only"
+        >
+          Last
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`Storyshots Pager One Page 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+    }
+  }
+>
+  <ul
+    className="pagination"
+  >
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          «
+        </span>
+        <span
+          className="sr-only"
+        >
+          First
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ‹
+        </span>
+        <span
+          className="sr-only"
+        >
+          Previous
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item active"
+    >
+      <span
+        className="page-link"
+        disabled={false}
+        onClick={[Function]}
+      >
+        1
+        <span
+          className="sr-only"
+        >
+          (current)
+        </span>
+      </span>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ›
+        </span>
+        <span
+          className="sr-only"
+        >
+          Next
+        </span>
+      </a>
+    </li>
+    <li
+      className="page-item"
+    >
+      <a
+        className="page-link"
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          »
+        </span>
+        <span
+          className="sr-only"
+        >
+          Last
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>
+`;
+
 exports[`Storyshots Quick search box Default 1`] = `
 <div
   style={
@@ -7901,6 +8668,114 @@ exports[`Storyshots Search page Default 1`] = `
             Please select a row to view the details.
           </div>
         </div>
+        <ul
+          className="pagination"
+        >
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                «
+              </span>
+              <span
+                className="sr-only"
+              >
+                First
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                ‹
+              </span>
+              <span
+                className="sr-only"
+              >
+                Previous
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item active"
+          >
+            <span
+              className="page-link"
+              disabled={false}
+              onClick={[Function]}
+            >
+              1
+              <span
+                className="sr-only"
+              >
+                (current)
+              </span>
+            </span>
+          </li>
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                ›
+              </span>
+              <span
+                className="sr-only"
+              >
+                Next
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                »
+              </span>
+              <span
+                className="sr-only"
+              >
+                Last
+              </span>
+            </a>
+          </li>
+        </ul>
       </div>
     </main>
   </div>
@@ -9097,6 +9972,98 @@ exports[`Storyshots Search page Error 1`] = `
             </p>
           </div>
         </div>
+        <ul
+          className="pagination"
+        >
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                «
+              </span>
+              <span
+                className="sr-only"
+              >
+                First
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                ‹
+              </span>
+              <span
+                className="sr-only"
+              >
+                Previous
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                ›
+              </span>
+              <span
+                className="sr-only"
+              >
+                Next
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                »
+              </span>
+              <span
+                className="sr-only"
+              >
+                Last
+              </span>
+            </a>
+          </li>
+        </ul>
       </div>
     </main>
   </div>
@@ -10320,6 +11287,98 @@ exports[`Storyshots Search page Loading 1`] = `
             </table>
           </div>
         </div>
+        <ul
+          className="pagination"
+        >
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                «
+              </span>
+              <span
+                className="sr-only"
+              >
+                First
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                ‹
+              </span>
+              <span
+                className="sr-only"
+              >
+                Previous
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                ›
+              </span>
+              <span
+                className="sr-only"
+              >
+                Next
+              </span>
+            </a>
+          </li>
+          <li
+            className="page-item"
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              <span
+                aria-hidden="true"
+              >
+                »
+              </span>
+              <span
+                className="sr-only"
+              >
+                Last
+              </span>
+            </a>
+          </li>
+        </ul>
       </div>
     </main>
   </div>
