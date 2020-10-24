@@ -70,14 +70,14 @@ const renderPageItems = (currentPageNum, maxPages, clickCallback) => {
 };
 
 export const PurePager = ({pageNum, pageSize, totalPages, handlePageNumChange}) => {
-    const handleClicked = useCallback((number, event) => {
+    const handleClicked = useCallback((newPageNum, event) => {
         event.stopPropagation();
-        if (pageNum === number) {
+        if (pageNum === newPageNum || newPageNum < 1 || newPageNum > totalPages) {
             return;
         } else {
-            handlePageNumChange(number);
+            handlePageNumChange(newPageNum);
         }
-    }, [pageNum]);
+    }, [pageNum, totalPages]);
     return (
         <Pagination>
             <Pagination.First key="first" onClick={handleClicked.bind(this, 1)} />
@@ -101,12 +101,8 @@ function Pager({objectType}) {
         totalPagesSelector(state.search, objectType)
     ));
     const handlePageNumChange = useCallback((newPageNum) => {
-        if (newPageNum < 1 || newPageNum > totalPages) {
-            // Do not change page if page is out of bounds.
-            return;
-        }
         dispatch(updateAndFetchResultsPage(objectType, newPageNum));
-    }, [dispatch, objectType, totalPages]);
+    }, [dispatch, objectType]);
     return (
         <PurePager 
             pageNum={pageNum} 

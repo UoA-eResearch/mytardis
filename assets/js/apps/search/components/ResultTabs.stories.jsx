@@ -1,9 +1,9 @@
 import React from 'react'
-import  { ResultTabs } from './ResultSection'
+import  { PureResultTabs } from './ResultSection'
 import { action } from '@storybook/addon-actions';
 
 export default {
-    component: ResultTabs,
+    component: PureResultTabs,
     title: 'Result tabs',
     decorators: [story => <div style={{ padding: '3rem'}}>{story()}</div>],
     excludeStories: /.*Data$/

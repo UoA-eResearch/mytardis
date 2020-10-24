@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useCallback } from 'react'
 import Table from 'react-bootstrap/Table';
 import PropTypes from 'prop-types';
 import { FiPieChart, FiLock } from 'react-icons/fi';
@@ -7,11 +7,12 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import Badge from 'react-bootstrap/Badge';
 import { useSelector, useDispatch } from "react-redux";
-import { updateSelectedResult, updateSelectedType } from "./searchSlice";
+import { updateSelectedResult, updateSelectedType, totalHitsSelector, pageNumberSelector, pageSizeSelector } from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 import Pager from "./Pager";
-export function ResultTabs({ counts, selectedType, onChange }) {
+
+export function PureResultTabs({ counts, selectedType, onChange }) {
 
     if (!counts) {
         counts = {
@@ -53,7 +54,7 @@ export function ResultTabs({ counts, selectedType, onChange }) {
     )
 }
 
-ResultTabs.propTypes = {
+PureResultTabs.propTypes = {
     counts: PropTypes.shape({
         projects: PropTypes.number,
         experiments: PropTypes.number,
@@ -62,7 +63,23 @@ ResultTabs.propTypes = {
     }),
     selectedType: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
-}
+};
+
+export const ResultTabs = () => {
+    const hitTotals = useSelector(
+        state => state.search.results ? state.search.results.hitTotals : null
+    );
+    const selectedType = useSelector(state => state.search.selectedType);
+    const dispatch = useDispatch();
+    const onSelectType = useCallback(
+        (type) => {
+            dispatch(updateSelectedType(type));
+        },
+        [dispatch]);
+    return (<PureResultTabs counts={hitTotals} selectedType={selectedType} onChange={onSelectType} />);
+};
+
+
 
 
 const NameColumn = {
@@ -200,46 +217,40 @@ PureResultList.propTypes = {
     onItemSelect: PropTypes.func
 }
 
+const ResultSummary = ({typeId}) => {
+    const currentCount = useSelector(state => totalHitsSelector(state.search, typeId));
+    const currentPageSize = useSelector(state => pageSizeSelector(state.search, typeId));
+    const currentFirstItem = useSelector(state => (
+        currentPageSize * (pageNumberSelector(state.search, typeId) - 1) + 1
+    ));
+    const currentLastItem = Math.min(currentCount, currentFirstItem + currentPageSize - 1);
+    return (
+        <p className="result-section--count-summary">
+            <span>Showing {currentFirstItem} - {currentLastItem} of {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
+        </p>
+    );
+};
+
 export function PureResultSection({ resultSets, selectedType,
-    onSelectType, selectedResult, onSelectResult, isLoading, error }) {
-    let counts;
-    if (!resultSets) {
-        resultSets = {};
-        counts = {
-            projects: null,
-            experiments: null,
-            datasets: null,
-            datafiles: null
-        }
-    } else {
-        counts = {};
-        for (let key in resultSets) {
-            counts[key] = resultSets[key].length;
-        }
-    }
-
+    selectedResult, onSelectResult, isLoading, error }) {
     let selectedEntry = getSelectedEntry(resultSets, selectedResult, selectedType);
-
-    const currentResultSet = resultSets[selectedType + "s"],
-        currentCount = counts[selectedType + "s"];
+    const currentResultSet =  resultSets ? resultSets[selectedType + "s"] : null;
     return (
         <>
-            <ResultTabs counts={counts} selectedType={selectedType} onChange={onSelectType} />
+            <ResultTabs />
             <div role="tabpanel" className="result-section--tabpanel">
                 {(!isLoading && !error) &&
-                    <p className="result-section--count-summary">
-                        <span>Showing {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
-                    </p>
+                    <ResultSummary typeId={selectedType} />
                 }
                 <div className="tabpanel__container--horizontal">
                     <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
-                    {(!isLoading && !error && currentCount > 0) &&
+                    {(!isLoading && !error) &&
                         <EntryPreviewCard
                             data={selectedEntry}
                         />
                     }
                 </div>
-                <Pager objectType={selectedType + "s"} />
+                <Pager objectType={selectedType} />
             </div>
         </>
     )
@@ -264,22 +275,24 @@ export default function ResultSection() {
     const selectedType = useSelector(state => state.search.selectedType),
         selectedResult = useSelector(state => state.search.selectedResult),
         dispatch = useDispatch(),
-        onSelectType = (type) => {
-            dispatch(updateSelectedType(type));
-        },
         onSelectResult = (selectedResult) => {
             dispatch(updateSelectedResult(selectedResult));
         },
-        searchInfo = useSelector(
-            (state) => state.search
+        resultSets = useSelector(
+            (state) => state.search.results ? state.search.results.hits : null
+        ),
+        error = useSelector(
+            (state) => state.search.error
+        ),
+        isLoading = useSelector(
+            (state) => state.search.isLoading
         );
     return (
         <PureResultSection
-            resultSets={searchInfo.results}
-            error={searchInfo.error}
-            isLoading={searchInfo.isLoading}
+            resultSets={resultSets}
+            error={error}
+            isLoading={isLoading}
             selectedType={selectedType}
-            onSelectType={onSelectType}
             selectedResult={selectedResult}
             onSelectResult={onSelectResult}
         />
