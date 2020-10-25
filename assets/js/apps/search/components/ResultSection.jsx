@@ -30,16 +30,19 @@ export function PureResultTabs({ counts, selectedType, onChange }) {
     }
 
     const renderTab = (key, label) => {
-        // const badgeVariant = selectedType === key ? "primary":"secondary";
         const typeCollectionName = key + "s";
-        const badgeVariant = "secondary";
         return (
             <Nav.Item role="tab">
                 <Nav.Link onSelect={handleNavClicked.bind(this, key)} eventKey={key}>
                     {label} {counts[typeCollectionName] !== null &&
-                        <Badge variant={badgeVariant}>
-                            {counts[typeCollectionName]} <span className="sr-only">{counts[typeCollectionName] > 1 ? "results" : "result"}</span>
-                        </Badge>}</Nav.Link>
+                        <span>
+                        (
+                            {counts[typeCollectionName]}
+                            <span className="sr-only">{counts[typeCollectionName] > 1 ? " results" : " result"}</span>
+                        )
+                        </span>
+                    }
+                </Nav.Link>
             </Nav.Item>
         );
     }
@@ -67,7 +70,7 @@ PureResultTabs.propTypes = {
 
 export const ResultTabs = () => {
     const hitTotals = useSelector(
-        state => state.search.results ? state.search.results.hitTotals : null
+        state => state.search.results ? state.search.results.totalHits : null
     );
     const selectedType = useSelector(state => state.search.selectedType);
     const dispatch = useDispatch();
