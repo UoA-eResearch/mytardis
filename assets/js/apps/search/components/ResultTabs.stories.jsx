@@ -26,6 +26,6 @@ export const emptyCountsData = Object.assign({},countsData,
     }
 );
 
-export const Default = () => (<ResultTabs {...countsData} />)
+export const Default = () => (<PureResultTabs {...countsData} />);
 
-export const EmptyCounts = () => (<ResultTabs {...emptyCountsData}></ResultTabs>)
+export const EmptyCounts = () => (<PureResultTabs {...emptyCountsData} />);

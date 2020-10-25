@@ -60,19 +60,27 @@ export const searchInfoData = {
     searchTerm: null,
     isLoading: false,
     error:null,
-    results: searchResultsData,
+    results: {
+        hits: searchResultsData,
+        totalHits: {
+            projects: projectResultsData.length,
+            experiments: experimentListData.length,
+            datasets: dsResultsData.length,
+            datafiles: dfResultsData.length
+        }
+    },
     selectedType: "experiment",
     pageNumber: {
-        projects: 1,
-        experiments: 1,
-        datasets: 1,
-        datafiles: 1
+        project: 1,
+        experiment: 1,
+        dataset: 1,
+        datafile: 1
     },
     pageSize: {
-        projects: 10,
-        experiments: 10,
-        datasets: 10,
-        datafiles: 10
+        project: 10,
+        experiment: 10,
+        dataset: 10,
+        datafile: 10
     }
 }
 

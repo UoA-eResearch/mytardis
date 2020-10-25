@@ -7079,16 +7079,15 @@ exports[`Storyshots Result tabs Default 1`] = `
       >
         Projects
          
-        <span
-          className="badge badge-secondary"
-        >
+        <span>
+          (
           4
-           
           <span
             className="sr-only"
           >
-            results
+             results
           </span>
+          )
         </span>
       </a>
     </div>
@@ -7106,16 +7105,15 @@ exports[`Storyshots Result tabs Default 1`] = `
       >
         Experiments
          
-        <span
-          className="badge badge-secondary"
-        >
+        <span>
+          (
           14
-           
           <span
             className="sr-only"
           >
-            results
+             results
           </span>
+          )
         </span>
       </a>
     </div>
@@ -7133,16 +7131,15 @@ exports[`Storyshots Result tabs Default 1`] = `
       >
         Datasets
          
-        <span
-          className="badge badge-secondary"
-        >
+        <span>
+          (
           5
-           
           <span
             className="sr-only"
           >
-            results
+             results
           </span>
+          )
         </span>
       </a>
     </div>
@@ -7160,16 +7157,15 @@ exports[`Storyshots Result tabs Default 1`] = `
       >
         Datafiles
          
-        <span
-          className="badge badge-secondary"
-        >
+        <span>
+          (
           80
-           
           <span
             className="sr-only"
           >
-            results
+             results
           </span>
+          )
         </span>
       </a>
     </div>
@@ -8381,16 +8377,15 @@ exports[`Storyshots Search page Default 1`] = `
           >
             Projects
              
-            <span
-              className="badge badge-secondary"
-            >
+            <span>
+              (
               1
-               
               <span
                 className="sr-only"
               >
-                result
+                 result
               </span>
+              )
             </span>
           </a>
         </div>
@@ -8408,16 +8403,15 @@ exports[`Storyshots Search page Default 1`] = `
           >
             Experiments
              
-            <span
-              className="badge badge-secondary"
-            >
+            <span>
+              (
               3
-               
               <span
                 className="sr-only"
               >
-                results
+                 results
               </span>
+              )
             </span>
           </a>
         </div>
@@ -8435,16 +8429,15 @@ exports[`Storyshots Search page Default 1`] = `
           >
             Datasets
              
-            <span
-              className="badge badge-secondary"
-            >
+            <span>
+              (
               1
-               
               <span
                 className="sr-only"
               >
-                result
+                 result
               </span>
+              )
             </span>
           </a>
         </div>
@@ -8462,16 +8455,15 @@ exports[`Storyshots Search page Default 1`] = `
           >
             Datafiles
              
-            <span
-              className="badge badge-secondary"
-            >
+            <span>
+              (
               1
-               
               <span
                 className="sr-only"
               >
-                result
+                 result
               </span>
+              )
             </span>
           </a>
         </div>
@@ -8485,6 +8477,10 @@ exports[`Storyshots Search page Default 1`] = `
         >
           <span>
             Showing 
+            1
+             - 
+            3
+             of 
             3
              
             results
