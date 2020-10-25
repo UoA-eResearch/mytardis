@@ -17,15 +17,18 @@ const nearbyNums = (number, count = 5, min = 1, max) => {
     let firstNumber, howMany;
     if (number - half >= min) {
         if (max - number >= count && half + count <= max) {
+            // If the number is towards the middle of the range
             firstNumber = number - half;
             howMany = count;
         } else {
+            // If the number is towards end of the range
             firstNumber = max - count + 1;
-            howMany = max - count;
+            howMany = max - firstNumber + 1;
         }
     } else {
+        // If the number is towards beginning of the range
         firstNumber = min;
-        howMany = Math.min(max, number - half + count);
+        howMany = Math.min(max, count);
     }
     for (let i = 0; i < howMany; i++) {
         nearby[i] = firstNumber + i;
