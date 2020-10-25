@@ -45,6 +45,14 @@
     overflow-y: auto;
 }
 
+.result-section__container .result-section--row {
+    transition: opacity 0.3s;
+}
+
+.result-section__container.loading .result-section--row {
+    opacity: 0.4;
+}
+
 .result-section--count-summary {
     padding: 1em 0;
 }

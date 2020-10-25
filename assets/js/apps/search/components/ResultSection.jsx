@@ -144,9 +144,19 @@ ResultRow.propTypes = {
 }
 
 export function PureResultList({ results, selectedItem, onItemSelect, error, isLoading }) {
-    let body;
+    results = results || [];
+    let body, listClassName = "result-section__container";
     const handleItemSelected = (id) => {
+        if (isLoading) {
+            // During loading, we disable selecting for preview card.
+            return;
+        }
         onItemSelect(id);
+    };
+
+    if (isLoading) {
+        // Add the loading class to show effect.
+        listClassName += " loading";
     }
 
     if (error) {
@@ -158,21 +168,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
         );
     }
 
-    else if (isLoading) {
-        body = (
-            // If the search is in progress.
-            <tr>
-                <td colSpan="3">
-                    <div className="result-section--msg">
-                        <p>Loading...</p>
-                    </div>
-                </td>
-            </tr>
-        );
-    }
-
-    else if (!results ||
-        (Array.isArray(results) && results.length == 0)) {
+    else if (!isLoading && results.length == 0) {
         // If the results are empty...
         body = (
             <tr>
@@ -197,7 +193,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
     }
 
     return (
-        <Table className="result-section__container" responsive hover>
+        <Table className={listClassName} responsive hover>
             <thead>
                 <tr>
                     <th></th>
@@ -223,13 +219,17 @@ PureResultList.propTypes = {
 const ResultSummary = ({typeId}) => {
     const currentCount = useSelector(state => totalHitsSelector(state.search, typeId));
     const currentPageSize = useSelector(state => pageSizeSelector(state.search, typeId));
-    const currentFirstItem = useSelector(state => (
-        currentPageSize * (pageNumberSelector(state.search, typeId) - 1) + 1
-    ));
+    const currentFirstItem = useSelector(state => {
+        if (currentCount === 0) {
+            return 0;
+        } else {
+            return currentPageSize * (pageNumberSelector(state.search, typeId) - 1) + 1;
+        }
+    });
     const currentLastItem = Math.min(currentCount, currentFirstItem + currentPageSize - 1);
     return (
         <p className="result-section--count-summary">
-            <span>Showing {currentFirstItem} - {currentLastItem} of {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
+        <span>Showing {currentFirstItem} - {currentLastItem} of {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
         </p>
     );
 };
@@ -237,23 +237,25 @@ const ResultSummary = ({typeId}) => {
 export function PureResultSection({ resultSets, selectedType,
     selectedResult, onSelectResult, isLoading, error }) {
     let selectedEntry = getSelectedEntry(resultSets, selectedResult, selectedType);
-    const currentResultSet =  resultSets ? resultSets[selectedType + "s"] : null;
+    const currentResultSet = resultSets ? resultSets[selectedType + "s"] : null;
     return (
         <>
             <ResultTabs />
             <div role="tabpanel" className="result-section--tabpanel">
-                {(!isLoading && !error) &&
+                {!error &&
                     <ResultSummary typeId={selectedType} />
                 }
                 <div className="tabpanel__container--horizontal">
                     <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
-                    {(!isLoading && !error) &&
+                    {!error &&
                         <EntryPreviewCard
                             data={selectedEntry}
                         />
                     }
                 </div>
-                <Pager objectType={selectedType} />
+                {!error &&
+                    <Pager objectType={selectedType} />
+                }
             </div>
         </>
     )

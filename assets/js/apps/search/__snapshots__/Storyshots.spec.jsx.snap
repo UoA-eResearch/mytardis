@@ -6833,7 +6833,7 @@ exports[`Storyshots Result list Loading 1`] = `
     className="table-responsive"
   >
     <table
-      className="result-section__container table table-hover"
+      className="result-section__container loading table table-hover"
     >
       <thead>
         <tr>
@@ -6846,21 +6846,7 @@ exports[`Storyshots Result list Loading 1`] = `
           </th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td
-            colSpan="3"
-          >
-            <div
-              className="result-section--msg"
-            >
-              <p>
-                Loading...
-              </p>
-            </div>
-          </td>
-        </tr>
-      </tbody>
+      <tbody />
     </table>
   </div>
 </div>
@@ -9968,98 +9954,6 @@ exports[`Storyshots Search page Error 1`] = `
             </p>
           </div>
         </div>
-        <ul
-          className="pagination"
-        >
-          <li
-            className="page-item"
-          >
-            <a
-              className="page-link"
-              href="#"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="button"
-            >
-              <span
-                aria-hidden="true"
-              >
-                «
-              </span>
-              <span
-                className="sr-only"
-              >
-                First
-              </span>
-            </a>
-          </li>
-          <li
-            className="page-item"
-          >
-            <a
-              className="page-link"
-              href="#"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="button"
-            >
-              <span
-                aria-hidden="true"
-              >
-                ‹
-              </span>
-              <span
-                className="sr-only"
-              >
-                Previous
-              </span>
-            </a>
-          </li>
-          <li
-            className="page-item"
-          >
-            <a
-              className="page-link"
-              href="#"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="button"
-            >
-              <span
-                aria-hidden="true"
-              >
-                ›
-              </span>
-              <span
-                className="sr-only"
-              >
-                Next
-              </span>
-            </a>
-          </li>
-          <li
-            className="page-item"
-          >
-            <a
-              className="page-link"
-              href="#"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="button"
-            >
-              <span
-                aria-hidden="true"
-              >
-                »
-              </span>
-              <span
-                className="sr-only"
-              >
-                Last
-              </span>
-            </a>
-          </li>
-        </ul>
       </div>
     </main>
   </div>
@@ -11245,6 +11139,21 @@ exports[`Storyshots Search page Loading 1`] = `
         className="result-section--tabpanel"
         role="tabpanel"
       >
+        <p
+          className="result-section--count-summary"
+        >
+          <span>
+            Showing 
+            0
+             - 
+            0
+             of 
+            0
+             
+            result
+            .
+          </span>
+        </p>
         <div
           className="tabpanel__container--horizontal"
         >
@@ -11252,7 +11161,7 @@ exports[`Storyshots Search page Loading 1`] = `
             className="table-responsive"
           >
             <table
-              className="result-section__container table table-hover"
+              className="result-section__container loading table table-hover"
             >
               <thead>
                 <tr>
@@ -11265,22 +11174,13 @@ exports[`Storyshots Search page Loading 1`] = `
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td
-                    colSpan="3"
-                  >
-                    <div
-                      className="result-section--msg"
-                    >
-                      <p>
-                        Loading...
-                      </p>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
+              <tbody />
             </table>
+          </div>
+          <div
+            className="preview-card__body"
+          >
+            Please select a row to view the details.
           </div>
         </div>
         <ul
