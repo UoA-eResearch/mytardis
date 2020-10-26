@@ -548,16 +548,11 @@ class SearchAppResource(Resource):
 
         # Create the result object which will be returned to the front-end
         result_dict = {k: [] for k in ["projects", "experiments", "datasets", "datafiles"]}
-        total_hits = {}
 
         # Clean and prepare the results "hit" objects and append them to the results_dict
         for item in results:
             for hit_attrdict in item.hits.hits:
                 hit = hit_attrdict.to_dict()
-
-                # Add total search results of object type in not already added
-                if hit["_index"] not in total_hits.keys():
-                    total_hits[hit["_index"]+'s'] = item.hits.total.value
 
                 # Default sensitive permission and size of object
                 sensitive_bool = False
@@ -656,6 +651,9 @@ class SearchAppResource(Resource):
                             exp_ids = [parent['id'] for parent in obj["_source"]["experiments"]]
                             if not any(item in exp_ids for item in [objj["_source"]['id'] for objj in result_dict["experiments"]]):
                                 result_dict[objs].pop(obj_idx)
+
+        # Count the number of search results after elasticsearch + parent filtering
+        total_hits = {k:len(v) for k,v in result_dict.items()}
 
         # Pagination done before final cleaning to reduce "clean_parent_ids" duration
         # Default Pagination handled by response.get if key isn't specified
