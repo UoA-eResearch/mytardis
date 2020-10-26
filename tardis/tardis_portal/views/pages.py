@@ -134,7 +134,7 @@ class IndexView(TemplateView):
         c = super().get_context_data(**kwargs)
         status = ''
         limit = 8
-        project_limit = 5
+        project_limit = 4
         c['status'] = status
         if request.user.is_authenticated:
             private_experiments = Experiment.safe.owned_and_shared(
