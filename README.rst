@@ -1,3 +1,5 @@
+*NOTE:* This is the University of Auckland specific branch which includes modifications that are unlikely to work 'out-of-the-box'. We are working with the upstream developers to get the major changes implemented into the main branch as soon as is feasible. In the meantime, please contact c.seal@auckland.ac.nz if you are interested in using this branch and we will highlight the biggest 'dragons' that will need to be dealt with :)
+
 MyTardis
 ========
 
