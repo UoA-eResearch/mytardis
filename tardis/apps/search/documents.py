@@ -300,7 +300,7 @@ class DataFileDocument(Document):
     file_extension = fields.KeywordField(attr='filename')
     created_time = fields.DateField()
     modification_time = fields.DateField()
-    size = fields.IntegerField()
+    size = fields.LongField()
     dataset = fields.NestedField(properties={
         'id': fields.KeywordField(),
         'description': fields.TextField(
@@ -364,7 +364,7 @@ class DataFileDocument(Document):
         model = DataFile
         related_models = [Dataset, Experiment, Project, ObjectACL,
                           Schema, ParameterName, DatafileParameter,
-                          DatafileParameterSet]
+                          DatafileParameterSet, DataFileObject]
         queryset_pagination = 100000
 
     def get_instances_from_related(self, related_instance):
@@ -385,9 +385,10 @@ class DataFileDocument(Document):
             return DataFile.objects.filter(datafileparameterset__schema=related_instance)
         if isinstance(related_instance, ParameterName):
             return DataFile.objects.filter(datafileparameterset__schema__parametername=related_instance)
-        return None
         if isinstance(related_instance, DataFileObject):
             return related_instance.datafile
+        return None
+
 
 # @suspendingreceiver(post_save, sender=Project)
 # @suspendingreceiver(post_save, sender=Experiment)

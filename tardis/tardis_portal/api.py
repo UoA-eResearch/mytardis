@@ -349,8 +349,8 @@ def process_acls(bundle):
                 project_lead = project.lead_researcher
                 logger.debug('Parent project: {}'.format(project.name))
                 parent = experiment
-            elif ct_string == 'data file':
-                ct = 'datafile'
+            elif ct_string == 'datafile':
+                #ct = 'datafile'
                 logger.debug('Datafile found')
                 try:
                     dataset_uri = bundle.data['dataset']
@@ -382,7 +382,7 @@ def process_acls(bundle):
                     if admin != project_lead:
                         user = check_and_create_user(admin,
                                                      is_admin=True)
-                        if user.id not in [d['id'] for d in users]:
+                        if str(user.id) not in [d['id'] for d in users]:
                             users.append(package_perms(user.id,
                                                        is_admin=True))
                             admin_users.append(user)
@@ -404,7 +404,7 @@ def process_acls(bundle):
                                 if member[0] == admin.username:
                                     member_flg = True
                     if not member_flg and admin.username != project_lead:
-                        if user.id not in [d['id'] for d in users]:
+                        if str(user.id) not in [d['id'] for d in users]:
                             users.append(package_perms(admin.id,
                                                        is_admin=True))
                             admin_users.append(admin)
@@ -526,6 +526,8 @@ def process_acls(bundle):
                     'id': obj_id,
                     'users': users,
                     'groups': groups}
+        if ct == 'datafile':
+            acl_dict['content_type'] = 'data file'
         return [acl_dict]
     return False
 
@@ -1717,10 +1719,8 @@ class DataFileResource(MyTardisModelResource):
     def dehydrate(self, bundle):
         datafile = bundle.obj
         admins = datafile.get_admins()
-        logger.error(admins)
         bundle.data['admin_groups'] = [acl.id for acl in admins]
         members = datafile.get_groups()
-        logger.error(members)
         bundle.data['member_groups'] = [acl.id for acl in members]
         return bundle
 

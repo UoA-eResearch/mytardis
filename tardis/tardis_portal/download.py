@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 download.py
-
 .. moduleauthor::  Steve Androulakis <steve.androulakis@monash.edu>
 .. moduleauthor::  Ulrich Felzmann <ulrich.felzmann@versi.edu.au>
 .. moduleauthor::  Grischa Meyer <grischa.meyer@monash.edu>
-
 """
 import logging
 import urllib
@@ -27,9 +25,6 @@ from tarfile import TarFile
 import gzip
 import io
 from wsgiref.util import FileWrapper
-import boto3
-import requests
-from botocore.exceptions import ClientError
 
 from django.http import StreamingHttpResponse
 from django.conf import settings
@@ -63,8 +58,7 @@ def _create_download_response(request, datafile_id, disposition='attachment'):  
     except DataFile.DoesNotExist:
         return return_response_not_found(request)
     # Check users has access to datafile
-    if not has_download_access(request=request, obj_id=datafile.id,
-                               ct_type="datafile"):
+    if not has_download_access(request, datafile.id, 'datafile'):
         return return_response_error(request)
     # Send an image that can be seen in the browser
     if disposition == 'inline' and datafile.is_image():
@@ -84,26 +78,20 @@ def _create_download_response(request, datafile_id, disposition='attachment'):  
         # a bare ?ignore_verification_status is True
         if ignore_verif.lower() in [u'', u'1', u'true']:
             verified_only = False
-        logger.info('Datafile size: {dfs}'.format(dfs=datafile.get_size()))
-        if datafile.get_size() > 10*1024*1024: # 10 MB
-            logger.info('Going into S3')
-            s3factory = S3Downloader(datafile, verified_only)
-            response = s3factory.download_datafile()
-        else:
-            # Get file object for datafile
-            file_obj = datafile.get_file(verified_only=verified_only)
-            if not file_obj:
-                # If file path doesn't resolve, return not found
-                if verified_only:
-                    return render_error_message(request,
-                                                "File is unverified, "
-                                                "please try again later.",
-                                                status=503)
-                return return_response_not_found(request)
-            wrapper = FileWrapper(file_obj, blksize=65535)
-            # Replace this with a direct call to s3
-            response = StreamingHttpResponse(wrapper,
-                                             content_type=datafile.get_mimetype())
+
+        # Get file object for datafile
+        file_obj = datafile.get_file(verified_only=verified_only)
+        if not file_obj:
+            # If file path doesn't resolve, return not found
+            if verified_only:
+                return render_error_message(request,
+                                            "File is unverified, "
+                                            "please try again later.",
+                                            status=503)
+            return return_response_not_found(request)
+        wrapper = FileWrapper(file_obj, blksize=65535)
+        response = StreamingHttpResponse(wrapper,
+                                         content_type=datafile.get_mimetype())
         response['Content-Disposition'] = \
             '%s; filename="%s"' % (disposition, datafile.filename)
         return response
@@ -120,12 +108,10 @@ def _create_download_response(request, datafile_id, disposition='attachment'):  
 
 
 def view_datafile(request, datafile_id):
-    datafile = DataFile.objects.get(pk=datafile_id)
     return _create_download_response(request, datafile_id, 'inline')
 
 
 def download_datafile(request, datafile_id):
-    datafile = DataFile.objects.get(pk=datafile_id)
     return _create_download_response(request, datafile_id)
 
 
@@ -212,55 +198,6 @@ def _get_datafile_details_for_archive(mapper, datafiles):
             res.append((df, mapper(df)))
     return res
 
-class S3Downloader():
-    '''
-    Mint a time limited url to the S3 object store.
-    Using Python requests, call this url
-    '''
-
-    def __init__(self,
-                 datafile, verified_only):
-        self.access_key = getattr(settings, 'AWS_S3_ACCESS_KEY_ID')
-        self.secret_key = getattr(settings, 'AWS_S3_SECRET_ACCESS_KEY')
-        self.endpoint_url = getattr(settings, 'AWS_S3_HOST')
-        self.session_token = getattr(settings, 'AWS_SESSION_TOKEN')
-        endpoint_url = getattr(settings, 'AWS_S3_ENDPOINT_URL')
-        self.datafile = datafile
-        self.verified_only = verified_only
-        self.s3_client = boto3.client('s3',
-                                      aws_access_key = self.access_key,
-                                      aws_secret_access = self.secret_key,
-                                      aws_session_token = self.session_token,
-                                      endpoint_url = endpoint_url)
-
-    def __get_bucket_from_datafile(self):
-        self.dfo = self.datafile.get_file(verified_only=self.verified_only)
-        self.storage_box = self.dfo.storage_box
-        options = self.storage_box.options
-        for option in options:
-            if option.key == 'bucket_name':
-                logger.info(option.value)
-                return option.value
-        return False
-
-    def __mint_time_limited_url(self):
-        try:
-            url = self.s3_client.generate_presigned_url('get_object',
-                                                        Params={'Bucket': self.__get_bucket_from_datafile(),
-                                                                'Key':self.dfo.get_full_path()},
-                                                        ExpiresIn=3600)
-            logger.info(url)
-        except ClientError as e:
-            logger.error(e)
-            return None
-        return url
-
-    def download_datafile(self):
-        url = self.__mint_time_limited_url()
-        if url is not None:
-            response = requests.get(url)
-        return response
-
 
 class UncachedTarStream(TarFile):
     '''
@@ -318,7 +255,7 @@ class UncachedTarStream(TarFile):
         tarinfo.size = int(df.get_size())
         try:
             dj_mtime = df.modification_time or \
-                       df.get_preferred_dfo().modified_time
+                df.get_preferred_dfo().modified_time
         except Exception as e:
             dj_mtime = None
             logger.debug('cannot read m_time for file id'
@@ -366,7 +303,7 @@ class UncachedTarStream(TarFile):
         '''
         remainder_buf = None
         for num, fobj in enumerate(self.mapped_file_objs):
-            df, name = fobj
+            df, dummy_name = fobj
             fileobj = df.file_object
             self._check('aw')
             tarinfo = self.tarinfos[num]
@@ -382,7 +319,7 @@ class UncachedTarStream(TarFile):
                     continue
                 # split into file read buffer sized chunks
                 blocks, remainder = divmod(tarinfo.size, self.buffersize)
-                for b in range(blocks):
+                for dummy_b in range(blocks):
                     buf = fileobj.read(self.buffersize)
                     if len(buf) < self.buffersize:
                         raise IOError("end of file reached")
@@ -489,8 +426,8 @@ def streaming_download_experiment(request, experiment_id, comptype='tgz',
 
     df_ids = DataFileObject.objects.filter(
         datafile__dataset__experiments__id=experiment_id, verified=True) \
-                .values('datafile_id').distinct()
-    datafiles = DataFile.safe.all(request.user, downloadable=True).filter(id__in=df_ids)
+        .values('datafile_id').distinct()
+    datafiles = DataFile.objects.filter(id__in=df_ids)
     return _streaming_downloader(request, datafiles, rootdir, filename,
                                  comptype, organization)
 
@@ -505,7 +442,7 @@ def streaming_download_dataset(request, dataset_id, comptype='tgz',
     df_ids = DataFileObject.objects.filter(
         datafile__dataset=dataset, verified=True) \
         .values('datafile_id').distinct()
-    datafiles = DataFile.safe.all(request.user, downloadable=True).filter(id__in=df_ids)
+    datafiles = DataFile.objects.filter(id__in=df_ids)
     return _streaming_downloader(request, datafiles, rootdir, filename,
                                  comptype, organization)
 
@@ -538,15 +475,13 @@ def streaming_download_datafiles(request):  # too complex # noqa
             # Generator to produce datafiles from dataset id
             def get_dataset_datafiles(dsid):
                 for datafile in DataFile.objects.filter(dataset=dsid):
-                    if has_download_access(request=request,
-                                           obj_id=datafile.id, ct_type="datafile"):
+                    if has_download_access(request, datafile.id, 'datafile'):
                         yield datafile
 
             # Generator to produce datafile from datafile id
             def get_datafile(dfid):
                 datafile = DataFile.objects.get(pk=dfid)
-                if has_download_access(request=request,
-                                       obj_id=datafile.id, ct_type="datafile"):
+                if has_download_access(request, datafile.id, 'datafile'):
                     yield datafile
 
             # Take chained generators and turn them into a set of datafiles
@@ -574,8 +509,7 @@ def streaming_download_datafiles(request):  # too complex # noqa
             datafile = DataFile.objects.filter(
                 url__endswith=raw_path,
                 dataset__experiment__id=experiment_id)[0]
-            if has_download_access(request=request,
-                                   obj_id=datafile.id, ct_type="datafile"):
+            if has_download_access(request, datafile.id, 'datafile'):
                 df_set = set([datafile])
     else:
         message = "No datasets or datafiles were selected for download"
