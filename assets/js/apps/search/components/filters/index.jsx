@@ -3,6 +3,10 @@ import NumberRangeFilter from "./range-filter/NumberRangeFilter";
 import DateRangeFilter from "./date-filter/DateRangeFilter";
 import CategoryFilter from "./category-filter/CategoryFilter";
 
+/**
+ * @param {*} type Simple mapper function that returns 
+ * the appropriate filter component based on filter type. 
+ */
 export const mapTypeToFilter = (type) => {
     switch (type) {
         case "STRING":

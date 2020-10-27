@@ -10,6 +10,11 @@ import PropTypes from "prop-types";
 import { mapTypeToFilter } from "../index";
 
 
+/**
+ * Creates a filter element for an attribute field. 
+ * Also creates corresponding redux state hook and a dispatch function for that state.
+ * @param {*} param0 
+ */
 function TypeAttributeFilter({typeId, attributeId}) {
   const attribute = useSelector(state => (typeAttrSelector(state.filters,typeId,attributeId)));
   const dispatch = useDispatch();
