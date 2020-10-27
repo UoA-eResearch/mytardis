@@ -48,6 +48,7 @@
     "react-dom": "^16.10.2",
     "react-icons": "^3.10.0",
     "react-redux": "^7.2.0",
+    "react-switch": "^5.0.1",
     "react-tag-autocomplete": "^5.8.0",
     "react-treebeard": "^3.2.4",
     "select2": "^4.0.12",

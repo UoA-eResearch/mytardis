@@ -271,6 +271,7 @@ export default function ResultSection() {
         searchInfo = useSelector(
             (state) => state.search
         );
+
     return (
         <PureResultSection
             resultSets={searchInfo.results}

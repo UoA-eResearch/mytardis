@@ -134,6 +134,7 @@ class IndexView(TemplateView):
         c = super().get_context_data(**kwargs)
         status = ''
         limit = 8
+        project_limit = 4
         c['status'] = status
         if request.user.is_authenticated:
             private_experiments = Experiment.safe.owned_and_shared(
@@ -149,7 +150,7 @@ class IndexView(TemplateView):
         c['exps_expand_accordion'] = 1
 
         private_projects = Project.safe.owned_and_shared(
-                    request.user).order_by('-start_date')
+                    request.user).order_by('-start_date')[:project_limit]
         c['private_projects'] = private_projects
         c['private_projects_count'] = private_projects.count()
         return c
