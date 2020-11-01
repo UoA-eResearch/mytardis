@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import { Pagination } from "react-bootstrap";
+import { 
+    Pagination,
+    Dropdown
+ } from "react-bootstrap";
 import { 
     pageSizeSelector,
     pageNumberSelector, 
-    updatePageSize, 
     totalPagesSelector, 
-    updateAndFetchResultsPage 
+    updatePageSizeAndRefetch, 
+    updatePageNumberAndRefetch 
 } from "./searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback } from 'react';
@@ -72,26 +75,73 @@ const renderPageItems = (currentPageNum, maxPages, clickCallback) => {
     return pageItems;
 };
 
-export const PurePager = ({pageNum, pageSize, totalPages, handlePageNumChange}) => {
+export const PAGE_SIZE_OPTIONS = [20, 50, 200];
+
+const PurePageSizeDropdown = ({typeId, pageSize, onPageSizeChange}) => {
+    const handleDropdownSelected = useCallback((e) => {
+        e.preventDefault();
+        onPageSizeChange(parseInt(e.target.value));
+    }, [onPageSizeChange]);
+    return (
+        <>
+        <label htmlFor={typeId + "pagesize-dropdown"}>Items per page</label>
+        <select id={typeId + "pagesize-dropdown"} value={pageSize} onChange={handleDropdownSelected}>
+            {
+                PAGE_SIZE_OPTIONS.map(size => (
+                    <option key={size} value={size}>{size}</option>
+                ))
+            }
+        </select>
+        </>
+        // <Dropdown>
+        //     <Dropdown.Toggle id={typeId+"pageSize-dropdown"}>
+        //         {pageSize}
+        //     </Dropdown.Toggle>
+        //     <Dropdown.Menu>
+        //         {
+        //             PAGE_SIZE_OPTIONS.map(size => (
+        //                 <Dropdown.Item key={size} onClick={onPageSizeChange}>{size}</Dropdown.Item>
+        //             ))
+        //         }
+        //     </Dropdown.Menu>
+        // </Dropdown>
+    );
+};
+
+export const PurePager = ({typeId, pageNum, pageSize, totalPages, onPageNumChange, onPageSizeChange}) => {
     const handleClicked = useCallback((newPageNum, event) => {
         event.stopPropagation();
         if (pageNum === newPageNum || newPageNum < 1 || newPageNum > totalPages) {
             return;
         } else {
-            handlePageNumChange(newPageNum);
+            onPageNumChange(newPageNum);
         }
     }, [pageNum, totalPages]);
     return (
-        <Pagination>
-            <Pagination.First key="first" onClick={handleClicked.bind(this, 1)} />
-            <Pagination.Prev key="prev" onClick={handleClicked.bind(this, pageNum - 1)} />
-            {renderPageItems(pageNum, totalPages, handleClicked)}
-            <Pagination.Next key="next" onClick={handleClicked.bind(this, pageNum + 1)} />
-            <Pagination.Last key="last" onClick={handleClicked.bind(this, totalPages)} />
-        </Pagination>
+        <>
+            <PurePageSizeDropdown typeId={typeId} pageSize={pageSize} onPageSizeChange={onPageSizeChange} />
+            <Pagination>
+                <Pagination.First key="first" onClick={handleClicked.bind(this, 1)} />
+                <Pagination.Prev key="prev" onClick={handleClicked.bind(this, pageNum - 1)} />
+                {renderPageItems(pageNum, totalPages, handleClicked)}
+                <Pagination.Next key="next" onClick={handleClicked.bind(this, pageNum + 1)} />
+                <Pagination.Last key="last" onClick={handleClicked.bind(this, totalPages)} />
+            </Pagination>
+        </>
     );
 };
 
+PurePager.propTypes = {
+    pageNum: PropTypes.number.isRequired,
+    pageSize: PropTypes.number.isRequired,
+    totalPages: PropTypes.number.isRequired,
+    onPageNumChange: PropTypes.func.isRequired,
+    onPageSizeChange: PropTypes.func.isRequired
+};
+
+/**
+ * Redux store-connected Pager component. Use PurePager for testing/storybook purposes.
+ */
 function Pager({objectType}) {
     const dispatch = useDispatch();
     const pageNum = useSelector(state => (
@@ -104,14 +154,19 @@ function Pager({objectType}) {
         totalPagesSelector(state.search, objectType)
     ));
     const handlePageNumChange = useCallback((newPageNum) => {
-        dispatch(updateAndFetchResultsPage(objectType, newPageNum));
+        dispatch(updatePageNumberAndRefetch(objectType, newPageNum));
+    }, [dispatch, objectType]);
+    const handlePageSizeChange = useCallback((newPageSize) => {
+        dispatch(updatePageSizeAndRefetch(objectType, newPageSize));
     }, [dispatch, objectType]);
     return (
-        <PurePager 
+        <PurePager
+            typeId={objectType}
             pageNum={pageNum} 
             pageSize={pageSize} 
             totalPages={totalPages} 
-            handlePageNumChange={handlePageNumChange}
+            onPageNumChange={handlePageNumChange}
+            onPageSizeChange={handlePageSizeChange}
         />
     );
 }

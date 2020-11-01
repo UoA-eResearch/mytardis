@@ -329,7 +329,7 @@ export const initialiseSearch = () => {
     }
 }
 
-export const updateAndFetchResultsPage = (typeId, number) => {
+export const updatePageNumberAndRefetch = (typeId, number) => {
     return (dispatch, getState) => {
         const state = getState();
         const totalPages = totalPagesSelector(state.search, typeId);
@@ -341,6 +341,13 @@ export const updateAndFetchResultsPage = (typeId, number) => {
     };
 };
 
+export const updatePageSizeAndRefetch = (typeId, size) => {
+    return (dispatch) => {
+        dispatch(search.actions.updatePageSize({typeId, size}));
+        dispatch(runSingleTypeSearch(typeId));
+    };
+};
+
 export const {
     getResultsStart,
     getResultsSuccess,
@@ -348,8 +355,6 @@ export const {
     updateSearchTerm,
     updateSelectedType,
     updateSelectedResult,
-    updatePageNumber,
-    updatePageSize
 } = search.actions;
 
 export default search.reducer;
