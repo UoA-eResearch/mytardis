@@ -192,7 +192,7 @@ const buildPaginationQuery = (searchSlice, type) => {
     if (type) {
         return {
             offset: pageSizeSelector(searchSlice, type) * (pageNumberSelector(searchSlice, type) - 1),
-            limit: pageSizeSelector(searchSlice, type)
+            size: pageSizeSelector(searchSlice, type)
         };
     } else {
         const offsets = Object.keys(searchSlice.pageSize).reduce((previous, objType) => {
@@ -201,7 +201,7 @@ const buildPaginationQuery = (searchSlice, type) => {
         }, {});
         return {
             offset: offsets,
-            limit: searchSlice.pageSize
+            size: searchSlice.pageSize
         };
     }
 };
