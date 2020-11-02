@@ -58,6 +58,22 @@ export const pageNumberSelector = (searchSlice, type) => {
 export const totalHitsSelector = (searchSlice, typeId) => (
     searchSlice.results ? searchSlice.results.totalHits[typeId + "s"] : 0
 );
+
+/**
+ * Returns the index of the first item on the current page. For example,
+ * if we are on the second page, and each page has 20 items, then this function
+ * returns 21.
+ * @param {*} searchSlice The Redux state slice for search
+ * @param {string} typeId MyTardis object type name.
+ */
+export const pageFirstItemIndexSelector = (searchSlice, typeId) => {
+    if (totalHitsSelector(searchSlice, typeId) === 0) {
+        return 0;
+    } else {
+        return pageSizeSelector(searchSlice, typeId) * (pageNumberSelector(searchSlice, typeId) - 1) + 1;
+    }
+}
+
 /**
  * Selector for the total number of pages of results for a particular type.
  * @param {*} searchSlice - The Redux state slice for search
@@ -337,14 +353,19 @@ export const updatePageNumberAndRefetch = (typeId, number) => {
             return;
         }
         dispatch(search.actions.updatePageNumber({typeId, number}));
-        dispatch(runSingleTypeSearch(typeId));
+        return dispatch(runSingleTypeSearch(typeId));
     };
 };
 
 export const updatePageSizeAndRefetch = (typeId, size) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const state = getState();
+        // Calculate new page number
+        const currentFirstItem = pageFirstItemIndexSelector(state.search, typeId);
+        const newPageNumber = Math.ceil(currentFirstItem / size);
         dispatch(search.actions.updatePageSize({typeId, size}));
-        dispatch(runSingleTypeSearch(typeId));
+        dispatch(search.actions.updatePageNumber({typeId, number: newPageNumber}));
+        return dispatch(runSingleTypeSearch(typeId));
     };
 };
 

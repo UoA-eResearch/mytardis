@@ -7,7 +7,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import Badge from 'react-bootstrap/Badge';
 import { useSelector, useDispatch } from "react-redux";
-import { updateSelectedResult, updateSelectedType, totalHitsSelector, pageNumberSelector, pageSizeSelector } from "./searchSlice";
+import { updateSelectedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector } from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 import Pager from "./Pager";
@@ -219,17 +219,11 @@ PureResultList.propTypes = {
 const ResultSummary = ({typeId}) => {
     const currentCount = useSelector(state => totalHitsSelector(state.search, typeId));
     const currentPageSize = useSelector(state => pageSizeSelector(state.search, typeId));
-    const currentFirstItem = useSelector(state => {
-        if (currentCount === 0) {
-            return 0;
-        } else {
-            return currentPageSize * (pageNumberSelector(state.search, typeId) - 1) + 1;
-        }
-    });
+    const currentFirstItem = useSelector(state => pageFirstItemIndexSelector(state.search, typeId));
     const currentLastItem = Math.min(currentCount, currentFirstItem + currentPageSize - 1);
     return (
         <p className="result-section--count-summary">
-        <span>Showing {currentFirstItem} - {currentLastItem} of {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
+            <span>Showing {currentFirstItem} - {currentLastItem} of {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
         </p>
     );
 };
