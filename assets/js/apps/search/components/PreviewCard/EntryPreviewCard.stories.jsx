@@ -1,13 +1,25 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions';
 import EntryPreviewCard from './EntryPreviewCard';
+import makeMockStore from "../../util/makeMockStore";
+import { Provider } from 'react-redux';
+
+const store = makeMockStore({
+  search: {
+    hideSensitiveData: false
+  }
+});
 
 export default {
   component: EntryPreviewCard,
   title: 'EntryPreviewCard',
-  decorators: [story => <div style={{ 
-    border: '2px solid black'
-  }}>{story()}</div>],
+  decorators: [story =>
+    <Provider store={store}>
+      <div style={{
+        border: '2px solid black'
+      }}>{story()}</div>
+    </Provider>
+  ],
 };
 
 const project = {
@@ -102,76 +114,76 @@ const experiment = {
 
 const dataSet = {
   "url": "idk/",
-  "counts":{
-     "datafiles":2
+  "counts": {
+    "datafiles": 2
   },
-  "created_time":"2020-05-07T23:00:05+00:00",
-  "description":"Some ACL-testing dataset",
-  "experiments":[
-     {
-        "id":4,
-        "project":{
-           "id":1
-        }
-     }
+  "created_time": "2020-05-07T23:00:05+00:00",
+  "description": "Some ACL-testing dataset",
+  "experiments": [
+    {
+      "id": 4,
+      "project": {
+        "id": 1
+      }
+    }
   ],
-  "id":1,
-  "instrument":{
-     "id":1,
-     "name":"Mikes_ACL_Machine"
+  "id": 1,
+  "instrument": {
+    "id": 1,
+    "name": "Mikes_ACL_Machine"
   },
-  "modified_time":"2020-06-09T02:10:18.426980+00:00",
-  "parameters":[
-     {
-        "data_type":"STRING",
-        "pn_name":"4",
-        "sensitive":"False",
-        "value":"My Name"
-     },
-     {
-        "data_type":"STRING",
-        "pn_name":"5",
-        "sensitive":"False",
-        "value":"is"
-     }
+  "modified_time": "2020-06-09T02:10:18.426980+00:00",
+  "parameters": [
+    {
+      "data_type": "STRING",
+      "pn_name": "4",
+      "sensitive": "False",
+      "value": "My Name"
+    },
+    {
+      "data_type": "STRING",
+      "pn_name": "5",
+      "sensitive": "False",
+      "value": "is"
+    }
   ],
-  "size":"460.3 KB",
-  "tags":"bricks safe as",
+  "size": "460.3 KB",
+  "tags": "bricks safe as",
   "type": "dataset",
-  "userDownloadRights":"partial"
+  "userDownloadRights": "partial"
 }
 
 const dataFile = {
   "url": "idk/",
   "type": "datafile",
-  "created_time":null,
-  "dataset":{
-     "experiments":[
-        {
-           "id":4,
-           "project":{
-              "id":1
-           }
+  "created_time": null,
+  "dataset": {
+    "experiments": [
+      {
+        "id": 4,
+        "project": {
+          "id": 1
         }
-     ],
-     "id":1
+      }
+    ],
+    "id": 1
   },
-  "filename":"Mikes_test_datafile_1",
-  "id":1,
-  "modification_time":null,
-  "parameters":[
-     {
-        "data_type":"STRING",
-        "pn_name":"12",
-        "sensitive":"False",
-        "value":"My name is"
-     }
+  "filename": "Mikes_test_datafile_1",
+  "id": 1,
+  "modification_time": null,
+  "parameters": [
+    {
+      "data_type": "STRING",
+      "pn_name": "12",
+      "sensitive": "False",
+      "value": "My name is"
+    }
   ],
-  "size":"460.3 KB",
-  "userDownloadRights":"full"
+  "size": "460.3 KB",
+  "userDownloadRights": "full"
 }
 
-const projectWithNoChildren = Object.assign({},project,{
+const projectWithNoChildren = Object.assign({}, project, {
   counts: {
     experiments: 0,
     datasets: 0,

@@ -286,6 +286,7 @@ export default function ResultSection() {
         isLoading = useSelector(
             (state) => state.search.isLoading
         );
+
     return (
         <PureResultSection
             resultSets={resultSets}

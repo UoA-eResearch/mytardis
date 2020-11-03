@@ -605,21 +605,23 @@ class SearchAppResource(Resource):
                     elif any(safe_nested_dfs_dl_bool):
                         hit["_source"]["userDownloadRights"] = 'partial'
                     else:
-                        hit["_source"]["userDownloadRights"] = 'none'
-                else:
-                    if hit["_source"]["id"] in datafiles_dl:
-                        hit["_source"]["userDownloadRights"] = "full"
-                        size = hit["_source"]["size"]
-                    else:
-                        hit["_source"]["userDownloadRights"] = "none"
-                # convert final size of object into human-readable format
-                hit["_source"]["size"] = filesizeformat(size)
+                        if hit["_source"]["id"] in datafiles_dl:
+                            hit["_source"]["userDownloadRights"] = "full"
+                            size = hit["_source"]["size"]
+                        else:
+                            hit["_source"]["userDownloadRights"] = "none"
 
-                # if no sensitive access, remove sensitive metadata from response
-                for idxx, parameter in enumerate(hit["_source"]["parameters"]):
-                    if not sensitive_bool:
-                        if parameter['sensitive']:
-                            hit["_source"]["parameters"].pop(idxx)
+                    hit["_source"]["size"] = filesizeformat(size)
+
+
+                    # if no sensitive access, remove sensitive metadata from response
+                    for idxx, parameter in reversed(list(enumerate(hit["_source"]["parameters"]))):
+                        if not sensitive_bool:
+                            if parameter['sensitive']:
+                                hit["_source"]["parameters"].pop(idxx)
+                            else:
+                                hit["_source"]["parameters"][idxx].pop("sensitive")
+
                         else:
                             hit["_source"]["parameters"][idxx].pop("sensitive")
                     else:
