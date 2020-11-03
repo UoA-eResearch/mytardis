@@ -13,6 +13,7 @@ import {
 } from "./searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback } from 'react';
+import "./Pager.css";
 
 const nearbyNums = (number, count = 5, min = 1, max) => {
     const nearby = [],
@@ -61,6 +62,7 @@ const renderPageItems = (currentPageNum, maxPages, clickCallback) => {
     ));
     if (renderedMax !== undefined &&
         renderedMax !== maxPages) {
+        // Add a link for the last page in the results.
         pageItems.push(<Pagination.Ellipsis key="ellipsis2" active={false} />);
         pageItems.push(
             <Pagination.Item 
@@ -68,7 +70,7 @@ const renderPageItems = (currentPageNum, maxPages, clickCallback) => {
                 active={false} 
                 onClick={clickCallback.bind(this, maxPages)}
             >
-                {maxPages}
+                {maxPages} <span className="sr-only">(last page)</span>
             </Pagination.Item>
         );
     }
@@ -78,33 +80,32 @@ const renderPageItems = (currentPageNum, maxPages, clickCallback) => {
 export const PAGE_SIZE_OPTIONS = [20, 50, 200];
 
 const PurePageSizeDropdown = ({typeId, pageSize, onPageSizeChange}) => {
-    const handleDropdownSelected = useCallback((e) => {
-        e.preventDefault();
-        onPageSizeChange(parseInt(e.target.value));
+    const handleDropdownSelected = useCallback((newSize) => {
+        onPageSizeChange(parseInt(newSize));
     }, [onPageSizeChange]);
     return (
-        <>
-        <label htmlFor={typeId + "pagesize-dropdown"}>Items per page</label>
-        <select id={typeId + "pagesize-dropdown"} value={pageSize} onChange={handleDropdownSelected}>
-            {
-                PAGE_SIZE_OPTIONS.map(size => (
-                    <option key={size} value={size}>{size}</option>
-                ))
-            }
-        </select>
-        </>
-        // <Dropdown>
-        //     <Dropdown.Toggle id={typeId+"pageSize-dropdown"}>
-        //         {pageSize}
-        //     </Dropdown.Toggle>
-        //     <Dropdown.Menu>
-        //         {
-        //             PAGE_SIZE_OPTIONS.map(size => (
-        //                 <Dropdown.Item key={size} onClick={onPageSizeChange}>{size}</Dropdown.Item>
-        //             ))
-        //         }
-        //     </Dropdown.Menu>
-        // </Dropdown>
+        <fieldset className="pagesize">
+            <label htmlFor={typeId + "-pagesize-dropdown"}>Items per page</label>
+            <Dropdown className="pagesize--dropdown" onSelect={handleDropdownSelected}>
+                <Dropdown.Toggle variant="outline-primary" id={typeId + "-pagesize--dropdown"} >
+                    {pageSize}
+                </Dropdown.Toggle>
+                <Dropdown.Menu role="menu">
+                    {
+                        PAGE_SIZE_OPTIONS.map(size => (
+                            <Dropdown.Item 
+                                role="menuitem" 
+                                key={size} 
+                                eventKey={size} 
+                                active={size === pageSize}
+                            >
+                                {size}
+                            </Dropdown.Item>
+                        ))
+                    }
+                </Dropdown.Menu>
+            </Dropdown>
+        </fieldset>
     );
 };
 
@@ -118,16 +119,18 @@ export const PurePager = ({typeId, pageNum, pageSize, totalPages, onPageNumChang
         }
     }, [pageNum, totalPages]);
     return (
-        <>
+        <form className="pager">
             <PurePageSizeDropdown typeId={typeId} pageSize={pageSize} onPageSizeChange={onPageSizeChange} />
-            <Pagination>
+            <Pagination aria-live="polite" id={typeId + "-pager"}>
+                <span className="sr-only">Result page</span>
                 <Pagination.First key="first" onClick={handleClicked.bind(this, 1)} />
                 <Pagination.Prev key="prev" onClick={handleClicked.bind(this, pageNum - 1)} />
                 {renderPageItems(pageNum, totalPages, handleClicked)}
                 <Pagination.Next key="next" onClick={handleClicked.bind(this, pageNum + 1)} />
                 <Pagination.Last key="last" onClick={handleClicked.bind(this, totalPages)} />
             </Pagination>
-        </>
+            <label for={typeId + "-pager"} className="sr-only">Result page number</label>
+        </form>
     );
 };
 

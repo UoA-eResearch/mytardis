@@ -13,7 +13,8 @@ export const paginationData = {
     pageNum: 5,
     pageSize: 50,
     totalPages: 10,
-    handlePageNumChange: action("Page number change")
+    onPageNumChange: action("Page number change"),
+    onPageSizeChange: action("Page size change")
 };
 
 export const lessThanFivePagesData = Object.assign({}, paginationData, {
