@@ -591,7 +591,7 @@ class SearchAppResource(Resource):
 
 
                     # if no sensitive access, remove sensitive metadata from response
-                    for idxx, parameter in enumerate(hit["_source"]["parameters"]):
+                    for idxx, parameter in reversed(list(enumerate(hit["_source"]["parameters"]))):
                         if not sensitive_bool:
                             if parameter['sensitive']:
                                 hit["_source"]["parameters"].pop(idxx)
