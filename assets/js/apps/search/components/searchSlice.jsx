@@ -102,7 +102,7 @@ const initialState = {
         experiment: 1,
         dataset: 1,
         datafile: 1
-    }
+    },
     showSensitiveData: false
 };
 
@@ -176,7 +176,7 @@ const search = createSlice({
         resetPageNumber: (state) => {
             // Reset page count.
             state.pageNumber = initialState.pageNumber;
-
+        },
         toggleShowSensitiveData: (state) => {
             state.showSensitiveData = !state.showSensitiveData;
         }
