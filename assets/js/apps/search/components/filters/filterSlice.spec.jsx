@@ -461,7 +461,7 @@ describe("Filter query builder", ()=> {
                 
             ]
         };
-        expect(buildFilterQuery(mockStoreState, "experiments")).toEqual(expectedValue);
+        expect(buildFilterQuery(mockStoreState, "experiment")).toEqual(expectedValue);
     });
     it("should include all filters in queries that include all types", () => {
         const expectedValue = {

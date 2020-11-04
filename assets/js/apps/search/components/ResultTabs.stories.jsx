@@ -1,9 +1,9 @@
 import React from 'react'
-import  { ResultTabs } from './ResultSection'
+import  { PureResultTabs } from './ResultSection'
 import { action } from '@storybook/addon-actions';
 
 export default {
-    component: ResultTabs,
+    component: PureResultTabs,
     title: 'Result tabs',
     decorators: [story => <div style={{ padding: '3rem'}}>{story()}</div>],
     excludeStories: /.*Data$/
@@ -12,10 +12,10 @@ export default {
 export const countsData = {
     selectedType: "project",
     counts: {
-        project: 4,
-        experiment: 14,
-        dataset: 5,
-        datafile: 80
+        projects: 4,
+        experiments: 14,
+        datasets: 5,
+        datafiles: 80
     },
     onChange: action("level change")
 }
@@ -26,6 +26,6 @@ export const emptyCountsData = Object.assign({},countsData,
     }
 );
 
-export const Default = () => (<ResultTabs {...countsData} />)
+export const Default = () => (<PureResultTabs {...countsData} />);
 
-export const EmptyCounts = () => (<ResultTabs {...emptyCountsData}></ResultTabs>)
+export const EmptyCounts = () => (<PureResultTabs {...emptyCountsData} />);

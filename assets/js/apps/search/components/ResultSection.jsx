@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useCallback } from 'react'
 import Table from 'react-bootstrap/Table';
 import PropTypes from 'prop-types';
 import { FiPieChart, FiLock } from 'react-icons/fi';
@@ -7,18 +7,19 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import Badge from 'react-bootstrap/Badge';
 import { useSelector, useDispatch } from "react-redux";
-import { updateSelectedResult, updateSelectedType } from "./searchSlice";
+import { updateSelectedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector } from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
+import Pager from "./Pager";
 
-export function ResultTabs({ counts, selectedType, onChange }) {
+export function PureResultTabs({ counts, selectedType, onChange }) {
 
     if (!counts) {
         counts = {
-            experiment: null,
-            dataset: null,
-            datafile: null,
-            project: null
+            experiments: null,
+            datasets: null,
+            datafiles: null,
+            projects: null
         }
     }
 
@@ -29,39 +30,59 @@ export function ResultTabs({ counts, selectedType, onChange }) {
     }
 
     const renderTab = (key, label) => {
-        // const badgeVariant = selectedType === key ? "primary":"secondary";
-        const badgeVariant = "secondary";
+        const typeCollectionName = key + "s";
         return (
             <Nav.Item role="tab">
                 <Nav.Link onSelect={handleNavClicked.bind(this, key)} eventKey={key}>
-                    {label} {counts[key] !== null &&
-                        <Badge variant={badgeVariant}>
-                            {counts[key]} <span className="sr-only">{counts[key] > 1 ? "results" : "result"}</span>
-                        </Badge>}</Nav.Link>
+                    {label} {counts[typeCollectionName] !== null &&
+                        <span>
+                        (
+                            {counts[typeCollectionName]}
+                            <span className="sr-only">{counts[typeCollectionName] > 1 ? " results" : " result"}</span>
+                        )
+                        </span>
+                    }
+                </Nav.Link>
             </Nav.Item>
         );
     }
 
     return (
         <Nav variant="tabs" activeKey={selectedType}>
-            {renderTab("project", "Projects", counts.datafile, selectedType)}
-            {renderTab("experiment", "Experiments", counts.experiment, selectedType)}
-            {renderTab("dataset", "Datasets", counts.dataset, selectedType)}
-            {renderTab("datafile", "Datafiles", counts.datafile, selectedType)}
+            {renderTab("project", "Projects")}
+            {renderTab("experiment", "Experiments")}
+            {renderTab("dataset", "Datasets")}
+            {renderTab("datafile", "Datafiles")}
         </Nav>
     )
 }
 
-ResultTabs.propTypes = {
+PureResultTabs.propTypes = {
     counts: PropTypes.shape({
-        project: PropTypes.number,
-        experiment: PropTypes.number,
-        dataset: PropTypes.number,
-        datafile: PropTypes.number
+        projects: PropTypes.number,
+        experiments: PropTypes.number,
+        datasets: PropTypes.number,
+        datafiles: PropTypes.number
     }),
     selectedType: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
-}
+};
+
+export const ResultTabs = () => {
+    const hitTotals = useSelector(
+        state => state.search.results ? state.search.results.totalHits : null
+    );
+    const selectedType = useSelector(state => state.search.selectedType);
+    const dispatch = useDispatch();
+    const onSelectType = useCallback(
+        (type) => {
+            dispatch(updateSelectedType(type));
+        },
+        [dispatch]);
+    return (<PureResultTabs counts={hitTotals} selectedType={selectedType} onChange={onSelectType} />);
+};
+
+
 
 
 const NameColumn = {
@@ -123,9 +144,19 @@ ResultRow.propTypes = {
 }
 
 export function PureResultList({ results, selectedItem, onItemSelect, error, isLoading }) {
-    let body;
+    results = results || [];
+    let body, listClassName = "result-section__container";
     const handleItemSelected = (id) => {
+        if (isLoading) {
+            // During loading, we disable selecting for preview card.
+            return;
+        }
         onItemSelect(id);
+    };
+
+    if (isLoading) {
+        // Add the loading class to show effect.
+        listClassName += " loading";
     }
 
     if (error) {
@@ -137,21 +168,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
         );
     }
 
-    else if (isLoading) {
-        body = (
-            // If the search is in progress.
-            <tr>
-                <td colSpan="3">
-                    <div className="result-section--msg">
-                        <p>Loading...</p>
-                    </div>
-                </td>
-            </tr>
-        );
-    }
-
-    else if (!results ||
-        (Array.isArray(results) && results.length == 0)) {
+    else if (!isLoading && results.length == 0) {
         // If the results are empty...
         body = (
             <tr>
@@ -176,7 +193,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
     }
 
     return (
-        <Table className="result-section__container" responsive hover>
+        <Table className={listClassName} responsive hover>
             <thead>
                 <tr>
                     <th></th>
@@ -199,45 +216,40 @@ PureResultList.propTypes = {
     onItemSelect: PropTypes.func
 }
 
+const ResultSummary = ({typeId}) => {
+    const currentCount = useSelector(state => totalHitsSelector(state.search, typeId));
+    const currentPageSize = useSelector(state => pageSizeSelector(state.search, typeId));
+    const currentFirstItem = useSelector(state => pageFirstItemIndexSelector(state.search, typeId));
+    const currentLastItem = Math.min(currentCount, currentFirstItem + currentPageSize - 1);
+    return (
+        <p className="result-section--count-summary">
+            <span>Showing {currentFirstItem} - {currentLastItem} of {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
+        </p>
+    );
+};
+
 export function PureResultSection({ resultSets, selectedType,
-    onSelectType, selectedResult, onSelectResult, isLoading, error }) {
-    let counts;
-    if (!resultSets) {
-        resultSets = {};
-        counts = {
-            project: null,
-            experiment: null,
-            dataset: null,
-            datafile: null
-        }
-    } else {
-        counts = {};
-        for (let key in resultSets) {
-            counts[key] = resultSets[key].length;
-        }
-    }
-
+    selectedResult, onSelectResult, isLoading, error }) {
     let selectedEntry = getSelectedEntry(resultSets, selectedResult, selectedType);
-
-    const currentResultSet = resultSets[selectedType],
-        currentCount = counts[selectedType];
+    const currentResultSet = resultSets ? resultSets[selectedType + "s"] : null;
     return (
         <>
-            <ResultTabs counts={counts} selectedType={selectedType} onChange={onSelectType} />
+            <ResultTabs />
             <div role="tabpanel" className="result-section--tabpanel">
-                {(!isLoading && !error) &&
-                    <p className="result-section--count-summary">
-                        <span>Showing {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
-                    </p>
+                {!error &&
+                    <ResultSummary typeId={selectedType} />
                 }
                 <div className="tabpanel__container--horizontal">
                     <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
-                    {(!isLoading && !error && currentCount > 0) &&
+                    {!error &&
                         <EntryPreviewCard
                             data={selectedEntry}
                         />
                     }
                 </div>
+                {!error &&
+                    <Pager objectType={selectedType} />
+                }
             </div>
         </>
     )
@@ -253,7 +265,7 @@ export function PureResultSection({ resultSets, selectedType,
 function getSelectedEntry(resultSets, selectedResult, selectedType) {
     let selectedEntry = null;
     if (resultSets && selectedResult) {
-        selectedEntry = resultSets[selectedType].filter(result => result.id === selectedResult)[0];
+        selectedEntry = resultSets[selectedType + "s"].filter(result => result.id === selectedResult)[0];
     }
     return selectedEntry;
 }
@@ -262,23 +274,25 @@ export default function ResultSection() {
     const selectedType = useSelector(state => state.search.selectedType),
         selectedResult = useSelector(state => state.search.selectedResult),
         dispatch = useDispatch(),
-        onSelectType = (type) => {
-            dispatch(updateSelectedType(type));
-        },
         onSelectResult = (selectedResult) => {
             dispatch(updateSelectedResult(selectedResult));
         },
-        searchInfo = useSelector(
-            (state) => state.search
+        resultSets = useSelector(
+            (state) => state.search.results ? state.search.results.hits : null
+        ),
+        error = useSelector(
+            (state) => state.search.error
+        ),
+        isLoading = useSelector(
+            (state) => state.search.isLoading
         );
 
     return (
         <PureResultSection
-            resultSets={searchInfo.results}
-            error={searchInfo.error}
-            isLoading={searchInfo.isLoading}
+            resultSets={resultSets}
+            error={error}
+            isLoading={isLoading}
             selectedType={selectedType}
-            onSelectType={onSelectType}
             selectedResult={selectedResult}
             onSelectResult={onSelectResult}
         />

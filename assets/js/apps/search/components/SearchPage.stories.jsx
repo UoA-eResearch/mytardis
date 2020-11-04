@@ -50,18 +50,38 @@ export const projectResultsData = [
 ]
 
 export const searchResultsData = {
-    project: projectResultsData,
-    experiment: experimentListData,
-    dataset: dsResultsData,
-    datafile: dfResultsData
+    projects: projectResultsData,
+    experiments: experimentListData,
+    datasets: dsResultsData,
+    datafiles: dfResultsData
 }
 
 export const searchInfoData = {
     searchTerm: null,
     isLoading: false,
     error:null,
-    results: searchResultsData,
-    selectedType: "experiment"
+    results: {
+        hits: searchResultsData,
+        totalHits: {
+            projects: projectResultsData.length,
+            experiments: experimentListData.length,
+            datasets: dsResultsData.length,
+            datafiles: dfResultsData.length
+        }
+    },
+    selectedType: "experiment",
+    pageNumber: {
+        project: 1,
+        experiment: 1,
+        dataset: 1,
+        datafile: 1
+    },
+    pageSize: {
+        project: 10,
+        experiment: 10,
+        dataset: 10,
+        datafile: 10
+    }
 }
 
 export const errorData = Object.assign({},searchInfoData,{

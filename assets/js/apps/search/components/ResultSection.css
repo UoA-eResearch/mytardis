@@ -20,7 +20,7 @@
     border-left: 1px solid #dee2e6;
     border-right: 1px solid #dee2e6;
     border-bottom: 1px solid #dee2e6;
-    padding: 1em;
+    padding: 1.5rem 1rem;
     background-color: white;
 
     /* Make result list and entry card take up available space */
@@ -31,12 +31,21 @@
 
 }
 
+.result-section--tabpanel > * {
+    margin-bottom: 1em;
+}
+
+.result-section--tabpanel > *:last-child {
+    margin-bottom: 0;
+}
+
 .tabpanel__container--horizontal {
     display: flex;
     flex-direction: row;
     overflow: hidden;
     /* Make result list and entry card take up available space */
     flex: 1;
+    padding-bottom: 1rem;
 }
 
 .result-section__container {
@@ -44,8 +53,12 @@
     overflow-y: auto;
 }
 
-.result-section--count-summary {
-    padding: 1em 0;
+.result-section__container .result-section--row {
+    transition: opacity 0.3s;
+}
+
+.result-section__container.loading .result-section--row {
+    opacity: 0.4;
 }
 
 .result-section--row:focus {

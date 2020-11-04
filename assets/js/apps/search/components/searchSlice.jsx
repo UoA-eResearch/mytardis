@@ -13,34 +13,96 @@ const getResultsFromResponse = (response) => {
 // Grab the "_source" object out of each hit and also
 // add a type attribute to them.
 const hits = response.hits,
-    projectResults = hits["projects"].map((hit) => {
-        return getResultFromHit(hit,"project","/project/view")
-    }),
-    expResults = hits["experiments"].map((hit) => {
-        return getResultFromHit(hit,"experiment","/experiment/view")
-    }),
-    dsResults = hits["datasets"].map((hit) => {
-        return getResultFromHit(hit,"dataset","/dataset")
-    }),
-    dfResults = hits["datafiles"].map((hit) => {
-        return getResultFromHit(hit,"datafile","/datafile/view")
-    });
-return {
-    project: projectResults,
-    experiment: expResults,
-    dataset: dsResults,
-    datafile: dfResults
+    results = {};
+    if (hits.projects) {
+        results.projects = hits.projects.map((hit) => {
+            return getResultFromHit(hit,"project","/project/view")
+        });
+    }
+    if (hits.experiments) {
+        results.experiments = hits.experiments.map((hit) => {
+            return getResultFromHit(hit,"experiment","/experiment/view")
+        });
+    }
+    if (hits.datasets) {
+        results.datasets = hits.datasets.map((hit) => {
+            return getResultFromHit(hit,"dataset","/dataset")
+        });
+    }
+    if (hits.datafiles) {
+        results.datafiles = hits["datafiles"].map((hit) => {
+            return getResultFromHit(hit,"datafile","/datafile/view")
+        });
+    }
+    return results;
 }
+
+/**
+ * Selector for a type's current page size.
+ * @param {*} searchSlice - The Redux state slice for search
+ * @param {string} type -  MyTardis object type name.
+ */
+export const pageSizeSelector = (searchSlice, type) => {
+    return searchSlice.pageSize[type];
+};
+
+/**
+ * Selector for a type's current page number.
+ * @param {*} searchSlice - The Redux state slice for search
+ * @param {string} type - MyTardis object type name.
+ */
+export const pageNumberSelector = (searchSlice, type) => {
+    return searchSlice.pageNumber[type];
+};
+
+export const totalHitsSelector = (searchSlice, typeId) => (
+    searchSlice.results ? searchSlice.results.totalHits[typeId + "s"] : 0
+);
+
+/**
+ * Returns the index of the first item on the current page. For example,
+ * if we are on the second page, and each page has 20 items, then this function
+ * returns 21.
+ * @param {*} searchSlice The Redux state slice for search
+ * @param {string} typeId MyTardis object type name.
+ */
+export const pageFirstItemIndexSelector = (searchSlice, typeId) => {
+    if (totalHitsSelector(searchSlice, typeId) === 0) {
+        return 0;
+    } else {
+        return pageSizeSelector(searchSlice, typeId) * (pageNumberSelector(searchSlice, typeId) - 1) + 1;
+    }
 }
+
+/**
+ * Selector for the total number of pages of results for a particular type.
+ * @param {*} searchSlice - The Redux state slice for search
+ * @param {string} typeId - The MyTardis object type. NOTE that this selector expects the type name in its singular form.
+ */
+export const totalPagesSelector = (searchSlice, typeId) => (
+    Math.ceil(totalHitsSelector(searchSlice, typeId) / pageSizeSelector(searchSlice, typeId))
+);
 
 const initialState = {
     searchTerm: null,
     isLoading: false,
     error:null,
     results:null,
-    activeFilters: [],
     selectedType: "experiment",
     selectedResult: null,
+    hideSensitive: true,
+    pageSize: {
+        project: 20,
+        experiment: 20,
+        dataset: 20,
+        datafile: 20
+    },
+    pageNumber: {
+        project: 1,
+        experiment: 1,
+        dataset: 1,
+        datafile: 1
+    }
     showSensitiveData: false
 };
 
@@ -49,15 +111,25 @@ const search = createSlice({
     initialState,
     reducers: {
         getResultsSuccess: {
-            reducer: function (state, { payload }){
-                state.results = payload;
+            reducer: function (state, { payload }) {
+                if (state.results && state.results.hits) {
+                    // If there are already results, do a merge in case
+                    // this was a single type query.
+                    Object.assign(state.results.hits, payload.hits);
+                    Object.assign(state.results.totalHits, payload.totalHits);
+                } else {
+                    state.results = payload;
+                }
                 state.error = null;
                 state.isLoading = false;
             },
             prepare: (rawResult) => {
                 // Process the results first to extract hits and fill in URLs.
                 return {
-                    payload: getResultsFromResponse(rawResult)
+                    payload: {
+                        hits: getResultsFromResponse(rawResult),
+                        totalHits: rawResult.total_hits
+                    }
                 }
             }
         },
@@ -81,11 +153,35 @@ const search = createSlice({
         updateSelectedResult: (state, {payload: selectedResult}) => {
             state.selectedResult = selectedResult;
         },
+        updatePageSize: (state, {payload}) => {
+            const { typeId, size } = payload;
+            if (typeId) {
+                state.pageSize[typeId] = size;
+            } else {
+                Object.keys(state.pageSize).forEach(typeName => {
+                    state.pageSize[typeName] = size;
+                });
+            }
+        },
+        updatePageNumber: (state, {payload}) => {
+            const { typeId, number } = payload;
+            if (typeId) {
+                state.pageNumber[typeId] = number;
+            } else {
+                Object.keys(state.pageNumber).forEach(typeName => {
+                    state.pageNumber[typeName] = number;
+                });
+            }
+        },
+        resetPageNumber: (state) => {
+            // Reset page count.
+            state.pageNumber = initialState.pageNumber;
+
         toggleShowSensitiveData: (state) => {
             state.showSensitiveData = !state.showSensitiveData;
         }
     }
-})
+});
 
 const fetchSearchResults = (queryBody) => {
     return fetch(`/api/v1/search_simple-search/`,{
@@ -104,13 +200,41 @@ const fetchSearchResults = (queryBody) => {
     })
 };
 
+
+/**
+ * Returns search API pagination query. 
+ * @param {*} searchSlice - Redux search slice
+ * @param {string} type If null, returns pagination for all types. If a MyTardis
+ * type is specified, returns only pagination for that type.
+ */
+const buildPaginationQuery = (searchSlice, type) => {
+    if (type) {
+        return {
+            offset: pageSizeSelector(searchSlice, type) * (pageNumberSelector(searchSlice, type) - 1),
+            size: pageSizeSelector(searchSlice, type)
+        };
+    } else {
+        const offsets = Object.keys(searchSlice.pageSize).reduce((previous, objType) => {
+            previous[objType] = searchSlice.pageSize[objType] * (searchSlice.pageNumber[objType] - 1);
+            return previous;
+        }, {});
+        return {
+            offset: offsets,
+            size: searchSlice.pageSize
+        };
+    }
+};
+
 const buildQueryBody = (state, typeToSearch) => {
     const term = state.search.searchTerm,
         filters = buildFilterQuery(state.filters, typeToSearch),
         queryBody = {};
+
     if (typeToSearch) {
         // If doing a single type search, include type in query body.
         queryBody.type = typeToSearch;
+        // Add pagination query
+        Object.assign(queryBody, buildPaginationQuery(state.search, typeToSearch));
     }
     if (term !== null && term !== "") {
         queryBody.query = term;
@@ -185,6 +309,7 @@ export const runSearch = () => {
         const state = getState();
         const queryBody = buildQueryBody(state);
         dispatch(runSearchWithQuery(queryBody));
+        dispatch(search.actions.resetPageNumber());
         window.history.pushState(queryBody,"",getDisplayQueryString(queryBody));
     }
 }
@@ -223,6 +348,29 @@ export const initialiseSearch = () => {
     }
 }
 
+export const updatePageNumberAndRefetch = (typeId, number) => {
+    return (dispatch, getState) => {
+        const state = getState();
+        const totalPages = totalPagesSelector(state.search, typeId);
+        if (number < 1 || number > totalPages) {
+            return;
+        }
+        dispatch(search.actions.updatePageNumber({typeId, number}));
+        return dispatch(runSingleTypeSearch(typeId));
+    };
+};
+
+export const updatePageSizeAndRefetch = (typeId, size) => {
+    return (dispatch, getState) => {
+        const state = getState();
+        // Calculate new page number
+        const currentFirstItem = pageFirstItemIndexSelector(state.search, typeId);
+        const newPageNumber = Math.ceil(currentFirstItem / size);
+        dispatch(search.actions.updatePageSize({typeId, size}));
+        dispatch(search.actions.updatePageNumber({typeId, number: newPageNumber}));
+        return dispatch(runSingleTypeSearch(typeId));
+    };
+};
 
 export const {
     getResultsStart,
