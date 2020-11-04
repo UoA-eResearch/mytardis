@@ -90,7 +90,6 @@ const initialState = {
     results:null,
     selectedType: "experiment",
     selectedResult: null,
-    hideSensitive: true,
     pageSize: {
         project: 20,
         experiment: 20,

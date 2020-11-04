@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 
 const store = makeMockStore({
   search: {
-    hideSensitiveData: false
+    showSensitiveData: false
   }
 });
 
