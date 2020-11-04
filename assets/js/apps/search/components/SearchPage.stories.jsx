@@ -69,6 +69,7 @@ export const searchInfoData = {
             datafiles: dfResultsData.length
         }
     },
+    showSensitiveData: false,
     selectedType: "experiment",
     pageNumber: {
         project: 1,
