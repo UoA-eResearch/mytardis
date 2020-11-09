@@ -1,7 +1,7 @@
 import React, {useCallback} from "react";
 import { DropdownButton, Dropdown, Form, Row } from "react-bootstrap";
 import { typeAttrSelector, allTypeAttrIdsSelector } from "../filters/filterSlice";
-import { SORT_ORDER, updateResultSort, removeResultSort, activeSortSelector } from "../searchSlice";
+import { SORT_ORDER, updateResultSort, removeResultSort, activeSortSelector, runSingleTypeSearch } from "../searchSlice";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { AiOutlineSortAscending, AiOutlineSortDescending } from "react-icons/ai";
@@ -128,6 +128,7 @@ export default function SortOptionsList({typeId}) {
             attributeId,
             order
         }));
+        dispatch(runSingleTypeSearch(typeId));
     }, [dispatch, typeId]);
 
     const handleSortRemove = useCallback(attributeId => {
@@ -135,6 +136,7 @@ export default function SortOptionsList({typeId}) {
             typeId,
             attributeId
         }));
+        dispatch(runSingleTypeSearch(typeId));
     }, [dispatch, typeId]);
 
     return (
