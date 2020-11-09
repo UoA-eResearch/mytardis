@@ -1,11 +1,12 @@
 import React from "react";
-import { PureSortOptions } from "./SortOptions";
+import { PureSortOptionsList } from "./SortOptionsList";
 import { SORT_ORDER } from "../searchSlice";
+import { action } from "@storybook/addon-actions";
 
 
 export default {
-    component: PureSortOptions,
-    title: "Sort options",
+    component: PureSortOptionsList,
+    title: "Sort options list",
     decorators: [story => <div style={{ padding: "3rem" }}>{story()}</div>],
     excludeStories: /.*Data$/
 };
@@ -30,7 +31,9 @@ export const sortData = {
             order: SORT_ORDER.ascending,
             isActive: false
         }
-    ]
+    ],
+    onSortUpdate: action("Sort update"),
+    onSortRemove: action("Sort remove")
 };
 
 export const activeSortData = Object.assign({}, sortData, {
@@ -51,9 +54,9 @@ export const activeSortData = Object.assign({}, sortData, {
 });
 
 export const Default = () => (
-    <PureSortOptions {...sortData} />
+    <PureSortOptionsList {...sortData} />
 );
 
 export const SortActive = () => (
-    <PureSortOptions {...activeSortData} />
+    <PureSortOptionsList {...activeSortData} />
 );

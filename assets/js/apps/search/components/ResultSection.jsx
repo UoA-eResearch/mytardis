@@ -11,6 +11,7 @@ import { updateSelectedResult, updateSelectedType, totalHitsSelector, pageSizeSe
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 import Pager from "./sort-paginate/Pager";
+import SortOptionsList from './sort-paginate/SortOptionsList';
 
 export function PureResultTabs({ counts, selectedType, onChange }) {
 
@@ -237,7 +238,10 @@ export function PureResultSection({ resultSets, selectedType,
             <ResultTabs />
             <div role="tabpanel" className="result-section--tabpanel">
                 {!error &&
+                    <>
                     <ResultSummary typeId={selectedType} />
+                    <SortOptionsList typeId={selectedType} />
+                    </>
                 }
                 <div className="tabpanel__container--horizontal">
                     <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />

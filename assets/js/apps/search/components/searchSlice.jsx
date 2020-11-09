@@ -61,6 +61,15 @@ export const totalHitsSelector = (searchSlice, typeId) => (
 );
 
 /**
+ * Selector for sorts that are active on a typeId.
+ * @param {*} searchSlice The Redux state slice for search
+ * @param {string} typeId MyTardis object type.
+ */
+export const activeSortSelector = (searchSlice, typeId) => (
+    searchSlice.sort[typeId]
+);
+
+/**
  * Returns the index of the first item on the current page. For example,
  * if we are on the second page, and each page has 20 items, then this function
  * returns 21.
@@ -192,9 +201,9 @@ const search = createSlice({
             state.showSensitiveData = !state.showSensitiveData;
         },
         updateResultSort: (state, {payload}) => {
-            const { typeId, field, order = SORT_ORDER.descending } = payload;
+            const { typeId, attributeId, order = SORT_ORDER.descending } = payload;
             const existingSort = state.sort[typeId].filter(
-                sortOption => (arrayEquals(sortOption.field, field))
+                sortOption => sortOption.id === attributeId
             );
             if (existingSort.length > 0) {
                 // Update existing sort instead of adding a new one
@@ -202,7 +211,7 @@ const search = createSlice({
             } else {
                 // Add new sort
                 state.sort[typeId].push({
-                    field,
+                    id: attributeId,
                     order
                 });
             }
@@ -211,7 +220,7 @@ const search = createSlice({
             const { typeId, field } = payload;
             const typeSorts = state.sort[typeId];
             for (let i = 0; i < typeSorts.length; i++) {
-                if (arrayEquals(typeSorts[typeId][i].field, field)) {
+                if (typeSorts[i].field === field) {
                     // Remove the sort.
                     typeSorts.splice(i, 1);
                     return;
@@ -417,7 +426,9 @@ export const {
     updateSearchTerm,
     updateSelectedType,
     updateSelectedResult,
-    toggleShowSensitiveData
+    toggleShowSensitiveData,
+    updateResultSort,
+    removeResultSort
 } = search.actions;
 
 export default search.reducer;
