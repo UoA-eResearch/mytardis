@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { initialiseFilters, buildFilterQuery, updateFiltersByQuery } from "./filters/filterSlice";
+import arrayEquals from "../util/arrayEquals";
 
 const getResultFromHit = (hit,hitType,urlPrefix) => {
     const source = hit._source;
@@ -102,7 +103,18 @@ const initialState = {
         dataset: 1,
         datafile: 1
     },
+    sort: {
+        project: [],
+        experiment: [],
+        dataset: [],
+        datafile: []
+    },
     showSensitiveData: false
+};
+
+export const SORT_ORDER = {
+    ascending: "asc",
+    descending: "desc"
 };
 
 const search = createSlice({
@@ -178,6 +190,33 @@ const search = createSlice({
         },
         toggleShowSensitiveData: (state) => {
             state.showSensitiveData = !state.showSensitiveData;
+        },
+        updateResultSort: (state, {payload}) => {
+            const { typeId, field, order = SORT_ORDER.descending } = payload;
+            const existingSort = state.sort[typeId].filter(
+                sortOption => (arrayEquals(sortOption.field, field))
+            );
+            if (existingSort.length > 0) {
+                // Update existing sort instead of adding a new one
+                existingSort[0].order = order;
+            } else {
+                // Add new sort
+                state.sort[typeId].push({
+                    field,
+                    order
+                });
+            }
+        },
+        removeResultSort: (state, {payload}) => {
+            const { typeId, field } = payload;
+            const typeSorts = state.sort[typeId];
+            for (let i = 0; i < typeSorts.length; i++) {
+                if (arrayEquals(typeSorts[typeId][i].field, field)) {
+                    // Remove the sort.
+                    typeSorts.splice(i, 1);
+                    return;
+                }
+            }
         }
     }
 });
