@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateSelectedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector } from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
-import Pager from "./Pager";
+import Pager from "./sort-paginate/Pager";
 
 export function PureResultTabs({ counts, selectedType, onChange }) {
 
