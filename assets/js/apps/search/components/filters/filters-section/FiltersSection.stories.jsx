@@ -15,54 +15,114 @@ export default {
 export const filtersData = {
   types: {
     byId: {
-        projects: {
-          attributes: {
-            byId: {
-              schema: {
-                value:{op:"is",content:["1"]}
+      projects: {
+        attributes: {
+          byId: {
+            name: {
+              full_name: "Name",
+              id: "name",
+              data_type:"STRING"
+            },
+            createdDate: {
+              full_name: "Created date",
+              id: "createdDate",
+              data_type: "DATETIME"
+            },
+            institution: {
+              full_name: "Institution",
+              id: "institution",
+              data_type: "STRING"
+            },
+            schema: {
+              value: { op: "is", content: ["1"] }
             }
-          }, allIds: ['schema']
+          }, allIds: ["name", "createdDate", "institution", "schema"]
         }
       },
       experiments: {
         attributes: {
           byId: {
+            name: {
+              full_name: "Name",
+              id: "name",
+              data_type:"STRING"
+            },
+            createdDate: {
+              full_name: "Created date",
+              id: "createdDate",
+              data_type: "DATETIME"
+            },
+            institution: {
+              full_name: "Institution",
+              id: "institution",
+              data_type: "STRING"
+            },
             schema: {
-              value:{op:"is",content:["2"]}
+              value: { op: "is", content: ["2"] }
             }
-          }, allIds: ['schema']
+          }, allIds: ["name", "createdDate", "institution", "schema"]
         }
       },
       datasets: {
         attributes: {
           byId: {
+            name: {
+              full_name: "Name",
+              id: "name",
+              data_type:"STRING"
+            },
+            createdDate: {
+              full_name: "Created date",
+              id: "createdDate",
+              data_type: "DATETIME"
+            },
+            institution: {
+              full_name: "Institution",
+              id: "institution",
+              data_type: "STRING"
+            },
             schema: {
-              value: {op:"is",content:["1"]}
+              value: { op: "is", content: ["1"] }
             }
-          }, allIds: ['schema']
+          }, allIds: ["name", "createdDate", "institution", "schema"]
         }
       },
       datafiles: {
         attributes: {
           byId: {
+            name: {
+              full_name: "Name",
+              id: "name",
+              data_type:"STRING"
+            },
+            createdDate: {
+              full_name: "Created date",
+              id: "createdDate",
+              data_type: "DATETIME"
+            },
+            institution: {
+              full_name: "Institution",
+              id: "institution",
+              data_type: "STRING"
+            },
             schema: {
-              value:{op:"is",content:["1","2"]}
+              value: { op: "is", content: ["1", "2"] }
             }
-          }, allIds: ['schema']
+          }, allIds: ["name", "createdDate", "institution", "schema"]
         }
       }
     },
-    allIds: ["projects","experiments","datasets","datafiles"]
+    allIds: ["projects", "experiments", "datasets", "datafiles"]
   },
   schemas: {
     byId: schemaData,
     allIds: allSchemaIdsData
   },
   typeSchemas: {
-      projects: allSchemaIdsData,
-      experiments: allSchemaIdsData,
-      datasets: allSchemaIdsData,
-      datafiles: allSchemaIdsData
+    projects: allSchemaIdsData,
+    experiments: allSchemaIdsData,
+    datasets: allSchemaIdsData,
+    datafiles: allSchemaIdsData
   },
   isLoading: false,
   error: null

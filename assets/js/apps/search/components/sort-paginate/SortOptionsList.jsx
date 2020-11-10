@@ -88,12 +88,12 @@ export function PureSortOptionsList({attributesToSort, onSortUpdate, onSortRemov
 }
 
 PureSortOptionsList.propTypes = {
-    attributesToSort: PropTypes.arrayOf({
+    attributesToSort: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         full_name: PropTypes.string.isRequired,
         order: PropTypes.string,
         isActive: PropTypes.bool.isRequired
-    }).isRequired,
+    })).isRequired,
     onSortUpdate: PropTypes.func.isRequired,
     onSortRemove: PropTypes.func.isRequired
 };

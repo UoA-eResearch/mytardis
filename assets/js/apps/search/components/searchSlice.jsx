@@ -217,10 +217,10 @@ const search = createSlice({
             }
         },
         removeResultSort: (state, {payload}) => {
-            const { typeId, field } = payload;
+            const { typeId, attributeId } = payload;
             const typeSorts = state.sort[typeId];
             for (let i = 0; i < typeSorts.length; i++) {
-                if (typeSorts[i].field === field) {
+                if (typeSorts[i].id === attributeId) {
                     // Remove the sort.
                     typeSorts.splice(i, 1);
                     return;
