@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CategoryFilter from '../category-filter/CategoryFilter';
 import { runSearch } from '../../searchSlice';
 import { mapTypeToFilter } from "../index";
+import { ParentFilter } from '../filters-section/FiltersSection';
 
 // A hook for converting a hashmap of values into a list.
 const useAsList = (jsObject = {}) => (

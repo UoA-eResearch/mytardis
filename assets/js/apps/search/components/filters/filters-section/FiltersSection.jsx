@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
+import { Alert } from 'react-bootstrap';
 import Tabs from "react-bootstrap/Tabs";
 import Tab from 'react-bootstrap/Tab';
 import { OBJECT_TYPE_STICKERS } from '../../TabStickers/TabSticker'
@@ -15,8 +16,8 @@ import { mapTypeToFilter } from "../index";
  * Also creates corresponding redux state hook and a dispatch function for that state.
  * @param {*} param0 
  */
-function TypeAttributeFilter({typeId, attributeId}) {
-  const attribute = useSelector(state => (typeAttrSelector(state.filters,typeId,attributeId)));
+function TypeAttributeFilter({ typeId, attributeId }) {
+  const attribute = useSelector(state => (typeAttrSelector(state.filters, typeId, attributeId)));
   const dispatch = useDispatch();
   const setFilterValue = value => {
     batch(() => {
@@ -32,7 +33,85 @@ function TypeAttributeFilter({typeId, attributeId}) {
   return (
     <section>
       <h3 className="h5">{attribute.full_name}</h3>
-      <ApplicableFilter id={typeId+"."+attributeId} value={attribute.value} onValueChange={setFilterValue} options={attribute.options} />
+      <ApplicableFilter id={typeId + "." + attributeId} value={attribute.value} onValueChange={setFilterValue} options={attribute.options} />
+    </section>
+  )
+}
+
+function FilterWrapper(props) {
+  const { typeId, attributeId } = props
+  const attribute = useSelector(state => (typeAttrSelector(state.filters, typeId, attributeId)));
+
+  const [isValid, setIsValid] = useState(true);
+  const handleFilterValueChange = value => {
+    console.log('on change triggered.', value);
+    // random mock validation for now.
+    if (value.content === "valid") {
+      // allow set state
+      setIsValid(true);
+      console.log('Valid value, updating value.');
+      const dispatch = useDispatch();
+      batch(() => {
+        dispatch(updateTypeAttribute({
+          typeId,
+          attributeId,
+          value
+        }));
+        dispatch(runSearch());
+      });
+    } else {
+      setIsValid(false);
+    }
+  }
+
+  const ApplicableFilter = mapTypeToFilter(attribute.data_type);
+  return (
+    <section>
+      <ParentFilter {...props} isValid={isValid}>
+        <h3 className="h5">{attribute.full_name}</h3>
+        <ApplicableFilter id={typeId + "." + attributeId} value={attribute.value} onValueChange={handleFilterValueChange} options={attribute.options} />
+        {/* { isValid ? null :
+        <Alert variant="danger"> Invalid filter value</Alert>
+      } */}
+      </ParentFilter>
+    </section>
+  )
+}
+
+export const ValidatedFilter = (storeValue, applicableFilter, children) => {
+  console.log( children );
+  const [isValid, setIsValid] = useState(true);
+
+  const handleFilterValueChange = value => {
+    console.log('on change triggered.', value);
+    if (value.content === "valid") {
+      setIsValid(true);
+      storeValue();
+    } else {
+      setIsValid(false);
+    }
+  }
+
+  return (
+    <section>
+      <div>validation wrapped.</div>
+      {children}
+      { isValid ? null :
+        <Alert variant="danger"> Invalid filter value</Alert>
+      }
+    </section>
+  )
+}
+
+
+export const ParentFilter = ({ children, isValid }) => {
+  return (
+    <section>
+      <div>validation wrapped.</div>
+      {children}
+      { isValid ? null :
+        <Alert variant="danger"> Invalid filter value</Alert>
+      }
     </section>
   )
 }
@@ -41,7 +120,7 @@ TypeAttributeFilter.propTypes = {
   attribute: PropTypes.shape({
     data_type: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
-    full_name: PropTypes.string.isRequired  
+    full_name: PropTypes.string.isRequired
   }),
 
 }
@@ -58,7 +137,9 @@ export function TypeAttributesList({ typeId }) {
         attributeIds.map(
           id => (
             <Fragment key={id}>
-              <TypeAttributeFilter typeId={typeId} attributeId={id} />
+              {/* <TypeAttributeFilter typeId={typeId} attributeId={id} />
+              hi */}
+              <FilterWrapper typeId={typeId} attributeId={id} />
               <hr />
             </Fragment>
           )
