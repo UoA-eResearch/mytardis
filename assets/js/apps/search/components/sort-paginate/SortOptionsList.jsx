@@ -41,8 +41,14 @@ export function PureSortOptionsList({attributesToSort, onSortUpdate, onSortRemov
             onSortUpdate(attribute.id, order);
         }
     }, [onSortUpdate]);
+    const hasActiveSort = attributesToSort.filter(attribute => attribute.isActive).length > 0;
     return (       
-        <DropdownButton title={getSortSummaryText(attributesToSort)} variant="outline-primary" className="sortoptions">
+        <DropdownButton title={<>
+                <AiOutlineSortAscending />
+                <span>
+                    { getSortSummaryText(attributesToSort) }
+                </span>
+            </>} variant={hasActiveSort ? "primary" : "outline-primary" } className="sortoptions">
             {
                 attributesToSort.map(attribute => {
                     const { id, full_name, isActive, order } = attribute;
@@ -108,7 +114,7 @@ export default function SortOptionsList({typeId}) {
         return attributeIds.map(id => {
             const { full_name } = typeAttrSelector(state.filters, typeId + "s", id);
             const sortOption = activeSort.filter(sort => sort.id === id);
-            let order = SORT_ORDER.descending, isActive = false;
+            let order = SORT_ORDER.ascending, isActive = false;
             if (sortOption.length > 0) {
                 order = sortOption[0].order;
                 isActive = true;

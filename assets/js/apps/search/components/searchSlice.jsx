@@ -201,7 +201,7 @@ const search = createSlice({
             state.showSensitiveData = !state.showSensitiveData;
         },
         updateResultSort: (state, {payload}) => {
-            const { typeId, attributeId, order = SORT_ORDER.descending } = payload;
+            const { typeId, attributeId, order = SORT_ORDER.ascending } = payload;
             const existingSort = state.sort[typeId].filter(
                 sortOption => sortOption.id === attributeId
             );
