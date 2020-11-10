@@ -67,48 +67,16 @@ function FilterWrapper(props) {
   const ApplicableFilter = mapTypeToFilter(attribute.data_type);
   return (
     <section>
-      <ParentFilter {...props} isValid={isValid}>
         <h3 className="h5">{attribute.full_name}</h3>
         <ApplicableFilter id={typeId + "." + attributeId} value={attribute.value} onValueChange={handleFilterValueChange} options={attribute.options} />
-        {/* { isValid ? null :
-        <Alert variant="danger"> Invalid filter value</Alert>
-      } */}
-      </ParentFilter>
+        <ParentFilter isValid={isValid} />
     </section>
   )
 }
-
-export const ValidatedFilter = (storeValue, applicableFilter, children) => {
-  console.log( children );
-  const [isValid, setIsValid] = useState(true);
-
-  const handleFilterValueChange = value => {
-    console.log('on change triggered.', value);
-    if (value.content === "valid") {
-      setIsValid(true);
-      storeValue();
-    } else {
-      setIsValid(false);
-    }
-  }
-
-  return (
-    <section>
-      <div>validation wrapped.</div>
-      {children}
-      { isValid ? null :
-        <Alert variant="danger"> Invalid filter value</Alert>
-      }
-    </section>
-  )
-}
-
 
 export const ParentFilter = ({ children, isValid }) => {
   return (
     <section>
-      <div>validation wrapped.</div>
-      {children}
       { isValid ? null :
         <Alert variant="danger"> Invalid filter value</Alert>
       }
