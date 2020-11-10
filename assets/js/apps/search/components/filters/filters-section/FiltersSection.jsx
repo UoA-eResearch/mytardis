@@ -3,7 +3,7 @@ import { Alert } from 'react-bootstrap';
 import Tabs from "react-bootstrap/Tabs";
 import Tab from 'react-bootstrap/Tab';
 import { OBJECT_TYPE_STICKERS } from '../../TabStickers/TabSticker'
-import TypeSchemaList from '../type-schema-list/TypeSchemaList';
+import TypeSchemaList, { validatedFilter } from '../type-schema-list/TypeSchemaList';
 import { runSearch } from '../../searchSlice';
 import { typeAttrSelector, allTypeAttrIdsSelector, updateActiveSchemas, updateTypeAttribute } from '../filterSlice';
 import { useSelector, useDispatch, batch } from "react-redux";
@@ -29,59 +29,16 @@ function TypeAttributeFilter({ typeId, attributeId }) {
       dispatch(runSearch());
     });
   };
-  const ApplicableFilter = mapTypeToFilter(attribute.data_type);
-  return (
-    <section>
-      <h3 className="h5">{attribute.full_name}</h3>
-      <ApplicableFilter id={typeId + "." + attributeId} value={attribute.value} onValueChange={setFilterValue} options={attribute.options} />
-    </section>
-  )
-}
+  // const ApplicableFilter = mapTypeToFilter(attribute.data_type);
+  // return (
+  //   <section>
+  //     <h3 className="h5">{attribute.full_name}</h3>
+  //     <ApplicableFilter id={typeId + "." + attributeId} value={attribute.value} onValueChange={setFilterValue} options={attribute.options} />
+  //   </section>
+  // )
 
-function FilterWrapper(props) {
-  const { typeId, attributeId } = props
-  const attribute = useSelector(state => (typeAttrSelector(state.filters, typeId, attributeId)));
-
-  const [isValid, setIsValid] = useState(true);
-  const handleFilterValueChange = value => {
-    console.log('on change triggered.', value);
-    // random mock validation for now.
-    if (value.content === "valid") {
-      // allow set state
-      setIsValid(true);
-      console.log('Valid value, updating value.');
-      const dispatch = useDispatch();
-      batch(() => {
-        dispatch(updateTypeAttribute({
-          typeId,
-          attributeId,
-          value
-        }));
-        dispatch(runSearch());
-      });
-    } else {
-      setIsValid(false);
-    }
-  }
-
-  const ApplicableFilter = mapTypeToFilter(attribute.data_type);
-  return (
-    <section>
-        <h3 className="h5">{attribute.full_name}</h3>
-        <ApplicableFilter id={typeId + "." + attributeId} value={attribute.value} onValueChange={handleFilterValueChange} options={attribute.options} />
-        <ParentFilter isValid={isValid} />
-    </section>
-  )
-}
-
-export const ParentFilter = ({ children, isValid }) => {
-  return (
-    <section>
-      { isValid ? null :
-        <Alert variant="danger"> Invalid filter value</Alert>
-      }
-    </section>
-  )
+  // TODO: refactor so setter function can be passed with all params except value before passing to validated filter function.
+  return validatedFilter(param, dispatch, schemaId, setParamValue, "schema");
 }
 
 TypeAttributeFilter.propTypes = {

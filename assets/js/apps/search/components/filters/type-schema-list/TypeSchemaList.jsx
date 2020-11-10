@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import CategoryFilter from '../category-filter/CategoryFilter';
 import { runSearch } from '../../searchSlice';
 import { mapTypeToFilter } from "../index";
-import { ParentFilter } from '../filters-section/FiltersSection';
 
 // A hook for converting a hashmap of values into a list.
 const useAsList = (jsObject = {}) => (
@@ -135,17 +134,16 @@ TypeSchemaList.propTypes = {
 
 export default TypeSchemaList;
 
-function validatedFilter(param, schemaId, valueSetter, filterType) {
+/**
+ * Creates an filter with valid
+ * @param {*} param 
+ * @param {*} schemaId 
+ * @param {*} valueSetter 
+ * @param {*} filterType 
+ */
+export function validatedFilter(param, schemaId, valueSetter, filterType) {
     const { value, data_type: parameterType, full_name, id: parameterId } = param;
     const [isValid, setIsValid] = useState(true);
-    // const setParamValue = (value) => {
-    //     dispatch(updateSchemaParameter({
-    //         schemaId,
-    //         parameterId,
-    //         value
-    //     }));
-    //     dispatch(runSearch());
-    // };
 
     const handleValueChange = (value) => {
         if (value.content === "valid") {
