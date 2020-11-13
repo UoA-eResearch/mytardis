@@ -385,7 +385,7 @@ const getFilterQueryValue = (filtersSlice, filterFieldInfo) => {
 export const buildFilterQuery = (filtersSlice, matchesType) => {
     let typesToInclude = [];
     if (matchesType) {
-        typesToInclude = getCrossFilteredTypes(matchesType);
+        typesToInclude = getCrossFilteredTypes(matchesType + "s");
     } else {
         typesToInclude = filtersSlice.types.allIds;
     }
