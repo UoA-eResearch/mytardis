@@ -1,8 +1,8 @@
 import logging
 
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+#from django.db.models.signals import post_save
+#from django.dispatch import receiver
 from elasticsearch_dsl import analysis, analyzer
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
@@ -11,7 +11,7 @@ from tardis.tardis_portal.models import Project, Dataset, Experiment, \
     DataFile, Instrument, ObjectACL, ParameterName, Schema, ProjectParameter, \
     ExperimentParameter, DatasetParameter, DatafileParameter, \
     ProjectParameterSet, ExperimentParameterSet, DatasetParameterSet, \
-    DatafileParameterSet
+    DatafileParameterSet, DataFileObject
 
 # from tardis.tardis_portal.tests import suspendingreceiver
 
@@ -45,14 +45,14 @@ class ProjectDocument(Document):
     start_date = fields.DateField()
     end_date = fields.DateField()
     institution = fields.NestedField(properties={
-        'name': fields.StringField(
+        'name': fields.TextField(
             fields={'raw': fields.KeywordField()},
         )
     })
     lead_researcher = fields.NestedField(properties={
-        'username': fields.StringField(
+        'username': fields.TextField(
             fields={'raw': fields.KeywordField()}),
-        'fullname': fields.StringField(
+        'fullname': fields.TextField(
             fields={'raw': fields.KeywordField()})
     })
     objectacls = fields.NestedField(properties={
@@ -63,7 +63,7 @@ class ProjectDocument(Document):
         'string': fields.NestedField(properties={
             'pn_id': fields.KeywordField(),
             'pn_name': fields.KeywordField(),
-            'value': fields.StringField(),
+            'value': fields.TextField(),
             'sensitive': fields.BooleanField()
         }),
         'numerical': fields.NestedField(properties={
@@ -133,9 +133,9 @@ class ExperimentDocument(Document):
     start_time = fields.DateField()
     end_time = fields.DateField()
     update_time = fields.DateField()
-    #institution_name = fields.StringField()
+    #institution_name = fields.TextField()
     created_by = fields.ObjectField(properties={
-        'username': fields.StringField(
+        'username': fields.TextField(
             fields={'raw': fields.KeywordField()},
         )
     })
@@ -152,7 +152,7 @@ class ExperimentDocument(Document):
         'string': fields.NestedField(properties={
             'pn_id': fields.KeywordField(),
             'pn_name': fields.KeywordField(),
-            'value': fields.StringField(),
+            'value': fields.TextField(),
             'sensitive': fields.BooleanField()
         }),
         'numerical': fields.NestedField(properties={
@@ -212,7 +212,7 @@ class DatasetDocument(Document):
         analyzer=analyzer)
     experiments = fields.NestedField(properties={
         'id': fields.KeywordField(),
-        'title': fields.StringField(
+        'title': fields.TextField(
             fields={'raw': fields.KeywordField()}
         ),
         'project': fields.NestedField(properties={
@@ -225,19 +225,19 @@ class DatasetDocument(Document):
     })
     instrument = fields.NestedField(properties={
         'id': fields.KeywordField(),
-        'name': fields.StringField(
+        'name': fields.TextField(
             fields={'raw': fields.KeywordField()},
         )}
     )
     created_time = fields.DateField()
     modified_time = fields.DateField()
-    tags = fields.StringField(attr='tags_for_indexing')
+    tags = fields.TextField(attr='tags_for_indexing')
 
     parameters = fields.NestedField(attr='getParametersforIndexing', properties={
         'string': fields.NestedField(properties={
             'pn_id': fields.KeywordField(),
             'pn_name': fields.KeywordField(),
-            'value': fields.StringField(),
+            'value': fields.TextField(),
             'sensitive': fields.BooleanField()
         }),
         'numerical': fields.NestedField(properties={
@@ -300,10 +300,10 @@ class DataFileDocument(Document):
     file_extension = fields.KeywordField(attr='filename')
     created_time = fields.DateField()
     modification_time = fields.DateField()
-    size = fields.IntegerField()
+    size = fields.LongField()
     dataset = fields.NestedField(properties={
         'id': fields.KeywordField(),
-        'description': fields.StringField(
+        'description': fields.TextField(
             fields={'raw': fields.KeywordField()}
         ),
         'experiments': fields.NestedField(properties={
@@ -318,11 +318,13 @@ class DataFileDocument(Document):
         'entityId': fields.KeywordField()
     })
 
+    verified = fields.BooleanField(attr='verified')
+
     parameters = fields.NestedField(attr='getParametersforIndexing', properties={
         'string': fields.NestedField(properties={
             'pn_id': fields.KeywordField(),
             'pn_name': fields.KeywordField(),
-            'value': fields.StringField(),
+            'value': fields.TextField(),
             'sensitive': fields.BooleanField()
         }),
         'numerical': fields.NestedField(properties={
@@ -362,7 +364,7 @@ class DataFileDocument(Document):
         model = DataFile
         related_models = [Dataset, Experiment, Project, ObjectACL,
                           Schema, ParameterName, DatafileParameter,
-                          DatafileParameterSet]
+                          DatafileParameterSet, DataFileObject]
         queryset_pagination = 100000
 
     def get_instances_from_related(self, related_instance):
@@ -383,7 +385,10 @@ class DataFileDocument(Document):
             return DataFile.objects.filter(datafileparameterset__schema=related_instance)
         if isinstance(related_instance, ParameterName):
             return DataFile.objects.filter(datafileparameterset__schema__parametername=related_instance)
+        if isinstance(related_instance, DataFileObject):
+            return related_instance.datafile
         return None
+
 
 # @suspendingreceiver(post_save, sender=Project)
 # @suspendingreceiver(post_save, sender=Experiment)

@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.db import models
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
+from taggit.managers import TaggableManager
 
 from ..managers import OracleSafeManager, SafeManager
 from .storage import StorageBox
@@ -17,7 +18,6 @@ from .access_control import ObjectACL
 from .experiment import Experiment
 from .instrument import Instrument
 
-from taggit.managers import TaggableManager
 
 logger = logging.getLogger(__name__)
 
@@ -480,7 +480,6 @@ class Dataset(models.Model):
                     "objectacls":self.objectacls,
                     "instrument":self.instrument,
                     "modified_time":self.modified_time,
-                    "created_time":self.created_time,
                     "tags":self.tags_for_indexing,
                     "parameters":self.getParametersforIndexing()
                     }

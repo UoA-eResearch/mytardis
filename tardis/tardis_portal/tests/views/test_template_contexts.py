@@ -59,6 +59,7 @@ class ViewTemplateContextsTest(TestCase):
             canDelete=True,
             aclOwnershipType=ObjectACL.OWNER_OWNED,
         )
+        self.acl.save()
         self.dataset.experiments.add(self.exp)
         self.dataset.save()
 
@@ -77,6 +78,7 @@ class ViewTemplateContextsTest(TestCase):
             canDelete=True,
             aclOwnershipType=ObjectACL.OWNER_OWNED,
         )
+        self.acl.save()
     def tearDown(self):
         self.user.delete()
         self.exp.delete()

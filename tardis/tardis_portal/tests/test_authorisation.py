@@ -170,7 +170,7 @@ class ObjectACLTestCase(TestCase):
         yesterday = today - datetime.timedelta(days=1)
         tomorrow = today + datetime.timedelta(days=1)
 
-        # add user3 to experiment1
+        # add user3 to experiment1 - with no permissions
         response = self.client1.get('/experiment/control_panel/%i/access_list'
                                     '/add/user/%s/?authMethod=%s'
                                     % (self.experiment1.id,
@@ -180,6 +180,7 @@ class ObjectACLTestCase(TestCase):
         self.assertContains(response, '<div class="access_list_user')
 
         # check permissions for user3 - fail as canRead not set to True
+        # ACL is auto-deleted as it has no permissions: hence the fail
         response = self.client3.get('/experiment/view/%i/'
                                    % (self.experiment1.id))
         self.assertEqual(response.status_code, 403)
@@ -247,7 +248,7 @@ class ObjectACLTestCase(TestCase):
 
         # user1 is not allowed to modify acls for experiment2
         response = self.client1.get('/experiment/control_panel/%i/access_list'
-                                    '/add/user/%s/?authMethod=%s'
+                                    '/add/user/%s/?authMethod=%s&canRead=true'
                                     % (self.experiment2.id,
                                        self.user1.username,
                                        localdb_auth_key))
@@ -256,7 +257,7 @@ class ObjectACLTestCase(TestCase):
         # user2 *IS* allowed to modify acls for experiment1, since they are part
         # of an owning group (we add then remove access for user3)
         response = self.client1.get('/experiment/control_panel/%i/access_list'
-                                    '/add/user/%s/?authMethod=%s'
+                                    '/add/user/%s/?authMethod=%s&canRead=true'
                                     % (self.experiment1.id,
                                        self.user3.username,
                                        localdb_auth_key))
@@ -272,7 +273,7 @@ class ObjectACLTestCase(TestCase):
         # test add non-existent user
         non_existent = 'test_boozer'
         response = self.client1.get('/experiment/control_panel/%i/access_list'
-                                    '/add/user/%s/?authMethod=%s'
+                                    '/add/user/%s/?authMethod=%s&canRead=true'
                                     % (self.experiment1.id,
                                        non_existent,
                                        localdb_auth_key))
@@ -293,7 +294,7 @@ class ObjectACLTestCase(TestCase):
         # it. This could possibly be changed to a 404 error.
 
         response = self.client1.get('/experiment/control_panel/%i/access_list'
-                                    '/add/user/%s/?authMethod=%s' %
+                                    '/add/user/%s/?authMethod=%s&canRead=true' %
                                     (9999, self.user1.username, localdb_auth_key))
         self.assertEqual(response.status_code, 403)
 
@@ -367,7 +368,7 @@ class ObjectACLTestCase(TestCase):
 
         # add user3 to experiment1
         response = self.client1.get('/experiment/control_panel/%i/access_list'
-                                    '/add/user/%s/?authMethod=%s'
+                                    '/add/user/%s/?authMethod=%s&canRead=true'
                                     % (self.experiment1.id,
                                        self.user3.username,
                                        localdb_auth_key))

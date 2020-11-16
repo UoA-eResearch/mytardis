@@ -205,6 +205,60 @@ i.group-icon :hover {
 }
 
 /* index page */
+
+/* index page project */
+.projects .card {
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+.projects .card .accordion-toggle {
+    cursor: pointer;
+}
+
+.projects .card-body {
+    background-color: #E8F6FF;
+}
+
+.projects .accordion-inner .experiment-list-header {
+    font-style: italic;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+
+.projects .accordion-toggle .projectlink {
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.projects .accordion-toggle .badgelist {
+    margin-bottom: 4px;
+}
+.projects .card-header {
+    border: none;
+    background-color: #F5FBFF;
+}
+.projects .nav .nav-header {
+    font-size: 11px;
+    font-weight: normal;
+    color: #000000;
+    text-shadow: none;
+    font-style: italic;
+    text-transform: none;
+}
+
+.projects .projectlink {
+    color: black;
+    font-size: 110%;
+}
+
+.projects .ul .small {
+    font-weight: 400;
+}
+
+
+ /* end index page project */
+
 .experiments .accordion-toggle .explink {
     font-size: 1.1em;
     font-weight: 500;

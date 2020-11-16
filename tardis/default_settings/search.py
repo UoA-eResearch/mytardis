@@ -18,11 +18,11 @@ ELASTICSEARCH_DSL_INDEX_SETTINGS = {
 }
 '''
 
-MAX_SEARCH_RESULTS = 1000
+RESULTS_PER_PAGE = 10000
 '''
-Limits the maximum number of search results for each model (Experiment, Dataset and DataFile).
-The default value of 100 means that a query could potentially return 300 results in total,
-i.e. 100 experiments, 100 datasets and 100 datafiles.
+Limits the maximum number of search results for each model (Project, Experiment, Dataset and DataFile).
+The default value of 10,000 means that a query could potentially return 40,000 results in total,
+i.e. 10,000 projects, 10,000 experiments, 10,000 datasets and 10,000 datafiles.
 '''
 MIN_CUTOFF_SCORE = 0.0
 '''

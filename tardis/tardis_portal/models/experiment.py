@@ -10,7 +10,6 @@ from django.urls import reverse
 from django.db import models
 from django.utils.safestring import SafeText
 from django.utils.encoding import python_2_unicode_compatible
-from django_elasticsearch_dsl import fields
 
 from ..managers import OracleSafeManager, SafeManager
 from .access_control import ObjectACL

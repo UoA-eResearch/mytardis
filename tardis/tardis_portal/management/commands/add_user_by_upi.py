@@ -1,13 +1,15 @@
-from django.core.management.base import BaseCommand,CommandError
+from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User, Permission
 from django.conf import settings
-from ...models import UserProfile, UserAuthentication
 import ldap
+
+from ...models import UserAuthentication
+
 class Command(BaseCommand):
 
-    help = 'Add a specific user from LDAP'                                                                        
+    help = 'Add a specific user from LDAP'
     def add_arguments(self, parser):
-        parser.add_argument('user_id', nargs='+', type=str) 
+        parser.add_argument('user_id', nargs='+', type=str)
 
     def gen_random_password(self):
         import random
@@ -38,7 +40,7 @@ class Command(BaseCommand):
         for user_id in options['user_id']:
             print("Looking up {}".format(user_id))
             results = l.search_s(settings.LDAP_USER_BASE, ldap.SCOPE_SUBTREE, "({0}={1})".format(settings.LDAP_USER_LOGIN_ATTR, user_id))
-            
+
             for e, r in results:
                 username = r[settings.LDAP_USER_LOGIN_ATTR][0].decode('utf-8')
                 first_name = r[first_name_key][0].decode('utf-8')
