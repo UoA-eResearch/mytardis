@@ -261,22 +261,42 @@ const getDisplayQueryString = (queryBody) => {
     const queryPrefix = "?q=";
     if (queryBody.filters) {
         // If the query contains filters, then use the stringified JSON format.
-        return queryPrefix + JSON.stringify(queryBody);
+        return queryPrefix + encodeURIComponent(JSON.stringify(queryBody));
     } else if (queryBody.query) {
         // If the query only has a search term, then just use the search term.
-        return queryPrefix + queryBody.query;
+        return queryPrefix + encodeURIComponent(queryBody.query);
     } else {
         // when there aren't any filters or search terms don't show a query at all.
         return location.pathname;
     }
 }
 
-const parseQuery = (searchString) => {
+/**
+ * Given the search part of URL, returns the search term or filters serialised in there.
+ * @param {string} searchString The search part of URL.
+ */
+export const parseQuery = (searchString) => {
+
+    const buildResultForParsedQuery = (queryString) => {
+        if (!queryString) { return {}; }
+        try {
+            const parsed = JSON.parse(queryString);
+            if (typeof parsed === "object") {
+                return parsed;
+            } else {
+                return { query: queryString };
+            }
+        } catch (e) {
+            // When we fail to parse, we assume it's a search term string.
+            return { query: queryString };
+        }
+    };
+    
     // Find and return the query string or JSON body.
     if (searchString[0] === "?") {
         searchString = searchString.substring(1);
     }
-    searchString = decodeURI(searchString);
+    searchString = decodeURIComponent(searchString);
     const parts = searchString.split('&');
     let queryPart = null;
     for (const partIdx in parts) {
@@ -285,14 +305,8 @@ const parseQuery = (searchString) => {
             break;
         }
     }
-    if (!queryPart) { return {}; }
-    try {
-        return JSON.parse(queryPart);
-    } catch (e) {
-        // When we fail to parse, we assume it's a search term string.
-        return { query: queryPart };
-    }
-}
+    return buildResultForParsedQuery(queryPart);
+};
 
 
 const updateWithQuery = (queryBody) => {
