@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
-import { parseQuery } from "./searchSlice";
+import { testables } from "./searchSlice";
+const { parseQuery } = testables;
 
 describe("Query parser", () => {
     it("can parse text search terms", () => {

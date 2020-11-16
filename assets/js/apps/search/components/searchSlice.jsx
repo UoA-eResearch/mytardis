@@ -274,8 +274,9 @@ const getDisplayQueryString = (queryBody) => {
 /**
  * Given the search part of URL, returns the search term or filters serialised in there.
  * @param {string} searchString The search part of URL.
+ * @private 
  */
-export const parseQuery = (searchString) => {
+const parseQuery = (searchString) => {
 
     const buildResultForParsedQuery = (queryString) => {
         if (!queryString) { return {}; }
@@ -394,5 +395,12 @@ export const {
     updateSelectedResult,
     toggleShowSensitiveData
 } = search.actions;
+
+/**
+ * Functions that are not intended for public consumption, but need to be unit-tested. 
+ */
+export const testables = {
+    parseQuery
+};
 
 export default search.reducer;
