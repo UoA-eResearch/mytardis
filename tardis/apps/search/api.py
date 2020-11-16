@@ -452,7 +452,7 @@ class SearchAppResource(Resource):
                     for sort in request_sorting:
                         if obj == request_type:
                             if len(sort["field"]) > 1:
-                                if sort["field"][-1] in match_list:
+                                if sort["field"][-1] in ['fullname','name','title','description','filename']:
                                     search_field = ".".join(sort["field"])+".raw"
                                 else:
                                     search_field = ".".join(sort["field"])
@@ -460,7 +460,7 @@ class SearchAppResource(Resource):
                                                            "nested_path" : ".".join(sort["field"][:-1])}
 
                             if len(sort["field"]) == 1:
-                                if sort["field"][0] in match_list:
+                                if sort["field"][0] in ['lead_researcher','name','title','description','filename']:
                                     sort_dict[sort["field"][0]+".raw"] = {"order": sort["order"]}
                                 elif sort["field"][0] == 'size':
                                     if obj == 'datafile':
