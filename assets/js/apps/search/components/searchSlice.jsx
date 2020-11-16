@@ -281,7 +281,7 @@ export const parseQuery = (searchString) => {
         if (!queryString) { return {}; }
         try {
             const parsed = JSON.parse(queryString);
-            if (typeof parsed === "object") {
+            if (typeof parsed === "object" && !Array.isArray(parsed)) {
                 return parsed;
             } else {
                 return { query: queryString };

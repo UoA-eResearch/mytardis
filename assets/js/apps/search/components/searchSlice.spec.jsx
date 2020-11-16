@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { parseQuery } from "./searchSlice";
 
 describe("Query parser", () => {
@@ -15,5 +16,9 @@ describe("Query parser", () => {
 
     it("can parse special characters", () => {
         expect(parseQuery("?q=%3A")).toEqual({query: ":"});
-    })
+    });
+
+    it("can parse square brackets as a search term", () => {
+        expect(parseQuery("?q=%5B2%5D")).toEqual({query: "[2]"});
+    });
 });
