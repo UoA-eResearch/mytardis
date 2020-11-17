@@ -396,11 +396,4 @@ export const {
     toggleShowSensitiveData
 } = search.actions;
 
-/**
- * Functions that are not intended for public consumption, but need to be unit-tested. 
- */
-export const testables = {
-    parseQuery
-};
-
 export default search.reducer;

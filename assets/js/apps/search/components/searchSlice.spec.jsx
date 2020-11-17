@@ -1,8 +1,11 @@
 /* eslint-disable no-undef */
-import { testables } from "./searchSlice";
-const { parseQuery } = testables;
+import SearchSlice from "./searchSlice";
 
 describe("Query parser", () => {
+    // Use Rewire to get private method.
+    // eslint-disable-next-line no-underscore-dangle
+    const parseQuery = SearchSlice.__get__("parseQuery");
+
     it("can parse text search terms", () => {
         expect(parseQuery("?q=abc")).toEqual({query: "abc"});
     });
