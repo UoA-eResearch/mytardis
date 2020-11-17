@@ -64,7 +64,7 @@ export default function EntryPreviewCard(props) {
         let date;
         switch (type) {
             case 'project':
-                date = data.start_date;
+                date = data.start_time;
                 break;
             case 'experiment':
                 date = data.created_time;
@@ -212,7 +212,7 @@ export default function EntryPreviewCard(props) {
 
     /**
      * The parameter table component
-     * @param {*} props 
+     * @param {*} props
      */
     const ParameterTable = (props) => {
         let { parameters } = props;

@@ -62,10 +62,10 @@ def project_datasets_badge(project_id, user):
 @register.filter
 def project_last_updated_badge(project):
     return render_mustache('tardis_portal/badges/last_updated_badge', {
-        'actual_time': get_local_time(project.start_date)\
+        'actual_time': get_local_time(project.start_time)\
                         .strftime('%a %d %b %Y %H:%M'),
-        'iso_time': get_local_time(project.start_date).isoformat(),
-        'natural_time': naturalday(project.start_date)
+        'iso_time': get_local_time(project.start_time).isoformat(),
+        'natural_time': naturalday(project.start_time)
     })
 
 @register.filter

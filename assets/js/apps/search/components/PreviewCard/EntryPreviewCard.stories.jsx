@@ -31,7 +31,7 @@ const project = {
     "experiments": 1
   },
   "description": "If you can see this and are not called Mike(or Noel) then the permissions have gone wrong",
-  "end_date": null,
+  "end_time": null,
   "id": 1,
   "institution": [
     {
@@ -69,7 +69,7 @@ const project = {
     }
   ],
   "size": "460.3 KB",
-  "start_date": "2020-05-07T21:34:44+00:00",
+  "start_time": "2020-05-07T21:34:44+00:00",
   "userDownloadRights": "partial"
 }
 
@@ -192,7 +192,7 @@ const projectWithNoChildren = Object.assign({}, project, {
 })
 
 const projectWithNoDate = Object.assign({}, project, {
-  start_date: null
+  start_time: null
 })
 
 export const Project = () => (

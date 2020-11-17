@@ -123,7 +123,7 @@ class ExperimentResourceTest(MyTardisResourceTestCase):
             #    "created_by": "/api/v1/user/%d/" % user_id,
             #    'description': '',
             #    'embargo_until': None,
-            #    'end_date': None,
+            #    'end_time': None,
             #    'id': project_id,
             #    'institution': [],
             #    "lead_researcher": "/api/v1/user/%d/" % user_id,
@@ -134,7 +134,7 @@ class ExperimentResourceTest(MyTardisResourceTestCase):
             #    'public_access': 1,
             #    "raid" : "test raid",
             #    'resource_uri': "/api/v1/project/%d/" % project_id,
-            #    'start_date': self.testproject.start_date.strftime('%Y-%m-%dT%H:%M:%S.%f'),
+            #    'start_time': self.testproject.start_time.strftime('%Y-%m-%dT%H:%M:%S.%f'),
             #    'url': None
             # }
         #} # "handle": None,
