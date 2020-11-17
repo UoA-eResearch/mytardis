@@ -53,8 +53,8 @@ class Project(models.Model):
     objectacls = GenericRelation(ObjectACL)
     objects = OracleSafeManager()
     embargo_until = models.DateTimeField(null=True, blank=True)
-    start_date = models.DateTimeField(default=django_time_now)
-    end_date = models.DateTimeField(null=True, blank=True)
+    start_time = models.DateTimeField(default=django_time_now)
+    end_time = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE)
     url = models.URLField(max_length=255,
@@ -265,8 +265,8 @@ class Project(models.Model):
         metadata = {"id":self.id,
                     "name":self.name,
                     "description":self.description,
-                    "start_date":self.start_date,
-                    "end_date":self.end_date,
+                    "start_time":self.start_time,
+                    "end_time":self.end_time,
                     "institution":self.institution,
                     "lead_researcher":self.lead_researcher,
                     "objectacls":self.objectacls,
