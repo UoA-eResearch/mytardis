@@ -13,9 +13,9 @@
                         "id": "description",
                         "full_name": "Description"
                     },
-                    "start_date": {
+                    "start_time": {
                         "data_type": "DATETIME",
-                        "id": "start_date",
+                        "id": "start_time",
                         "full_name": "Start date",
                         "options": {
                             "hideEnd": true,
@@ -28,9 +28,9 @@
                         "full_name": "Institution",
                         "nested_target": ["name"]
                     },
-                    "end_date": {
+                    "end_time": {
                         "data_type": "DATETIME",
-                        "id": "end_date",
+                        "id": "end_time",
                         "full_name": "End date",
                         "options": {
                             "hideStart": true,
@@ -53,8 +53,8 @@
                     "name",
                     "description",
                     "institution",
-                    "start_date",
-                    "end_date",
+                    "start_time",
+                    "end_time",
                     "lead_researcher",
                     "schema"
                 ]
@@ -73,18 +73,18 @@
                         "id": "description",
                         "full_name": "Description"
                     },
-                    "start_date": {
+                    "start_time": {
                         "data_type": "DATETIME",
-                        "id": "start_date",
+                        "id": "start_time",
                         "full_name": "Start date",
                         "options": {
                             "hideEnd": true,
                             "hideLabels": true
                         }
                     },
-                    "end_date": {
+                    "end_time": {
                         "data_type": "DATETIME",
-                        "id": "end_date",
+                        "id": "end_time",
                         "full_name": "End date",
                         "options": {
                             "hideStart": true,
@@ -106,8 +106,8 @@
                 "allIds": [
                     "title",
                     "description",
-                    "start_date",
-                    "end_date",
+                    "start_time",
+                    "end_time",
                     "project",
                     "schema"
                 ]

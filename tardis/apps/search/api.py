@@ -367,7 +367,7 @@ class SearchAppResource(Resource):
                             # intrinsic to the object (Proj,exp,set,file)
                             if target_fieldtype in ['name', 'description', 'title',
                                                     'tags', 'filename', 'file_extension',
-                                                    'created_time', 'start_date', 'end_date']:
+                                                    'created_time', 'start_time', 'end_time']:
                                 if filter["type"] == "STRING":
                                     if isinstance(filter["content"], list):
                                         Qdict = {"should" : []}
@@ -436,7 +436,7 @@ class SearchAppResource(Resource):
                                 query_obj = query_obj & query_obj_filt
 
             # (4) Define fields not to return in the search results (for brevity)
-            excluded_fields_list = ["end_date", "institution", "lead_researcher", "created by",
+            excluded_fields_list = ["end_time", "institution", "lead_researcher", "created by",
                                     "end_time", "update_time", "instrument", "file_extension",
                                     "modification_time", "parameters.string.pn_id",
                                     "parameters.numerical.pn_id", "parameters.datetime.pn_id",
