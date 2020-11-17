@@ -384,11 +384,6 @@ class SearchAppResource(Resource):
                                                 filter["content"] = filter["content"][1:]
                                         query_obj_filt = Q({oper: {target_fieldtype:filter["content"]}})
                                 elif filter["type"] == "DATETIME":
-
-                                    # TODO: Nasty hardcode to remove once project homogenised
-                                    if obj == "experiment":
-                                        target_fieldtype = target_fieldtype[:-4]+"time"
-
                                     query_obj_filt = Q({"range": {target_fieldtype: {oper:filter["content"]}}})
                                 query_obj = query_obj & query_obj_filt
 
@@ -474,12 +469,6 @@ class SearchAppResource(Resource):
                                         #DO SOME SORTING AFTER ELASTICSEARCH
                                         pass
                                 else:
-
-                                    # TODO: Nasty hardcode to remove once project homogenised
-                                    if sort["field"][0] in ["start_date", "end_date"]:
-                                        if obj == "experiment":
-                                            sort["field"][0] = sort["field"][0][:-4]+"time"
-
                                     sort_dict[sort["field"][0]] = {"order": sort["order"]}
 
             # If sort dict is still empty even after filters, add in the defaults
