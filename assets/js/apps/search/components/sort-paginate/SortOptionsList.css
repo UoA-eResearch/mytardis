@@ -1,0 +1,22 @@
+.sortoptions .sortoptions--item:first-child {
+    margin-top:0.3em;
+}
+
+.sortoptions .form-group {
+    margin-bottom: 0.3em;
+}
+
+.sortoptions--item {
+    display: flex;
+    user-select: none;
+}
+
+.sortoptions-item--label {
+    flex: 1;
+    padding-right: 1rem;
+}
+
+.sortoptions-item--sortorder {
+    flex: 0;
+    display: flex;
+}

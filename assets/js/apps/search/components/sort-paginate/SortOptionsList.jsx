@@ -5,7 +5,7 @@ import { SORT_ORDER, updateResultSort, removeResultSort, activeSortSelector, run
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { AiOutlineSortAscending, AiOutlineSortDescending } from "react-icons/ai";
-import "./SortOptions.css";
+import "./SortOptionsList.css";
 
 const getSortSummaryText = (attributes) => {
     const activeAttributes = attributes.filter(attribute => attribute.isActive);
@@ -54,17 +54,21 @@ export function PureSortOptionsList({attributesToSort, onSortUpdate, onSortRemov
                     const { id, full_name, isActive, order } = attribute;
                     return (
                         <Dropdown.ItemText key={id} className="sortoptions--item">
-                            <Form.Group as={Row}>
+                            <div className="sortoptions-item--check">
                                 <Form.Check
                                     checked={isActive}
                                     onChange={handleActiveClicked.bind(this, attribute)}
                                     type="checkbox"
                                     id={id + "-sort-active"}
                                 />
+                            </div>
+                            <div className="sortoptions-item--label">
                                 <label htmlFor={id + "-sort-active"}>
                                     {full_name}
                                 </label>
-                                <Form.Check 
+                            </div>
+                            <div class="sortoptions-item--sortorder">
+                                <Form.Check
                                     checked={order === SORT_ORDER.ascending}
                                     onChange={handleOrderClicked.bind(this, attribute, SORT_ORDER.ascending)}
                                     type="radio"
@@ -84,7 +88,7 @@ export function PureSortOptionsList({attributesToSort, onSortUpdate, onSortRemov
                                 <label htmlFor={id + "-sort-desc"}>
                                     <AiOutlineSortDescending /><span className="sr-only">Sort descending</span>
                                 </label>
-                            </Form.Group>
+                            </div>
                         </Dropdown.ItemText>
                     ); 
                 })
