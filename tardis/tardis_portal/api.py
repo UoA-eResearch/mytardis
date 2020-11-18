@@ -1312,17 +1312,126 @@ class ProjectResource(MyTardisModelResource):
         return bundle
 
     def hydrate_m2m(self, bundle):
-        acls = process_acls(bundle)
-        bulk_replace_existing_acls(acls)
-        if 'admins' in bundle.data.keys():
-            bundle.data.pop('admins')
-        if 'admin_groups' in bundle.data.keys():
-            bundle.data.pop('admin_groups')
-        if 'members' in bundle.data.keys():
-            bundle.data.pop('members')
-        if 'member_groups' in bundle.data.keys():
-            bundle.data.pop('member_groups')
+        '''
+        create ACL before any related objects are created in order to use
+        ACL permissions for those objects.
+        '''
+        project_groups = []
+        project_admin_groups = []
+        project_admin_users = []
+        if getattr(bundle.obj, 'id', False):
+            project = bundle.obj
+            project_lead = project.lead_researcher
+            # TODO: unify this with the view function's ACL creation,
+            # maybe through an ACL toolbox.
+            create_acl(project.get_ct(),
+                       project.id,
+                       django_user,
+                       str(bundle.request.user.id),
+                       admin=True)
+            create_acl(project.get_ct(),
+                       project.id,
+                       django_user,
+                       str(project_lead.id),
+                       admin=True)
+            if 'admin_groups' in bundle.data.keys():
+                for grp in bundle.data['admin_groups']:
+                    group, created = Group.objects.get_or_create(name=grp)
+                    project_admin_groups.append(group)
+                    project_groups.append(group)
+                    if created:
+                        group.permissions.set(admin_perms)
+                    create_acl(project.get_ct(),
+                               project.id,
+                               django_group,
+                               group.id,
+                               admin=True)
+                bundle.data.pop('admin_groups')
+            if 'member_groups' in bundle.data.keys():
+                # Each member group is defined by a tuple
+                # (group_name, sensitive[T/F], download[T/F])
+                # unpack for ACLs
+                for grp in bundle.data['member_groups']:
+                    grp_name = grp[0]
+                    sensitive_flg = grp[1]
+                    download_flg = grp[2]
+                    group, created = Group.objects.get_or_create(name=grp_name)
+                    project_groups.append(group)
+                    if created:
+                        group.permissions.set(member_perms)
+                    create_acl(project.get_ct(),
+                               project.id,
+                               django_group,
+                               group.id,
+                               write=True,
+                               download=download_flg,
+                               sensitive=sensitive_flg,
+                               admin=False)
+                bundle.data.pop('member_groups')
+            if 'admins' in bundle.data.keys():
+                for admin in bundle.data['admins']:
+                    if not User.objects.filter(username=admin).exists():
+                        new_user = get_user_from_upi(admin)
+                        user = User.objects.create(username=new_user['username'],
+                                                   first_name=new_user['first_name'],
+                                                   last_name=new_user['last_name'],
+                                                   email=new_user['email'])
+                        user.set_password(gen_random_password())
+                        for permission in admin_perms:
+                            user.user_permissions.add(permission)
+                        user.save()
+                        authentication = UserAuthentication(userProfile=user.userprofile,
+                                                            username=new_user['username'],
+                                                            authenticationMethod=settings.LDAP_METHOD)
+                        authentication.save()
+                    user = User.objects.get(username=admin)
+                    project_admin_users.append(user)
+                    create_acl(project.get_ct(),
+                               project.id,
+                               django_user,
+                               user.id,
+                               admin=True)
+                bundle.data.pop('admins')
+            if 'members' in bundle.data.keys():
+                for member in bundle.data['members']:
+                    member_name = member[0]
+                    sensitive_flg = member[1]
+                    download_flg = member[2]
+                    if not User.objects.filter(username=member_name).exists():
+                        new_user = get_user_from_upi(member_name)
+                        if not new_user:
+                            logger.error('No one found for upi: {member}')
+                        user = User.objects.create(username=new_user['username'],
+                                                   first_name=new_user['first_name'],
+                                                   last_name=new_user['last_name'],
+                                                   email=new_user['email'])
+                        user.set_password(gen_random_password())
+                        for permission in member_perms:
+                            user.user_permissions.add(permission)
+                        user.save()
+                        authentication = UserAuthentication(userProfile=user.userprofile,
+                                                            username=new_user['username'],
+                                                            authenticationMethod=settings.LDAP_METHOD)
+                        authentication.save()
+                    user = User.objects.get(username=member_name)
+                    create_acl(project.get_ct(),
+                               project.id,
+                               django_user,
+                               user.id,
+                               write=True,
+                               download=download_flg,
+                               sensitive=sensitive_flg,
+                               admin=False)
+                bundle.data.pop('members')
+            for group in project_groups:
+                group_admin, _ = GroupAdmin.objects.get_or_create(user=bundle.request.user,
+                                                                  group=group)
+                for admin in project_admin_groups:
+                    group_admin.admin_groups.add(admin.id)
+                for admin in project_admin_users:
+                    group_admin.admin_users.add(admin.id)
         return super().hydrate_m2m(bundle)
+
 
     def obj_create(self, bundle, **kwargs):
         '''Currently not tested for failed db transactions as sqlite does not
