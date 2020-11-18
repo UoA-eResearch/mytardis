@@ -275,18 +275,23 @@ const buildPaginationQuery = (searchSlice, type) => {
 /**
  * Returns search API sort query.
  * @param {*} state The overall Redux state tree
- * @param {string} typeToSearch Type ID to search
+ * @param {string} typeToSearch Type ID to search. If null, assume all types are searched for.
  */
 const buildSortQuery = (state, typeToSearch) => {
-    const sortOptions = activeSortSelector(state.search, typeToSearch);
-    const sortQuery = sortOptions.map(({id, order}) => {
-        const attribute = typeAttrSelector(state.filters, typeToSearch + "s", id);
-        const fullField = [id].concat(attribute.nested_target || []);
-        return {
-            field: fullField,
-            order
-        };
-    });
+    const typesToSort = typeToSearch ? [typeToSearch] : state.filters.types.allIds;
+    const sortQuery = typesToSort.reduce((acc, typeId) => {
+        const sortOptions = activeSortSelector(state.search, typeToSearch);
+        const typeSortQuery = sortOptions.map(({id, order}) => {
+            const attribute = typeAttrSelector(state.filters, typeToSearch + "s", id);
+            const fullField = [id].concat(attribute.nested_target || []);
+            return {
+                field: fullField,
+                order
+            };            
+        });
+        acc[typeId] = typeSortQuery;
+        return acc;
+    }, {});
     return {
         sort: sortQuery
     };
@@ -297,13 +302,14 @@ const buildQueryBody = (state, typeToSearch) => {
         filters = buildFilterQuery(state.filters, typeToSearch),
         queryBody = {};
 
+    // Add sort query
+    Object.assign(queryBody, buildSortQuery(state, typeToSearch));
+
     if (typeToSearch) {
         // If doing a single type search, include type in query body.
         queryBody.type = typeToSearch;
         // Add pagination query
         Object.assign(queryBody, buildPaginationQuery(state.search, typeToSearch));
-        // Add sort query
-        Object.assign(queryBody, buildSortQuery(state, typeToSearch));
     }
     if (term !== null && term !== "") {
         queryBody.query = term;
