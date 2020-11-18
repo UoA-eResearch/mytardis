@@ -346,7 +346,7 @@ const getDisplayQueryString = (queryBody) => {
  * @param {string} searchString The search part of URL.
  * @private 
  */
-const parseQuery = (searchString) => {
+export const parseQuery = (searchString) => {
 
     const buildResultForParsedQuery = (queryString) => {
         if (!queryString) { return {}; }
