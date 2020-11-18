@@ -640,7 +640,7 @@ class SearchAppResource(Resource):
             # Define parent_type for experiment/datafile (N/A for project, hardcoded for dataset)
             parent_child = {"experiment":"project", "datafile":"dataset"}
             # Define hierarchy of types for filter levels
-            hierarchy = {"experiments":3, "datasets":2, "datafiles":1}
+            hierarchy = {"projects":4, "experiments":3, "datasets":2, "datafiles":1}
             for objs in ["experiments", "datasets", "datafiles"]:
                 # if active filter level higher than current object type: apply "parent-in-result" filter
                 if hierarchy[objs] < filter_level:
@@ -652,6 +652,28 @@ class SearchAppResource(Resource):
                         else:
                             exp_ids = [parent['id'] for parent in obj["_source"]["experiments"]]
                             if not any(item in exp_ids for item in [objj["_source"]['id'] for objj in result_dict["experiments"]]):
+                                result_dict[objs].pop(obj_idx)
+
+
+            object_results = result_dict[list(hierarchy.keys())[list(hierarchy.values()).index(filter_level)]]
+            object_results_parent_ids = {"datasets":[],"experiments":[],"projects":[]}
+            for obj in object_results:
+                if obj["_index"] == 'experiment':
+                    object_results_parent_ids['projects'].append(obj["_source"]["project"]["id"])
+                if obj["_index"] == 'dataset':
+                    for parent_exp in obj["_source"]["experiments"]:
+                        object_results_parent_ids['experiments'].append(parent_exp["id"])
+                        object_results_parent_ids['projects'].append(parent_exp["project"]["id"])
+                if obj["_index"] == 'datafile':
+                    object_results_parent_ids['datasets'].append(obj["_source"]["dataset"]["id"])
+                    for parent_exp in obj["_source"]["dataset"]["experiments"]:
+                        object_results_parent_ids['experiments'].append(parent_exp["id"])
+                        object_results_parent_ids['projects'].append(parent_exp["project"]["id"])
+
+            for objs in ["projects", "experiments", "datasets"]:
+                if hierarchy[objs] > filter_level:
+                    for obj_idx, obj in reversed(list(enumerate(result_dict[objs]))):
+                            if obj["_source"]["id"] not in object_results_parent_ids[obj["_index"]+'s']:
                                 result_dict[objs].pop(obj_idx)
 
         # Count the number of search results after elasticsearch + parent filtering
