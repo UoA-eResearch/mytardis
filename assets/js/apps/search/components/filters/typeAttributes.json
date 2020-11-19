@@ -194,7 +194,7 @@
                     },
                     "created_time": {
                         "data_type": "DATETIME",
-                        "id": "created_date",
+                        "id": "created_time",
                         "full_name": "Ingestion date",
                         "sortable": true
                     },
