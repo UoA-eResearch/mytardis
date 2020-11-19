@@ -36,29 +36,20 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
         activeSort.map(sort => (attributeMap[sort].attribute))
     ), [activeSort, attributeMap]);
 
-    const attributeHasActiveSort = useCallback(attributeId => {
-        return attributeMap[attributeId].hasActiveSort;
-    }, [attributeMap]);
-
     const handleActiveClicked = useCallback((attribute, e) => {
-        if (e.target.checked) {
-            // Update sort to activate it
-            if (attributeHasActiveSort(attribute.id)) {
-                // Sort is already active, do not continue.
-                return;
-            }
-            onSortUpdate(attribute.id, attribute.order);
-        } else {
-            if (!attributeHasActiveSort(attribute.id)) {
-                return;
-            }
+        e.stopPropagation();
+        e.preventDefault();
+        // Toggle active sort state depending on current state.
+        if (attributeMap[attribute.id].hasActiveSort) {
             onSortRemove(attribute.id);
-        }
-    }, [attributeHasActiveSort, onSortUpdate, onSortRemove]);
-    const handleOrderClicked = useCallback((attribute, order, e) => {
-        if (!e.target.checked) {
-            return;
         } else {
+            onSortUpdate(attribute.id, attribute.order);
+        }
+    }, [attributeMap, onSortUpdate, onSortRemove]);
+    const handleOrderClicked = useCallback((attribute, order, e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (attribute.order !== order) {
             onSortUpdate(attribute.id, order);
         }
     }, [onSortUpdate]);
@@ -77,24 +68,34 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
                     const isActive = attributeMap[id].hasActiveSort;
                     const priority = attributeMap[id].priority;
                     return (
-                        <Dropdown.ItemText key={id} className="sortoptions--item">
-                            <div className="sortoptions-item--check">
+                        <Dropdown.ItemText 
+                            as="div" 
+                            key={id} 
+                            className="sortoptions--item" 
+                            role="button" 
+                            onClick={handleActiveClicked.bind(this, attribute)}
+                        >
+                            <span className="sortoptions-item--check">
                                 <Form.Check
                                     checked={isActive}
-                                    onChange={handleActiveClicked.bind(this, attribute)}
+                                    onClick={handleActiveClicked.bind(this, attribute)}
                                     type="checkbox"
                                     id={id + "-sort-active"}
                                 />
-                            </div>
-                            <div className="sortoptions-item--label">
+                            </span>
+                            <span className="sortoptions-item--label">
                                 <label htmlFor={id + "-sort-active"}>
                                     {full_name}
                                 </label>
-                            </div>
-                            <div className="sortoptions-item--sortorder">
+                            </span>
+                            <span 
+                                className="sortoptions-item--sortorder-asc"
+                                role="button" 
+                                onClick={handleOrderClicked.bind(this, attribute, SORT_ORDER.ascending)}    
+                            >
                                 <Form.Check
                                     checked={order === SORT_ORDER.ascending}
-                                    onChange={handleOrderClicked.bind(this, attribute, SORT_ORDER.ascending)}
+                                    onClick={handleOrderClicked.bind(this, attribute, SORT_ORDER.ascending)}
                                     type="radio"
                                     name={id + "-sort-order"}
                                     id={id + "-sort-asc"}
@@ -102,9 +103,15 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
                                 <label htmlFor={id + "-sort-asc"}>
                                     <AiOutlineSortAscending /><span className="sr-only">Sort ascending</span>
                                 </label>
+                            </span>
+                            <span 
+                                className="sortoptions-item--sortorder-desc"
+                                role="button"
+                                onClick={handleOrderClicked.bind(this, attribute, SORT_ORDER.descending)}
+                            >
                                 <Form.Check
                                     checked={order === SORT_ORDER.descending}
-                                    onChange={handleOrderClicked.bind(this, attribute, SORT_ORDER.descending)}
+                                    onClick={handleOrderClicked.bind(this, attribute, SORT_ORDER.descending)}
                                     type="radio"
                                     name={id + "-sort-order"}
                                     id={id + "-sort-desc"}
@@ -112,10 +119,10 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
                                 <label htmlFor={id + "-sort-desc"}>
                                     <AiOutlineSortDescending /><span className="sr-only">Sort descending</span>
                                 </label>
-                            </div>
-                            <div className="sortoptions-item--priority">
+                            </span>
+                            <span className="sortoptions-item--priority">
                                 {shouldDisplayPriority ? priority : null}
-                            </div>
+                            </span>
                         </Dropdown.ItemText>
                     ); 
                 })
