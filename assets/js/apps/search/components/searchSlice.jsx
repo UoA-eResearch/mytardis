@@ -309,21 +309,26 @@ const buildPaginationQuery = (searchSlice, type) => {
  * @param {string} typeToSearch Type ID to search. If null, assume all types are searched for.
  */
 const buildSortQuery = (state, typeToSearch) => {
-    const typesToSort = typeToSearch ? [typeToSearch] : state.filters.types.allIds;
+    const typesToSort = typeToSearch ? [typeToSearch] : ["project", "experiment", "dataset", "datafile"];
     const sortQuery = typesToSort.reduce((acc, typeId) => {
-        const sortOptions = activeSortSelector(state.search, typeToSearch);
+        const sortOptions = activeSortSelector(state.search, typeId);
         const typeSortQuery = sortOptions.map(id => {
             const order = state.search.sort[typeId].order[id];
-            const attribute = typeAttrSelector(state.filters, typeToSearch + "s", id);
+            const attribute = typeAttrSelector(state.filters, typeId + "s", id);
             const fullField = [id].concat(attribute.nested_target || []);
             return {
                 field: fullField,
                 order
             };            
         });
-        acc[typeId] = typeSortQuery;
+        if (typeSortQuery.length !== 0) {
+            acc[typeId] = typeSortQuery;
+        }
         return acc;
     }, {});
+    if (Object.keys(sortQuery).length === 0) {
+        return null;
+    }
     return {
         sort: sortQuery
     };
