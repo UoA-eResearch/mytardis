@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
-import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeAttrSelector } from "./filters/filterSlice";
+import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeAttrSelector, allTypeAttrIdsSelector } from "./filters/filterSlice";
 import arrayEquals from "../util/arrayEquals";
 
 const getResultFromHit = (hit,hitType,urlPrefix) => {
@@ -60,13 +60,39 @@ export const totalHitsSelector = (searchSlice, typeId) => (
     searchSlice.results ? searchSlice.results.totalHits[typeId + "s"] : 0
 );
 
+export const SORT_ORDER = {
+    ascending: "asc",
+    descending: "desc"
+};
+
 /**
  * Selector for sorts that are active on a typeId.
  * @param {*} searchSlice The Redux state slice for search
  * @param {string} typeId MyTardis object type.
  */
 export const activeSortSelector = (searchSlice, typeId) => (
-    searchSlice.sort[typeId]
+    searchSlice.sort[typeId].active
+);
+
+/**
+ * Selector for type attributes which are sortable.
+ * @param {*} filterSlice Redux state slice for filters
+ * @param {string} typeId MyTardis object type.
+ */
+export const sortableAttributesSelector = (filterSlice, typeId) => (
+    allTypeAttrIdsSelector(filterSlice, typeId + "s").map(attributeId => (
+        typeAttrSelector(filterSlice, typeId + "s", attributeId)
+    )).filter(attribute => attribute.sortable)
+);
+
+/**
+ * Selector for the sort order of an attribute.
+ * @param {*} searchSlice Redux state slice for search
+ * @param {string} typeId MyTardis object type
+ * @param {string} attributeId Attribute ID
+ */
+export const sortOrderSelector = (searchSlice, typeId, attributeId) => (
+    searchSlice.sort[typeId].order[attributeId] || SORT_ORDER.ascending
 );
 
 /**
@@ -113,18 +139,27 @@ const initialState = {
         datafile: 1
     },
     sort: {
-        project: [],
-        experiment: [],
-        dataset: [],
-        datafile: []
+        project: {
+            active: [],
+            order: {}
+        },
+        experiment: {
+            active: [],
+            order: {}
+        },
+        dataset: {
+            active: [],
+            order: {}
+        },
+        datafile: {
+            active: [],
+            order: {}
+        }
     },
     showSensitiveData: false
 };
 
-export const SORT_ORDER = {
-    ascending: "asc",
-    descending: "desc"
-};
+
 
 const search = createSlice({
     name: 'search',
@@ -202,23 +237,19 @@ const search = createSlice({
         },
         updateResultSort: (state, {payload}) => {
             const { typeId, attributeId, order = SORT_ORDER.ascending } = payload;
-            const existingSort = state.sort[typeId].filter(
+            state.sort[typeId].order[attributeId] = order;
+            // Update sort order.
+            const existingSort = state.sort[typeId].active.filter(
                 sortOption => sortOption.id === attributeId
             );
-            if (existingSort.length > 0) {
-                // Update existing sort instead of adding a new one
-                existingSort[0].order = order;
-            } else {
+            if (existingSort.length === 0) {
                 // Add new sort
-                state.sort[typeId].push({
-                    id: attributeId,
-                    order
-                });
+                state.sort[typeId].active.push(attributeId);
             }
         },
         removeResultSort: (state, {payload}) => {
             const { typeId, attributeId } = payload;
-            const typeSorts = state.sort[typeId];
+            const typeSorts = state.sort[typeId].active;
             for (let i = 0; i < typeSorts.length; i++) {
                 if (typeSorts[i].id === attributeId) {
                     // Remove the sort.
@@ -281,7 +312,8 @@ const buildSortQuery = (state, typeToSearch) => {
     const typesToSort = typeToSearch ? [typeToSearch] : state.filters.types.allIds;
     const sortQuery = typesToSort.reduce((acc, typeId) => {
         const sortOptions = activeSortSelector(state.search, typeToSearch);
-        const typeSortQuery = sortOptions.map(({id, order}) => {
+        const typeSortQuery = sortOptions.map(id => {
+            const order = state.search.sort[typeId].order[id];
             const attribute = typeAttrSelector(state.filters, typeToSearch + "s", id);
             const fullField = [id].concat(attribute.nested_target || []);
             return {

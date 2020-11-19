@@ -11,46 +11,46 @@ export default {
     excludeStories: /.*Data$/
 };
 
-export const sortData = [
-    {
-        id: "name",
-        full_name: "Name",
-        order: SORT_ORDER.ascending,
-        isActive: false
-    },
-    {
-        id: "createdDate",
-        full_name: "Ingestion date",
-        order: SORT_ORDER.ascending,
-        isActive: false
-    },
-    {
-        id: "institution",
-        full_name: "Institution",
-        order: SORT_ORDER.ascending,
-        isActive: false
-    }
-];
+export const sortData = {
+    attributesToSort: [
+        {
+            id: "name",
+            full_name: "Name",
+            order: SORT_ORDER.ascending
+        },
+        {
+            id: "createdDate",
+            full_name: "Ingestion date",
+            order: SORT_ORDER.descending
+        },
+        {
+            id: "institution",
+            full_name: "Institution",
+            order: SORT_ORDER.ascending
+        }
+    ],
+    activeSort: null
+};
 
-export const activeSortData = [
-    {
-        id: "name",
-        full_name: "Description",
-        order: SORT_ORDER.ascending,
-        isActive: true
-    },
-    {
-        id: "createdDate",
-        full_name: "Created date",
-        order: SORT_ORDER.descending,
-        isActive: false
-    }
-];
-
+export const activeSortData = {
+    attributesToSort: [
+        {
+            id: "name",
+            full_name: "Description",
+            order: SORT_ORDER.ascending
+        },
+        {
+            id: "createdDate",
+            full_name: "Created date",
+            order: SORT_ORDER.ascending
+        }
+    ],
+    activeSort: ["name"]
+};
 const Template = (args) => <PureSortOptionsList {...args} />;
 
 export const Default = Template.bind({});
-Default.args = { attributesToSort: sortData };
+Default.args = sortData;
 
 export const SortActive = Template.bind({});
-SortActive.args = { attributesToSort: activeSortData };
+SortActive.args = activeSortData;

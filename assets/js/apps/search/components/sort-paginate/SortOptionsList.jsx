@@ -1,39 +1,59 @@
-import React, {useCallback} from "react";
+import React, { useCallback, useMemo } from "react";
 import { DropdownButton, Dropdown, Form, Row } from "react-bootstrap";
 import { typeAttrSelector, allTypeAttrIdsSelector } from "../filters/filterSlice";
-import { SORT_ORDER, updateResultSort, removeResultSort, activeSortSelector, runSingleTypeSearch } from "../searchSlice";
+import { SORT_ORDER, updateResultSort, removeResultSort, activeSortSelector, runSingleTypeSearch, sortableAttributesSelector, sortOrderSelector } from "../searchSlice";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { AiOutlineSortAscending, AiOutlineSortDescending } from "react-icons/ai";
 import "./SortOptionsList.css";
 
-const getSortSummaryText = (attributes) => {
-    const activeAttributes = attributes.filter(attribute => attribute.isActive);
+const getSortSummaryText = (activeAttributes) => {
     if (activeAttributes.length === 0) {
         return "Sort";
     } else if (activeAttributes.length === 1) {
         return `Sort: ${activeAttributes[0].full_name}`;
     } else {
-        return `Sort: ${activeAttributes[0].full_name} and ${activeAttributes.length - 1} more`; 
+        return `Sort: ${activeAttributes[0].full_name} and ${activeAttributes.length - 1} more`;
     }
 };
+export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUpdate, onSortRemove}) {
+    if (!activeSort) {
+        activeSort = [];
+    }
+    // Generate a hashmap of attributes and their sort options by ID.
+    const attributeMap = useMemo(() => {
+        const attrMap = {};
+        attributesToSort.forEach(attribute => {
+            const attributeSort = activeSort.filter(sortId => sortId === attribute.id);
+            const hasActiveSort = attributeSort.length > 0;
+            attrMap[attribute.id] = { attribute, hasActiveSort };
+        });
+        return attrMap;
+    }, [attributesToSort, activeSort]);
 
-export function PureSortOptionsList({attributesToSort, onSortUpdate, onSortRemove}) {
+    const activeAttributes = useMemo(() => (
+        activeSort.map(sort => (attributeMap[sort].attribute))
+    ), [activeSort, attributeMap]);
+
+    const attributeHasActiveSort = useCallback(attributeId => {
+        return attributeMap[attributeId].hasActiveSort;
+    }, [attributeMap]);
+
     const handleActiveClicked = useCallback((attribute, e) => {
         if (e.target.checked) {
             // Update sort to activate it
-            if (attribute.isActive) {
+            if (attributeHasActiveSort(attribute.id)) {
                 // Sort is already active, do not continue.
                 return;
             }
             onSortUpdate(attribute.id, attribute.order);
         } else {
-            if (!attribute.isActive) {
+            if (!attributeHasActiveSort(attribute.id)) {
                 return;
             }
             onSortRemove(attribute.id);
         }
-    }, [onSortUpdate, onSortRemove]);
+    }, [attributeHasActiveSort, onSortUpdate, onSortRemove]);
     const handleOrderClicked = useCallback((attribute, order, e) => {
         if (!e.target.checked) {
             return;
@@ -41,17 +61,18 @@ export function PureSortOptionsList({attributesToSort, onSortUpdate, onSortRemov
             onSortUpdate(attribute.id, order);
         }
     }, [onSortUpdate]);
-    const hasActiveSort = attributesToSort.filter(attribute => attribute.isActive).length > 0;
+    const hasActiveSort = activeSort.length > 0;
     return (       
         <DropdownButton title={<>
                 <AiOutlineSortAscending />
                 <span>
-                    { getSortSummaryText(attributesToSort) }
+                    { getSortSummaryText(activeAttributes) }
                 </span>
             </>} variant={hasActiveSort ? "primary" : "outline-primary" } className="sortoptions">
             {
                 attributesToSort.map(attribute => {
-                    const { id, full_name, isActive, order } = attribute;
+                    const { id, full_name, order } = attribute;
+                    const isActive = attributeMap[id].hasActiveSort;
                     return (
                         <Dropdown.ItemText key={id} className="sortoptions--item">
                             <div className="sortoptions-item--check">
@@ -101,9 +122,9 @@ PureSortOptionsList.propTypes = {
     attributesToSort: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         full_name: PropTypes.string.isRequired,
-        order: PropTypes.string,
-        isActive: PropTypes.bool.isRequired
+        order: PropTypes.string
     })).isRequired,
+    activeSort: PropTypes.arrayOf(PropTypes.string),
     onSortUpdate: PropTypes.func.isRequired,
     onSortRemove: PropTypes.func.isRequired
 };
@@ -112,25 +133,18 @@ export default function SortOptionsList({typeId}) {
 
     const dispatch = useDispatch();
     const allSortOptions = useSelector(state => {
-        const activeSort = activeSortSelector(state.search, typeId);
         // Grab all type attributes, except for schema - not applicable in this case.
-        const attributeIds = allTypeAttrIdsSelector(state.filters, typeId + "s").filter(id => id !== "schema");
-        return attributeIds.map(id => {
-            const { full_name } = typeAttrSelector(state.filters, typeId + "s", id);
-            const sortOption = activeSort.filter(sort => sort.id === id);
-            let order = SORT_ORDER.ascending, isActive = false;
-            if (sortOption.length > 0) {
-                order = sortOption[0].order;
-                isActive = true;
-            }
+        const sortableAttributes = sortableAttributesSelector(state.filters, typeId);
+        return sortableAttributes.map(({id, full_name}) => {
+            const order = sortOrderSelector(state.search, typeId);
             return {
                 id,
                 full_name,
-                order,
-                isActive
+                order
             };
         });
     });
+    const activeSort = useSelector(state => activeSortSelector(state.search, typeId));
 
     const handleSortUpdate = useCallback((attributeId, order) => {
         dispatch(updateResultSort({
@@ -151,6 +165,7 @@ export default function SortOptionsList({typeId}) {
 
     return (
         <PureSortOptionsList 
+            activeSort={activeSort}
             attributesToSort={allSortOptions}
             onSortRemove={handleSortRemove}
             onSortUpdate={handleSortUpdate}
