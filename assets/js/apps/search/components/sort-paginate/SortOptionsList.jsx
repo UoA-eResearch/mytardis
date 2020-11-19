@@ -24,9 +24,10 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
     const attributeMap = useMemo(() => {
         const attrMap = {};
         attributesToSort.forEach(attribute => {
-            const attributeSort = activeSort.filter(sortId => sortId === attribute.id);
-            const hasActiveSort = attributeSort.length > 0;
-            attrMap[attribute.id] = { attribute, hasActiveSort };
+            const attributeSortIndex = activeSort.findIndex(sortId => sortId === attribute.id);
+            const hasActiveSort = attributeSortIndex !== -1;
+            const priority = hasActiveSort ? attributeSortIndex : undefined;
+            attrMap[attribute.id] = { attribute, hasActiveSort, priority };
         });
         return attrMap;
     }, [attributesToSort, activeSort]);
@@ -88,7 +89,7 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
                                     {full_name}
                                 </label>
                             </div>
-                            <div class="sortoptions-item--sortorder">
+                            <div className="sortoptions-item--sortorder">
                                 <Form.Check
                                     checked={order === SORT_ORDER.ascending}
                                     onChange={handleOrderClicked.bind(this, attribute, SORT_ORDER.ascending)}
@@ -133,10 +134,9 @@ export default function SortOptionsList({typeId}) {
 
     const dispatch = useDispatch();
     const allSortOptions = useSelector(state => {
-        // Grab all type attributes, except for schema - not applicable in this case.
         const sortableAttributes = sortableAttributesSelector(state.filters, typeId);
         return sortableAttributes.map(({id, full_name}) => {
-            const order = sortOrderSelector(state.search, typeId);
+            const order = sortOrderSelector(state.search, typeId, id);
             return {
                 id,
                 full_name,

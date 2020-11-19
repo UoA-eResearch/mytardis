@@ -240,7 +240,7 @@ const search = createSlice({
             state.sort[typeId].order[attributeId] = order;
             // Update sort order.
             const existingSort = state.sort[typeId].active.filter(
-                sortOption => sortOption.id === attributeId
+                sort => sort === attributeId
             );
             if (existingSort.length === 0) {
                 // Add new sort
@@ -249,9 +249,9 @@ const search = createSlice({
         },
         removeResultSort: (state, {payload}) => {
             const { typeId, attributeId } = payload;
-            const typeSorts = state.sort[typeId].active;
+            const typeSorts = activeSortSelector(state, typeId);
             for (let i = 0; i < typeSorts.length; i++) {
-                if (typeSorts[i].id === attributeId) {
+                if (typeSorts[i] === attributeId) {
                     // Remove the sort.
                     typeSorts.splice(i, 1);
                     return;
