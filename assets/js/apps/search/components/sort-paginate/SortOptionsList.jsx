@@ -20,13 +20,13 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
     if (!activeSort) {
         activeSort = [];
     }
-    // Generate a hashmap of attributes and their sort options by ID.
+    // Generate a hashmap of attributes and their sort options by ID for easier lookup.
     const attributeMap = useMemo(() => {
         const attrMap = {};
         attributesToSort.forEach(attribute => {
             const attributeSortIndex = activeSort.findIndex(sortId => sortId === attribute.id);
             const hasActiveSort = attributeSortIndex !== -1;
-            const priority = hasActiveSort ? attributeSortIndex : undefined;
+            const priority = hasActiveSort ? attributeSortIndex + 1 : undefined;
             attrMap[attribute.id] = { attribute, hasActiveSort, priority };
         });
         return attrMap;
@@ -63,6 +63,7 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
         }
     }, [onSortUpdate]);
     const hasActiveSort = activeSort.length > 0;
+    const shouldDisplayPriority = activeSort.length > 1;
     return (       
         <DropdownButton title={<>
                 <AiOutlineSortAscending />
@@ -74,6 +75,7 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
                 attributesToSort.map(attribute => {
                     const { id, full_name, order } = attribute;
                     const isActive = attributeMap[id].hasActiveSort;
+                    const priority = attributeMap[id].priority;
                     return (
                         <Dropdown.ItemText key={id} className="sortoptions--item">
                             <div className="sortoptions-item--check">
@@ -110,6 +112,9 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
                                 <label htmlFor={id + "-sort-desc"}>
                                     <AiOutlineSortDescending /><span className="sr-only">Sort descending</span>
                                 </label>
+                            </div>
+                            <div className="sortoptions-item--priority">
+                                {shouldDisplayPriority ? priority : null}
                             </div>
                         </Dropdown.ItemText>
                     ); 

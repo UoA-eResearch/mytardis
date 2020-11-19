@@ -47,6 +47,11 @@ export const activeSortData = {
     ],
     activeSort: ["name"]
 };
+
+export const multiSelectedData = Object.assign({}, sortData, {
+    activeSort: ["name", "createdDate"]
+});
+
 const Template = (args) => <PureSortOptionsList {...args} />;
 
 export const Default = Template.bind({});
@@ -54,3 +59,6 @@ Default.args = sortData;
 
 export const SortActive = Template.bind({});
 SortActive.args = activeSortData;
+
+export const MultiSelected = Template.bind({});
+MultiSelected.args = multiSelectedData;

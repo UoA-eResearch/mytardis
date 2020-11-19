@@ -6,12 +6,14 @@
                     "name": {
                         "data_type": "STRING",
                         "id": "name",
-                        "full_name": "Name"
+                        "full_name": "Name",
+                        "sortable": true
                     },
                     "description": {
                         "data_type": "STRING",
                         "id": "description",
-                        "full_name": "Description"
+                        "full_name": "Description",
+                        "sortable": true
                     },
                     "start_time": {
                         "data_type": "DATETIME",
@@ -20,13 +22,15 @@
                         "options": {
                             "hideEnd": true,
                             "hideLabels": true
-                        }
+                        },
+                        "sortable": true
                     },
                     "institution": {
                         "data_type": "STRING",
                         "id": "institution",
                         "full_name": "Institution",
-                        "nested_target": ["name"]
+                        "nested_target": ["name"],
+                        "sortable": true
                     },
                     "end_time": {
                         "data_type": "DATETIME",
@@ -35,13 +39,15 @@
                         "options": {
                             "hideStart": true,
                             "hideLabels": true
-                        }
+                        },
+                        "sortable": true
                     },
                     "lead_researcher": {
                         "data_type": "STRING",
                         "id": "lead_researcher",
                         "full_name": "Lead researcher",
-                        "nested_target": ["fullname"]
+                        "nested_target": ["fullname"],
+                        "sortable": true
                     },
                     "schema": {
                         "data_type": "STRING",
