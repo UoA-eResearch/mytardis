@@ -150,7 +150,7 @@ class IndexView(TemplateView):
         c['exps_expand_accordion'] = 1
 
         private_projects = Project.safe.owned_and_shared(
-                    request.user).order_by('-start_date')[:project_limit]
+                    request.user).order_by('-start_time')[:project_limit]
         c['private_projects'] = private_projects
         c['private_projects_count'] = private_projects.count()
         return c

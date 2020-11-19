@@ -42,8 +42,8 @@ class ProjectDocument(Document):
         fields={'raw': fields.KeywordField()},
         analyzer=analyzer)
     #public_access = fields.IntegerField()
-    start_date = fields.DateField()
-    end_date = fields.DateField()
+    start_time = fields.DateField()
+    end_time = fields.DateField()
     institution = fields.NestedField(properties={
         'name': fields.TextField(
             fields={'raw': fields.KeywordField()},

@@ -71,7 +71,9 @@
     "@storybook/react": "^6.0.26",
     "@testing-library/react": "^10.4.6",
     "babel-eslint": "^10.0.3",
+    "babel-plugin-rewire": "^1.2.0",
     "bootlint": "^0.16.7",
+    "concurrently": "^5.2.0",
     "core-js": "^3.6.5",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",
@@ -91,8 +93,7 @@
     "js-yaml": "^3.13.1",
     "jscpd": "^2.0.16",
     "qunit": "^2.9.3",
-    "react-test-renderer": "^16.10.2",
-    "concurrently": "^5.2.0"
+    "react-test-renderer": "^16.10.2"
   },
   "scripts": {
     "eslint.jquery": "eslint -c .eslintrc --ext .js assets/js/tardis_portal js_tests/tardis_portal/ tardis/apps/sftp/static/js/sftp/sftp.js tardis/apps/openid_migration/static/js/openid_migration/migrate_accounts.js",

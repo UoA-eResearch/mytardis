@@ -1298,8 +1298,8 @@ class ProjectResource(MyTardisModelResource):
             'id',
             'name',
             'url',
-            'start_date',
-            'end_date'
+            'start_time',
+            'end_time'
         ]
         always_return_data = True
 

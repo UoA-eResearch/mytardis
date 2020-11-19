@@ -291,8 +291,8 @@ class ProjectForm(forms.ModelForm):
             'url',
             'institution',
             'embargo_until',
-            'start_date',
-            'end_date',
+            'start_time',
+            'end_time',
         ]
 
 

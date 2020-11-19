@@ -368,7 +368,7 @@ class Experiment(models.Model):
                     "title":self.title,
                     "description":self.description,
                     "created_time":self.created_time,
-                    "start_date":self.start_time,
+                    "start_time":self.start_time,
                     "end_time":self.end_time,
                     "update_time":self.update_time,
                     "created_by":self.created_by,
