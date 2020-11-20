@@ -8,7 +8,6 @@
     "bugfixes": true
   }], "@babel/preset-react"],
   "plugins": [
-    "@babel/plugin-proposal-class-properties",
-    "babel-plugin-rewire"
+    "@babel/plugin-proposal-class-properties"
   ]
 }
