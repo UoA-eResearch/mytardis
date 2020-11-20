@@ -104,7 +104,7 @@ export function ResultRow({ result, onSelect, isSelected }) {
             onSelect(e);
         };
     return (
-        <tr className={isSelected ? "result-section--row row-primary row-active-primary" : "result-section--row row-primary"} onClick={onSelect} onKeyUp={onKeyboardSelect} tabIndex="0" role="button">
+        <tr className={isSelected ? "result-section--row row-active-primary" : "result-section--row row-primary"} onClick={onSelect} onKeyUp={onKeyboardSelect} tabIndex="0" role="button">
             <td className="result-row--download-col">
                 {result.userDownloadRights == "none" &&
                     <OverlayTrigger overlay={

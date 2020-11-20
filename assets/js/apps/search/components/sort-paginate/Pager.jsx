@@ -98,6 +98,7 @@ const PurePageSizeDropdown = ({typeId, pageSize, onPageSizeChange}) => {
                                 key={size} 
                                 eventKey={size} 
                                 active={size === pageSize}
+                                className={size === pageSize ? "row-active-primary" : "row-primary" }
                             >
                                 {size}
                             </Dropdown.Item>

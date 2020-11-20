@@ -12,11 +12,12 @@ i.o-6 {
 
 /* Utilities */
 
-.row-primary {
+.row-primary, .row-active-primary, .row-primary:active {
     border-left: 4px solid transparent !important;
+    color: rgb(33, 37, 41) !important;
 }
 
-.row-primary:hover{
+.row-primary:hover, .row-primary:focus {
     background-color: rgba(0,123,255,0.075) !important;
     border-left: 4px solid rgba(0,123,255,0.5) !important;
 }
