@@ -10,6 +10,22 @@ i.o-6 {
   opacity: 0.6;
 }
 
+/* Utilities */
+
+.row-primary {
+    border-left: 4px solid transparent !important;
+}
+
+.row-primary:hover{
+    background-color: rgba(0,123,255,0.075) !important;
+    border-left: 4px solid rgba(0,123,255,0.5) !important;
+}
+
+.row-active-primary {
+    background-color: rgba(0,123,255,0.1) !important;
+    border-left: 4px solid rgb(0,123,255) !important;
+}
+
 /* Inset brand in nav bar */
 .navbar .brand a {
   color: #0097E2;

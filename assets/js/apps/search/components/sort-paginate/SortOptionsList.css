@@ -9,16 +9,9 @@
 .sortoptions--item {
     display: flex;
     user-select: none;
-    border-left: 4px solid transparent;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
     align-items: center;
     justify-content: space-between;
-}
-
-.sortoptions--item:hover {
-    background-color: rgba(0,123,255,0.075);
-    border-left: 4px solid rgb(0,123,255);
-
 }
 
 .sortoptions-item--priority {
