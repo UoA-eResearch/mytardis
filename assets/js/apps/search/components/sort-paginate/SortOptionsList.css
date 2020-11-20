@@ -21,6 +21,7 @@
 
 .sortoptions-item--label {
     flex: 1;
+    padding-left: 0.25rem;
 }
 
 .sortoptions-item--sortorder-asc, .sortoptions-item--sortorder-desc {
