@@ -86,6 +86,7 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
     }
 
     const [localValue, setLocalValue] = useState(toLocalValue(value));
+    const [isValidValue, setIsValidValue] = useState(true);
 
     useEffect(() => {
         // Update the filter when there is a new value,
@@ -112,8 +113,18 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
                 newValue.start = newValue.end;
             }
         }
+        checkValidation(newValue);
         setLocalValue(newValue);
     };
+
+    const checkValidation = (val) => {
+        // if start or end date is an invalid Moment object; set invalid values to true
+        if (!val.start._isAMomentObject || !val.end._isAMomentObject) {
+            setIsValidValue(false);
+        } else {
+            setIsValidValue(true);
+        }
+    }
 
     // We should disable the filter button if there's nothing in the filter box.
     // But we should be able to clear a field if there's a value on the filter.
@@ -169,7 +180,9 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
                     />
                 </Form.Group>
             }
-            <FilterError message={"THIS IS A TEST@!@"} />
+            {isValidValue ? null:
+                <FilterError message={"You have entered an invalid date. Select a date by clicking on the date and selecting from the calendar."} />
+            }
             <Button
                 type="submit"
                 className="date-range-filter__button"
