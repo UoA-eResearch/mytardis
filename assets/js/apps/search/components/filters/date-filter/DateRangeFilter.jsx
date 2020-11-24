@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import Datetime from 'react-datetime';
 import moment from 'moment';
 
+import FilterError from "../filter-error/FilterError";
+
 // React Datetime requires CSS to work.
 import 'react-datetime/css/react-datetime.css';
 
@@ -167,6 +169,7 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
                     />
                 </Form.Group>
             }
+            <FilterError message={"THIS IS A TEST@!@"} />
             <Button
                 type="submit"
                 className="date-range-filter__button"

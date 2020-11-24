@@ -7,10 +7,10 @@
     border-radius: 0.25rem;
     font-family: inherit;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
 }
 
 .filter-error p {
-    margin: 0;
+    margin: 0 0.5rem 0 0;
 }

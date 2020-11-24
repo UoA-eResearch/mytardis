@@ -4,16 +4,14 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './FilterError.css';
 
 const FilterError = ({ message }) => {
-    const [show, setShow] = useState(false);
     const target = useRef(null);
-
     return (
         <>
             <OverlayTrigger
                 overlay={
                     <Tooltip>{message}</Tooltip>
                 }
-                show={show}
+                delay={{ show: 250, hide: 400 }}
                 placement="top"
             >
                 <div 
@@ -21,14 +19,13 @@ const FilterError = ({ message }) => {
                     aria-label="Filter error message" 
                     className="filter-error"
                 >
-                    <FiInfo className="filter-error___icon" aria-label="error message icon"></FiInfo>
                     <p>
                         Show Input Error
                     </p>
+                    <FiInfo className="filter-error___icon" aria-label="error message icon"></FiInfo>
                 </div>
             </OverlayTrigger>
         </>
     )
 }
-
 export default FilterError;
