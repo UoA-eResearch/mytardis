@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
+import FilterError from '../filter-error/FilterError';
 
 const isNone = (value) => {
     // We need empty string to represent an empty field for text fields
@@ -12,7 +13,7 @@ const isValueEmpty = (value) => {
     if (isNone(value)) {
         return true;
     }
-    const {min, max} = value;
+    const { min, max } = value;
     // A number range filter value is empty if both values are null values.
     return isNone(min) && isNone(max);
 };
@@ -24,12 +25,12 @@ const toSubmitValue = localValue => {
     }
     const submitValue = [];
     if (!isNone(localValue.min)) {
-        submitValue.push({op:">=",content:localValue.min})
-    } 
-    if (!isNone(localValue.max)) {
-        submitValue.push({op:"<=",content:localValue.max});
+        submitValue.push({ op: ">=", content: localValue.min })
     }
-    if (submitValue.length === 0){
+    if (!isNone(localValue.max)) {
+        submitValue.push({ op: "<=", content: localValue.max });
+    }
+    if (submitValue.length === 0) {
         return null;
     }
     return submitValue;
@@ -60,10 +61,10 @@ const toLocalValue = submitValue => {
     return localValue;
 }
 
-const NumberRangeFilter = ({value,options,onValueChange}) => {
+const NumberRangeFilter = ({ value, options, onValueChange }) => {
     // Make a copy of the options first.
-    options = Object.assign({},options);
-    if (!options.name){
+    options = Object.assign({}, options);
+    if (!options.name) {
         options.name = "Missing filter name";
     }
     if (!options.hint) {
@@ -73,17 +74,39 @@ const NumberRangeFilter = ({value,options,onValueChange}) => {
     useEffect(() => {
         setLocalValue(toLocalValue(value));
     }, [value]);
-    const handleValueChange = (type,e) => {
+    const [isValidValue, setIsValidValue] = useState(true);
+    const handleValueChange = (type, e) => {
         // Copy the value object, then assign new value into either "min" or "max".
         const valueFromForm = e.target.value;
-        const newValue = Object.assign({},localValue);
+        const newValue = Object.assign({}, localValue);
         newValue[type] = valueFromForm;
+
+        // find which value is changing
+        console.log(newValue);
+
+        if (isNaN(valueFromForm)) {
+            setIsValidValue(false);
+            console.log('not a number');
+        }
+
+        // if not changing min, then updating max.
+        if (newValue.min !== localValue.min) {
+            console.log('min change');
+            if (Number(newValue.min) > Number(newValue.max)) {
+                newValue.max = newValue.min;
+            }
+        } else {
+            console.log('max change');
+            if (Number(newValue.max) < Number(newValue.min)) {
+                newValue.min = newValue.max;
+            }
+        }
         setLocalValue(newValue);
     };
 
     // We should disable the filter button if there's nothing in the filter box.
     // But we should be able to clear a field if there's a value on the filter.
-    const canChangeValue =  !isValueEmpty(localValue) || !isValueEmpty(toLocalValue(value));
+    const canChangeValue = !isValueEmpty(localValue) || !isValueEmpty(toLocalValue(value));
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -94,37 +117,44 @@ const NumberRangeFilter = ({value,options,onValueChange}) => {
     };
     return (
         <Form className="num-range-filter" onSubmit={handleSubmit}>
-                    <Form.Group className="num-range-filter__field">
-                        <Form.Label>Min</Form.Label>
-                        <Form.Control  
-                            onChange={handleValueChange.bind(this,"min")} 
-                            value={localValue.min} 
-                            aria-label="Filter input for min value"
-                            placeholder={options.hintMin}
-                        >
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group className="num-range-filter__field">
-                        <Form.Label>Max</Form.Label>
-                        <Form.Control 
-                            onChange={handleValueChange.bind(this,"max")} 
-                            value={localValue.max} 
-                            aria-label="Filter input for max value"
-                            placeholder={options.hintMax}
-                        >
-                        </Form.Control>
-                    </Form.Group>
-            <Button 
-                type="submit" 
-                className="num-range-filter__button" 
-                aria-label="Filter results" 
-                variant={canChangeValue ? "secondary" :"outline-secondary"} 
+            <Form.Group className="num-range-filter__field">
+                <Form.Label>Min</Form.Label>
+                <Form.Control
+                    onChange={handleValueChange.bind(this, "min")}
+                    value={localValue.min}
+                    aria-label="Filter input for min value"
+                    placeholder={options.hintMin}
+                >
+                </Form.Control>
+            </Form.Group>
+            <Form.Group className="num-range-filter__field">
+                <Form.Label>Max</Form.Label>
+                <Form.Control
+                    onChange={handleValueChange.bind(this, "max")}
+                    value={localValue.max}
+                    aria-label="Filter input for max value"
+                    placeholder={options.hintMax}
+                >
+                </Form.Control>
+            </Form.Group>
+            <Button
+                type="submit"
+                className="num-range-filter__button"
+                aria-label="Filter results"
+                variant={canChangeValue ? "secondary" : "outline-secondary"}
             >
                 Filter
             </Button>
+            {isValidValue ? null :
+                <>
+                    <FilterError message={"Invalid number values."} />
+                </>
+            }
         </Form>
     );
 }
+
+
 
 NumberRangeFilter.propTypes = {
     value: PropTypes.array,

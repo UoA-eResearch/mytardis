@@ -36,6 +36,7 @@ const TextFilter = ({value,options,onValueChange}) => {
     }
     const initialState = _getValueContent(value);
     const [localValue, setLocalValue] = useState( initialState );
+    const [isValidValue, setIsValidValue] = useState(true);
     useEffect(() => {
         // After the filter is initialised, the value may be
         // updated externally - for example, we might restore an old value from
