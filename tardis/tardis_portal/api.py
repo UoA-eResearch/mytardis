@@ -97,31 +97,37 @@ change_datafile_perm = Permission.objects.get(codename='change_datafile')
 del_datafile_perm = Permission.objects.get(codename='delete_datafile')
 view_datafile_perm = Permission.objects.get(codename='view_datafile')
 
-admin_perms = [add_group_perm,
-               change_group_perm,
-               del_group_perm,
-               view_group_perm,
-               add_project_perm,
-               change_project_perm,
-               del_project_perm,
-               view_project_perm,
-               add_experiment_perm,
-               change_experiment_perm,
-               del_experiment_perm,
-               view_experiment_perm,
-               add_dataset_perm,
-               change_dataset_perm,
-               del_dataset_perm,
-               view_dataset_perm,
-               add_datafile_perm,
-               change_datafile_perm,
-               del_datafile_perm,
-               view_datafile_perm]
+def get_user_perms(is_admin=False):
+    admin_perms = [add_group_perm,
+                   change_group_perm,
+                   del_group_perm,
+                   view_group_perm,
+                   add_project_perm,
+                   change_project_perm,
+                   del_project_perm,
+                   view_project_perm,
+                   add_experiment_perm,
+                   change_experiment_perm,
+                   del_experiment_perm,
+                   view_experiment_perm,
+                   add_dataset_perm,
+                   change_dataset_perm,
+                   del_dataset_perm,
+                   view_dataset_perm,
+                   add_datafile_perm,
+                   change_datafile_perm,
+                   del_datafile_perm,
+                   view_datafile_perm]
 
-member_perms = [view_project_perm,
-                view_experiment_perm,
-                view_dataset_perm,
-                view_datafile_perm]
+    member_perms = [view_project_perm,
+                    view_experiment_perm,
+                    view_dataset_perm,
+                    view_datafile_perm]
+
+    if is_admin:
+        return admin_perms
+    else:
+        return member_perms
 
 
 def get_user_from_upi(upi):
@@ -202,12 +208,9 @@ def check_and_create_user(username,
                                    last_name=new_user['last_name'],
                                    email=new_user['email'])
         user.set_password(gen_random_password())
-        if is_admin:
-            for permission in admin_perms:
-                user.user_permission.add(permission)
-        else:
-            for permission in member_perms:
-                user.suser_permission.add(permission)
+        permissions = get_user_perms(is_admin)
+        for permission in permissions:
+            user.user_permission.add(permission)
         user.save()
         authentication = UserAuthentication(userProfile=user.userprofile,
                                             username=new_user['username'],
