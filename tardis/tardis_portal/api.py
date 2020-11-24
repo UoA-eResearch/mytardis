@@ -126,8 +126,7 @@ def get_user_perms(is_admin=False):
 
     if is_admin:
         return admin_perms
-    else:
-        return member_perms
+    return member_perms
 
 
 def get_user_from_upi(upi):
@@ -419,7 +418,7 @@ def process_acls(bundle):
                     group, created = Group.objects.get_or_create(
                         name=admin_group)
                     if created:
-                        group.permissions.set(admin_perms)
+                        group.permissions.set(get_user_perms(is_admin=True))
                     groups.append(package_perms(group.id,
                                                 is_admin=True))
                     admin_groups.append(group)
@@ -429,7 +428,7 @@ def process_acls(bundle):
                 for admin in parent_admins:
                     group, created = Group.objects.get_or_create(name=admin)
                     if created:
-                        group.permissions.set(admin_perms)
+                        group.permissions.set(get_user_perms(is_admin=True))
                     # Check if group is explicitly defined as a member group
                     # in which case they lose admin status
                     if 'member_groups' in bundle.data.keys():
@@ -482,7 +481,7 @@ def process_acls(bundle):
                 download = member_group[2]
                 group, created = Group.objects.get_or_create(name=group_name)
                 if created:
-                    group.permissions.set(member_perms)
+                    group.permissions.set(get_user_perms(is_admin=False))
                 groups.append(package_perms(group.id,
                                             write=True,
                                             download=download,
@@ -1343,7 +1342,7 @@ class ProjectResource(MyTardisModelResource):
                     project_admin_groups.append(group)
                     project_groups.append(group)
                     if created:
-                        group.permissions.set(admin_perms)
+                        group.permissions.set(get_user_perms(is_admin=True))
                     create_acl(project.get_ct(),
                                project.id,
                                django_group,
@@ -1361,7 +1360,7 @@ class ProjectResource(MyTardisModelResource):
                     group, created = Group.objects.get_or_create(name=grp_name)
                     project_groups.append(group)
                     if created:
-                        group.permissions.set(member_perms)
+                        group.permissions.set(get_user_perms(is_admin=False))
                     create_acl(project.get_ct(),
                                project.id,
                                django_group,
@@ -1380,7 +1379,7 @@ class ProjectResource(MyTardisModelResource):
                                                    last_name=new_user['last_name'],
                                                    email=new_user['email'])
                         user.set_password(gen_random_password())
-                        for permission in admin_perms:
+                        for permission in get_user_perms(is_admin=True):
                             user.user_permissions.add(permission)
                         user.save()
                         authentication = UserAuthentication(userProfile=user.userprofile,
@@ -1409,7 +1408,7 @@ class ProjectResource(MyTardisModelResource):
                                                    last_name=new_user['last_name'],
                                                    email=new_user['email'])
                         user.set_password(gen_random_password())
-                        for permission in member_perms:
+                        for permission in get_user_perms(is_admin=False):
                             user.user_permissions.add(permission)
                         user.save()
                         authentication = UserAuthentication(userProfile=user.userprofile,
@@ -1451,7 +1450,7 @@ class ProjectResource(MyTardisModelResource):
                                        last_name=new_user['last_name'],
                                        email=new_user['email'])
             user.set_password(gen_random_password())
-            for permission in member_perms:
+            for permission in get_user_perms(is_admin=False):
                 user.user_permissions.add(permission)
             user.save()
             authentication = UserAuthentication(userProfile=user.userprofile,
