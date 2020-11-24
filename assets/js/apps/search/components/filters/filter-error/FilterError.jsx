@@ -12,7 +12,7 @@ const FilterError = ({ message }) => {
                     <Tooltip className='filter-error___tooltip'>{message}</Tooltip>
                 }
                 delay={{ show: 250, hide: 400 }}
-                placement="top"
+                placement="right"
             >
                 <div 
                     ref={target} 

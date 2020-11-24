@@ -1,13 +1,16 @@
 
 .filter-error {
     margin: .8rem 0 ;
-    background-color: #ffd27e;
-    border: solid 1px #b37f1e;
-    color: #7c5815;
-    border-radius: 0.25rem;
+    /* background-color: #ffd27e; */
+    /* border: solid 1px #b37f1e; */
+
+    /* color: #7c5815; */
+    color: tomato;
+    
+    /* border-radius: 0.25rem; */
     font-family: inherit;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
 }
 
