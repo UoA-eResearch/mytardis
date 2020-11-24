@@ -89,6 +89,11 @@ const NumberRangeFilter = ({ value, options, onValueChange }) => {
             console.log('not a number');
         }
 
+        checkValidation(newValue, localValue);
+        setLocalValue(newValue);
+    };
+
+    const checkValidation = (newValue, localValue) => {
         // if not changing min, then updating max.
         if (newValue.min !== localValue.min) {
             console.log('min change');
@@ -101,8 +106,7 @@ const NumberRangeFilter = ({ value, options, onValueChange }) => {
                 newValue.min = newValue.max;
             }
         }
-        setLocalValue(newValue);
-    };
+    }
 
     // We should disable the filter button if there's nothing in the filter box.
     // But we should be able to clear a field if there's a value on the filter.
@@ -163,3 +167,5 @@ NumberRangeFilter.propTypes = {
 }
 
 export default NumberRangeFilter;
+
+
