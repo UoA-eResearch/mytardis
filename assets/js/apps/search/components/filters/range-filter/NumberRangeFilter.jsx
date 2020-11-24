@@ -96,12 +96,10 @@ const NumberRangeFilter = ({ value, options, onValueChange }) => {
     const checkValidation = (newValue, localValue) => {
         // if not changing min, then updating max.
         if (newValue.min !== localValue.min) {
-            console.log('min change');
             if (Number(newValue.min) > Number(newValue.max)) {
                 newValue.max = newValue.min;
             }
         } else {
-            console.log('max change');
             if (Number(newValue.max) < Number(newValue.min)) {
                 newValue.min = newValue.max;
             }

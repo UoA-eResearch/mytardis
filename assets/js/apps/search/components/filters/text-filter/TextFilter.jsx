@@ -48,8 +48,14 @@ const TextFilter = ({value,options,onValueChange}) => {
         }
     },[value])
     const handleValueChange = (e) => {
+        validateValue(e.target.value);
         setLocalValue(e.target.value);
     };
+
+    const validateValue = (value) => {
+        console.log(value);
+        value.length < 1000 ? setIsValidValue(true) : setIsValidValue(false);
+    }
 
     // We should disable the filter button if there's nothing in the filter box.
     // But we should be able to clear a field if there's a value on the filter.

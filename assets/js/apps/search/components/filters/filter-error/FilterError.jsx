@@ -9,7 +9,7 @@ const FilterError = ({ message }) => {
         <>
             <OverlayTrigger
                 overlay={
-                    <Tooltip>{message}</Tooltip>
+                    <Tooltip className='filter-error___tooltip'>{message}</Tooltip>
                 }
                 delay={{ show: 250, hide: 400 }}
                 placement="top"

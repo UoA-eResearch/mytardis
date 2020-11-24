@@ -14,3 +14,7 @@
 .filter-error p {
     margin: 0 0.5rem 0 0;
 }
+
+.filter-error___tooltip .tooltip-inner{
+    text-align: left;
+}

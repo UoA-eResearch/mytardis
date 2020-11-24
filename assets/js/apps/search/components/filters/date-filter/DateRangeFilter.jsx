@@ -118,12 +118,12 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
     };
 
     const checkValidation = (val) => {
-        // if start or end date is an invalid Moment object; set invalid values to true
-        if (!val.start._isAMomentObject || !val.end._isAMomentObject) {
-            setIsValidValue(false);
-        } else {
-            setIsValidValue(true);
-        }
+        // for all date points (e.g start or end) if it is an invalid Moment object set invalid values to true
+        let valid = Object.keys(val).every(key => {
+            let date = val[key];
+            return date._isAMomentObject;
+        })
+        setIsValidValue(valid)
     }
 
     // We should disable the filter button if there's nothing in the filter box.
@@ -181,7 +181,7 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
                 </Form.Group>
             }
             {isValidValue ? null:
-                <FilterError message={"You have entered an invalid date. Select a date by clicking on the date and selecting from the calendar."} />
+                <FilterError message={"You have entered an invalid date. Select a date by clicking on the date and selecting from the calendar or by typing a valid date format."} />
             }
             <Button
                 type="submit"
