@@ -34,10 +34,8 @@ describe("Sort reducers", () => {
 
     it("can add sort in the order they are added", () => {
         const expectedSearchState = createNextState(searchInfoData, draft => {
-            draft.sort.project.push({
-                id: "createdDate",
-                order: SORT_ORDER.ascending
-            });
+            draft.sort.project.active.push("createdDate");
+            draft.sort.project.order.createdDate = SORT_ORDER.ascending;
         });
         expect(reducer(searchInfoData, updateResultSort({
             typeId: "project",
@@ -48,9 +46,7 @@ describe("Sort reducers", () => {
 
     it("can remove the correct sort option", () => {
         const expectedSearchState = createNextState(searchInfoData, draft => {
-            draft.sort.project = [
-                { id: "description", order: SORT_ORDER.ascending}
-            ];
+            draft.sort.project.active = [];
         });
         expect(reducer(searchInfoData, removeResultSort({
             typeId: "project",

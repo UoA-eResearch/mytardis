@@ -21,20 +21,28 @@ export const filtersData = {
             name: {
               full_name: "Name",
               id: "name",
-              data_type:"STRING"
+              data_type:"STRING",
+              filterable: true,
+              sortable: true
             },
             createdDate: {
               full_name: "Created date",
               id: "createdDate",
-              data_type: "DATETIME"
+              data_type: "DATETIME",
+              filterable: true,
+              sortable: true
             },
             institution: {
               full_name: "Institution",
               id: "institution",
-              data_type: "STRING"
+              data_type: "STRING",
+              filterable: true,
+              sortable: true
             },
             schema: {
-              value: { op: "is", content: ["1"] }
+              value: { op: "is", content: ["1"] },
+              filterable: true,
+              sortable: true
             }
           }, allIds: ["name", "createdDate", "institution", "schema"]
         }
@@ -45,17 +53,23 @@ export const filtersData = {
             name: {
               full_name: "Name",
               id: "name",
-              data_type:"STRING"
+              data_type:"STRING",
+              filterable: true,
+              sortable: true
             },
             createdDate: {
               full_name: "Created date",
               id: "createdDate",
-              data_type: "DATETIME"
+              data_type: "DATETIME",
+              filterable: true,
+              sortable: true
             },
             institution: {
               full_name: "Institution",
               id: "institution",
-              data_type: "STRING"
+              data_type: "STRING",
+              filterable: true,
+              sortable: true
             },
             schema: {
               value: { op: "is", content: ["2"] }
@@ -69,20 +83,27 @@ export const filtersData = {
             name: {
               full_name: "Name",
               id: "name",
-              data_type:"STRING"
+              data_type:"STRING",
+              filterable: true,
+              sortable: true
             },
             createdDate: {
               full_name: "Created date",
               id: "createdDate",
-              data_type: "DATETIME"
+              data_type: "DATETIME",
+              filterable: true,
+              sortable: true
             },
             institution: {
               full_name: "Institution",
               id: "institution",
-              data_type: "STRING"
+              data_type: "STRING",
+              filterable: true,
+              sortable: true
             },
             schema: {
-              value: { op: "is", content: ["1"] }
+              value: { op: "is", content: ["1"] },
+              filterable: true
             }
           }, allIds: ["name", "createdDate", "institution", "schema"]
         }
@@ -93,17 +114,23 @@ export const filtersData = {
             name: {
               full_name: "Name",
               id: "name",
-              data_type:"STRING"
+              data_type:"STRING",
+              filterable: true,
+              sortable: true
             },
             createdDate: {
               full_name: "Created date",
               id: "createdDate",
-              data_type: "DATETIME"
+              data_type: "DATETIME",
+              filterable: true,
+              sortable: true
             },
             institution: {
               full_name: "Institution",
               id: "institution",
-              data_type: "STRING"
+              data_type: "STRING",
+              filterable: true,
+              sortable: true
             },
             schema: {
               value: { op: "is", content: ["1", "2"] }

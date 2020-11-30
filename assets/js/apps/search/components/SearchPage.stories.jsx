@@ -85,14 +85,27 @@ export const searchInfoData = {
         datafile: 10
     },
     sort: {
-        project: [{ id: "institution", order: SORT_ORDER.descending },
-            { id: "description", order: SORT_ORDER.ascending}],
-        experiment: [{ id: "institution", order: SORT_ORDER.descending },
-        { id: "description", order: SORT_ORDER.ascending}],
-        dataset: [{ id: "institution", order: SORT_ORDER.descending },
-        { id: "description", order: SORT_ORDER.ascending}],
-        datafile: [{ id: "institution", order: SORT_ORDER.descending },
-        { id: "description", order: SORT_ORDER.ascending}]
+        project: {
+            active: [ "institution"],
+            order: {
+                "institution": SORT_ORDER.descending
+            }
+        }, experiment: {
+            active: [ "institution" ],
+            order: {
+                "institution": SORT_ORDER.descending
+            }        
+        }, dataset: {
+            active: [ "institution" ],
+            order: {
+                "institution": SORT_ORDER.descending
+            }
+        }, datafile: {
+            active: [ "institution" ],
+            order: {
+                "institution": SORT_ORDER.descending
+            }
+        }
     }
 };
 
