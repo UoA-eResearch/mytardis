@@ -87,7 +87,10 @@ const TextFilter = ({ value, options, onValueChange }) => {
                 </InputGroup.Append>
             </InputGroup>
             {isValidValue ? null :
-                <FilterError message="This text input exceeds the 1000 character limit."></FilterError>
+                <FilterError
+                    message={"Character limit exceeded"}
+                    longMessage="This text input exceeds the 1000 character limit."
+                ></FilterError>
             }
         </Form>
     );

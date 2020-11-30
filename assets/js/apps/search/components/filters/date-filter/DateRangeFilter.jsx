@@ -42,7 +42,7 @@ const toSubmitValue = localValue => {
         if (typeof localValue.end == "object") {
             submitValue.push({
                 op: "<=",
-                content:localValue.end.toISOString()
+                content: localValue.end.toISOString()
             })
         }
     }
@@ -60,7 +60,7 @@ const toLocalValue = submitValue => {
     if (!Array.isArray(submitValue)) {
         submitValue = [submitValue];
     }
-    const localValue = {start: null, end: null};
+    const localValue = { start: null, end: null };
     const startValue = submitValue.filter(value => value.op === ">=");
     const endValue = submitValue.filter(value => value.op === "<=");
     if (startValue.length > 0) {
@@ -74,7 +74,7 @@ const toLocalValue = submitValue => {
 
 const DateRangeFilter = ({ id, value, options, onValueChange }) => {
     // Make a copy of the options first.
-    options = Object.assign({},options);
+    options = Object.assign({}, options);
     if (!id) {
         id = "missingFilterName";
     }
@@ -93,7 +93,7 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
         // for when the filter value is externally updated
         // e.g. from URL.
         setLocalValue(toLocalValue(value));
-    },[value]);
+    }, [value]);
 
     const handleValueChange = (type, valueFromForm) => {
         // Copy the value object, then assign new value into either "start" or "end".
@@ -149,8 +149,8 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
     };
 
     // Give the input boxes ids so labels can be tied back to the field.
-    const startFieldId = "start-"+id,
-        endFieldId = "end-"+id;
+    const startFieldId = "start-" + id,
+        endFieldId = "end-" + id;
 
     return (
         <Form className="date-range-filter" onSubmit={handleSubmit}>
@@ -167,7 +167,7 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
                     />
                 </Form.Group>
             }
-            {options.hideEnd ? null : 
+            {options.hideEnd ? null :
                 <Form.Group className="date-range-filter__field">
                     <Form.Label htmlFor={endFieldId} srOnly={options.hideLabels}>End</Form.Label>
                     <Datetime
@@ -180,8 +180,11 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
                     />
                 </Form.Group>
             }
-            {isValidValue ? null:
-                <FilterError message={"You have entered an invalid date. Select a date by clicking on the date and selecting from the calendar or by typing a valid date format."} />
+            {isValidValue ? null :
+                <FilterError
+                    message={"Invalid date"}
+                    longMessage={"You have entered an invalid date. Select a date by clicking on the date and selecting from the calendar or by typing a valid date format."}
+                />
             }
             <Button
                 type="submit"

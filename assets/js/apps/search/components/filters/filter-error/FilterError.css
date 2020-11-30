@@ -1,23 +1,24 @@
 
 .filter-error {
     margin: .8rem 0 ;
-    /* background-color: #ffd27e; */
-    /* border: solid 1px #b37f1e; */
-
-    /* color: #7c5815; */
     color: tomato;
-    
-    /* border-radius: 0.25rem; */
     font-family: inherit;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
 }
 
 .filter-error p {
     margin: 0 0.5rem 0 0;
+    max-width: 80%;
 }
 
 .filter-error___tooltip .tooltip-inner{
     text-align: left;
+}
+
+.filter-error___text {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

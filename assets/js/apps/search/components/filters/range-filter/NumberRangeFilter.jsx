@@ -149,7 +149,10 @@ const NumberRangeFilter = ({ value, options, onValueChange }) => {
             </Button>
             {isValidValue ? null :
                 <>
-                    <FilterError message={"Invalid number values."} />
+                    <FilterError 
+                        message={"Invalid number values"} 
+                        longMessage={"Invalid number values."} 
+                    />
                 </>
             }
         </Form>
