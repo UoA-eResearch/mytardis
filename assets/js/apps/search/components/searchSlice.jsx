@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeAttrSelector, allTypeAttrIdsSelector } from "./filters/filterSlice";
-import arrayEquals from "../util/arrayEquals";
 
 const getResultFromHit = (hit,hitType,urlPrefix) => {
     const source = hit._source;
