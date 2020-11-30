@@ -1,5 +1,6 @@
 import { Default, Empty } from "./DateRangeFilter.stories";
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import React from 'react';
 
 const getDateFields = (screen) => (
     [
@@ -10,14 +11,14 @@ const getDateFields = (screen) => (
 )
 
 it('should render start and end dates as specified', async () => {
-    render(Default());
+    render(<Default {...Default.args} />);
     const [startDateEl, endDateEl] = getDateFields(screen);
     expect(startDateEl.value).toBe("01/05/2020");
     expect(endDateEl.value).toBe("05/28/2020");
 });
 
 it('should change start date when end date becomes a date before it', async () => {
-    render(Default());
+    render(<Default {...Default.args} onValueChange={() => {}} />);
     const [startDateEl, endDateEl] = getDateFields(screen);
     const anotherDate = "12/30/2019";
     fireEvent.change(endDateEl, { target: {value: anotherDate } });
@@ -29,7 +30,12 @@ it('should change start date when end date becomes a date before it', async () =
 
 it('should callback with right value after submitting', async () => {
     const mockHandleChangeFn = jest.fn();
-    render(Empty(null,mockHandleChangeFn));
+    // Add mock handleChange function to monitor whether changes
+    // are added.
+    const props = Object.assign({}, Empty.args, {
+        onValueChange: mockHandleChangeFn
+    })
+    render(<Empty {...props} />);
     const [startDateEl, endDateEl,filterButton] = getDateFields(screen);
     fireEvent.change(startDateEl, {target: {value: "01/05/2020"}});
     fireEvent.change(endDateEl, {target: {value: "01/07/2020"}});
@@ -49,7 +55,10 @@ it('should callback with right value after submitting', async () => {
 
 it('should callback with null after clearing a filter', async () => {
     const mockHandleChangeFn = jest.fn();
-    render(Default(null,mockHandleChangeFn));
+    const props = Object.assign({}, Default.args, {
+        onValueChange: mockHandleChangeFn
+    });
+    render(<Default {...props} />);
     const [startDateEl, endDateEl,filterButton] = getDateFields(screen);
     // Clear the dates
     fireEvent.change(startDateEl, {target: {value: ""}});

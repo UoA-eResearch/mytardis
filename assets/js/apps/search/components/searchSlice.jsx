@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
-import { initialiseFilters, buildFilterQuery, updateFiltersByQuery } from "./filters/filterSlice";
+import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeAttrSelector, allTypeAttrIdsSelector } from "./filters/filterSlice";
 
 const getResultFromHit = (hit,hitType,urlPrefix) => {
     const source = hit._source;
@@ -59,6 +59,41 @@ export const totalHitsSelector = (searchSlice, typeId) => (
     searchSlice.results ? searchSlice.results.totalHits[typeId + "s"] : 0
 );
 
+export const SORT_ORDER = {
+    ascending: "asc",
+    descending: "desc"
+};
+
+/**
+ * Selector for sorts that are active on a typeId.
+ * @param {*} searchSlice The Redux state slice for search
+ * @param {string} typeId MyTardis object type.
+ */
+export const activeSortSelector = (searchSlice, typeId) => (
+    searchSlice.sort[typeId].active
+);
+
+/**
+ * Selector for type attributes which are sortable.
+ * @param {*} filterSlice Redux state slice for filters
+ * @param {string} typeId MyTardis object type.
+ */
+export const sortableAttributesSelector = (filterSlice, typeId) => (
+    allTypeAttrIdsSelector(filterSlice, typeId + "s").map(attributeId => (
+        typeAttrSelector(filterSlice, typeId + "s", attributeId)
+    )).filter(attribute => attribute.sortable)
+);
+
+/**
+ * Selector for the sort order of an attribute.
+ * @param {*} searchSlice Redux state slice for search
+ * @param {string} typeId MyTardis object type
+ * @param {string} attributeId Attribute ID
+ */
+export const sortOrderSelector = (searchSlice, typeId, attributeId) => (
+    searchSlice.sort[typeId].order[attributeId] || SORT_ORDER.ascending
+);
+
 /**
  * Returns the index of the first item on the current page. For example,
  * if we are on the second page, and each page has 20 items, then this function
@@ -102,8 +137,28 @@ const initialState = {
         dataset: 1,
         datafile: 1
     },
+    sort: {
+        project: {
+            active: [],
+            order: {}
+        },
+        experiment: {
+            active: [],
+            order: {}
+        },
+        dataset: {
+            active: [],
+            order: {}
+        },
+        datafile: {
+            active: [],
+            order: {}
+        }
+    },
     showSensitiveData: false
 };
+
+
 
 const search = createSlice({
     name: 'search',
@@ -178,6 +233,29 @@ const search = createSlice({
         },
         toggleShowSensitiveData: (state) => {
             state.showSensitiveData = !state.showSensitiveData;
+        },
+        updateResultSort: (state, {payload}) => {
+            const { typeId, attributeId, order = SORT_ORDER.ascending } = payload;
+            state.sort[typeId].order[attributeId] = order;
+            // Update sort order.
+            const existingSort = state.sort[typeId].active.filter(
+                sort => sort === attributeId
+            );
+            if (existingSort.length === 0) {
+                // Add new sort
+                state.sort[typeId].active.push(attributeId);
+            }
+        },
+        removeResultSort: (state, {payload}) => {
+            const { typeId, attributeId } = payload;
+            const typeSorts = activeSortSelector(state, typeId);
+            for (let i = 0; i < typeSorts.length; i++) {
+                if (typeSorts[i] === attributeId) {
+                    // Remove the sort.
+                    typeSorts.splice(i, 1);
+                    return;
+                }
+            }
         }
     }
 });
@@ -224,10 +302,44 @@ const buildPaginationQuery = (searchSlice, type) => {
     }
 };
 
+/**
+ * Returns search API sort query.
+ * @param {*} state The overall Redux state tree
+ * @param {string} typeToSearch Type ID to search. If null, assume all types are searched for.
+ */
+const buildSortQuery = (state, typeToSearch) => {
+    const typesToSort = typeToSearch ? [typeToSearch] : ["project", "experiment", "dataset", "datafile"];
+    const sortQuery = typesToSort.reduce((acc, typeId) => {
+        const sortOptions = activeSortSelector(state.search, typeId);
+        const typeSortQuery = sortOptions.map(id => {
+            const order = state.search.sort[typeId].order[id];
+            const attribute = typeAttrSelector(state.filters, typeId + "s", id);
+            const fullField = [id].concat(attribute.nested_target || []);
+            return {
+                field: fullField,
+                order
+            };            
+        });
+        if (typeSortQuery.length !== 0) {
+            acc[typeId] = typeSortQuery;
+        }
+        return acc;
+    }, {});
+    if (Object.keys(sortQuery).length === 0) {
+        return null;
+    }
+    return {
+        sort: sortQuery
+    };
+};
+
 const buildQueryBody = (state, typeToSearch) => {
     const term = state.search.searchTerm,
         filters = buildFilterQuery(state.filters, typeToSearch),
         queryBody = {};
+
+    // Add sort query
+    Object.assign(queryBody, buildSortQuery(state, typeToSearch));
 
     if (typeToSearch) {
         // If doing a single type search, include type in query body.
@@ -276,7 +388,7 @@ const getDisplayQueryString = (queryBody) => {
  * @param {string} searchString The search part of URL.
  * @private 
  */
-const parseQuery = (searchString) => {
+export const parseQuery = (searchString) => {
 
     const buildResultForParsedQuery = (queryString) => {
         if (!queryString) { return {}; }
@@ -393,7 +505,9 @@ export const {
     updateSearchTerm,
     updateSelectedType,
     updateSelectedResult,
-    toggleShowSensitiveData
+    toggleShowSensitiveData,
+    updateResultSort,
+    removeResultSort
 } = search.actions;
 
 export default search.reducer;

@@ -447,29 +447,28 @@ class SearchAppResource(Resource):
             ######TODO (5) Do some sorting
             # Default sorting
             sort_dict = {}
-            if request_type is not None:
-                if request_sorting is not None:
-                    for sort in request_sorting:
-                        if obj == request_type:
-                            if len(sort["field"]) > 1:
-                                if sort["field"][-1] in match_list:
-                                    search_field = ".".join(sort["field"])+".raw"
-                                else:
-                                    search_field = ".".join(sort["field"])
-                                sort_dict[search_field] = {"order": sort["order"],
-                                                           "nested_path" : ".".join(sort["field"][:-1])}
+            if request_sorting is not None:
+                if obj in request_sorting.keys():
+                    for sort in request_sorting[obj]:
+                        if len(sort["field"]) > 1:
+                            if sort["field"][-1] in ['fullname','name','title','description','filename']:
+                                search_field = ".".join(sort["field"])+".raw"
+                            else:
+                                search_field = ".".join(sort["field"])
+                            sort_dict[search_field] = {"order": sort["order"],
+                                                       "nested_path" : ".".join(sort["field"][:-1])}
 
-                            if len(sort["field"]) == 1:
-                                if sort["field"][0] in match_list:
-                                    sort_dict[sort["field"][0]+".raw"] = {"order": sort["order"]}
-                                elif sort["field"][0] == 'size':
-                                    if obj == 'datafile':
-                                        sort_dict[sort["field"][0]] = {"order": sort["order"]}
-                                    else:
-                                        #DO SOME SORTING AFTER ELASTICSEARCH
-                                        pass
-                                else:
+                        if len(sort["field"]) == 1:
+                            if sort["field"][0] in ['lead_researcher','name','title','description','filename']:
+                                sort_dict[sort["field"][0]+".raw"] = {"order": sort["order"]}
+                            elif sort["field"][0] == 'size':
+                                if obj == 'datafile':
                                     sort_dict[sort["field"][0]] = {"order": sort["order"]}
+                                else:
+                                    #DO SOME SORTING AFTER ELASTICSEARCH
+                                    pass
+                            else:
+                                sort_dict[sort["field"][0]] = {"order": sort["order"]}
 
             # If sort dict is still empty even after filters, add in the defaults
             if not sort_dict:

@@ -6,12 +6,16 @@
                     "name": {
                         "data_type": "STRING",
                         "id": "name",
-                        "full_name": "Name"
+                        "full_name": "Name",
+                        "sortable": true,
+                        "filterable": true
                     },
                     "description": {
                         "data_type": "STRING",
                         "id": "description",
-                        "full_name": "Description"
+                        "full_name": "Description",
+                        "sortable": true,
+                        "filterable": true
                     },
                     "start_time": {
                         "data_type": "DATETIME",
@@ -20,13 +24,17 @@
                         "options": {
                             "hideEnd": true,
                             "hideLabels": true
-                        }
+                        },
+                        "sortable": true,
+                        "filterable": true
                     },
                     "institution": {
                         "data_type": "STRING",
                         "id": "institution",
                         "full_name": "Institution",
-                        "nested_target": ["name"]
+                        "nested_target": ["name"],
+                        "sortable": true,
+                        "filterable": true
                     },
                     "end_time": {
                         "data_type": "DATETIME",
@@ -35,13 +43,17 @@
                         "options": {
                             "hideStart": true,
                             "hideLabels": true
-                        }
+                        },
+                        "sortable": true,
+                        "filterable": true
                     },
                     "lead_researcher": {
                         "data_type": "STRING",
                         "id": "lead_researcher",
                         "full_name": "Lead researcher",
-                        "nested_target": ["fullname"]
+                        "nested_target": ["fullname"],
+                        "sortable": true,
+                        "filterable": true
                     },
                     "schema": {
                         "data_type": "STRING",
@@ -66,17 +78,23 @@
                     "title": {
                         "data_type": "STRING",
                         "id": "title",
-                        "full_name": "Title"
+                        "full_name": "Title",
+                        "sortable": true,
+                        "filterable": true
                     },
                     "description": {
                         "data_type": "STRING",
                         "id": "description",
-                        "full_name": "Description"
+                        "full_name": "Description",
+                        "sortable": true,
+                        "filterable": true
                     },
                     "start_time": {
                         "data_type": "DATETIME",
                         "id": "start_time",
                         "full_name": "Start date",
+                        "sortable": true,
+                        "filterable": true,
                         "options": {
                             "hideEnd": true,
                             "hideLabels": true
@@ -86,6 +104,8 @@
                         "data_type": "DATETIME",
                         "id": "end_time",
                         "full_name": "End date",
+                        "sortable": true,
+                        "filterable": true,
                         "options": {
                             "hideStart": true,
                             "hideLabels": true
@@ -95,7 +115,9 @@
                         "data_type": "STRING",
                         "id": "project",
                         "full_name": "Part of project",
-                        "nested_target": ["name"]
+                        "sortable": true,
+                        "nested_target": ["name"],
+                        "filterable": true
                     },
                     "schema": {
                         "data_type": "STRING",
@@ -119,34 +141,45 @@
                     "description": {
                         "data_type": "STRING",
                         "id": "description",
-                        "full_name": "Description"
+                        "full_name": "Description",
+                        "sortable": true,
+                        "filterable": true
                     },
                     "instrument": {
                         "data_type": "STRING",
                         "id": "instrument",
                         "full_name": "Instrument",
-                        "nested_target": ["name"]
+                        "nested_target": ["name"],
+                        "sortable": true,
+                        "filterable": true
                     },
                     "created_time": {
                         "data_type": "DATETIME",
                         "id": "created_time",
-                        "full_name": "Ingestion date"
+                        "full_name": "Ingestion date",
+                        "sortable": true,
+                        "filterable": true
                     },
                     "tags": {
                         "data_type": "STRING",
                         "id": "tags",
-                        "full_name": "Has tag"
+                        "full_name": "Has tag",
+                        "sortable": false,
+                        "filterable": true
                     },
                     "experiments": {
                         "data_type": "STRING",
                         "id": "experiments",
                         "full_name": "Part of experiment",
-                        "nested_target": ["title"]
+                        "nested_target": ["title"],
+                        "sortable": true,
+                        "filterable": true
                     },
                     "schema": {
                         "data_type": "STRING",
                         "id": "schema",
-                        "full_name": "Schema"
+                        "full_name": "Schema",
+                        "sortable": false
                     }
                 },
                 "allIds": [
@@ -165,7 +198,9 @@
                     "filename": {
                         "data_type": "STRING",
                         "id": "filename",
-                        "full_name": "File name"
+                        "full_name": "File name",
+                        "sortable": true,
+                        "filterable": true
                     },
                     "file_extension": {
                         "data_type": "STRING",
@@ -173,23 +208,39 @@
                         "full_name": "File extension",
                         "options": {
                             "isExact": true
-                        }
+                        },
+                        "sortable": true,
+                        "filterable": true
                     },
                     "created_time": {
                         "data_type": "DATETIME",
-                        "id": "created_date",
-                        "full_name": "Ingestion date"
+                        "id": "created_time",
+                        "full_name": "Ingestion date",
+                        "sortable": true,
+                        "filterable": true
                     },
                     "dataset": {
                         "data_type": "STRING",
                         "id": "dataset",
                         "full_name": "Part of dataset",
-                        "nested_target": ["description"]
+                        "nested_target": ["description"],
+                        "sortable": true,
+                        "filterable": true
+                    },
+                    "size": {
+                        "data_type": "STRING",
+                        "id": "size",
+                        "full_name": "File size",
+                        "sortable": true,
+                        "filterable": false
                     },
                     "schema": {
                         "data_type": "STRING",
                         "id": "schema",
-                        "full_name": "Schema"
+                        "full_name": "Schema",
+                        "sortable": false,
+                        "filterable": false
+
                     }
                 },
                 "allIds": [
@@ -197,6 +248,7 @@
                     "file_extension",
                     "created_time",
                     "dataset",
+                    "size",
                     "schema"
                 ]
             }

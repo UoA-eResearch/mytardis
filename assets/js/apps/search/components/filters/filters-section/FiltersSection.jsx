@@ -44,7 +44,10 @@ TypeAttributeFilter.propTypes = {
 export function TypeAttributesList({ typeId }) {
   const attributeIds = useSelector(state => (
     // Get all type attributes IDs except for schema.
-    allTypeAttrIdsSelector(state.filters, typeId).filter(filterId => (filterId !== "schema"))
+    allTypeAttrIdsSelector(state.filters, typeId)
+      .filter(filterId => (filterId !== "schema"))
+      // Then, filter out ones that are marked not filterable.
+      .filter(id => typeAttrSelector(state.filters, typeId, id).filterable)
   ));
 
   return (
