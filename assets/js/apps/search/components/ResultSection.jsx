@@ -10,7 +10,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateSelectedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector } from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
-import Pager from "./Pager";
+import Pager from "./sort-paginate/Pager";
+import SortOptionsList from './sort-paginate/SortOptionsList';
 
 export function PureResultTabs({ counts, selectedType, onChange }) {
 
@@ -103,7 +104,7 @@ export function ResultRow({ result, onSelect, isSelected }) {
             onSelect(e);
         };
     return (
-        <tr className={isSelected ? "result-section--row table-active" : "result-section--row"} onClick={onSelect} onKeyUp={onKeyboardSelect} tabIndex="0" role="button">
+        <tr className={isSelected ? "result-section--row row-active-primary" : "result-section--row row-primary"} onClick={onSelect} onKeyUp={onKeyboardSelect} tabIndex="0" role="button">
             <td className="result-row--download-col">
                 {result.userDownloadRights == "none" &&
                     <OverlayTrigger overlay={
@@ -237,7 +238,10 @@ export function PureResultSection({ resultSets, selectedType,
             <ResultTabs />
             <div role="tabpanel" className="result-section--tabpanel">
                 {!error &&
+                    <>
                     <ResultSummary typeId={selectedType} />
+                    <SortOptionsList typeId={selectedType} />
+                    </>
                 }
                 <div className="tabpanel__container--horizontal">
                     <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />

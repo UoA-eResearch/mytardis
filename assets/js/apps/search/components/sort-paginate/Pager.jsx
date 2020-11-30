@@ -10,7 +10,7 @@ import {
     totalPagesSelector, 
     updatePageSizeAndRefetch, 
     updatePageNumberAndRefetch 
-} from "./searchSlice";
+} from "../searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback } from 'react';
 import "./Pager.css";
@@ -98,6 +98,7 @@ const PurePageSizeDropdown = ({typeId, pageSize, onPageSizeChange}) => {
                                 key={size} 
                                 eventKey={size} 
                                 active={size === pageSize}
+                                className={size === pageSize ? "row-active-primary" : "row-primary" }
                             >
                                 {size}
                             </Dropdown.Item>
