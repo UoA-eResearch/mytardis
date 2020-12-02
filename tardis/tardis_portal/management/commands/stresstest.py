@@ -4,10 +4,10 @@
 """
 import sys
 
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User, Group
 
-from numpy.random import default_rng
+#from numpy.random import default_rng
 
 from ...auth.localdb_auth import django_user, django_group
 from ...models.access_control import ObjectACL
@@ -39,7 +39,7 @@ hundred_words = ['absurd', 'act', 'addicted', 'advert', 'angry', 'apathetic',
                  'watch', 'whirl', 'windy', 'woman', 'wrench', 'yawn']
 
 def create_acl(entity, entity_type, object, download=False, write=False,
-               sensitive=False, delete=False, owner=False):
+               sensitive=False, delete=False, isowner=False):
     testacl = ObjectACL(content_type=object.get_ct(),
                         object_id=object.id,
                         pluginId=entity_type,
@@ -49,13 +49,13 @@ def create_acl(entity, entity_type, object, download=False, write=False,
                         canWrite=write,
                         canSensitive=sensitive,
                         canDelete=delete,
-                        isOwner=entity,
+                        isOwner=isowner,
                         aclOwnershipType=ObjectACL.OWNER_OWNED)
     testacl.save()
 
 def create_owner_acl(owner, object):
     create_acl(owner, django_user, object, download=True, write=True,
-               sensitive=True, delete=True, owner=True)
+               sensitive=True, delete=True, isowner=True)
 
 def create_user_acl(user, object):
     create_acl(user, django_user, object)
@@ -86,10 +86,17 @@ class Command(BaseCommand):
         parser.add_argument("--user", help="User to whom the objects belong (for testing ease).",
                             type=str)
 
+        parser.add_argument("--dummypass", help="Dummy password for created test users.",
+                            type=str)
+
     def handle(self, *args, **options):
         username = options.get('user', None)
+        dummypass = options.get('dummypass', None)
+
         if not username:
             raise CommandError("Please specify a username using --user USERNAME")
+        if not dummypass:
+            raise CommandError("Please specify a dummy password using --dummypass DUMMYPASS")
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
@@ -111,16 +118,16 @@ class Command(BaseCommand):
             for y in ["adm","rd","r"]:
                 test_username = user.username+"_test_"+y+"_"+str(x)
                 test_users[str(x)][y] = User.objects.create_user(username=test_username,
-                                                                 password=user.password)
+                                                                 password=dummypass)
                 test_users[str(x)][y].save()
-                test_group_name = "test_"+y+"_"+str(x)
+                test_group_name = "STRESSTEST_"+y+"_"+str(x)
                 test_groups[str(x)][y] = Group.objects.create(name=test_group_name)
                 test_groups[str(x)][y].save()
-                test_users[str(x)][y].groups.add(group)
+                test_users[str(x)][y].groups.add(test_groups[str(x)][y])
                 test_users[str(x)][y].save()
             test_username = user.username+"_test_nogrp_"+str(x)
             test_users[str(x)]["nogrp"] = User.objects.create_user(username=test_username,
-                                                                   password=user.password)
+                                                                   password=dummypass)
             test_users[str(x)]["nogrp"].save()
         sys.stderr.write("Done.\n")
 
@@ -176,21 +183,21 @@ class Command(BaseCommand):
 
 
         # define the default rng to be used throughout the object creations
-        rng = default_rng()
+        #rng = default_rng()
 
-        if n_proj == 100:
-            # Generate random samples for level below
-            rng_proj_dict = {"1" : rng.choice(100, size=1, replace=False),
-                            "25" : rng.choice(100, size=25, replace=False),
-                            "50" : rng.choice(100, size=50, replace=False),
-                            "75" : rng.choice(100, size=75, replace=False)}
+        #if n_proj == 100:
+        # Generate random samples for level below
+        rng_proj_dict = {"1" : [80],#rng.choice(100, size=1, replace=False),
+                        "25" : list(range(0, 25)),#rng.choice(100, size=25, replace=False),
+                        "50" : list(range(0, 50)),#rng.choice(100, size=50, replace=False),
+                        "75" : list(range(0, 745))}#rng.choice(100, size=75, replace=False)}
 
         sys.stderr.write("Creating Projects...\n")
         #Create the projects
         for idx_proj in range(n_proj):
             # Create project
             test_raid = "STRESSTEST_"+hundred_words[idx_proj]
-            testproject = Project(name=hundred_words[idx_proj], raid=test_raid)
+            testproject = Project(name=test_raid, raid=test_raid)
             testproject.created_by = user
             testproject.lead_researcher = user
             testproject.save()
@@ -201,15 +208,19 @@ class Command(BaseCommand):
                                          project=testproject)
             parset.save()
             for paramname in test_parnames["project"].values():
+                sens_param = False
+                if paramname.name == "Param_sens":
+                    sens_param = True
                 df_parameter = ProjectParameter(name=paramname,
                                                 parameterset=parset,
-                                                string_value=paramname.name)
+                                                string_value=paramname.name,
+                                                sensitive_metadata=sens_param)
                 df_parameter.save()
 
             # create ACLs for groups/users with 100% access
             for y in ["adm","rd","r"]:
                 create_group_acl(test_groups["100"][y], testproject, y)
-            create_user_acl(test_groups["100"]["nogrp"], testproject, y)
+            create_user_acl(test_users["100"]["nogrp"], testproject)
 
             if n_proj == 100:
                 # if idx in random sample list, add acl for appropriate group/users
@@ -217,24 +228,26 @@ class Command(BaseCommand):
                     if idx_exp in val:
                         for y in ["adm","rd","r"]:
                             create_group_acl(test_groups[key][y], testproject, y)
-                        create_user_acl(test_groups[key]["nogrp"], testproject, y)
+                        create_user_acl(test_users[key]["nogrp"], testproject)
             else:
-                for y in ["adm","rd","r"]:
-                    create_group_acl(test_groups[key][y], testproject, y)
-                create_user_acl(test_groups[key]["nogrp"], testproject, y)
+                for key, val in rng_proj_dict.items():
+                    for y in ["adm","rd","r"]:
+                        create_group_acl(test_groups[key][y], testproject, y)
+                    create_user_acl(test_users[key]["nogrp"], testproject)
 
             # Generate random samples for level below
-            rng_exp_dict = {"1" : rng.choice(100, size=1, replace=False),
-                            "25" : rng.choice(100, size=25, replace=False),
-                            "50" : rng.choice(100, size=50, replace=False),
-                            "75" : rng.choice(100, size=75, replace=False)}
+            rng_exp_dict = {"1" : [80],#rng.choice(100, size=1, replace=False),
+                            "25" : list(range(0, 25)),#rng.choice(100, size=25, replace=False),
+                            "50" : list(range(0, 50)),#rng.choice(100, size=50, replace=False),
+                            "75" : list(range(0, 745))}#rng.choice(100, size=75, replace=False)}
 
             sys.stderr.write("Project "+str(idx_proj+1)+" created...\n")
             sys.stderr.write("Creating Experiments...\n")
 
             # Create the experiments
-            for idx_exp in range(1):
-                testexp = Experiment(title=hundred_words[idx_exp], project=testproject)
+            for idx_exp in range(100):
+                test_title = "STRESSTEST_"+hundred_words[idx_exp]
+                testexp = Experiment(title=test_title, project=testproject)
                 testexp.created_by = user
                 testexp.save()
                 #Create ACL for "owner"
@@ -244,34 +257,39 @@ class Command(BaseCommand):
                                                 experiment=testexp)
                 parset.save()
                 for paramname in test_parnames["experiment"].values():
+                    sens_param = False
+                    if paramname.name == "Param_sens":
+                        sens_param = True
                     df_parameter = ExperimentParameter(name=paramname,
-                                                       parameterset=parset,
-                                                       string_value=paramname.name)
+                                                    parameterset=parset,
+                                                    string_value=paramname.name,
+                                                    sensitive_metadata=sens_param)
                     df_parameter.save()
 
                 # create ACLs for groups/users with 100% access
                 for y in ["adm","rd","r"]:
                     create_group_acl(test_groups["100"][y], testexp, y)
-                create_user_acl(test_groups["100"]["nogrp"], testexp, y)
+                create_user_acl(test_users["100"]["nogrp"], testexp)
                 # if idx in random sample list, add acl for appropriate group/users
                 for key, val in rng_exp_dict.items():
                     if idx_exp in val:
                         for y in ["adm","rd","r"]:
                             create_group_acl(test_groups[key][y], testexp, y)
-                        create_user_acl(test_groups[key]["nogrp"], testexp, y)
+                        create_user_acl(test_users[key]["nogrp"], testexp)
 
                 # Generate random samples for level below
-                rng_set_dict = {"1" : rng.choice(100, size=1, replace=False),
-                                "25" : rng.choice(100, size=25, replace=False),
-                                "50" : rng.choice(100, size=50, replace=False),
-                                "75" : rng.choice(100, size=75, replace=False)}
+                rng_set_dict = {"1" : [80],#rng.choice(100, size=1, replace=False),
+                                "25" : list(range(0, 25)),#rng.choice(100, size=25, replace=False),
+                                "50" : list(range(0, 50)),#rng.choice(100, size=50, replace=False),
+                                "75" : list(range(0, 745))}#rng.choice(100, size=75, replace=False)}
 
                 sys.stderr.write("Experiment "+str(idx_exp+1)+" created...\n")
                 sys.stderr.write("Creating Datasets...\n")
 
                 # Create the datasets
-                for idx_set in range(1):
-                    testset = Dataset(description=hundred_words[idx_set])
+                for idx_set in range(100):
+                    test_desc = "STRESSTEST_"+hundred_words[idx_set]
+                    testset = Dataset(description=test_desc)
                     testset.save()
                     testset.experiments.add(testexp)
                     testset.save()
@@ -282,34 +300,39 @@ class Command(BaseCommand):
                                                  dataset=testset)
                     parset.save()
                     for paramname in test_parnames["dataset"].values():
+                        sens_param = False
+                        if paramname.name == "Param_sens":
+                            sens_param = True
                         df_parameter = DatasetParameter(name=paramname,
-                                                           parameterset=parset,
-                                                           string_value=paramname.name)
+                                                        parameterset=parset,
+                                                        string_value=paramname.name,
+                                                        sensitive_metadata=sens_param)
                         df_parameter.save()
 
                     # create ACLs for groups/users with 100% access
                     for y in ["adm","rd","r"]:
                         create_group_acl(test_groups["100"][y], testset, y)
-                    create_user_acl(test_groups["100"]["nogrp"], testset, y)
+                    create_user_acl(test_users["100"]["nogrp"], testset)
                     # if idx in random sample list, add acl for appropriate group/users
                     for key, val in rng_set_dict.items():
                         if idx_set in val:
                             for y in ["adm","rd","r"]:
                                 create_group_acl(test_groups[key][y], testset, y)
-                            create_user_acl(test_groups[key]["nogrp"], testset, y)
+                            create_user_acl(test_users[key]["nogrp"], testset)
 
                     # Generate random samples for level below
-                    rng_file_dict = {"1" : rng.choice(100, size=1, replace=False),
-                                     "25" : rng.choice(100, size=25, replace=False),
-                                     "50" : rng.choice(100, size=50, replace=False),
-                                     "75" : rng.choice(100, size=75, replace=False)}
+                    rng_file_dict = {"1" : [80],#rng.choice(100, size=1, replace=False),
+                                    "25" : list(range(0, 25)),#rng.choice(100, size=25, replace=False),
+                                    "50" : list(range(0, 50)),#rng.choice(100, size=50, replace=False),
+                                    "75" : list(range(0, 745))}#rng.choice(100, size=75, replace=False)}
 
                     sys.stderr.write("Dataset "+str(idx_set+1)+" created...\n")
                     sys.stderr.write("Creating Datafiles...\n")
 
                     # Create the datafiles
-                    for idx_file in range(10):
-                        testfile = DataFile(filename=hundred_words[idx_file],
+                    for idx_file in range(100):
+                        test_filename = "STRESSTEST_"+hundred_words[idx_file]
+                        testfile = DataFile(filename=test_filename,
                                             dataset=testset, size=42, md5sum="bogus")
                         testfile.save()
                         #Create ACL for "owner"
@@ -319,20 +342,24 @@ class Command(BaseCommand):
                                                       datafile=testfile)
                         parset.save()
                         for paramname in test_parnames["datafile"].values():
+                            sens_param = False
+                            if paramname.name == "Param_sens":
+                                sens_param = True
                             df_parameter = DatafileParameter(name=paramname,
-                                                               parameterset=parset,
-                                                               string_value=paramname.name)
+                                                            parameterset=parset,
+                                                            string_value=paramname.name,
+                                                            sensitive_metadata=sens_param)
                             df_parameter.save()
 
                         # create ACLs for groups/users with 100% access
                         for y in ["adm","rd","r"]:
                             create_group_acl(test_groups["100"][y], testfile, y)
-                        create_user_acl(test_groups["100"]["nogrp"], testfile, y)
+                        create_user_acl(test_users["100"]["nogrp"], testfile)
                         # if idx in random sample list, add acl for appropriate group/users
                         for key, val in rng_file_dict.items():
                             if idx_file in val:
                                 for y in ["adm","rd","r"]:
                                     create_group_acl(test_groups[key][y], testfile, y)
-                                create_user_acl(test_groups[key]["nogrp"], testfile, y)
+                                create_user_acl(test_users[key]["nogrp"], testfile)
 
                         sys.stderr.write("Datafile "+str(idx_file+1)+" created...\n")
