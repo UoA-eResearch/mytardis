@@ -27,7 +27,7 @@ function TypeAttributeFilter({typeId, attributeId}) {
   const ApplicableFilter = mapTypeToFilter(attribute.data_type);
   return (
     <section>
-      <h3 className="h5">{attribute.full_name}</h3>
+      <h3 className="h6">{attribute.full_name}</h3>
       <ApplicableFilter id={typeId+"."+attributeId} value={attribute.value} onValueChange={setFilterValue} options={attribute.options} />
     </section>
   )
@@ -91,6 +91,7 @@ export function PureFiltersSection({ types, schemas, typeSchemas, isLoading, err
               <Tab key={type} eventKey={type} title={<Sticker />}>
                 {/* FIXME: harmonise type names to be singular. */}
                 <QuickSearchBox typeId={type.substring(0, type.length - 1)} />
+                <hr />
                 <TypeAttributesList typeId={type} />
                 <TypeSchemaList typeId={type} />
               </Tab>
