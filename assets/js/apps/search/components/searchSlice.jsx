@@ -124,7 +124,14 @@ export const totalPagesSelector = (searchSlice, typeId) => (
  * @param {string} typeId MyTardis object type.
  */
 export const searchTermSelector = (searchSlice, typeId) => (
-    searchSlice.searchTerm instanceof Object ? searchSlice.searchTerm[typeId] : ""
+    // Check search term exists and is an object before returning
+    // search term.
+    (searchSlice && 
+        searchSlice.searchTerm &&
+        typeof searchSlice.searchTerm === "object" && 
+        !Array.isArray(searchSlice.searchTerm))
+        ? 
+        searchSlice.searchTerm[typeId] : ""
 );
 
 const initialState = {
@@ -406,7 +413,7 @@ const getDisplayQueryString = (queryBody) => {
         // when there aren't any filters or search terms don't show a query at all.
         return location.pathname;
     }
-}
+};
 
 /**
  * Given the search part of URL, returns the search term or filters serialised in there.
@@ -414,36 +421,35 @@ const getDisplayQueryString = (queryBody) => {
  * @private Only exported to run unit tests
  */
 export const parseQuery = (searchString) => {
-    const convertLegacySearchTermQuery = (searchQuery) => {
-        // Check if the query is a string (as search queries were
-        // applied to all types.)
-        // Convert to new format if so.
-        if (typeof searchQuery.query === "string") {
-            searchQuery.query = {
-                project: searchQuery.query,
-                experiment: searchQuery.query,
-                dataset: searchQuery.query,
-                datafile: searchQuery.query
-            };
+    const convertLegacySearchTermQuery = (searchTerm) => {
+        // Convert text string search term queries 
+        // to new format if so.
+        if (!searchTerm) {
+            return {};
         }
-        return searchQuery;
+        return {
+            query: {
+                project: searchTerm,
+                experiment: searchTerm,
+                dataset: searchTerm,
+                datafile: searchTerm
+            }
+        };
     };
 
     const buildResultForParsedQuery = (queryString) => {
         if (!queryString) { return {}; }
-        let resultQuery;
         try {
             const parsed = JSON.parse(queryString);
             if (typeof parsed === "object" && !Array.isArray(parsed)) {
-                resultQuery = parsed;
+                return parsed;
             } else {
-                resultQuery = { query: queryString };
+                return convertLegacySearchTermQuery(queryString);
             }
         } catch (e) {
             // When we fail to parse, we assume it's a search term string.
-            resultQuery = { query: queryString };
+            return convertLegacySearchTermQuery(queryString);
         }
-        return convertLegacySearchTermQuery(resultQuery);
     };
 
     
