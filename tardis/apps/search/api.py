@@ -548,6 +548,46 @@ class SearchAppResource(Resource):
         # Create the result object which will be returned to the front-end
         result_dict = {k: [] for k in ["projects", "experiments", "datasets", "datafiles"]}
 
+
+
+        # If filters are active, enforce the "parent in results" criteria on relevant objects
+        if filter_level:
+            # Define parent_type for experiment/datafile (N/A for project, hardcoded for dataset)
+            parent_child = {"experiment":"project", "datafile":"dataset"}
+            # Define hierarchy of types for filter levels
+            hierarch = [3,2,1]#{"experiments":3, "datasets":2, "datafiles":1}
+            for idx, item in enumerate(results[1:]):
+                # if active filter level higher than current object type: apply "parent-in-result" filter
+                if hierarch[idx] < filter_level:
+
+                    parent_ids = [objj["_source"]['id'] for objj in results[idx].hits.hits]
+
+                    for obj_idx, obj in reversed(list(enumerate(item.hits.hits))):
+                        if obj["_index"] != 'dataset':
+                            if obj["_source"][parent_child[obj["_index"]]]["id"] not in parent_ids: #parent object is idx-1, but idx in enumerate is already shifted by -1, so straight idx
+                                results[idx+1].hits.hits.pop(obj_idx)
+                        else:
+                            exp_ids = [parent['id'] for parent in obj["_source"]["experiments"]]
+                            if not any(itemm in exp_ids for itemm in parent_ids):
+                                results[idx+1].hits.hits.pop(obj_idx)
+
+        time5 = time.time()
+        result_dict["timings"]["4_parent_filter"] = time5-time4
+
+        # Count the number of search results after elasticsearch + parent filtering
+        total_hits = {index_list[idx]+'s':len(type.hits.hits) for idx,type in enumerate(results)}
+
+
+        for item in results:
+            item.hits.hits = item.hits.hits[request_offset:(request_offset+request_size)]
+
+
+        # Pagination done before final cleaning to reduce "clean_parent_ids" duration
+        # Default Pagination handled by response.get if key isn't specified
+        #result_dict = {k:v[request_offset:(request_offset+request_size)] for k,v in result_dict.items()}
+
+
+
         # Clean and prepare the results "hit" objects and append them to the results_dict
         for item in results:
             for hit_attrdict in item.hits.hits:
@@ -633,32 +673,6 @@ class SearchAppResource(Resource):
                 if hit["_source"]['id'] not in [objj["_source"]['id'] for objj in result_dict[hit["_index"]+"s"]]:
                     result_dict[hit["_index"]+"s"].append(hit)
 
-
-        # If filters are active, enforce the "parent in results" criteria on relevant objects
-        if filter_level:
-            # Define parent_type for experiment/datafile (N/A for project, hardcoded for dataset)
-            parent_child = {"experiment":"project", "datafile":"dataset"}
-            # Define hierarchy of types for filter levels
-            hierarchy = {"experiments":3, "datasets":2, "datafiles":1}
-            for objs in ["experiments", "datasets", "datafiles"]:
-                # if active filter level higher than current object type: apply "parent-in-result" filter
-                if hierarchy[objs] < filter_level:
-                    for obj_idx, obj in reversed(list(enumerate(result_dict[objs]))):
-                        if obj["_index"] != 'dataset':
-                            if obj["_source"][parent_child[obj["_index"]]]["id"] not in [objj["_source"]['id'] \
-                                    for objj in result_dict[parent_child[obj["_index"]]+"s"]]:
-                                result_dict[objs].pop(obj_idx)
-                        else:
-                            exp_ids = [parent['id'] for parent in obj["_source"]["experiments"]]
-                            if not any(item in exp_ids for item in [objj["_source"]['id'] for objj in result_dict["experiments"]]):
-                                result_dict[objs].pop(obj_idx)
-
-        # Count the number of search results after elasticsearch + parent filtering
-        total_hits = {k:len(v) for k,v in result_dict.items()}
-
-        # Pagination done before final cleaning to reduce "clean_parent_ids" duration
-        # Default Pagination handled by response.get if key isn't specified
-        result_dict = {k:v[request_offset:(request_offset+request_size)] for k,v in result_dict.items()}
 
         # Removes parent IDs from hits once parent-filtering applied
         # Removed for tidiness in returned response to front-end
