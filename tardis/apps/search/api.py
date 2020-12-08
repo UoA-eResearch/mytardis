@@ -178,11 +178,11 @@ class SearchAppResource(Resource):
 
 
     def obj_create(self, bundle, **kwargs):
-        bundle = self.dehydrate(bundle)
+        bundle = self.create_search_results(bundle)
         return bundle
 
 
-    def dehydrate(self, bundle):
+    def create_search_results(self, bundle):
         logging.warning("Testing search app")
         user = bundle.request.user
         if not user.is_authenticated:
