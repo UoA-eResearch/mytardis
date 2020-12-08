@@ -74,36 +74,38 @@ const NumberRangeFilter = ({ value, options, onValueChange }) => {
     useEffect(() => {
         setLocalValue(toLocalValue(value));
     }, [value]);
+    const [ lastInputChanged, setLastInputChanged ] = useState(null);
     const [isValidValue, setIsValidValue] = useState(true);
     const handleValueChange = (type, e) => {
-        // Copy the value object, then assign new value into either "min" or "max".
         const valueFromForm = e.target.value;
         const newValue = Object.assign({}, localValue);
         newValue[type] = valueFromForm;
-
-        // find which value is changing
-        console.log(newValue);
-
         if (isNaN(valueFromForm)) {
             setIsValidValue(false);
-            console.log('not a number');
         }
 
-        checkValidation(newValue, localValue);
         setLocalValue(newValue);
+        setLastInputChanged(type)
     };
 
-    const checkValidation = (newValue, localValue) => {
-        // if not changing min, then updating max.
-        if (newValue.min !== localValue.min) {
-            if (Number(newValue.min) > Number(newValue.max)) {
-                newValue.max = newValue.min;
-            }
-        } else {
-            if (Number(newValue.max) < Number(newValue.min)) {
-                newValue.min = newValue.max;
-            }
+    /**
+     * Checks for purely numeric values. If the range contain no values, sets both sliders to the last updated value.
+     * @param {*} lastInputChanged The last number change input that was updated.
+     */
+    const validateNumRange = (lastInputChanged) => {
+        if (isNaN(localValue.min) || isNaN(!localValue.max)) {
+            setIsValidValue(false)
         }
+        if (localValue.max - localValue.min < 0) {
+            let correctedValue = {...localValue};
+            lastInputChanged === "min" ? correctedValue.max = localValue.min : correctedValue.min = localValue.max;
+            setLocalValue(correctedValue);
+        }
+    }
+
+    const handleBlur = () => {
+        console.log('last changed',lastInputChanged);
+        validateNumRange(lastInputChanged);
     }
 
     // We should disable the filter button if there's nothing in the filter box.
@@ -122,7 +124,9 @@ const NumberRangeFilter = ({ value, options, onValueChange }) => {
             <Form.Group className="num-range-filter__field">
                 <Form.Label>Min</Form.Label>
                 <Form.Control
+                    isInvalid={!isValidValue}
                     onChange={handleValueChange.bind(this, "min")}
+                    onBlur={handleBlur}
                     value={localValue.min}
                     aria-label="Filter input for min value"
                     placeholder={options.hintMin}
@@ -132,6 +136,8 @@ const NumberRangeFilter = ({ value, options, onValueChange }) => {
             <Form.Group className="num-range-filter__field">
                 <Form.Label>Max</Form.Label>
                 <Form.Control
+                    isInvalid={!isValidValue}
+                    onBlur={handleBlur}
                     onChange={handleValueChange.bind(this, "max")}
                     value={localValue.max}
                     aria-label="Filter input for max value"

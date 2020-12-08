@@ -81,7 +81,10 @@ const TextFilter = ({ value, options, onValueChange }) => {
     return (
         <Form onSubmit={handleSubmit}>
             <InputGroup>
-                <FormControl onChange={handleValueChange} value={localValue} aria-label="Filter input" placeholder={options.hint}></FormControl>
+                <FormControl isInvalid={!isValidValue} onChange={handleValueChange} 
+                    value={localValue} aria-label="Filter input" 
+                    placeholder={options.hint}
+                ></FormControl>
                 <InputGroup.Append>
                     <Button type="submit" aria-label="Filter results" variant={canChangeValue ? "secondary" : "outline-secondary"}>Filter</Button>
                 </InputGroup.Append>

@@ -171,6 +171,7 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
                 <Form.Group className="date-range-filter__field">
                     <Form.Label htmlFor={endFieldId} srOnly={options.hideLabels}>End</Form.Label>
                     <Datetime
+                        isInvalid={!isValidValue}
                         value={localValue.end}
                         onChange={handleValueChange.bind(this, "end")}
                         inputProps={{ placeholder: options.hintEnd, id: endFieldId }}
@@ -183,6 +184,7 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
             {isValidValue ? null :
                 <FilterError
                     message={"Invalid date"}
+                    showIcon={true}
                     longMessage={"You have entered an invalid date. Select a date by clicking on the date and selecting from the calendar or by typing a valid date format."}
                 />
             }
