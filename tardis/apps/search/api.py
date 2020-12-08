@@ -549,7 +549,6 @@ class SearchAppResource(Resource):
         result_dict = {k: [] for k in ["projects", "experiments", "datasets", "datafiles"]}
 
 
-
         # If filters are active, enforce the "parent in results" criteria on relevant objects
         if filter_level:
             # Define parent_type for experiment/datafile (N/A for project, hardcoded for dataset)
@@ -571,8 +570,6 @@ class SearchAppResource(Resource):
                             if not any(itemm in exp_ids for itemm in parent_ids):
                                 results[idx+1].hits.hits.pop(obj_idx)
 
-        time5 = time.time()
-        result_dict["timings"]["4_parent_filter"] = time5-time4
 
         # Count the number of search results after elasticsearch + parent filtering
         total_hits = {index_list[idx]+'s':len(type.hits.hits) for idx,type in enumerate(results)}
