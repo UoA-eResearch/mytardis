@@ -628,11 +628,11 @@ class SearchAppResource(Resource):
                     safe_nested_dfs = list(safe_nested_dfs_set)
                     safe_nested_dfs_count = len(safe_nested_dfs_set)
                     if hit["_index"] in {"project", "experiment"}:
-                        safe_nested_set= len({preloaded["dataset"]["objects"]}.intersection(
+                        safe_nested_set= len({*preloaded["dataset"]["objects"]}.intersection(
                                                 preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['sets']))
                     # Ugly hack, should do a nicer, less verbose loop+type detection
                     if hit["_index"] == 'project':
-                        safe_nested_exp = len({preloaded["experiment"]["objects"]}.intersection(
+                        safe_nested_exp = len({*preloaded["experiment"]["objects"]}.intersection(
                                                 preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['exps']))
                         hit["_source"]["counts"] = {"experiments" :safe_nested_exp,
                                                     "datasets" : safe_nested_set,
