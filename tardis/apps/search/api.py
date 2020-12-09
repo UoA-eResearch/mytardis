@@ -623,7 +623,7 @@ class SearchAppResource(Resource):
                         hit["_source"]["userDownloadRights"] = "none"
 
                 else:
-                    safe_nested_dfs_set = {preloaded["datafile"]["objects"]}.intersection(
+                    safe_nested_dfs_set = {*preloaded["datafile"]["objects"]}.intersection(
                                             preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['dfs'])
                     safe_nested_dfs = list(safe_nested_dfs_set)
                     safe_nested_dfs_count = len(safe_nested_dfs_set)
