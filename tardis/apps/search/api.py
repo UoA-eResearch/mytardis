@@ -612,43 +612,48 @@ class SearchAppResource(Resource):
                 hit.pop("sort")
 
                 # Get count of all nested objects and download status
-                if hit["_index"] != 'datafile':
-                    safe_nested_dfs = list(set(preloaded["datafile"]["objects"].keys()).intersection(list(
-                                            preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['dfs'])))
-                    if hit["_index"] in ["project", "experiment"]:
-                        safe_nested_set= len(set(preloaded["dataset"]["objects"].keys()).intersection(list(
-                                                preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['sets'])))
-                    # Ugly hack, should do a nicer, less verbose loop+type detection
-                    if hit["_index"] == 'project':
-                        safe_nested_exp = len(set(preloaded["experiment"]["objects"].keys()).intersection(list(
-                                                preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['exps'])))
-                        hit["_source"]["counts"] = {"experiments" :safe_nested_exp,
-                                                    "datasets" : safe_nested_set,
-                                                    "datafiles": len(safe_nested_dfs)}
-                    if hit["_index"] == 'experiment':
-                        hit["_source"]["counts"] = {"datasets" : safe_nested_set,
-                                                    "datafiles": len(safe_nested_dfs)}
-                    if hit["_index"] == 'dataset':
-                        hit["_source"]["counts"] = {"datafiles": len(safe_nested_dfs)}
-                    # Get downloadable datafiles ultimately belonging to this "hit" object
-                    # and calculate the total size of these files
-                    safe_nested_dfs_dl = list(set(safe_nested_dfs).intersection(datafiles_dl))
-                    size = sum([preloaded["datafile"]["objects"][id]["size"] for id in safe_nested_dfs_dl])
-                    # Determine the download state of the "hit" object
-                    safe_nested_dfs_dl_bool = [id in datafiles_dl for id in safe_nested_dfs]
-                    if all(safe_nested_dfs_dl_bool):
-                        hit["_source"]["userDownloadRights"] = 'full'
-                    elif any(safe_nested_dfs_dl_bool):
-                        hit["_source"]["userDownloadRights"] = 'partial'
-                    else:
-                        hit["_source"]["userDownloadRights"] = 'none'
+                if hit["_index"] == 'datafile':
 
-                else:
                     if hit["_source"]["id"] in datafiles_dl:
                         hit["_source"]["userDownloadRights"] = "full"
                         size = hit["_source"]["size"]
                     else:
                         hit["_source"]["userDownloadRights"] = "none"
+
+                else:
+                    safe_nested_dfs_set = set(preloaded["datafile"]["objects"].keys()).intersection(set(
+                                            preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['dfs']))
+                    safe_nested_dfs = list(safe_nested_dfs_set)
+                    safe_nested_dfs_count = len(safe_nested_dfs_set)
+                    if hit["_index"] in {"project", "experiment"}:
+                        safe_nested_set= len(set(preloaded["dataset"]["objects"].keys()).intersection(set(
+                                                preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['sets'])))
+                    # Ugly hack, should do a nicer, less verbose loop+type detection
+                    if hit["_index"] == 'project':
+                        safe_nested_exp = len(set(preloaded["experiment"]["objects"].keys()).intersection(set(
+                                                preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['exps'])))
+                        hit["_source"]["counts"] = {"experiments" :safe_nested_exp,
+                                                    "datasets" : safe_nested_set,
+                                                    "datafiles": (safe_nested_dfs_count)}
+                    if hit["_index"] == 'experiment':
+                        hit["_source"]["counts"] = {"datasets" : safe_nested_set,
+                                                    "datafiles": safe_nested_dfs_count}
+                    if hit["_index"] == 'dataset':
+                        hit["_source"]["counts"] = {"datafiles": safe_nested_dfs_count}
+                    # Get downloadable datafiles ultimately belonging to this "hit" object
+                    # and calculate the total size of these files
+                    safe_nested_dfs_dl = list(safe_nested_dfs_set.intersection(datafiles_dl))
+                    size = sum([preloaded["datafile"]["objects"][id]["size"] for id in safe_nested_dfs_dl])
+                    # Determine the download state of the "hit" object
+                    #safe_nested_dfs_dl_bool = [id in datafiles_dl for id in safe_nested_dfs]
+                    if safe_nested_dfs_set.issubset(datafiles_dl):
+                        hit["_source"]["userDownloadRights"] = 'full'
+                    elif safe_nested_dfs_set.intersection(datafiles_dl):
+                        hit["_source"]["userDownloadRights"] = 'partial'
+                    else:
+                        hit["_source"]["userDownloadRights"] = 'none'
+
+                    #hit["_source"]["userDownloadRights"] = "none"
 
                 hit["_source"]["size"] = filesizeformat(size)
 
