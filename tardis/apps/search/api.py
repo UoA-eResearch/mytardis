@@ -95,18 +95,18 @@ class SchemasAppResource(Resource):
                            }
             return [SchemasObject(id=1, schemas=result_dict)]
         result_dict = {
-                       "projects" : list(set(list(Project.safe.all(request.user
+                       "projects" : [*{*Project.safe.all(request.user
                                     ).prefetch_related('projectparameterset'
-                                    ).values_list("projectparameterset__schema__id", flat=True)))),
-                       "experiments" : list(set(list(Experiment.safe.all(request.user
+                                    ).values_list("projectparameterset__schema__id", flat=True)}],
+                       "experiments" : [*{*Experiment.safe.all(request.user
                                        ).prefetch_related('experimentparameterset'
-                                       ).values_list("experimentparameterset__schema__id", flat=True)))),
-                       "datasets" : list(set(list(Dataset.safe.all(request.user
+                                       ).values_list("experimentparameterset__schema__id", flat=True)}],
+                       "datasets" : [*{*Dataset.safe.all(request.user
                                        ).prefetch_related('datasetparameterset'
-                                       ).values_list("datasetparameterset__schema__id", flat=True)))),
-                       "datafiles" : list(set(list(DataFile.safe.all(request.user
+                                       ).values_list("datasetparameterset__schema__id", flat=True)}],
+                       "datafiles" : [*{*DataFile.safe.all(request.user
                                        ).prefetch_related('datafileparameterset'
-                                       ).values_list("datafileparameterset__schema__id", flat=True))))
+                                       ).values_list("datafileparameterset__schema__id", flat=True)}]
                        }
         safe_dict = {}
         for key in result_dict:
@@ -488,12 +488,12 @@ class SearchAppResource(Resource):
         # --------------------
 
         # load in object IDs for all objects a user has sensitive access to
-        projects_sens = {Project.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
-        experiments_sens = {Experiment.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
-        datasets_sens = {Dataset.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
-        datafiles_sens = {DataFile.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        projects_sens = {*Project.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        experiments_sens = {*Experiment.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        datasets_sens = {*Dataset.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        datafiles_sens = {*DataFile.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
         # load in datafile IDs for all datafiles a user has download access to
-        datafiles_dl = {DataFile.safe.all(user, downloadable=True).values_list("id", flat=True)}
+        datafiles_dl = {*DataFile.safe.all(user, downloadable=True).values_list("id", flat=True)}
         # re-structure into convenient dictionary
         preloaded = {
                      "project": {"sens_list" : projects_sens,
@@ -510,11 +510,11 @@ class SearchAppResource(Resource):
         # access to these child objects (the access check come later)
         projects_values = ["id", "experiment__id", "experiment__datasets__id",
                                                  "experiment__datasets__datafile__id"]
-        projects = list(Project.safe.all(user).values_list(*projects_values))
+        projects = [*Project.safe.all(user).values_list(*projects_values)]
         experiments_values = ["id", "datasets__id", "datasets__datafile__id"]
-        experiments = list(Experiment.safe.all(user).values_list(*experiments_values))
-        datasets = list(Dataset.safe.all(user).prefetch_related("datafile").values_list("id", "datafile__id"))
-        datafiles = list(DataFile.safe.all(user).values_list("id", "size"))
+        experiments = [*Experiment.safe.all(user).values_list(*experiments_values)]
+        datasets = [*Dataset.safe.all(user).prefetch_related("datafile").values_list("id", "datafile__id")]
+        datafiles = [*DataFile.safe.all(user).values_list("id", "size")]
         # add data to preloaded["objects"] dictionary with ID as key and nested items as value - key/values.
         # Probably a cleaner/simpler way to do this, but hey ho!
         for key, value in {"project": projects, "experiment": experiments,
@@ -562,10 +562,11 @@ class SearchAppResource(Resource):
                 if hierarch[idx] < filter_level:
 
                     parent_ids = [objj["_source"]['id'] for objj in results[idx].hits.hits]
+                    parent_ids_set = {*parent_ids}
 
-                    for obj_idx, obj in reversed(list(enumerate(item.hits.hits))):
+                    for obj_idx, obj in reversed([*enumerate(item.hits.hits)]):
                         if obj["_index"] != 'dataset':
-                            if obj["_source"][parent_child[obj["_index"]]]["id"] not in parent_ids: #parent object is idx-1, but idx in enumerate is already shifted by -1, so straight idx
+                            if obj["_source"][parent_child[obj["_index"]]]["id"] not in parent_ids_set: #parent object is idx-1, but idx in enumerate is already shifted by -1, so straight idx
                                 results[idx+1].hits.hits.pop(obj_idx)
                         else:
                             exp_ids = [parent['id'] for parent in obj["_source"]["experiments"]]
@@ -625,7 +626,7 @@ class SearchAppResource(Resource):
                 else:
                     safe_nested_dfs_set = {*preloaded["datafile"]["objects"]}.intersection(
                                             preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['dfs'])
-                    safe_nested_dfs = list(safe_nested_dfs_set)
+                    safe_nested_dfs = [*safe_nested_dfs_set]
                     safe_nested_dfs_count = len(safe_nested_dfs_set)
                     if hit["_index"] in {"project", "experiment"}:
                         safe_nested_set= len({*preloaded["dataset"]["objects"]}.intersection(
@@ -644,7 +645,7 @@ class SearchAppResource(Resource):
                         hit["_source"]["counts"] = {"datafiles": safe_nested_dfs_count}
                     # Get downloadable datafiles ultimately belonging to this "hit" object
                     # and calculate the total size of these files
-                    safe_nested_dfs_dl = list(safe_nested_dfs_set.intersection(datafiles_dl))
+                    safe_nested_dfs_dl = [*safe_nested_dfs_set.intersection(datafiles_dl)]
                     size = sum([preloaded["datafile"]["objects"][id]["size"] for id in safe_nested_dfs_dl])
                     # Determine the download state of the "hit" object
                     #safe_nested_dfs_dl_bool = [id in datafiles_dl for id in safe_nested_dfs]
@@ -659,7 +660,7 @@ class SearchAppResource(Resource):
 
 
                 # if no sensitive access, remove sensitive metadata from response
-                for idxx, parameter in reversed(list(enumerate(hit["_source"]["parameters"]))):
+                for idxx, parameter in reversed([*enumerate(hit["_source"]["parameters"])]):
                     if not sensitive_bool:
                         if parameter['sensitive']:
                             hit["_source"]["parameters"].pop(idxx)
@@ -681,7 +682,7 @@ class SearchAppResource(Resource):
         # Define parent_type for experiment/datafile (N/A for project)
         parent_child = {"experiment":"project", "dataset":"experiments", "datafile":"dataset"}
         for objs in ["experiments", "datasets", "datafiles"]:
-            for obj_idx, obj in reversed(list(enumerate(result_dict[objs]))):
+            for obj_idx, obj in reversed([*enumerate(result_dict[objs])]):
                 del result_dict[objs][obj_idx]["_source"][parent_child[obj["_index"]]]
 
         # If individual object type requested, limit the returned values to that object type
