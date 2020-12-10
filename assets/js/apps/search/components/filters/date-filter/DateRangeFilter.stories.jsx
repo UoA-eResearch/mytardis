@@ -1,23 +1,19 @@
-import React from 'react'
-import DateRangeFilter from './DateRangeFilter';
-import { action } from '@storybook/addon-actions';
+// eslint-disable-next-line no-unused-vars
+import React from "react";
+import DateRangeFilter from "./DateRangeFilter";
 
 export default {
-  component: DateRangeFilter,
-  title: 'Filters/Date range filter',
-  decorators: [story => <div style={{ padding: '3rem', width:"300px"  }}>{story()}</div>],
-  excludeStories: /.*Data$/,
-  parameters: {
-    // Disabled snapshot testing as the datetime picker has a special class
-    // for which day is today - which changes daily and invalidates the test.
-    storyshots: { disable: true },
-  }
+    component: DateRangeFilter,
+    title: "Filters/Date range filter",
+    decorators: [story => <div style={{ padding: "3rem", width: "300px" }}>{story()}</div>],
+    excludeStories: /.*Data$/,
+    parameters: { actions: { argTypesRegex: "^on.*" } }
 };
 
 export const dateRangeFilterData = {
     value: [
         {
-            op:">=",
+            op: ">=",
             content: "2020-01-05"
         },
         {
@@ -25,15 +21,14 @@ export const dateRangeFilterData = {
             content: "2020-05-28"
         }
     ],
-    onValueChange: action("Value changed"),
     id: "cidEnergy",
     options: {
         hintStart: "Start date",
         hintEnd: "End date"
     },
-}
+};
 
-export const emptyDateRangeFilterData = Object.assign({},dateRangeFilterData, {
+export const emptyDateRangeFilterData = Object.assign({}, dateRangeFilterData, {
     value: null
 });
 
@@ -55,34 +50,19 @@ export const noLabelsFilterData = Object.assign({}, dateRangeFilterData, {
     })
 });
 
-export const Default = (storyMetadata,onValueChange) => {
-    let props = dateRangeFilterData;
-    if (onValueChange) {
-        props = Object.assign({}, dateRangeFilterData, {
-            onValueChange
-        })
-    }
-    return <DateRangeFilter {...props} />
-}
+const Template = (args) => <DateRangeFilter {...args} />;
 
-export const Empty = (storyMetadata,onValueChange) => {
-    let props = emptyDateRangeFilterData;
-    if (onValueChange) {
-        props = Object.assign({},emptyDateRangeFilterData, {
-            onValueChange
-        })
-    }
-    return <DateRangeFilter {...props} />
-}
+export const Default = Template.bind({});
+Default.args = dateRangeFilterData;
 
-export const OnlyShowStart = () => (
-    <DateRangeFilter {...onlyShowStartFilterData} />
-)
+export const Empty = Template.bind({});
+Empty.args = emptyDateRangeFilterData;
 
-export const OnlyShowEnd = () => (
-    <DateRangeFilter {...onlyShowEndFilterData} />
-)
+export const OnlyShowStart = Template.bind({});
+OnlyShowStart.args = onlyShowStartFilterData;
 
-export const NoLabels = () => (
-    <DateRangeFilter {...noLabelsFilterData} />
-)
+export const OnlyShowEnd = Template.bind({});
+OnlyShowEnd.args = onlyShowEndFilterData;
+
+export const NoLabels = Template.bind({});
+NoLabels.args = noLabelsFilterData;

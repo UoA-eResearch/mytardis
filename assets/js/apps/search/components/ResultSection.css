@@ -60,9 +60,3 @@
 .result-section__container.loading .result-section--row {
     opacity: 0.4;
 }
-
-.result-section--row:focus {
-    color: #212529;
-    background-color: rgba(0, 0, 0, 0.075);
-}
-

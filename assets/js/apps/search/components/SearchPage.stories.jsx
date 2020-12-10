@@ -4,6 +4,7 @@ import { experimentListData } from './ResultList.stories'
 import { Provider } from 'react-redux';
 import { filtersData } from "./filters/filters-section/FiltersSection.stories";
 import makeMockStore from "../util/makeMockStore";
+import { SORT_ORDER } from "./searchSlice";
 
 export default {
     component: SearchPage,
@@ -82,8 +83,31 @@ export const searchInfoData = {
         experiment: 10,
         dataset: 10,
         datafile: 10
+    },
+    sort: {
+        project: {
+            active: [ "institution"],
+            order: {
+                "institution": SORT_ORDER.descending
+            }
+        }, experiment: {
+            active: [ "institution" ],
+            order: {
+                "institution": SORT_ORDER.descending
+            }        
+        }, dataset: {
+            active: [ "institution" ],
+            order: {
+                "institution": SORT_ORDER.descending
+            }
+        }, datafile: {
+            active: [ "institution" ],
+            order: {
+                "institution": SORT_ORDER.descending
+            }
+        }
     }
-}
+};
 
 export const errorData = Object.assign({},searchInfoData,{
     error: "An error occurred",
