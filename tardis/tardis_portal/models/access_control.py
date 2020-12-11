@@ -241,6 +241,8 @@ class ObjectACL(models.Model):
 
     pluginId = models.CharField(null=False, blank=False, max_length=30)
     entityId = models.CharField(null=False, blank=False, max_length=320)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='objectacls')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name='objectacls')
 #    experiment = models.ForeignKey('Experiment')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -255,6 +257,16 @@ class ObjectACL(models.Model):
     expiryDate = models.DateField(null=True, blank=True)
     aclOwnershipType = models.IntegerField(
         choices=__COMPARISON_CHOICES, default=OWNER_OWNED)
+
+    def save(self, *args, **kwargs):
+        """
+        Only save ACL if at least one of User/Group key is Null/None
+        """
+        if self.user is not None:
+            if self.group is not None:
+                raise AssertionError("An ACL cannot have both a User and a Group")
+        super().save(*args, **kwargs)
+
 
     def get_related_object(self):
         """
