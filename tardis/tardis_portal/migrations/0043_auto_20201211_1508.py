@@ -12,9 +12,15 @@ def update_user_or_group(apps, schema_editor):
 
     for acl in ACL.objects.all():
         if acl.pluginId == 'django_user':
-            acl.user = USER.objects.get(pk=acl.entityId)
+            try:
+                acl.user = USER.objects.get(pk=acl.entityId)
+            except:
+                print("ERROR linking ACL: id="+str(acl.id)+', userid='+str(acl.entityId))
         if acl.pluginId == 'django_group':
-            acl.group = GROUP.objects.get(pk=acl.entityId)
+            try:
+                acl.group = GROUP.objects.get(pk=acl.entityId)
+            except:
+                print("ERROR linking ACL: id="+str(acl.id)+', groupid='+str(acl.entityId))
         acl.save()
 
 class Migration(migrations.Migration):
