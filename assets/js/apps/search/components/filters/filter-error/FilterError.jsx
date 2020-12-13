@@ -9,7 +9,7 @@ const FilterError = ({ message, longMessage, showIcon }) => {
         <>
             <OverlayTrigger
                 overlay={
-                    <Tooltip className='filter-error___tooltip'>{longMessage ? longMessage : message}</Tooltip>
+                    <Tooltip data-testid="long-t" className='filter-error___tooltip'>{longMessage ? longMessage : message}</Tooltip>
                 }
                 delay={{ show: 250, hide: 400 }}
                 placement="bottom"
@@ -19,7 +19,7 @@ const FilterError = ({ message, longMessage, showIcon }) => {
                     aria-label="Filter error message"
                     className="filter-error"
                 >
-                    <p className='filter-error___text'>
+                    <p data-testid="filter-error-text" className='filter-error___text'>
                         {message}
                     </p>
                     {showIcon ?

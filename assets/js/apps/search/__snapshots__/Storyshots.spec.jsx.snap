@@ -2094,45 +2094,37 @@ exports[`Storyshots Filter Error Popup Date Range 1`] = `
   >
     <p
       className="filter-error___text"
+      data-testid="filter-error-text"
     >
       Invalid Date Range
     </p>
-    <svg
-      aria-label="error message icon"
-      className="filter-error___icon"
-      fill="none"
-      height="1em"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      style={
-        Object {
-          "color": undefined,
-        }
-      }
-      viewBox="0 0 24 24"
-      width="1em"
-      xmlns="http://www.w3.org/2000/svg"
+  </div>
+</div>
+`;
+
+exports[`Storyshots Filter Error Popup Default 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+      "width": "300px",
+    }
+  }
+>
+  <div
+    aria-label="Filter error message"
+    className="filter-error"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+  >
+    <p
+      className="filter-error___text"
+      data-testid="filter-error-text"
     >
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-      />
-      <line
-        x1="12"
-        x2="12"
-        y1="16"
-        y2="12"
-      />
-      <line
-        x1="12"
-        x2="12"
-        y1="8"
-        y2="8"
-      />
-    </svg>
+      message
+    </p>
   </div>
 </div>
 `;
@@ -2156,45 +2148,10 @@ exports[`Storyshots Filter Error Popup Number Range 1`] = `
   >
     <p
       className="filter-error___text"
+      data-testid="filter-error-text"
     >
       Invalid Range Values
     </p>
-    <svg
-      aria-label="error message icon"
-      className="filter-error___icon"
-      fill="none"
-      height="1em"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      style={
-        Object {
-          "color": undefined,
-        }
-      }
-      viewBox="0 0 24 24"
-      width="1em"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-      />
-      <line
-        x1="12"
-        x2="12"
-        y1="16"
-        y2="12"
-      />
-      <line
-        x1="12"
-        x2="12"
-        y1="8"
-        y2="8"
-      />
-    </svg>
   </div>
 </div>
 `;
@@ -17333,6 +17290,7 @@ exports[`Storyshots Filters/Number range filter Default 1`] = `
       <input
         aria-label="Filter input for min value"
         className="form-control"
+        onBlur={[Function]}
         onChange={[Function]}
         placeholder="Minimum"
         value={2}
@@ -17349,6 +17307,7 @@ exports[`Storyshots Filters/Number range filter Default 1`] = `
       <input
         aria-label="Filter input for max value"
         className="form-control"
+        onBlur={[Function]}
         onChange={[Function]}
         placeholder="Maximum"
         value={10}
@@ -17390,6 +17349,7 @@ exports[`Storyshots Filters/Number range filter Empty 1`] = `
       <input
         aria-label="Filter input for min value"
         className="form-control"
+        onBlur={[Function]}
         onChange={[Function]}
         placeholder="Minimum"
       />
@@ -17405,6 +17365,7 @@ exports[`Storyshots Filters/Number range filter Empty 1`] = `
       <input
         aria-label="Filter input for max value"
         className="form-control"
+        onBlur={[Function]}
         onChange={[Function]}
         placeholder="Maximum"
       />

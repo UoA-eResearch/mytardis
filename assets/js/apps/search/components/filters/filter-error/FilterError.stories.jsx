@@ -21,3 +21,12 @@ export const NumberRange = () => (
 export const DateRange = () => (
     <FilterError message={message.dateRange} />
 )
+
+const Template = (args) => <FilterError {...args} />;
+
+export const Default = Template.bind({});
+Default.args = {
+    message: "message",
+    longMessage: "longer message",
+    showIcon: false
+};
