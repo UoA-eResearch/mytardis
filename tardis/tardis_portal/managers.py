@@ -266,7 +266,7 @@ class SafeManager(models.Manager):
 
     def owned_and_shared(self, user, downloadable=False, viewsensitive=False):
         return super().get_queryset().filter(
-            self._query_owned_and_shared(user, downloadable, viewsensitive)).distinct()
+            pk__in=self._query_owned_and_shared(user, downloadable, viewsensitive)).distinct()
 
 
 
