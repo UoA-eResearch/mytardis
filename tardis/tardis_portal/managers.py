@@ -261,7 +261,7 @@ class SafeManager(models.Manager):
 
 
     def _query_owned_and_shared(self, user, downloadable=False, viewsensitive=False):
-        return self._query_shared(user, downloadable, viewsensitive).union(self._query_owned(user))
+        return self._query_shared(user, downloadable, viewsensitive) | self._query_owned(user)
 
 
     def owned_and_shared(self, user, downloadable=False, viewsensitive=False):
@@ -289,7 +289,7 @@ class SafeManager(models.Manager):
 
         query = self._query_owned(user)
         for group in user.groups.all():
-            query.union(self._query_owned_by_group(group))
+            query | self._query_owned_by_group(group)
         return super().get_queryset().filter(pk__in=query).distinct()
 
 
