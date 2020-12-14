@@ -30,3 +30,17 @@ Default.args = {
     longMessage: "longer message",
     showIcon: false
 };
+
+export const CustomMessages = Template.bind({});
+CustomMessages.args = {
+    message: 'custom short message',
+    longMessage: 'custom long message',
+    showIcon: false
+};
+
+export const WithLabel = Template.bind({})
+WithLabel.args = {
+    message: 'custom short message',
+    longMessage: 'custom long message',
+    showIcon: true
+};
