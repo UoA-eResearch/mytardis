@@ -75,31 +75,44 @@ class SafeManager(models.Manager):
             user, downloadable, viewsensitive)  # self._query_all_public() |\
 
         return super().get_queryset().filter(
-            query).distinct()
+            pk__in =query).distinct()
 
     def _query_owned(self, user, user_id=None):
         # build the query to filter the ACL table
-        query = Q(objectacls__pluginId=django_user,
-                  objectacls__entityId=str(user_id or user.id),
-                  objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-                  objectacls__isOwner=True) &\
-            (Q(objectacls__effectiveDate__lte=datetime.today())
-             | Q(objectacls__effectiveDate__isnull=True)) &\
-            (Q(objectacls__expiryDate__gte=datetime.today())
-             | Q(objectacls__expiryDate__isnull=True))
-        return query
 
+        owned_ids = user.objectacls.filter(isOwner=True,
+                                      content_type__model=self.model.get_ct(self.model).model.replace(' ','')
+                                      ).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()
+                                                ).distinct("object_id").values_list("object_id", flat=True)
+        #query = Q(objectacls__pluginId=django_user,
+        #          objectacls__entityId=str(user_id or user.id),
+        #          objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
+        #          objectacls__isOwner=True) &\
+        #    (Q(objectacls__effectiveDate__lte=datetime.today())
+        #     | Q(objectacls__effectiveDate__isnull=True)) &\
+        #    (Q(objectacls__expiryDate__gte=datetime.today())
+        #     | Q(objectacls__expiryDate__isnull=True))
+        return owned_ids
+
+    # THIS CAN BE MERGED WITH ABOVE?
     def _query_owned_by_group(self, group, group_id=None):
         # build the query to filter the ACL table
-        query = Q(objectacls__pluginId=django_group,
-                  objectacls__entityId=str(group_id or group.id),
-                  objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-                  objectacls__isOwner=True) &\
-            (Q(objectacls__effectiveDate__lte=datetime.today())
-             | Q(objectacls__effectiveDate__isnull=True)) &\
-            (Q(objectacls__expiryDate__gte=datetime.today())
-             | Q(objectacls__expiryDate__isnull=True))
-        return query
+
+        owned_ids = group.objectacls.filter(isOwner=True,
+                                      content_type__model=self.model.get_ct(self.model).model.replace(' ','')
+                                      ).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()
+                                                ).distinct("object_id").values_list("object_id", flat=True)
+        #query = Q(objectacls__pluginId=django_group,
+        #          objectacls__entityId=str(group_id or group.id),
+        #          objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
+        #          objectacls__isOwner=True) &\
+        #    (Q(objectacls__effectiveDate__lte=datetime.today())
+        #     | Q(objectacls__effectiveDate__isnull=True)) &\
+        #    (Q(objectacls__expiryDate__gte=datetime.today())
+        #     | Q(objectacls__expiryDate__isnull=True))
+        return owned_ids
 
     # ARE THE TOKENS EXP ONLY?
     def _query_shared(self, user, downloadable=False, viewsensitive=False):
@@ -109,6 +122,8 @@ class SafeManager(models.Manager):
         # if the user is not authenticated, only tokens apply
         # this is almost duplicate code of end of has_perm in authorisation.py
         # should be refactored, but cannot think of good way atm
+        #FIX THIS
+        """
         if not user.is_authenticated:
             from .auth.token_auth import TokenGroupProvider
             query = Q(id=None)
@@ -142,79 +157,119 @@ class SafeManager(models.Manager):
                         (Q(objectacls__expiryDate__gte=datetime.today())
                          | Q(objectacls__expiryDate__isnull=True))
             return query
-
+        """
         # for which proj/exp/set/files does the user have read access
         # based on USER permissions?
         if downloadable:
-            query = Q(objectacls__pluginId=django_user,
-                      objectacls__entityId=str(user.id),
-                      objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-                      objectacls__canDownload=True,
-                      objectacls__isOwner=False) &\
-                (Q(objectacls__effectiveDate__lte=datetime.today())
-                 | Q(objectacls__effectiveDate__isnull=True)) &\
-                (Q(objectacls__expiryDate__gte=datetime.today())
-                 | Q(objectacls__expiryDate__isnull=True))
+            user_obj_ids = user.objectacls.filter(isOwner=False, canDownload=True,
+                                          content_type__model=self.model.get_ct(self.model).model.replace(' ','')
+                                          ).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()
+                                                    ).distinct("object_id").values_list("object_id", flat=True)
+            #query = Q(objectacls__pluginId=django_user,
+            #          objectacls__entityId=str(user.id),
+            #          objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
+            #          objectacls__canDownload=True,
+            #          objectacls__isOwner=False) &\
+            #    (Q(objectacls__effectiveDate__lte=datetime.today())
+            #     | Q(objectacls__effectiveDate__isnull=True)) &\
+            #    (Q(objectacls__expiryDate__gte=datetime.today())
+            #     | Q(objectacls__expiryDate__isnull=True))
         elif viewsensitive:
-            query = Q(objectacls__pluginId=django_user,
-                      objectacls__entityId=str(user.id),
-                      objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-                      objectacls__canSensitive=True,
-                      objectacls__isOwner=False) &\
-                (Q(objectacls__effectiveDate__lte=datetime.today())
-                 | Q(objectacls__effectiveDate__isnull=True)) &\
-                (Q(objectacls__expiryDate__gte=datetime.today())
-                 | Q(objectacls__expiryDate__isnull=True))
+            user_obj_ids = user.objectacls.filter(isOwner=False, canSensitive=True,
+                                          content_type__model=self.model.get_ct(self.model).model.replace(' ','')
+                                          ).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()
+                                                    ).distinct("object_id").values_list("object_id", flat=True)
+            #query = Q(objectacls__pluginId=django_user,
+            #          objectacls__entityId=str(user.id),
+            #          objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
+            #          objectacls__canSensitive=True,
+            #          objectacls__isOwner=False) &\
+            #    (Q(objectacls__effectiveDate__lte=datetime.today())
+            #     | Q(objectacls__effectiveDate__isnull=True)) &\
+            #    (Q(objectacls__expiryDate__gte=datetime.today())
+            #     | Q(objectacls__expiryDate__isnull=True))
         else:
-            query = Q(objectacls__pluginId=django_user,
-                      objectacls__entityId=str(user.id),
-                      objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-                      objectacls__canRead=True,
-                      objectacls__isOwner=False) &\
-                (Q(objectacls__effectiveDate__lte=datetime.today())
-                 | Q(objectacls__effectiveDate__isnull=True)) &\
-                (Q(objectacls__expiryDate__gte=datetime.today())
-                 | Q(objectacls__expiryDate__isnull=True))
+            user_obj_ids = user.objectacls.filter(isOwner=False, canRead=True,
+                                          content_type__model=self.model.get_ct(self.model).model.replace(' ','')
+                                          ).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()
+                                                    ).distinct("object_id").values_list("object_id", flat=True)
+            #query = Q(objectacls__pluginId=django_user,
+            #          objectacls__entityId=str(user.id),
+            #          objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
+            #          objectacls__canRead=True,
+            #          objectacls__isOwner=False) &\
+            #    (Q(objectacls__effectiveDate__lte=datetime.today())
+            #     | Q(objectacls__effectiveDate__isnull=True)) &\
+            #    (Q(objectacls__expiryDate__gte=datetime.today())
+            #     | Q(objectacls__expiryDate__isnull=True))
         # for which does proj/exp/set/files does the user have read access
         # based on GROUP permissions
+        group_querysets = []
         for name, group in user.userprofile.ext_groups:
             if downloadable:
-                query |= Q(objectacls__pluginId=name,
-                           objectacls__entityId=str(group),
-                           objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-                           objectacls__canDownload=True) &\
-                    (Q(objectacls__effectiveDate__lte=datetime.today())
-                     | Q(objectacls__effectiveDate__isnull=True)) &\
-                    (Q(objectacls__expiryDate__gte=datetime.today())
-                     | Q(objectacls__expiryDate__isnull=True))
+                group_obj_ids = group.objectacls.filter(isOwner=False, canDownload=True,
+                                              content_type__model=self.model.get_ct(self.model).model.replace(' ','')
+                                              ).exclude(effectiveDate__gte=datetime.today(),
+                                                        expiryDate__lte=datetime.today()
+                                                        ).distinct("object_id").values_list("object_id", flat=True)
+                group_querysets.append(group_obj_ids)
+                #query |= Q(objectacls__pluginId=name,
+                #           objectacls__entityId=str(group),
+                #           objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
+                #           objectacls__canDownload=True) &\
+                #    (Q(objectacls__effectiveDate__lte=datetime.today())
+                #     | Q(objectacls__effectiveDate__isnull=True)) &\
+                #    (Q(objectacls__expiryDate__gte=datetime.today())
+                #     | Q(objectacls__expiryDate__isnull=True))
             elif viewsensitive:
-                query |= Q(objectacls__pluginId=name,
-                           objectacls__entityId=str(group),
-                           objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-                           objectacls__canSensitive=True) &\
-                    (Q(objectacls__effectiveDate__lte=datetime.today())
-                     | Q(objectacls__effectiveDate__isnull=True)) &\
-                    (Q(objectacls__expiryDate__gte=datetime.today())
-                     | Q(objectacls__expiryDate__isnull=True))
+                group_obj_ids = group.objectacls.filter(isOwner=False, canSensitive=True,
+                                              content_type__model=self.model.get_ct(self.model).model.replace(' ','')
+                                              ).exclude(effectiveDate__gte=datetime.today(),
+                                                        expiryDate__lte=datetime.today()
+                                                        ).distinct("object_id").values_list("object_id", flat=True)
+                group_querysets.append(group_obj_ids)
+                #query |= Q(objectacls__pluginId=name,
+                #           objectacls__entityId=str(group),
+                #           objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
+                #           objectacls__canSensitive=True) &\
+                #    (Q(objectacls__effectiveDate__lte=datetime.today())
+                #     | Q(objectacls__effectiveDate__isnull=True)) &\
+                #    (Q(objectacls__expiryDate__gte=datetime.today())
+                #     | Q(objectacls__expiryDate__isnull=True))
             else:
-                query |= Q(objectacls__pluginId=name,
-                           objectacls__entityId=str(group),
-                           objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-                           objectacls__canRead=True) &\
-                    (Q(objectacls__effectiveDate__lte=datetime.today())
-                     | Q(objectacls__effectiveDate__isnull=True)) &\
-                    (Q(objectacls__expiryDate__gte=datetime.today())
-                     | Q(objectacls__expiryDate__isnull=True))
-        return query
+                group_obj_ids = group.objectacls.filter(isOwner=False, canRead=True,
+                                              content_type__model=self.model.get_ct(self.model).model.replace(' ','')
+                                              ).exclude(effectiveDate__gte=datetime.today(),
+                                                        expiryDate__lte=datetime.today()
+                                                        ).distinct("object_id").values_list("object_id", flat=True)
+                group_querysets.append(group_obj_ids)
+                #query |= Q(objectacls__pluginId=name,
+                #           objectacls__entityId=str(group),
+                #           objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
+                #           objectacls__canRead=True) &\
+                #    (Q(objectacls__effectiveDate__lte=datetime.today())
+                #     | Q(objectacls__effectiveDate__isnull=True)) &\
+                #    (Q(objectacls__expiryDate__gte=datetime.today())
+                #     | Q(objectacls__expiryDate__isnull=True))
+
+        obj_ids = user_obj_ids.union(*group_querysets)
+        return obj_ids
 
 
     def _query_owned_and_shared(self, user, downloadable=False, viewsensitive=False):
-        return self._query_shared(user, downloadable, viewsensitive) | self._query_owned(user)
+        return self._query_shared(user, downloadable, viewsensitive).union(self._query_owned(user))
 
 
     def owned_and_shared(self, user, downloadable=False, viewsensitive=False):
         return super().get_queryset().filter(
             self._query_owned_and_shared(user, downloadable, viewsensitive)).distinct()
+
+
+
+
 
 
     def owned(self, user):
