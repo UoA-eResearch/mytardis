@@ -161,7 +161,7 @@ class SafeManager(models.Manager):
         # for which proj/exp/set/files does the user have read access
         # based on USER permissions?
         if downloadable:
-            user_obj_ids = user.objectacls.filter(isOwner=False, canDownload=True,
+            obj_ids = user.objectacls.filter(isOwner=False, canDownload=True,
                                           content_type__model=self.model.get_ct(self.model).model.replace(' ','')
                                           ).exclude(effectiveDate__gte=datetime.today(),
                                                     expiryDate__lte=datetime.today()
@@ -176,7 +176,7 @@ class SafeManager(models.Manager):
             #    (Q(objectacls__expiryDate__gte=datetime.today())
             #     | Q(objectacls__expiryDate__isnull=True))
         elif viewsensitive:
-            user_obj_ids = user.objectacls.filter(isOwner=False, canSensitive=True,
+            obj_ids = user.objectacls.filter(isOwner=False, canSensitive=True,
                                           content_type__model=self.model.get_ct(self.model).model.replace(' ','')
                                           ).exclude(effectiveDate__gte=datetime.today(),
                                                     expiryDate__lte=datetime.today()
@@ -191,7 +191,7 @@ class SafeManager(models.Manager):
             #    (Q(objectacls__expiryDate__gte=datetime.today())
             #     | Q(objectacls__expiryDate__isnull=True))
         else:
-            user_obj_ids = user.objectacls.filter(isOwner=False, canRead=True,
+            obj_ids = user.objectacls.filter(isOwner=False, canRead=True,
                                           content_type__model=self.model.get_ct(self.model).model.replace(' ','')
                                           ).exclude(effectiveDate__gte=datetime.today(),
                                                     expiryDate__lte=datetime.today()
@@ -207,7 +207,6 @@ class SafeManager(models.Manager):
             #     | Q(objectacls__expiryDate__isnull=True))
         # for which does proj/exp/set/files does the user have read access
         # based on GROUP permissions
-        group_querysets = []
         for name, group_id in user.userprofile.ext_groups:
             group = Group.objects.get(pk=group_id)
             if downloadable:
@@ -216,7 +215,7 @@ class SafeManager(models.Manager):
                                               ).exclude(effectiveDate__gte=datetime.today(),
                                                         expiryDate__lte=datetime.today()
                                                         ).values_list("object_id", flat=True)
-                group_querysets.append(group_obj_ids)
+                obj_ids = obj_ids | group_obj_ids
                 #query |= Q(objectacls__pluginId=name,
                 #           objectacls__entityId=str(group),
                 #           objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
@@ -231,7 +230,7 @@ class SafeManager(models.Manager):
                                               ).exclude(effectiveDate__gte=datetime.today(),
                                                         expiryDate__lte=datetime.today()
                                                         ).values_list("object_id", flat=True)
-                group_querysets.append(group_obj_ids)
+                obj_ids = obj_ids | group_obj_ids
                 #query |= Q(objectacls__pluginId=name,
                 #           objectacls__entityId=str(group),
                 #           objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
@@ -246,7 +245,7 @@ class SafeManager(models.Manager):
                                               ).exclude(effectiveDate__gte=datetime.today(),
                                                         expiryDate__lte=datetime.today()
                                                         ).values_list("object_id", flat=True)
-                group_querysets.append(group_obj_ids)
+                obj_ids = obj_ids | group_obj_ids
                 #query |= Q(objectacls__pluginId=name,
                 #           objectacls__entityId=str(group),
                 #           objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
@@ -255,8 +254,6 @@ class SafeManager(models.Manager):
                 #     | Q(objectacls__effectiveDate__isnull=True)) &\
                 #    (Q(objectacls__expiryDate__gte=datetime.today())
                 #     | Q(objectacls__expiryDate__isnull=True))
-
-        obj_ids = user_obj_ids.union(*group_querysets)
         return obj_ids
 
 
@@ -289,7 +286,7 @@ class SafeManager(models.Manager):
 
         query = self._query_owned(user)
         for group in user.groups.all():
-            query | self._query_owned_by_group(group)
+            query = query | self._query_owned_by_group(group)
         return super().get_queryset().filter(pk__in=query).distinct()
 
 
