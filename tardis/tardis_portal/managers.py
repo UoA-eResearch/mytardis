@@ -289,8 +289,8 @@ class SafeManager(models.Manager):
 
         query = self._query_owned(user)
         for group in user.groups.all():
-            query |= self._query_owned_by_group(group)
-        return super().get_queryset().filter(query).distinct()
+            query.union(self._query_owned_by_group(group))
+        return super().get_queryset().filter(pk__in=query).distinct()
 
 
     def shared(self, user):
