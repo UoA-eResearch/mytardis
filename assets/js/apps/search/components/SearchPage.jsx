@@ -22,17 +22,16 @@ export const SearchPage = () => {
         }
     },[dispatch]);
     return (
-            <div className="search-page">
-                <h1>Search</h1>
-                <div className="search-screen">
-                    <aside className="filter-column" md={4}>
-                        <FilterSidebar />
-                    </aside>
-                    <main className="result-column" md={8}>
-                        <ResultSection />
-                    </main>
-                </div>
+        <div className="search-page">
+            <div className="search-screen">
+                <aside className="filter-column" md={4}>
+                    <FilterSidebar />
+                </aside>
+                <main className="result-column" md={8}>
+                    <ResultSection />
+                </main>
             </div>
+        </div>
     )
 }
 

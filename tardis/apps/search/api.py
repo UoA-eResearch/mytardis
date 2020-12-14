@@ -224,6 +224,7 @@ class SearchAppResource(Resource):
             index_list = type_2_list[request_type]['index']
             match_list = type_2_list[request_type]['match']
 
+        hierarchy = {'project':4, 'experiment':3, 'dataset':2, 'datafile':1}
         filter_level = 0
         ms = MultiSearch(index=index_list)
         for idx, obj in enumerate(index_list):
@@ -250,13 +251,15 @@ class SearchAppResource(Resource):
 
             # (2) Search on title/keywords + on non-sensitive metadata
             if query_text is not None:
-                if query_text != "":
-                    query_obj_text = Q({"match": {match_list[idx]:query_text}})
+                if filter_level < hierarchy[obj]:
+                    filter_level = hierarchy[obj]
+                if obj in query_text.keys():
+                    query_obj_text = Q({"match": {match_list[idx]:query_text[obj]}})
                     query_obj_text_meta = Q(
                         {"nested" : {
                             "path":"parameters.string", "query": Q(
                                 {"bool": {"must":[
-                                    Q({"match": {"parameters.string.value":query_text}}),
+                                    Q({"match": {"parameters.string.value":query_text[obj]}}),
                                     Q({"term": {"parameters.string.sensitive":False}})
                                 ]}}
                             )
@@ -270,7 +273,6 @@ class SearchAppResource(Resource):
                 filterlist = filters["content"]
                 operator_dict = {"is":"term", "contains":"match", ">=":"gte", "<=" : "lte"}
                 num_2_type = {1:'experiment', 2:'dataset', 3:'datafile', 11:'project'}
-                hierarchy = {'project':4, 'experiment':3, 'dataset':2, 'datafile':1}
                 for filter in filterlist:
                     oper = operator_dict[filter['op']]
 

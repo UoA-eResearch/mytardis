@@ -12,6 +12,7 @@ export default {
 export const Default = () => (
   <PureQuickSearchBox
       searchTerm=""
+      typeName="experiments"
       onSubmit={action("submit")}
       onChange={action("change")} 
   />
@@ -20,6 +21,7 @@ export const Default = () => (
 export const Filled = () => (
   <PureQuickSearchBox
       searchTerm="A search term!"
+      typeName="experiments"
       onSubmit={action("submit")}
       onChange={action("change")} 
   />

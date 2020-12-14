@@ -127,19 +127,16 @@
         </ul>
         <ul class="navbar-nav ml-auto">
           {% if search_form %}
-            <form id="searchbox" method="get"
-                class="form-inline my-2 my-lg-0"
-                action="{% url 'search' %}">
-                <div class="form-group">
-                  <input id="id_q" autocomplete="off" name="q"
-                       type="text" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
-                       {% if query %} value="{{ query }}" {% endif %}/>
-                </div>
-            </form>
+          
+          <a class="nav-link" href="{% url 'search' %}">
+            <span class="fa fa-search"></span>
+            Search
+          </a>
           {% endif %}
           {% if is_authenticated %}
             <li id="user-menu" class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#user-menu">
+                <span class="fa fa-user"></span>
                 {{ username }}
               </a>
               <div class="dropdown-menu dropdown-menu-right">
