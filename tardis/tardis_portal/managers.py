@@ -343,7 +343,7 @@ class SafeManager(models.Manager):
         :returns: QuerySet of proj/exp/set/files owned by user id
         :rtype: QuerySet
         """
-        user=User.objects.get(user.id=userId)
+        user=User.objects.get(id=userId)
         #query = self._query_owned(user=None, user_id=userId)
         query = self._query_owned(user)
         return super().get_queryset().filter(pk__in=query)
