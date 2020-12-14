@@ -208,7 +208,8 @@ class SafeManager(models.Manager):
         # for which does proj/exp/set/files does the user have read access
         # based on GROUP permissions
         group_querysets = []
-        for name, group in user.userprofile.ext_groups:
+        for name, group_id in user.userprofile.ext_groups:
+            group = Group.objects.get(pk=group_id)
             if downloadable:
                 group_obj_ids = group.objectacls.filter(isOwner=False, canDownload=True,
                                               content_type__model=self.model.get_ct(self.model).model.replace(' ','')
