@@ -84,7 +84,7 @@ class SafeManager(models.Manager):
                                       content_type__model=self.model.get_ct(self.model).model.replace(' ','')
                                       ).exclude(effectiveDate__gte=datetime.today(),
                                                 expiryDate__lte=datetime.today()
-                                                ).distinct("object_id").values_list("object_id", flat=True)
+                                                ).values_list("object_id", flat=True)
         #query = Q(objectacls__pluginId=django_user,
         #          objectacls__entityId=str(user_id or user.id),
         #          objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
@@ -103,7 +103,7 @@ class SafeManager(models.Manager):
                                       content_type__model=self.model.get_ct(self.model).model.replace(' ','')
                                       ).exclude(effectiveDate__gte=datetime.today(),
                                                 expiryDate__lte=datetime.today()
-                                                ).distinct("object_id").values_list("object_id", flat=True)
+                                                ).values_list("object_id", flat=True)
         #query = Q(objectacls__pluginId=django_group,
         #          objectacls__entityId=str(group_id or group.id),
         #          objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
@@ -165,7 +165,7 @@ class SafeManager(models.Manager):
                                           content_type__model=self.model.get_ct(self.model).model.replace(' ','')
                                           ).exclude(effectiveDate__gte=datetime.today(),
                                                     expiryDate__lte=datetime.today()
-                                                    ).distinct("object_id").values_list("object_id", flat=True)
+                                                    ).values_list("object_id", flat=True)
             #query = Q(objectacls__pluginId=django_user,
             #          objectacls__entityId=str(user.id),
             #          objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
@@ -180,7 +180,7 @@ class SafeManager(models.Manager):
                                           content_type__model=self.model.get_ct(self.model).model.replace(' ','')
                                           ).exclude(effectiveDate__gte=datetime.today(),
                                                     expiryDate__lte=datetime.today()
-                                                    ).distinct("object_id").values_list("object_id", flat=True)
+                                                    ).values_list("object_id", flat=True)
             #query = Q(objectacls__pluginId=django_user,
             #          objectacls__entityId=str(user.id),
             #          objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
@@ -195,7 +195,7 @@ class SafeManager(models.Manager):
                                           content_type__model=self.model.get_ct(self.model).model.replace(' ','')
                                           ).exclude(effectiveDate__gte=datetime.today(),
                                                     expiryDate__lte=datetime.today()
-                                                    ).distinct("object_id").values_list("object_id", flat=True)
+                                                    ).values_list("object_id", flat=True)
             #query = Q(objectacls__pluginId=django_user,
             #          objectacls__entityId=str(user.id),
             #          objectacls__content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
@@ -215,7 +215,7 @@ class SafeManager(models.Manager):
                                               content_type__model=self.model.get_ct(self.model).model.replace(' ','')
                                               ).exclude(effectiveDate__gte=datetime.today(),
                                                         expiryDate__lte=datetime.today()
-                                                        ).distinct("object_id").values_list("object_id", flat=True)
+                                                        ).values_list("object_id", flat=True)
                 group_querysets.append(group_obj_ids)
                 #query |= Q(objectacls__pluginId=name,
                 #           objectacls__entityId=str(group),
@@ -230,7 +230,7 @@ class SafeManager(models.Manager):
                                               content_type__model=self.model.get_ct(self.model).model.replace(' ','')
                                               ).exclude(effectiveDate__gte=datetime.today(),
                                                         expiryDate__lte=datetime.today()
-                                                        ).distinct("object_id").values_list("object_id", flat=True)
+                                                        ).values_list("object_id", flat=True)
                 group_querysets.append(group_obj_ids)
                 #query |= Q(objectacls__pluginId=name,
                 #           objectacls__entityId=str(group),
@@ -245,7 +245,7 @@ class SafeManager(models.Manager):
                                               content_type__model=self.model.get_ct(self.model).model.replace(' ','')
                                               ).exclude(effectiveDate__gte=datetime.today(),
                                                         expiryDate__lte=datetime.today()
-                                                        ).distinct("object_id").values_list("object_id", flat=True)
+                                                        ).values_list("object_id", flat=True)
                 group_querysets.append(group_obj_ids)
                 #query |= Q(objectacls__pluginId=name,
                 #           objectacls__entityId=str(group),
