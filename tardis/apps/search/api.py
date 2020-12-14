@@ -95,18 +95,18 @@ class SchemasAppResource(Resource):
                            }
             return [SchemasObject(id=1, schemas=result_dict)]
         result_dict = {
-                       "projects" : list(set(list(Project.safe.all(request.user
+                       "projects" : [*{*Project.safe.all(request.user
                                     ).prefetch_related('projectparameterset'
-                                    ).values_list("projectparameterset__schema__id", flat=True)))),
-                       "experiments" : list(set(list(Experiment.safe.all(request.user
+                                    ).values_list("projectparameterset__schema__id", flat=True)}],
+                       "experiments" : [*{*Experiment.safe.all(request.user
                                        ).prefetch_related('experimentparameterset'
-                                       ).values_list("experimentparameterset__schema__id", flat=True)))),
-                       "datasets" : list(set(list(Dataset.safe.all(request.user
+                                       ).values_list("experimentparameterset__schema__id", flat=True)}],
+                       "datasets" : [*{*Dataset.safe.all(request.user
                                        ).prefetch_related('datasetparameterset'
-                                       ).values_list("datasetparameterset__schema__id", flat=True)))),
-                       "datafiles" : list(set(list(DataFile.safe.all(request.user
+                                       ).values_list("datasetparameterset__schema__id", flat=True)}],
+                       "datafiles" : [*{*DataFile.safe.all(request.user
                                        ).prefetch_related('datafileparameterset'
-                                       ).values_list("datafileparameterset__schema__id", flat=True))))
+                                       ).values_list("datafileparameterset__schema__id", flat=True)}]
                        }
         safe_dict = {}
         for key in result_dict:
@@ -178,11 +178,11 @@ class SearchAppResource(Resource):
 
 
     def obj_create(self, bundle, **kwargs):
-        bundle = self.dehydrate(bundle)
+        bundle = self.create_search_results(bundle)
         return bundle
 
 
-    def dehydrate(self, bundle):
+    def create_search_results(self, bundle):
         logging.warning("Testing search app")
         user = bundle.request.user
         if not user.is_authenticated:
@@ -367,9 +367,9 @@ class SearchAppResource(Resource):
 
                             # (3.2.2) Apply filters that act on fields which are
                             # intrinsic to the object (Proj,exp,set,file)
-                            if target_fieldtype in ['name', 'description', 'title',
+                            if target_fieldtype in {'name', 'description', 'title',
                                                     'tags', 'filename', 'file_extension',
-                                                    'created_time', 'start_time', 'end_time']:
+                                                    'created_time', 'start_time', 'end_time'}:
                                 if filter["type"] == "STRING":
                                     if isinstance(filter["content"], list):
                                         Qdict = {"should" : []}
@@ -391,8 +391,8 @@ class SearchAppResource(Resource):
 
                             # (3.2.3) Apply filters that act on fields which are
                             # intrinsic to related objects (instruments, users, etc)
-                            if target_fieldtype in ['lead_researcher', 'project', 'instrument',
-                                                    'institution', 'experiments', 'dataset']:
+                            if target_fieldtype in {'lead_researcher', 'project', 'instrument',
+                                                    'institution', 'experiments', 'dataset'}:
                                 nested_fieldtype = filter["target"][2]
                                 if isinstance(filter["content"], list):
                                     Qdict = {"should" : []}
@@ -450,10 +450,10 @@ class SearchAppResource(Resource):
             # Default sorting
             sort_dict = {}
             if request_sorting is not None:
-                if obj in request_sorting.keys():
+                if obj in request_sorting:
                     for sort in request_sorting[obj]:
                         if len(sort["field"]) > 1:
-                            if sort["field"][-1] in ['fullname','name','title','description','filename']:
+                            if sort["field"][-1] in {'fullname','name','title','description','filename'}:
                                 search_field = ".".join(sort["field"])+".raw"
                             else:
                                 search_field = ".".join(sort["field"])
@@ -461,7 +461,7 @@ class SearchAppResource(Resource):
                                                        "nested_path" : ".".join(sort["field"][:-1])}
 
                         if len(sort["field"]) == 1:
-                            if sort["field"][0] in ['lead_researcher','name','title','description','filename']:
+                            if sort["field"][0] in {'lead_researcher','name','title','description','filename'}:
                                 sort_dict[sort["field"][0]+".raw"] = {"order": sort["order"]}
                             elif sort["field"][0] == 'size':
                                 if obj == 'datafile':
@@ -490,12 +490,12 @@ class SearchAppResource(Resource):
         # --------------------
 
         # load in object IDs for all objects a user has sensitive access to
-        projects_sens = Project.safe.all(user, viewsensitive=True).values_list("id", flat=True)
-        experiments_sens = Experiment.safe.all(user, viewsensitive=True).values_list("id", flat=True)
-        datasets_sens = Dataset.safe.all(user, viewsensitive=True).values_list("id", flat=True)
-        datafiles_sens = DataFile.safe.all(user, viewsensitive=True).values_list("id", flat=True)
+        projects_sens = {*Project.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        experiments_sens = {*Experiment.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        datasets_sens = {*Dataset.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        datafiles_sens = {*DataFile.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
         # load in datafile IDs for all datafiles a user has download access to
-        datafiles_dl = DataFile.safe.all(user, downloadable=True).values_list("id", flat=True)
+        datafiles_dl = {*DataFile.safe.all(user, downloadable=True).values_list("id", flat=True)}
         # re-structure into convenient dictionary
         preloaded = {
                      "project": {"sens_list" : projects_sens,
@@ -510,45 +510,85 @@ class SearchAppResource(Resource):
         # load in object IDs for all objects a user has read access to,
         # and IDs for all of the object's nested-children - regardless of user
         # access to these child objects (the access check come later)
-        projects = list(Project.safe.all(user).values("id", "experiment__id", "experiment__datasets__id",
-                                                 "experiment__datasets__datafile__id"))
-        experiments = list(Experiment.safe.all(user).values("id", "datasets__id", "datasets__datafile__id"))
-        datasets = list(Dataset.safe.all(user).values("id", "datafile__id"))
-        datafiles = list(DataFile.safe.all(user).values("id", "size"))
+        projects_values = ["id", "experiment__id", "experiment__datasets__id",
+                                                 "experiment__datasets__datafile__id"]
+        projects = [*Project.safe.all(user).values_list(*projects_values)]
+        experiments_values = ["id", "datasets__id", "datasets__datafile__id"]
+        experiments = [*Experiment.safe.all(user).values_list(*experiments_values)]
+        datasets = [*Dataset.safe.all(user).prefetch_related("datafile").values_list("id", "datafile__id")]
+        datafiles = [*DataFile.safe.all(user).values_list("id", "size")]
         # add data to preloaded["objects"] dictionary with ID as key and nested items as value - key/values.
         # Probably a cleaner/simpler way to do this, but hey ho!
         for key, value in {"project": projects, "experiment": experiments,
                            "dataset": datasets, "datafile": datafiles}.items():
             for item in value:
-                name = item.pop('id')
+                name = item[0]
                 if name in preloaded[key]["objects"]:
-                    if key == "project":
-                        preloaded[key]["objects"][name]["exps"].append(item.pop("experiment__id"))
-                        preloaded[key]["objects"][name]["sets"].append(item.pop("experiment__datasets__id"))
-                        preloaded[key]["objects"][name]["dfs"].append(item.pop("experiment__datasets__datafile__id"))
-                    if key == "experiment":
-                        preloaded[key]["objects"][name]["sets"].append(item.pop("datasets__id"))
-                        preloaded[key]["objects"][name]["dfs"].append(item.pop("datasets__datafile__id"))
                     if key == "dataset":
-                        preloaded[key]["objects"][name]["dfs"].append(item.pop("datafile__id"))
+                        preloaded[key]["objects"][name]["dfs"].add(item[1])
+                    elif key == "experiment":
+                        preloaded[key]["objects"][name]["sets"].add(item[1])
+                        preloaded[key]["objects"][name]["dfs"].add(item[2])
+                    elif key == "project":
+                        preloaded[key]["objects"][name]["exps"].add(item[1])
+                        preloaded[key]["objects"][name]["sets"].add(item[2])
+                        preloaded[key]["objects"][name]["dfs"].add(item[3])
                 else:
                     new_dict = {}
-                    if key == "project":
-                        new_dict["exps"] = [item.pop("experiment__id")]
-                        new_dict["sets"] = [item.pop("experiment__datasets__id")]
-                        new_dict["dfs"] = [item.pop("experiment__datasets__datafile__id")]
-                    if key == "experiment":
-                        new_dict["sets"] = [item.pop("datasets__id")]
-                        new_dict["dfs"] = [item.pop("datasets__datafile__id")]
-                    if key == "dataset":
-                        new_dict["dfs"] = [item.pop("datafile__id")]
                     if key == "datafile":
-                        new_dict["size"] = item.pop("size")
+                        new_dict["size"] = item[1]
+                    elif key == "dataset":
+                        new_dict["dfs"] = {item[1]}
+                    elif key == "experiment":
+                        new_dict["sets"] = {item[1]}
+                        new_dict["dfs"] = {item[2]}
+                    elif key == "project":
+                        new_dict["exps"] = {item[1]}
+                        new_dict["sets"] = {item[2]}
+                        new_dict["dfs"] = {item[3]}
                     preloaded[key]["objects"][name] = new_dict
 
 
         # Create the result object which will be returned to the front-end
         result_dict = {k: [] for k in ["projects", "experiments", "datasets", "datafiles"]}
+
+
+        # If filters are active, enforce the "parent in results" criteria on relevant objects
+        if filter_level:
+            # Define parent_type for experiment/datafile (N/A for project, hardcoded for dataset)
+            parent_child = {"experiment":"project", "datafile":"dataset"}
+            # Define hierarchy of types for filter levels
+            hierarch = [3,2,1]#{"experiments":3, "datasets":2, "datafiles":1}
+            for idx, item in enumerate(results[1:]):
+                # if active filter level higher than current object type: apply "parent-in-result" filter
+                if hierarch[idx] < filter_level:
+
+                    parent_ids = [objj["_source"]['id'] for objj in results[idx].hits.hits]
+                    parent_ids_set = {*parent_ids}
+
+                    for obj_idx, obj in reversed([*enumerate(item.hits.hits)]):
+                        if obj["_index"] != 'dataset':
+                            if obj["_source"][parent_child[obj["_index"]]]["id"] not in parent_ids_set: #parent object is idx-1, but idx in enumerate is already shifted by -1, so straight idx
+                                results[idx+1].hits.hits.pop(obj_idx)
+                        else:
+                            exp_ids = [parent['id'] for parent in obj["_source"]["experiments"]]
+                            if not any(itemm in exp_ids for itemm in parent_ids):
+                                results[idx+1].hits.hits.pop(obj_idx)
+
+
+        # Count the number of search results after elasticsearch + parent filtering
+        total_hits = {index_list[idx]+'s':len(type.hits.hits) for idx,type in enumerate(results)}
+
+
+        for item in results:
+            item.hits.hits = item.hits.hits[request_offset:(request_offset+request_size)]
+
+
+        # Pagination done before final cleaning to reduce "clean_parent_ids" duration
+        # Default Pagination handled by response.get if key isn't specified
+        #result_dict = {k:v[request_offset:(request_offset+request_size)] for k,v in result_dict.items()}
+
+
 
         # Clean and prepare the results "hit" objects and append them to the results_dict
         for item in results:
@@ -577,49 +617,52 @@ class SearchAppResource(Resource):
                 hit.pop("sort")
 
                 # Get count of all nested objects and download status
-                if hit["_index"] != 'datafile':
-                    safe_nested_dfs = list(set(preloaded["datafile"]["objects"].keys()).intersection(list(
-                                            preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['dfs'])))
-                    if hit["_index"] in ["project", "experiment"]:
-                        safe_nested_set= len(set(preloaded["dataset"]["objects"].keys()).intersection(list(
-                                                preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['sets'])))
-                    # Ugly hack, should do a nicer, less verbose loop+type detection
-                    if hit["_index"] == 'project':
-                        safe_nested_exp = len(set(preloaded["experiment"]["objects"].keys()).intersection(list(
-                                                preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['exps'])))
-                        hit["_source"]["counts"] = {"experiments" :safe_nested_exp,
-                                                    "datasets" : safe_nested_set,
-                                                    "datafiles": len(safe_nested_dfs)}
-                    if hit["_index"] == 'experiment':
-                        hit["_source"]["counts"] = {"datasets" : safe_nested_set,
-                                                    "datafiles": len(safe_nested_dfs)}
-                    if hit["_index"] == 'dataset':
-                        hit["_source"]["counts"] = {"datafiles": len(safe_nested_dfs)}
-                    # Get downloadable datafiles ultimately belonging to this "hit" object
-                    # and calculate the total size of these files
-                    safe_nested_dfs_dl = list(set(safe_nested_dfs).intersection(datafiles_dl))
-                    size = sum([preloaded["datafile"]["objects"][id]["size"] for id in safe_nested_dfs_dl])
-                    # Determine the download state of the "hit" object
-                    safe_nested_dfs_dl_bool = [id in datafiles_dl for id in safe_nested_dfs]
-                    if all(safe_nested_dfs_dl_bool):
-                        hit["_source"]["userDownloadRights"] = 'full'
-                    elif any(safe_nested_dfs_dl_bool):
-                        hit["_source"]["userDownloadRights"] = 'partial'
-                    else:
-                        hit["_source"]["userDownloadRights"] = 'none'
+                if hit["_index"] == 'datafile':
 
-                else:
                     if hit["_source"]["id"] in datafiles_dl:
                         hit["_source"]["userDownloadRights"] = "full"
                         size = hit["_source"]["size"]
                     else:
                         hit["_source"]["userDownloadRights"] = "none"
 
+                else:
+                    safe_nested_dfs_set = {*preloaded["datafile"]["objects"]}.intersection(
+                                            preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['dfs'])
+                    safe_nested_dfs = [*safe_nested_dfs_set]
+                    safe_nested_dfs_count = len(safe_nested_dfs_set)
+                    if hit["_index"] in {"project", "experiment"}:
+                        safe_nested_set= len({*preloaded["dataset"]["objects"]}.intersection(
+                                                preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['sets']))
+                    # Ugly hack, should do a nicer, less verbose loop+type detection
+                    if hit["_index"] == 'project':
+                        safe_nested_exp = len({*preloaded["experiment"]["objects"]}.intersection(
+                                                preloaded[hit["_index"]]["objects"][hit["_source"]["id"]]['exps']))
+                        hit["_source"]["counts"] = {"experiments" :safe_nested_exp,
+                                                    "datasets" : safe_nested_set,
+                                                    "datafiles": (safe_nested_dfs_count)}
+                    if hit["_index"] == 'experiment':
+                        hit["_source"]["counts"] = {"datasets" : safe_nested_set,
+                                                    "datafiles": safe_nested_dfs_count}
+                    if hit["_index"] == 'dataset':
+                        hit["_source"]["counts"] = {"datafiles": safe_nested_dfs_count}
+                    # Get downloadable datafiles ultimately belonging to this "hit" object
+                    # and calculate the total size of these files
+                    safe_nested_dfs_dl = [*safe_nested_dfs_set.intersection(datafiles_dl)]
+                    size = sum([preloaded["datafile"]["objects"][id]["size"] for id in safe_nested_dfs_dl])
+                    # Determine the download state of the "hit" object
+                    #safe_nested_dfs_dl_bool = [id in datafiles_dl for id in safe_nested_dfs]
+                    if safe_nested_dfs_set.issubset(datafiles_dl):
+                        hit["_source"]["userDownloadRights"] = 'full'
+                    elif safe_nested_dfs_set.intersection(datafiles_dl):
+                        hit["_source"]["userDownloadRights"] = 'partial'
+                    else:
+                        hit["_source"]["userDownloadRights"] = 'none'
+
                 hit["_source"]["size"] = filesizeformat(size)
 
 
                 # if no sensitive access, remove sensitive metadata from response
-                for idxx, parameter in reversed(list(enumerate(hit["_source"]["parameters"]))):
+                for idxx, parameter in reversed([*enumerate(hit["_source"]["parameters"])]):
                     if not sensitive_bool:
                         if parameter['sensitive']:
                             hit["_source"]["parameters"].pop(idxx)
@@ -632,42 +675,16 @@ class SearchAppResource(Resource):
                 # Append hit to results if not already in results.
                 # Due to non-identical scores in hits for non-sensitive vs sensitive search,
                 # we require a more complex comparison than just 'is in' as hits are not identical
-                if hit["_source"]['id'] not in [objj["_source"]['id'] for objj in result_dict[hit["_index"]+"s"]]:
-                    result_dict[hit["_index"]+"s"].append(hit)
+                #if hit["_source"]['id'] not in [objj["_source"]['id'] for objj in result_dict[hit["_index"]+"s"]]:
+                result_dict[hit["_index"]+"s"].append(hit)
 
-
-        # If filters are active, enforce the "parent in results" criteria on relevant objects
-        if filter_level:
-            # Define parent_type for experiment/datafile (N/A for project, hardcoded for dataset)
-            parent_child = {"experiment":"project", "datafile":"dataset"}
-            # Define hierarchy of types for filter levels
-            hierarchy = {"experiments":3, "datasets":2, "datafiles":1}
-            for objs in ["experiments", "datasets", "datafiles"]:
-                # if active filter level higher than current object type: apply "parent-in-result" filter
-                if hierarchy[objs] < filter_level:
-                    for obj_idx, obj in reversed(list(enumerate(result_dict[objs]))):
-                        if obj["_index"] != 'dataset':
-                            if obj["_source"][parent_child[obj["_index"]]]["id"] not in [objj["_source"]['id'] \
-                                    for objj in result_dict[parent_child[obj["_index"]]+"s"]]:
-                                result_dict[objs].pop(obj_idx)
-                        else:
-                            exp_ids = [parent['id'] for parent in obj["_source"]["experiments"]]
-                            if not any(item in exp_ids for item in [objj["_source"]['id'] for objj in result_dict["experiments"]]):
-                                result_dict[objs].pop(obj_idx)
-
-        # Count the number of search results after elasticsearch + parent filtering
-        total_hits = {k:len(v) for k,v in result_dict.items()}
-
-        # Pagination done before final cleaning to reduce "clean_parent_ids" duration
-        # Default Pagination handled by response.get if key isn't specified
-        result_dict = {k:v[request_offset:(request_offset+request_size)] for k,v in result_dict.items()}
 
         # Removes parent IDs from hits once parent-filtering applied
         # Removed for tidiness in returned response to front-end
         # Define parent_type for experiment/datafile (N/A for project)
         parent_child = {"experiment":"project", "dataset":"experiments", "datafile":"dataset"}
         for objs in ["experiments", "datasets", "datafiles"]:
-            for obj_idx, obj in reversed(list(enumerate(result_dict[objs]))):
+            for obj_idx, obj in reversed([*enumerate(result_dict[objs])]):
                 del result_dict[objs][obj_idx]["_source"][parent_child[obj["_index"]]]
 
         # If individual object type requested, limit the returned values to that object type
