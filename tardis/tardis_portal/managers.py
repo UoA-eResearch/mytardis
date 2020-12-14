@@ -294,8 +294,7 @@ class SafeManager(models.Manager):
 
 
     def shared(self, user):
-        return super().get_queryset().filter(
-            self._query_shared(user)).distinct()
+        return super().get_queryset().filter(pk__in=self._query_shared(user)).distinct()
 
 
     def get(self, user, obj_id):
@@ -325,7 +324,7 @@ class SafeManager(models.Manager):
         :rtype: QuerySet
         """
         query = self._query_owned(user)
-        return super().get_queryset().filter(query)
+        return super().get_queryset().filter(pk__in=query)
 
 
     def owned_by_group(self, group):
@@ -333,7 +332,7 @@ class SafeManager(models.Manager):
         Return all proj/exp/set/files that are owned by a particular group
         """
         query = self._query_owned_by_group(group)
-        return super().get_queryset().filter(query)
+        return super().get_queryset().filter(pk__in=query)
 
 
     def owned_by_user_id(self, userId):
@@ -344,8 +343,10 @@ class SafeManager(models.Manager):
         :returns: QuerySet of proj/exp/set/files owned by user id
         :rtype: QuerySet
         """
-        query = self._query_owned(user=None, user_id=userId)
-        return super().get_queryset().filter(query)
+        user=User.objects.get(user.id=userId)
+        #query = self._query_owned(user=None, user_id=userId)
+        query = self._query_owned(user)
+        return super().get_queryset().filter(pk__in=query)
 
 
     def user_acls(self, obj_id):
