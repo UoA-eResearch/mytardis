@@ -75,7 +75,7 @@ class SafeManager(models.Manager):
             user, downloadable, viewsensitive)  # self._query_all_public() |\
 
         return super().get_queryset().filter(
-            pk__in=[*query]).distinct()
+            pk__in=query).distinct()
 
     def _query_owned(self, user, user_id=None):
         # build the query to filter the ACL table
@@ -266,7 +266,7 @@ class SafeManager(models.Manager):
 
     def owned_and_shared(self, user, downloadable=False, viewsensitive=False):
         return super().get_queryset().filter(
-            pk__in=[*self._query_owned_and_shared(user, downloadable, viewsensitive)]).distinct()
+            pk__in=self._query_owned_and_shared(user, downloadable, viewsensitive)).distinct()
 
 
 
@@ -290,11 +290,11 @@ class SafeManager(models.Manager):
         query = self._query_owned(user)
         for group in user.groups.all():
             query.union(self._query_owned_by_group(group))
-        return super().get_queryset().filter(pk__in=[*query]).distinct()
+        return super().get_queryset().filter(pk__in=query).distinct()
 
 
     def shared(self, user):
-        return super().get_queryset().filter(pk__in=[*self._query_shared(user)]).distinct()
+        return super().get_queryset().filter(pk__in=self._query_shared(user)).distinct()
 
 
     def get(self, user, obj_id):
@@ -324,7 +324,7 @@ class SafeManager(models.Manager):
         :rtype: QuerySet
         """
         query = self._query_owned(user)
-        return super().get_queryset().filter(pk__in=[*query])
+        return super().get_queryset().filter(pk__in=query)
 
 
     def owned_by_group(self, group):
@@ -332,7 +332,7 @@ class SafeManager(models.Manager):
         Return all proj/exp/set/files that are owned by a particular group
         """
         query = self._query_owned_by_group(group)
-        return super().get_queryset().filter(pk__in=[*query])
+        return super().get_queryset().filter(pk__in=query)
 
 
     def owned_by_user_id(self, userId):
@@ -346,7 +346,7 @@ class SafeManager(models.Manager):
         user=User.objects.get(id=userId)
         #query = self._query_owned(user=None, user_id=userId)
         query = self._query_owned(user)
-        return super().get_queryset().filter(pk__in=[*query])
+        return super().get_queryset().filter(pk__in=query)
 
 
     def user_acls(self, obj_id):
