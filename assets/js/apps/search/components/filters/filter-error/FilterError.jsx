@@ -23,7 +23,7 @@ const FilterError = ({ message, longMessage, showIcon }) => {
                         {message}
                     </p>
                     {showIcon ?
-                        <FiInfo className="filter-error___icon" aria-label="error message icon"></FiInfo>
+                        <FiAlertCircle className="filter-error___icon" aria-label="error message icon"></FiAlertCircle>
                         :
                         null
                     }
