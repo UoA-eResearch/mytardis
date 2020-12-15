@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { FiInfo } from 'react-icons/fi';
+import { FiAlertCircle } from 'react-icons/fi';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './FilterError.css';
 
