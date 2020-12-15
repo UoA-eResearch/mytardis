@@ -2075,6 +2075,32 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
 </div>
 `;
 
+exports[`Storyshots Filter Error Popup Custom Messages 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+      "width": "300px",
+    }
+  }
+>
+  <div
+    className="filter-error"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+  >
+    <p
+      aria-label="Filter error message"
+      className="filter-error___text"
+    >
+      custom short message
+    </p>
+  </div>
+</div>
+`;
+
 exports[`Storyshots Filter Error Popup Date Range 1`] = `
 <div
   style={
@@ -2085,7 +2111,6 @@ exports[`Storyshots Filter Error Popup Date Range 1`] = `
   }
 >
   <div
-    aria-label="Filter error message"
     className="filter-error"
     onBlur={[Function]}
     onFocus={[Function]}
@@ -2093,8 +2118,8 @@ exports[`Storyshots Filter Error Popup Date Range 1`] = `
     onMouseOver={[Function]}
   >
     <p
+      aria-label="Filter error message"
       className="filter-error___text"
-      data-testid="filter-error-text"
     >
       Invalid Date Range
     </p>
@@ -2112,7 +2137,6 @@ exports[`Storyshots Filter Error Popup Default 1`] = `
   }
 >
   <div
-    aria-label="Filter error message"
     className="filter-error"
     onBlur={[Function]}
     onFocus={[Function]}
@@ -2120,8 +2144,8 @@ exports[`Storyshots Filter Error Popup Default 1`] = `
     onMouseOver={[Function]}
   >
     <p
+      aria-label="Filter error message"
       className="filter-error___text"
-      data-testid="filter-error-text"
     >
       message
     </p>
@@ -2139,7 +2163,6 @@ exports[`Storyshots Filter Error Popup Number Range 1`] = `
   }
 >
   <div
-    aria-label="Filter error message"
     className="filter-error"
     onBlur={[Function]}
     onFocus={[Function]}
@@ -2147,11 +2170,73 @@ exports[`Storyshots Filter Error Popup Number Range 1`] = `
     onMouseOver={[Function]}
   >
     <p
+      aria-label="Filter error message"
       className="filter-error___text"
-      data-testid="filter-error-text"
     >
       Invalid Range Values
     </p>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Filter Error Popup With Label 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+      "width": "300px",
+    }
+  }
+>
+  <div
+    className="filter-error"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+  >
+    <p
+      aria-label="Filter error message"
+      className="filter-error___text"
+    >
+      custom short message
+    </p>
+    <svg
+      aria-label="error message icon"
+      className="filter-error___icon"
+      fill="none"
+      height="1em"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      style={
+        Object {
+          "color": undefined,
+        }
+      }
+      viewBox="0 0 24 24"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+      />
+      <line
+        x1="12"
+        x2="12"
+        y1="16"
+        y2="12"
+      />
+      <line
+        x1="12"
+        x2="12"
+        y1="8"
+        y2="8"
+      />
+    </svg>
   </div>
 </div>
 `;

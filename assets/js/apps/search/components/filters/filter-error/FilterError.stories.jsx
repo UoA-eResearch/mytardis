@@ -41,6 +41,6 @@ CustomMessages.args = {
 export const WithLabel = Template.bind({})
 WithLabel.args = {
     message: 'custom short message',
-    longMessage: 'custom long message',
+    longMessage: 'custom tooltip',
     showIcon: true
 };

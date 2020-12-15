@@ -9,21 +9,21 @@ const FilterError = ({ message, longMessage, showIcon }) => {
         <>
             <OverlayTrigger
                 overlay={
-                    <Tooltip data-testid="long-tooltip" className='filter-error___tooltip'>{longMessage ? longMessage : message}</Tooltip>
+                    <Tooltip aria-label="tooltip container" className='filter-error___tooltip'>{longMessage ? longMessage : message}</Tooltip>
                 }
                 delay={{ show: 250, hide: 400 }}
                 placement="bottom"
             >
                 <div
                     ref={target}
-                    aria-label="Filter error message"
                     className="filter-error"
                 >
-                    <p data-testid="filter-error-text" className='filter-error___text'>
+                    <p aria-label="Filter error message"
+                        className='filter-error___text'>
                         {message}
                     </p>
                     {showIcon ?
-                        <FiInfo data-testid="filter-error-info-icon" className="filter-error___icon" aria-label="error message icon"></FiInfo>
+                        <FiInfo className="filter-error___icon" aria-label="error message icon"></FiInfo>
                         :
                         null
                     }

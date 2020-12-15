@@ -4,7 +4,7 @@ import React from 'react';
 
 const getDateFields = (screen) => (
     [
-        screen.getByLabelText("Start"), 
+        screen.getByLabelText("Start"),
         screen.getByLabelText("End"),
         screen.getByText("Filter")
     ]
@@ -18,10 +18,10 @@ it('should render start and end dates as specified', async () => {
 });
 
 it('should change start date when end date becomes a date before it', async () => {
-    render(<Default {...Default.args} onValueChange={() => {}} />);
+    render(<Default {...Default.args} onValueChange={() => { }} />);
     const [startDateEl, endDateEl] = getDateFields(screen);
     const anotherDate = "12/30/2019";
-    fireEvent.change(endDateEl, { target: {value: anotherDate } });
+    fireEvent.change(endDateEl, { target: { value: anotherDate } });
     // After changing the end date to an earlier date, 
     // we should see both the start and end date fields to be the same.
     await waitFor(() => expect(endDateEl.value).toBe(anotherDate));
@@ -36,17 +36,17 @@ it('should callback with right value after submitting', async () => {
         onValueChange: mockHandleChangeFn
     })
     render(<Empty {...props} />);
-    const [startDateEl, endDateEl,filterButton] = getDateFields(screen);
-    fireEvent.change(startDateEl, {target: {value: "01/05/2020"}});
-    fireEvent.change(endDateEl, {target: {value: "01/07/2020"}});
+    const [startDateEl, endDateEl, filterButton] = getDateFields(screen);
+    fireEvent.change(startDateEl, { target: { value: "01/05/2020" } });
+    fireEvent.change(endDateEl, { target: { value: "01/07/2020" } });
     fireEvent.click(filterButton);
     await waitFor(
         () => {
             expect(mockHandleChangeFn).toHaveBeenCalledTimes(1);
             expect(mockHandleChangeFn).toBeCalledWith(
                 [
-                    {op:">=",content:new Date("01/05/2020").toISOString()},
-                    {op:"<=",content: new Date("01/07/2020").toISOString()}
+                    { op: ">=", content: new Date("01/05/2020").toISOString() },
+                    { op: "<=", content: new Date("01/07/2020").toISOString() }
                 ]
             );
         }
@@ -59,10 +59,10 @@ it('should callback with null after clearing a filter', async () => {
         onValueChange: mockHandleChangeFn
     });
     render(<Default {...props} />);
-    const [startDateEl, endDateEl,filterButton] = getDateFields(screen);
+    const [startDateEl, endDateEl, filterButton] = getDateFields(screen);
     // Clear the dates
-    fireEvent.change(startDateEl, {target: {value: ""}});
-    fireEvent.change(endDateEl, {target: {value: ""}});
+    fireEvent.change(startDateEl, { target: { value: "" } });
+    fireEvent.change(endDateEl, { target: { value: "" } });
     // Filter button should still be clickable to clear the field.
     expect(filterButton.disabled).toBeFalsy();
     fireEvent.click(filterButton);
@@ -70,8 +70,24 @@ it('should callback with null after clearing a filter', async () => {
         () => {
             expect(mockHandleChangeFn).toHaveBeenCalledTimes(1);
             expect(mockHandleChangeFn).toBeCalledWith(null);
-    });
+        });
 });
+
+
+it('Should show an error message when ', async () => {
+    const mockHandleChangeFn = jest.fn();
+    const props = Object.assign({}, Default.args, {
+        onValueChange: mockHandleChangeFn
+    });
+    render(<Default {...props} />);
+    const [startDateEl, endDateEl, filterButton] = getDateFields(screen);
+    // Input invalid dates
+    fireEvent.change(startDateEl, { target: { value: "abcd" } });
+    fireEvent.change(endDateEl, { target: { value: "efg" } });
+    // Filter button should still be clickable to clear the field.
+    expect(filterButton.disabled).toBeFalsy();
+    expect(screen.getByLabelText('Filter error message').innerHTML).toContain('Invalid date');
+})
 
 
 // TODO Add test to check null is returned to clear a field
