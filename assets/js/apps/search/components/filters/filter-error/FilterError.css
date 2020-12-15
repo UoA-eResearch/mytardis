@@ -1,7 +1,7 @@
 
 .filter-error {
     margin: .8rem 0 ;
-    color: tomato;
+    color: rgb(220, 53, 69);
     font-family: inherit;
     display: flex;
     justify-content: flex-start;
