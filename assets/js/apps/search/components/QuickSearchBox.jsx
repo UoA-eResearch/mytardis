@@ -4,11 +4,11 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { runSearch, updateSearchTerm } from './searchSlice';
+import { batch, useDispatch, useSelector } from 'react-redux';
+import { runSearch, updateSearchTerm, searchTermSelector } from './searchSlice';
 import "./QuickSearchBox.css";
 
-export function PureQuickSearchBox({searchTerm,onChange,onSubmit}) {
+export function PureQuickSearchBox({searchTerm, typeName, onChange, onSubmit}) {
     const handleChange = (e) => {
         onChange(e.target.value);
     };
@@ -19,23 +19,36 @@ export function PureQuickSearchBox({searchTerm,onChange,onSubmit}) {
     };
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <FormControl className="quick-search-box__input" onChange={handleChange} value={searchTerm} aria-label="Quick find search input" placeholder="Find by title or description"></FormControl>
-            <Button type="submit" aria-label="Quick find search button" variant="primary">Search</Button>
+        <Form onSubmit={handleSubmit} className="quick-search-box">
+            <FormControl
+                onChange={handleChange}
+                value={searchTerm}
+                aria-label="Quick find search input"
+                placeholder={`Find ${typeName} by title or description`}
+                className="quick-search-box__input"
+            />
+            <Button
+                type="submit"
+                aria-label="Quick find search button"
+                variant="primary"
+            >
+                Search
+            </Button>
         </Form>
     )
 }
 
 PureQuickSearchBox.propTypes = {
     searchTerm: PropTypes.string,
+    typeName: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired
 }
 
-const QuickSearchBox = () => {
-    const [localSearchTerm, onTermChange] = useState("");
+const QuickSearchBox = ({typeId}) => {
+    const searchTerm = useSelector(state => (searchTermSelector(state.search, typeId)));
+    const [localSearchTerm, onTermChange] = useState(searchTerm);
     const dispatch = useDispatch();
-    const searchTerm = useSelector(state => (state.search.searchTerm));
     useEffect(() => {
         // Update the search term in the quick search box
         // when the term is externally updated (e.g. when 
@@ -45,18 +58,27 @@ const QuickSearchBox = () => {
         } else {
             onTermChange(searchTerm);
         }
-    }, [searchTerm])
+    }, [searchTerm]);
     return (
         <PureQuickSearchBox
             searchTerm={localSearchTerm}
+            typeName={typeId + "s"}
             onChange={onTermChange}
             onSubmit={() => {
-                dispatch(updateSearchTerm(localSearchTerm));
-                dispatch(runSearch());
+                const newSearchTerm = {};
+                newSearchTerm[typeId] = localSearchTerm;
+                batch(() => {
+                    dispatch(updateSearchTerm({searchTerm: newSearchTerm}));
+                    dispatch(runSearch());    
+                });
             }}
         />
             
-    )
-}
+    );
+};
+
+QuickSearchBox.propTypes = {
+    typeId: PropTypes.string.isRequired
+};
 
 export default QuickSearchBox;

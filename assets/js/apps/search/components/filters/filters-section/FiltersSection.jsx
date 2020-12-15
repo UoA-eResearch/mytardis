@@ -8,6 +8,7 @@ import { typeAttrSelector, allTypeAttrIdsSelector, updateActiveSchemas, updateTy
 import { useSelector, useDispatch, batch } from "react-redux";
 import PropTypes from "prop-types";
 import { mapTypeToFilter } from "../index";
+import QuickSearchBox from '../../QuickSearchBox';
 
 
 function TypeAttributeFilter({typeId, attributeId}) {
@@ -26,7 +27,7 @@ function TypeAttributeFilter({typeId, attributeId}) {
   const ApplicableFilter = mapTypeToFilter(attribute.data_type);
   return (
     <section>
-      <h3 className="h5">{attribute.full_name}</h3>
+      <h3 className="h6">{attribute.full_name}</h3>
       <ApplicableFilter id={typeId+"."+attributeId} value={attribute.value} onValueChange={setFilterValue} options={attribute.options} />
     </section>
   )
@@ -74,14 +75,13 @@ export function PureFiltersSection({ types, schemas, typeSchemas, isLoading, err
   if (error) {
     return <p>An error occurred while loading filters.</p>
   }
-  if (!typeSchemas || !typeof typeSchemas == "object") {
+  if (!typeSchemas || !typeof typeSchemas === "object") {
     return null;
   }
 
 
   return (
     <section>
-      <h2 className="h3">Filters</h2>
       <Tabs defaultActiveKey="projects" id="filters-section">
         {
           types.allIds.map(type => {
@@ -89,6 +89,9 @@ export function PureFiltersSection({ types, schemas, typeSchemas, isLoading, err
 
             return (
               <Tab key={type} eventKey={type} title={<Sticker />}>
+                {/* FIXME: harmonise type names to be singular. */}
+                <QuickSearchBox typeId={type.substring(0, type.length - 1)} />
+                <hr />
                 <TypeAttributesList typeId={type} />
                 <TypeSchemaList typeId={type} />
               </Tab>
