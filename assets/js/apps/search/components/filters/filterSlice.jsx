@@ -78,7 +78,18 @@ export const typeAttrSelector = (filterSlice, typeId, attributeId) => {
         .byId[typeId]
         .attributes
         .byId[attributeId];
+};
+
+export const typeAttrFilterValueSelector = (filtersSlice, typeId, attributeId) => {
+    return typeAttrSelector(filtersSlice, typeId, attributeId).value;
 }
+
+/**
+ * Selector for type metadata of a MyTardis object type
+ * @param {*} filtersSlice Redux filters slice
+ * @param {string} typeId The MyTardis object type ID
+ */
+export const typeSelector = (filtersSlice, typeId) => filtersSlice.types.byId[typeId + "s"];
 
 export const allTypeAttrIdsSelector = (filterSlice, typeId) => {
     return filterSlice.types
@@ -92,9 +103,34 @@ export const schemaParamSelector = (filterSlice, schemaId, paramId) => {
         .parameters[paramId];
 };
 
+/**
+ *  Selector for the filter value for a schema parameter.
+ * @param {*} filtersSlice Redux filters slice
+ * @param {string} schemaId schema ID
+ * @param {string} paramId parameter ID
+ */
+export const schemaParamFilterValueSelector = (filtersSlice, schemaId, paramId) => {
+    return schemaParamSelector(filtersSlice, schemaId, paramId).value;
+};
+
 export const schemaSelector = (filterSlice, schemaId) => {
     return filterSlice.schemas
         .byId[schemaId];
+};
+
+/**
+ * Selector for the type ID of each schema. Corrects the type
+ * name from plural to singular if necessary.
+ * @param {*} filtersSlice Redux filters slice
+ * @param {string} schemaId schema ID
+ */
+export const schemaTypeSelector = (filtersSlice, schemaId) => {
+    const schema = schemaSelector(filtersSlice, schemaId);
+    if (schema.type.endsWith("s")) {
+        return schema.type.substring(0, schema.type.length - 1);
+    } else {
+        return schema.type;
+    }
 }
 
 const updateTypeAttributeReducer = (state, {payload}) => {
@@ -349,6 +385,31 @@ const getCrossFilteredTypes = (type) => {
     }
 };
 
+export const fieldSelector = (filtersSlice, fieldInfo) => {
+    const { kind, target } = fieldInfo;
+    switch (kind) {
+    case "typeAttribute":
+        return typeAttrSelector(filtersSlice, target[0], target[1]);
+    case "schemaParameter":
+        return schemaParamSelector(filtersSlice, target[0], target[1]);
+    default:
+        throw new Error("Field type not supported.");
+    }
+
+};
+
+export const filterValueSelector = (filtersSlice, filterFieldInfo) => {
+    const filter = fieldSelector(filtersSlice, filterFieldInfo);
+    if (!filter || !(filter instanceof Object)) {
+        throw new Error("Could not find field.");
+    }
+    return Array.isArray(filter.value) ? filter.value : [filter.value];
+};
+
+export const activeFiltersSelector = (filtersSlice) => {
+
+};
+
 /**
  * Resolves the filter and returns filter value serialised in
  * the form expected by the search API.
@@ -356,20 +417,9 @@ const getCrossFilteredTypes = (type) => {
  * @param filterFieldInfo
  */
 const getFilterQueryValue = (filtersSlice, filterFieldInfo) => {
-    const { kind, target } = filterFieldInfo;
-    let filter;
-    switch (kind) {
-        case "typeAttribute":
-            filter = typeAttrSelector(filtersSlice, target[0], target[1]);
-            break;
-        case "schemaParameter":
-            filter = schemaParamSelector(filtersSlice, target[0], target[1]);
-            break;
-        default:
-            break;
-    }
-    const filterValue = Array.isArray(filter.value) ? filter.value : [filter.value],
-        filterType = { type: filter.data_type };
+    const field = fieldSelector(filtersSlice, filterFieldInfo);
+    const filterValue = filterValueSelector(filtersSlice, filterFieldInfo);
+    const filterType = { type: field.data_type };
     return filterValue.map(value => (
         Object.assign({}, filterFieldInfo, filterType, value)
     ));

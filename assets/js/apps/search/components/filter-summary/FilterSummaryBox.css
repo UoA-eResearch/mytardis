@@ -1,0 +1,7 @@
+.filter-summary-box__badge, .filter-summarybox__badge--conjunctive {
+    margin: 0.05rem;
+}
+
+.filter-summarybox__badge--conjunctive {
+    margin: 0 0.35rem;
+}

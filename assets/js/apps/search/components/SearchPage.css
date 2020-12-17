@@ -21,7 +21,7 @@
     border: 1px solid lightgray;
     padding: 1.5rem 1rem;
     background-color: white;
-}
+}   
 
 .result-column {
     flex: 1 0 600px;
@@ -35,4 +35,12 @@
     /* Make overflow hidden here so result list and entry preview card scrollable
        independently. */
     overflow: hidden
+}
+
+.result-column > * {
+    margin-bottom: 1rem;
+}
+
+.result-column > :last-child {
+    margin-bottom: 0;
 }
