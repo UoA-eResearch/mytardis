@@ -16,46 +16,50 @@ import {
 import { runSearch } from "../searchSlice";
 
 function InvalidFilterBadge() {
-    return <Badge variant="secondary">(Invalid filter)</Badge>
+    return <Badge variant="secondary">(Invalid filter)</Badge>;
 }
 
-function FilterBadge({fieldName, op, content}) {
-    return <>
+function FilterBadge({fieldName, value}) {
+    return <div className="filter-summary-box__badge-group">
         <Badge variant="secondary" className="filter-summary-box__badge">{fieldName}</Badge>
-        <Badge variant="secondary" className="filter-summary-box__badge">{op}</Badge>
-        <Badge variant="secondary" className="filter-summary-box__badge">{content}</Badge>
-    </>;
+        {value.map(({op, content}) => 
+            <>
+                <Badge variant="info" className="filter-summary-box__badge">{op}</Badge>
+                <Badge variant="secondary" className="filter-summary-box__badge">{content}</Badge>
+            </>
+        )}
+    </div>;
 
 }
 
 FilterBadge.propTypes = {
     typeId: PropTypes.string.isRequired,
     fieldName: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired
+    value: PropTypes.arrayOf(PropTypes.shape({
+        op: PropTypes.string.isRequired,
+        content: PropTypes.string.isRequired
+    })).isRequired
 };
 
 function SchemaParameterFilterBadge({fieldInfo}) {
     const schemaId = fieldInfo.target[0], parameterId = fieldInfo.target[1];
-    const schemaName = useSelector(state => {
-        const schema = schemaSelector(state.filters, schemaId); 
-        return schema ? schema.schema_name : null;
-    });
-    const fieldName = useSelector(state => {
-        const schemaParam = schemaParamSelector(state.filters, schemaId, parameterId);
-        return schemaParam ? schemaParam.full_name : null;
-    });
-
-    const filterValue = useSelector(state => schemaParamFilterValueSelector(state.filters, schemaId, parameterId));
     const typeId = useSelector(state => schemaTypeSelector(state.filters, schemaId));
-    const typeName = useSelector(state => {
+    const fullFieldName = useSelector(state => {
         const type = typeSelector(state.filters, typeId);
-        return type ? type.full_name : null;
+        const schema = schemaSelector(state.filters, schemaId); 
+        const schemaParam = schemaParamSelector(state.filters, schemaId, parameterId);
+        if (!type || !schema || !schemaParam) {
+            return "";
+        } else {
+            return `${type.full_name}.${schema.schema_name}.${schemaParam.full_name}`; 
+        }
     });
-    console.log("Hello" + typeName + schemaName + fieldName);
-    if (!typeName || !schemaName || !fieldName) {
+    if (fullFieldName === "") {
         return <InvalidFilterBadge />;
     } else {
-        const fullFieldName = `${typeName}.${schemaName}.${fieldName}`;
+        const filterValue = useSelector(
+            state => schemaParamFilterValueSelector(state.filters, schemaId, parameterId)
+        );
         return <FilterBadge typeId={typeId} fieldName={fullFieldName} value={filterValue} />;
     }
 }
@@ -63,23 +67,38 @@ function SchemaParameterFilterBadge({fieldInfo}) {
 
 function TypeAttributeFilterBadge({fieldInfo}) {
     const typeId = fieldInfo.target[0], attributeId = fieldInfo.target[1];
-    const typeName = useSelector(state => {
+    const fullFieldName = useSelector(state => {
         // Remove the extra s
-        const typeMetadata = typeSelector(state.filters, typeId.substring(0, typeId.length - 1));
-        console.log("Type metadata is " + typeMetadata);
-        return typeMetadata ? typeMetadata.full_name : null;
-    });
-    const fieldName = useSelector(state => {
+        const type = typeSelector(state.filters, typeId.substring(0, typeId.length - 1));
         const attribute = typeAttrSelector(state.filters, typeId, attributeId);
-        return attribute ? attribute.full_name : null;
+        if (!type || !attribute) {
+            return "";
+        } else {
+            return `${type.full_name}.${attribute.full_name}`;
+        }
     });
-    const filterValue = useSelector (state => typeAttrFilterValueSelector(state.filters, typeId, attributeId));
-    if (!typeName || !fieldName) {
+    if (fullFieldName === "") {
         return <InvalidFilterBadge />;
     } else {
-        const fullFieldName = `${typeName}.${fieldName}`;
-        return <FilterBadge typeId={typeId} fieldName={fullFieldName} value={filterValue} />
+        const filterValue = useSelector(
+            state => typeAttrFilterValueSelector(state.filters, typeId, attributeId)
+        );
+        return <FilterBadge typeId={typeId} fieldName={fullFieldName} value={filterValue} />;
     }
+}
+
+function getFilterBadge(filterKind) {
+    switch (filterKind) {
+        case "typeAttribute":
+            return TypeAttributeFilterBadge;
+            break;
+        case "schemaParameter":
+            return SchemaParameterFilterBadge;
+            break;
+        default:
+            break;
+    } 
+
 }
 
 function FilterSummaryFilterList({activeFilters = []}) {
@@ -90,20 +109,10 @@ function FilterSummaryFilterList({activeFilters = []}) {
         return <div className="h5">
             {activeFilters.map((filter, index) => {
                 const isLastFilter = index === activeFilters.length - 1;
-                let ApplicableFilterBadge;
-                switch (filter.kind) {
-                    case "typeAttribute":
-                        ApplicableFilterBadge = TypeAttributeFilterBadge;
-                        break;
-                    case "schemaParameter":
-                        ApplicableFilterBadge = SchemaParameterFilterBadge;
-                        break;
-                    default:
-                        break;
-                } 
+                const FilterBadge = getFilterBadge(filter.kind);
                 return <Fragment key={filter.kind + filter.target.join(",")}>
-                    <ApplicableFilterBadge fieldInfo={filter} />
-                    {!isLastFilter ? <Badge variant="info" className="filter-summarybox__badge--conjunctive">AND</Badge> : null}
+                    <FilterBadge fieldInfo={filter} />
+                    {!isLastFilter ? <Badge variant="info" className="filter-summarybox__badge--separator">AND</Badge> : null}
                 </Fragment>;
             })
             }
@@ -121,7 +130,7 @@ export function PureFilterSummaryBox({activeFilters = [], onResetFilters}) {
                     <FilterSummaryFilterList activeFilters={activeFilters} />
                 </div>
                 <div>
-                    <Button className="ms-1" onClick={onResetFilters} variant={hasActiveFilters ? "primary" : "outline-secondary"}>Reset filters</Button>
+                    <Button className="ms-1" onClick={onResetFilters} variant={hasActiveFilters ? "primary" : "outline-secondary"}>Reset</Button>
                 </div>
             </div>
         </div>

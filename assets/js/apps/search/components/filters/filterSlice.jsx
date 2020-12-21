@@ -81,7 +81,12 @@ export const typeAttrSelector = (filterSlice, typeId, attributeId) => {
 };
 
 export const typeAttrFilterValueSelector = (filtersSlice, typeId, attributeId) => {
-    return typeAttrSelector(filtersSlice, typeId, attributeId).value;
+    const value = typeAttrSelector(filtersSlice, typeId, attributeId).value;
+    if (!Array.isArray(value)) {
+        return [value];
+    } else {
+        return value;
+    }
 }
 
 /**
@@ -110,7 +115,12 @@ export const schemaParamSelector = (filterSlice, schemaId, paramId) => {
  * @param {string} paramId parameter ID
  */
 export const schemaParamFilterValueSelector = (filtersSlice, schemaId, paramId) => {
-    return schemaParamSelector(filtersSlice, schemaId, paramId).value;
+    const value = schemaParamSelector(filtersSlice, schemaId, paramId).value;
+    if (!Array.isArray(value)) {
+        return [value];
+    } else {
+        return value;
+    }
 };
 
 export const schemaSelector = (filterSlice, schemaId) => {
