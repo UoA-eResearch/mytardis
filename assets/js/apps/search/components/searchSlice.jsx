@@ -415,31 +415,11 @@ const getDisplayQueryString = (queryBody) => {
     }
 };
 
-export const searchHasCriteriaSelector = (searchSlice, filterSlice) => {
-    function hasActiveFilters() {
-        // First, look through whether any filters are active.
-        const activeFilters = filterSlice.activeFilters;
-        for (const typeId in activeFilters) {
-            if (activeFilters[typeId] && activeFilters[typeId].length > 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function hasSearchTerm() {
-        // Then look through whether there are any quick search terms.
-        return Object.keys(searchSlice.searchTerm || {}).length > 0;
-    }
-    
-    return hasActiveFilters() || hasSearchTerm();
-};
-
 /**
  * Selector for whether there are any active quick search terms.
  * @param {*} searchSlice Redux search slice
  */
-export const hasActiveSearchTerm = searchSlice => {
+export const hasActiveSearchTermSelector = searchSlice => {
     // Then look through whether there are any quick search terms.
     return Object.keys(searchSlice.searchTerm || {}).length > 0;
 };

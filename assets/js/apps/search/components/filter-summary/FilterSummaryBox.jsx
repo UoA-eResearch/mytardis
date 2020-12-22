@@ -11,12 +11,13 @@ import {
     schemaTypeSelector,
     typeAttrSelector, 
     typeSelector,
-    typeAttrFilterValueSelector
+    typeAttrFilterValueSelector,
+    hasActiveFiltersSelector
 } from "../filters/filterSlice";
 import { 
     runSearch,
     updateSearchTerm,
-    searchHasCriteriaSelector
+    hasActiveSearchTermSelector
 } from "../searchSlice";
 
 function InvalidFilterBadge() {
@@ -30,6 +31,7 @@ function AndOperatorBadge() {
 function MultiValueContentBadge({ content }) {
     return content.map(filterValue =>
         <Badge
+            key={filterValue}
             variant="secondary"
             className="filter-summary-box__badge"
         >
@@ -144,6 +146,7 @@ function QuickSearchBadgeList() {
             const isLastFilter = index === typesWithSearchTerms.length - 1;
             return <Fragment key={typeId + "-search-term"}>
                 <QuickSearchBadge
+                    key={typeId}
                     typeId={typeId}
                     searchTerm={searchTermsById[typeId]}
                 />
@@ -165,6 +168,7 @@ function getFilterBadge(filterKind) {
 };
 
 function FilterSummaryFilterList() {
+    // Fetch the dictionary of active filters and flatten it into an array.
     const activeFiltersByTypeId = useSelector(state => state.filters.activeFilters);
     const activeFilters = [];
     for (const typeId in activeFiltersByTypeId) {
@@ -199,8 +203,9 @@ function ResetFiltersButton() {
         },
         [dispatch]
     );
-    const hasActiveFiltersOrSearchTerm = useSelector(state => 
-        searchHasCriteriaSelector(state.search, state.filters)
+    const hasActiveFiltersOrSearchTerm = useSelector(state =>
+        hasActiveFiltersSelector(state.filters) || 
+        hasActiveSearchTermSelector(state.search)
     );
     return <Button 
         className="ms-1"
@@ -212,13 +217,16 @@ function ResetFiltersButton() {
 }
 
 function BadgeList() {
-    const searchHasCriteria = useSelector(
-        state => searchHasCriteriaSelector(state.search, state.filters)
+    const hasSearchTerm = useSelector(
+        state => hasActiveSearchTermSelector(state.search)
     );
-    if (searchHasCriteria) {
+    const hasFilters = useSelector(
+        state => hasActiveFiltersSelector(state.filters)
+    )
+    if (hasSearchTerm || hasFilters) {
         return <>
         <QuickSearchBadgeList />
-        <AndOperatorBadge />
+        { hasSearchTerm && hasFilters ? <AndOperatorBadge /> : null }
         <FilterSummaryFilterList />
     </>;
     } else {
