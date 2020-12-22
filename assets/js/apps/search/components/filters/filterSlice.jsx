@@ -433,7 +433,23 @@ const getFilterQueryValue = (filtersSlice, filterFieldInfo) => {
     return filterValue.map(value => (
         Object.assign({}, filterFieldInfo, filterType, value)
     ));
+};
+
+/**
+ * Selector for whether there are any active filters in the search.
+ * @param {*} filterSlice Redux filter slice
+ */
+export function hasActiveFiltersSelector(filterSlice) {
+    // First, look through whether any filters are active.
+    const activeFilters = filterSlice.activeFilters;
+    for (const typeId in activeFilters) {
+        if (activeFilters[typeId] && activeFilters[typeId].length > 0) {
+            return true;
+        }
+    }
+    return false;
 }
+
 
 /**
  * Returns active filter values in search API query form.
