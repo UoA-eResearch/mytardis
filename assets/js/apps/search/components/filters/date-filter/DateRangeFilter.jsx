@@ -53,7 +53,7 @@ const toSubmitValue = localValue => {
 
 const toLocalValue = submitValue => {
     if (!submitValue) {
-        return {};
+        return {start: null, end: null};
     }
     if (!Array.isArray(submitValue)) {
         submitValue = [submitValue];
@@ -77,10 +77,10 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
         id = "missingFilterName";
     }
     if (!options.hintStart) {
-        options.hintStart = "MM/DD/YYYY";
+        options.hintStart = "(e.g. 2020-12-30)";
     }
     if (!options.hintEnd) {
-        options.hintEnd = "MM/DD/YYYY";
+        options.hintEnd = "(e.g. 2021-01-15)";
     }
 
     const [localValue, setLocalValue] = useState(toLocalValue(value));
@@ -149,8 +149,11 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
                         onChange={handleValueChange.bind(this, "start")}
                         inputProps={{ placeholder: options.hintStart, id: startFieldId }}
                         closeOnSelect={true}
-                        dateFormat="L"
+                        dateFormat="YYYY-MM-DD"
                         timeFormat={false}
+                        // Hack for react-datetime bug:
+                        // https://github.com/arqex/react-datetime/issues/760
+                        key={startFieldId + localValue.start} 
                     />
                 </Form.Group>
             }
@@ -162,8 +165,11 @@ const DateRangeFilter = ({ id, value, options, onValueChange }) => {
                         onChange={handleValueChange.bind(this, "end")}
                         inputProps={{ placeholder: options.hintEnd, id: endFieldId }}
                         closeOnSelect={true}
-                        dateFormat="L"
+                        dateFormat="YYYY-MM-DD"
                         timeFormat={false}
+                        // Hack for react-datetime bug: 
+                        // https://github.com/arqex/react-datetime/issues/760
+                        key={endFieldId + localValue.end} 
                     />
                 </Form.Group>
             }
