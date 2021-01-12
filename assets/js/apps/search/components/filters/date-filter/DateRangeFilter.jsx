@@ -47,7 +47,7 @@ const toSubmitValue = localValue => {
     if (!isNone(localValue.end)) {
         submitValue.push({
             op: "<=",
-            content: localValue.end.toISOString(DATE_FORMAT)
+            content: localValue.end.format(DATE_FORMAT)
         });
     }
     if (submitValue.length === 0) {
@@ -63,12 +63,12 @@ const toSubmitValue = localValue => {
  */
 const toLocalValue = submitValue => {
     if (!submitValue) {
-        return {start: null, end: null};
+        return {start: "", end: ""};
     }
     if (!Array.isArray(submitValue)) {
         submitValue = [submitValue];
     }
-    const localValue = {start: null, end: null};
+    const localValue = {start: "", end: ""};
     const startValue = submitValue.filter(value => value.op === ">=");
     const endValue = submitValue.filter(value => value.op === "<=");
     if (startValue.length > 0) {
@@ -98,6 +98,10 @@ function mergeOptionsWithDefaults(options) {
     return newOptions;
 }
 
+const isValidDate = date => {
+    return date instanceof moment;
+};
+
 const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChange }) => {
     // Make a copy of the options first.
     options = mergeOptionsWithDefaults(options);
@@ -115,8 +119,12 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
         // Copy the value object, then assign new value into the start field.
         const newValue = Object.assign({}, localValue);
         newValue.start = valueFromForm;
-        if (!options.hideEnd && (!newValue.end || newValue.start.isAfter(newValue.end))) {
-            newValue.end = newValue.start;
+        if (isValidDate(newValue.start) && !options.hideEnd) {
+            if (isValidDate(newValue.end) && newValue.start.isAfter(newValue.end)) {
+            // If new start date is before the end date,
+            // we auto-fill end date to be same as start date.
+                newValue.end = newValue.start;
+            }
         }
         setLocalValue(newValue);
     };
@@ -125,10 +133,12 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
         // Copy the value object, then assign new value into the start field.
         const newValue = Object.assign({}, localValue);
         newValue.end = valueFromForm;
-        if (!options.hideStart && (!newValue.start || newValue.end.isBefore(newValue.start))) {
-            // If setting end date and there's no start date OR if new end date is before the start date,
-            // we auto-fill start date to be same as end date.
-            newValue.start = newValue.end;
+        if (isValidDate(newValue.end) && !options.hideStart) {
+            if (isValidDate(newValue.start) && newValue.end.isBefore(newValue.start)) {
+                // If new end date is before the start date,
+                // we auto-fill start date to be same as end date.
+                newValue.start = newValue.end;
+            }
         }
         setLocalValue(newValue);
     };

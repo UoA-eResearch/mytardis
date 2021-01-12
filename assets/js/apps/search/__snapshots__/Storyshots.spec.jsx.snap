@@ -2296,7 +2296,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                     type="text"
                     value=""
                   />
@@ -2788,7 +2788,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                     type="text"
                     value=""
                   />
@@ -3594,7 +3594,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                     type="text"
                     value=""
                   />
@@ -4086,7 +4086,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                     type="text"
                     value=""
                   />
@@ -4892,7 +4892,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                     type="text"
                     value=""
                   />
@@ -5384,7 +5384,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                     type="text"
                     value=""
                   />
@@ -6190,7 +6190,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                     type="text"
                     value=""
                   />
@@ -6682,7 +6682,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                     type="text"
                     value=""
                   />
@@ -7540,6 +7540,140 @@ exports[`Storyshots Filter sidebar Default 1`] = `
 </div>
 `;
 
+exports[`Storyshots Filter summary box Default 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+    }
+  }
+>
+  <div
+    className="card"
+    style={
+      Object {
+        "padding": "1rem",
+      }
+    }
+  >
+    <div
+      className="card-body d-flex"
+    >
+      <div
+        className="flex-grow-1 h5"
+      >
+        <div
+          className="filter-summary-box__badge-group"
+        >
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            Project.Schema
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-info"
+          >
+            is
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            1
+          </span>
+        </div>
+        <span
+          className="filter-summarybox__badge--separator badge badge-info"
+        >
+          AND
+        </span>
+        <div
+          className="filter-summary-box__badge-group"
+        >
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            Experiment.Schema
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-info"
+          >
+            is
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            2
+          </span>
+        </div>
+        <span
+          className="filter-summarybox__badge--separator badge badge-info"
+        >
+          AND
+        </span>
+        <div
+          className="filter-summary-box__badge-group"
+        >
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            Dataset.Schema
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-info"
+          >
+            is
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            1
+          </span>
+        </div>
+        <span
+          className="filter-summarybox__badge--separator badge badge-info"
+        >
+          AND
+        </span>
+        <div
+          className="filter-summary-box__badge-group"
+        >
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            Datafile.Schema
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-info"
+          >
+            is
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            1
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            2
+          </span>
+        </div>
+      </div>
+      <div>
+        <button
+          className="ms-1 btn btn-primary"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          Reset filters
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Storyshots Filters/Category filter Check All By Default 1`] = `
 <div
   style={
@@ -7793,7 +7927,7 @@ exports[`Storyshots Filters/Date range filter Default 1`] = `
           onKeyDown={[Function]}
           placeholder="Start date"
           type="text"
-          value="01/05/2020"
+          value="2020-01-05"
         />
         <div
           className="rdtPicker"
@@ -8285,7 +8419,7 @@ exports[`Storyshots Filters/Date range filter Default 1`] = `
           onKeyDown={[Function]}
           placeholder="End date"
           type="text"
-          value="05/28/2020"
+          value="2020-05-28"
         />
         <div
           className="rdtPicker"
@@ -9811,7 +9945,7 @@ exports[`Storyshots Filters/Date range filter No Labels 1`] = `
           onKeyDown={[Function]}
           placeholder="Start date"
           type="text"
-          value="01/05/2020"
+          value="2020-01-05"
         />
         <div
           className="rdtPicker"
@@ -10303,7 +10437,7 @@ exports[`Storyshots Filters/Date range filter No Labels 1`] = `
           onKeyDown={[Function]}
           placeholder="End date"
           type="text"
-          value="05/28/2020"
+          value="2020-05-28"
         />
         <div
           className="rdtPicker"
@@ -10820,7 +10954,7 @@ exports[`Storyshots Filters/Date range filter Only Show End 1`] = `
           onKeyDown={[Function]}
           placeholder="End date"
           type="text"
-          value="05/28/2020"
+          value="2020-05-28"
         />
         <div
           className="rdtPicker"
@@ -11337,7 +11471,7 @@ exports[`Storyshots Filters/Date range filter Only Show Start 1`] = `
           onKeyDown={[Function]}
           placeholder="Start date"
           type="text"
-          value="01/05/2020"
+          value="2020-01-05"
         />
         <div
           className="rdtPicker"
@@ -12039,7 +12173,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                   type="text"
                   value=""
                 />
@@ -12531,7 +12665,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                   type="text"
                   value=""
                 />
@@ -13337,7 +13471,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                   type="text"
                   value=""
                 />
@@ -13829,7 +13963,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                   type="text"
                   value=""
                 />
@@ -14635,7 +14769,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                   type="text"
                   value=""
                 />
@@ -15127,7 +15261,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                   type="text"
                   value=""
                 />
@@ -15933,7 +16067,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                   type="text"
                   value=""
                 />
@@ -16425,7 +16559,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                   type="text"
                   value=""
                 />
@@ -17406,6 +17540,7 @@ exports[`Storyshots Filters/Number range filter Empty 1`] = `
         className="form-control"
         onChange={[Function]}
         placeholder="Minimum"
+        value=""
       />
     </div>
     <div
@@ -17421,6 +17556,7 @@ exports[`Storyshots Filters/Number range filter Empty 1`] = `
         className="form-control"
         onChange={[Function]}
         placeholder="Maximum"
+        value=""
       />
     </div>
     <button
@@ -20433,7 +20569,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -20925,7 +21061,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -21731,7 +21867,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -22223,7 +22359,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -23029,7 +23165,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -23521,7 +23657,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -24327,7 +24463,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -24819,7 +24955,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -25679,6 +25815,129 @@ exports[`Storyshots Search page Default 1`] = `
       className="result-column"
       md={8}
     >
+      <div
+        className="card"
+        style={
+          Object {
+            "padding": "1rem",
+          }
+        }
+      >
+        <div
+          className="card-body d-flex"
+        >
+          <div
+            className="flex-grow-1 h5"
+          >
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Project.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge--separator badge badge-info"
+            >
+              AND
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Experiment.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                2
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge--separator badge badge-info"
+            >
+              AND
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Dataset.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge--separator badge badge-info"
+            >
+              AND
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Datafile.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                2
+              </span>
+            </div>
+          </div>
+          <div>
+            <button
+              className="ms-1 btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Reset filters
+            </button>
+          </div>
+        </div>
+      </div>
       <div
         className="nav nav-tabs"
         onKeyDown={[Function]}
@@ -26399,7 +26658,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -26891,7 +27150,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -27697,7 +27956,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -28189,7 +28448,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -28995,7 +29254,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -29487,7 +29746,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -30293,7 +30552,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -30785,7 +31044,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -31645,6 +31904,129 @@ exports[`Storyshots Search page Error 1`] = `
       className="result-column"
       md={8}
     >
+      <div
+        className="card"
+        style={
+          Object {
+            "padding": "1rem",
+          }
+        }
+      >
+        <div
+          className="card-body d-flex"
+        >
+          <div
+            className="flex-grow-1 h5"
+          >
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Project.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge--separator badge badge-info"
+            >
+              AND
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Experiment.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                2
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge--separator badge badge-info"
+            >
+              AND
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Dataset.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge--separator badge badge-info"
+            >
+              AND
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Datafile.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                2
+              </span>
+            </div>
+          </div>
+          <div>
+            <button
+              className="ms-1 btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Reset filters
+            </button>
+          </div>
+        </div>
+      </div>
       <div
         className="nav nav-tabs"
         onKeyDown={[Function]}
@@ -31959,7 +32341,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -32451,7 +32833,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -33257,7 +33639,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -33749,7 +34131,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -34555,7 +34937,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -35047,7 +35429,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -35853,7 +36235,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -36345,7 +36727,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -37205,6 +37587,129 @@ exports[`Storyshots Search page Loading 1`] = `
       className="result-column"
       md={8}
     >
+      <div
+        className="card"
+        style={
+          Object {
+            "padding": "1rem",
+          }
+        }
+      >
+        <div
+          className="card-body d-flex"
+        >
+          <div
+            className="flex-grow-1 h5"
+          >
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Project.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge--separator badge badge-info"
+            >
+              AND
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Experiment.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                2
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge--separator badge badge-info"
+            >
+              AND
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Dataset.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge--separator badge badge-info"
+            >
+              AND
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Datafile.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-info"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                2
+              </span>
+            </div>
+          </div>
+          <div>
+            <button
+              className="ms-1 btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Reset filters
+            </button>
+          </div>
+        </div>
+      </div>
       <div
         className="nav nav-tabs"
         onKeyDown={[Function]}
