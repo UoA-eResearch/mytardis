@@ -3,18 +3,18 @@ import PropTypes from "prop-types";
 import { Badge, Button } from "react-bootstrap";
 import "./FilterSummaryBox.css";
 import { useDispatch, useSelector } from "react-redux";
-import { 
-    resetFilters, 
-    schemaParamFilterValueSelector, 
-    schemaParamSelector, 
-    schemaSelector, 
+import {
+    resetFilters,
+    schemaParamFilterValueSelector,
+    schemaParamSelector,
+    schemaSelector,
     schemaTypeSelector,
-    typeAttrSelector, 
+    typeAttrSelector,
     typeSelector,
     typeAttrFilterValueSelector,
     hasActiveFiltersSelector
 } from "../filters/filterSlice";
-import { 
+import {
     runSearch,
     updateSearchTerm,
     hasActiveSearchTermSelector
@@ -25,7 +25,7 @@ function InvalidFilterBadge() {
 }
 
 function AndOperatorBadge() {
-    return <Badge variant="info" className="filter-summarybox__badge--separator">AND</Badge>;
+    return <span className="filter-summarybox__badge--separator">and</span>;
 }
 
 function MultiValueContentBadge({ content }) {
@@ -39,8 +39,12 @@ function MultiValueContentBadge({ content }) {
         </Badge>);
 }
 
+MultiValueContentBadge.propTypes = {
+    content: PropTypes.arrayOf(PropTypes.string).isRequired
+};
+
 function SingleValueContentBadge({ content }) {
-    return <Badge 
+    return <Badge
         variant="secondary"
         className="filter-summary-box__badge"
     >
@@ -48,16 +52,20 @@ function SingleValueContentBadge({ content }) {
     </Badge>;
 }
 
-function FilterBadge({fieldName, value}) {
+SingleValueContentBadge.propTypes = {
+    content: PropTypes.string.isRequired
+};
+
+function FilterBadge({ fieldName, value }) {
     return <div className="filter-summary-box__badge-group">
         <Badge variant="secondary" className="filter-summary-box__badge">{fieldName}</Badge>
-        {value.map(({op, content}) => 
-            <>
-                <Badge variant="info" className="filter-summary-box__badge">{op}</Badge>
-                {op === "is" ? 
+        {value.map(({ op, content }) =>
+            <Fragment key={Array.isArray(content) ? content.join(",") : content}>
+                <Badge variant="secondary" className="filter-summary-box__badge">{op}</Badge>
+                {op === "is" ?
                     <MultiValueContentBadge content={content} />
                     : <SingleValueContentBadge content={content} />}
-            </>
+            </Fragment>
         )}
     </div>;
 
@@ -72,17 +80,17 @@ FilterBadge.propTypes = {
     })).isRequired
 };
 
-function SchemaParameterFilterBadge({fieldInfo}) {
+function SchemaParameterFilterBadge({ fieldInfo }) {
     const schemaId = fieldInfo.target[0], parameterId = fieldInfo.target[1];
     const typeId = useSelector(state => schemaTypeSelector(state.filters, schemaId));
     const fullFieldName = useSelector(state => {
         const type = typeSelector(state.filters, typeId);
-        const schema = schemaSelector(state.filters, schemaId); 
+        const schema = schemaSelector(state.filters, schemaId);
         const schemaParam = schemaParamSelector(state.filters, schemaId, parameterId);
         if (!type || !schema || !schemaParam) {
             return "";
         } else {
-            return `${type.full_name}.${schema.schema_name}.${schemaParam.full_name}`; 
+            return `${type.full_name}.${schema.schema_name}.${schemaParam.full_name}`;
         }
     });
     if (fullFieldName === "") {
@@ -95,7 +103,7 @@ function SchemaParameterFilterBadge({fieldInfo}) {
     }
 }
 
-function TypeAttributeFilterBadge({fieldInfo}) {
+function TypeAttributeFilterBadge({ fieldInfo }) {
     const typeId = fieldInfo.target[0], attributeId = fieldInfo.target[1];
     const fullFieldName = useSelector(state => {
         // Remove the extra s
@@ -117,7 +125,7 @@ function TypeAttributeFilterBadge({fieldInfo}) {
     }
 }
 
-function QuickSearchBadge({typeId, searchTerm}) {
+function QuickSearchBadge({ typeId, searchTerm }) {
     const type = useSelector(
         state => typeSelector(state.filters, typeId)
     );
@@ -129,9 +137,9 @@ function QuickSearchBadge({typeId, searchTerm}) {
             content: searchTerm
         }];
         return <FilterBadge
-            fieldName={type.full_name} 
-            typeId={typeId} 
-            value={searchTermAsBadgeValue} 
+            fieldName={type.full_name}
+            typeId={typeId}
+            value={searchTermAsBadgeValue}
         />;
     }
 }
@@ -164,8 +172,8 @@ function getFilterBadge(filterKind) {
             return SchemaParameterFilterBadge;
         default:
             break;
-    } 
-};
+    }
+}
 
 function FilterSummaryFilterList() {
     // Fetch the dictionary of active filters and flatten it into an array.
@@ -204,16 +212,16 @@ function ResetFiltersButton() {
         [dispatch]
     );
     const hasActiveFiltersOrSearchTerm = useSelector(state =>
-        hasActiveFiltersSelector(state.filters) || 
+        hasActiveFiltersSelector(state.filters) ||
         hasActiveSearchTermSelector(state.search)
     );
-    return <Button 
-        className="ms-1"
-        onClick={onResetFilters} 
-        variant={hasActiveFiltersOrSearchTerm ? "primary" : "outline-secondary"}
-    >
-        Reset filters
-    </Button>;
+    if (!hasActiveFiltersOrSearchTerm) {
+        return null;
+    } else {
+        return <Button className="ms-1" onClick={onResetFilters}>
+            Reset filters
+        </Button>;
+    }
 }
 
 function BadgeList() {
@@ -222,22 +230,22 @@ function BadgeList() {
     );
     const hasFilters = useSelector(
         state => hasActiveFiltersSelector(state.filters)
-    )
+    );
     if (hasSearchTerm || hasFilters) {
-        return <>
-        <QuickSearchBadgeList />
-        { hasSearchTerm && hasFilters ? <AndOperatorBadge /> : null }
-        <FilterSummaryFilterList />
-    </>;
+        return <div className=""><span>Showing results where </span> 
+            <QuickSearchBadgeList />
+            {hasSearchTerm && hasFilters ? <AndOperatorBadge /> : null}
+            <FilterSummaryFilterList />.
+        </div>;
     } else {
-        return <p>Use options on the left to narrow down your results.</p>;
+        return <p>Showing all results. Use options on the left to refine your search.</p>;
     }
 }
 export default function FilterSummaryBox() {
     return (
-        <div className="card" style={{padding: "1rem"}}>
+        <div className="card" style={{ padding: "1rem" }}>
             <div className="card-body d-flex">
-                <div className="flex-grow-1 h5">
+                <div className="flex-grow-1">
                     <BadgeList />
                 </div>
                 <div>

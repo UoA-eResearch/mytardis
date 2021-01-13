@@ -7560,103 +7560,111 @@ exports[`Storyshots Filter summary box Default 1`] = `
       className="card-body d-flex"
     >
       <div
-        className="flex-grow-1 h5"
+        className="flex-grow-1"
       >
         <div
-          className="filter-summary-box__badge-group"
+          className=""
         >
-          <span
-            className="filter-summary-box__badge badge badge-secondary"
-          >
-            Project.Schema
+          <span>
+            Showing results where 
           </span>
-          <span
-            className="filter-summary-box__badge badge badge-info"
+          <div
+            className="filter-summary-box__badge-group"
           >
-            is
-          </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              Project.Schema
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              is
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              1
+            </span>
+          </div>
           <span
-            className="filter-summary-box__badge badge badge-secondary"
+            className="filter-summarybox__badge--separator"
           >
-            1
+            and
           </span>
-        </div>
-        <span
-          className="filter-summarybox__badge--separator badge badge-info"
-        >
-          AND
-        </span>
-        <div
-          className="filter-summary-box__badge-group"
-        >
+          <div
+            className="filter-summary-box__badge-group"
+          >
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              Experiment.Schema
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              is
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              2
+            </span>
+          </div>
           <span
-            className="filter-summary-box__badge badge badge-secondary"
+            className="filter-summarybox__badge--separator"
           >
-            Experiment.Schema
+            and
           </span>
+          <div
+            className="filter-summary-box__badge-group"
+          >
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              Dataset.Schema
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              is
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              1
+            </span>
+          </div>
           <span
-            className="filter-summary-box__badge badge badge-info"
+            className="filter-summarybox__badge--separator"
           >
-            is
+            and
           </span>
-          <span
-            className="filter-summary-box__badge badge badge-secondary"
+          <div
+            className="filter-summary-box__badge-group"
           >
-            2
-          </span>
-        </div>
-        <span
-          className="filter-summarybox__badge--separator badge badge-info"
-        >
-          AND
-        </span>
-        <div
-          className="filter-summary-box__badge-group"
-        >
-          <span
-            className="filter-summary-box__badge badge badge-secondary"
-          >
-            Dataset.Schema
-          </span>
-          <span
-            className="filter-summary-box__badge badge badge-info"
-          >
-            is
-          </span>
-          <span
-            className="filter-summary-box__badge badge badge-secondary"
-          >
-            1
-          </span>
-        </div>
-        <span
-          className="filter-summarybox__badge--separator badge badge-info"
-        >
-          AND
-        </span>
-        <div
-          className="filter-summary-box__badge-group"
-        >
-          <span
-            className="filter-summary-box__badge badge badge-secondary"
-          >
-            Datafile.Schema
-          </span>
-          <span
-            className="filter-summary-box__badge badge badge-info"
-          >
-            is
-          </span>
-          <span
-            className="filter-summary-box__badge badge badge-secondary"
-          >
-            1
-          </span>
-          <span
-            className="filter-summary-box__badge badge badge-secondary"
-          >
-            2
-          </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              Datafile.Schema
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              is
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              1
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              2
+            </span>
+          </div>
+          .
         </div>
       </div>
       <div>
@@ -25827,103 +25835,111 @@ exports[`Storyshots Search page Default 1`] = `
           className="card-body d-flex"
         >
           <div
-            className="flex-grow-1 h5"
+            className="flex-grow-1"
           >
             <div
-              className="filter-summary-box__badge-group"
+              className=""
             >
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                Project.Schema
+              <span>
+                Showing results where 
               </span>
-              <span
-                className="filter-summary-box__badge badge badge-info"
+              <div
+                className="filter-summary-box__badge-group"
               >
-                is
-              </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Project.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
               <span
-                className="filter-summary-box__badge badge badge-secondary"
+                className="filter-summarybox__badge--separator"
               >
-                1
+                and
               </span>
-            </div>
-            <span
-              className="filter-summarybox__badge--separator badge badge-info"
-            >
-              AND
-            </span>
-            <div
-              className="filter-summary-box__badge-group"
-            >
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Experiment.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
               <span
-                className="filter-summary-box__badge badge badge-secondary"
+                className="filter-summarybox__badge--separator"
               >
-                Experiment.Schema
+                and
               </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Dataset.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
               <span
-                className="filter-summary-box__badge badge badge-info"
+                className="filter-summarybox__badge--separator"
               >
-                is
+                and
               </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
+              <div
+                className="filter-summary-box__badge-group"
               >
-                2
-              </span>
-            </div>
-            <span
-              className="filter-summarybox__badge--separator badge badge-info"
-            >
-              AND
-            </span>
-            <div
-              className="filter-summary-box__badge-group"
-            >
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                Dataset.Schema
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-info"
-              >
-                is
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                1
-              </span>
-            </div>
-            <span
-              className="filter-summarybox__badge--separator badge badge-info"
-            >
-              AND
-            </span>
-            <div
-              className="filter-summary-box__badge-group"
-            >
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                Datafile.Schema
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-info"
-              >
-                is
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                1
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                2
-              </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Datafile.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
+              .
             </div>
           </div>
           <div>
@@ -31916,103 +31932,111 @@ exports[`Storyshots Search page Error 1`] = `
           className="card-body d-flex"
         >
           <div
-            className="flex-grow-1 h5"
+            className="flex-grow-1"
           >
             <div
-              className="filter-summary-box__badge-group"
+              className=""
             >
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                Project.Schema
+              <span>
+                Showing results where 
               </span>
-              <span
-                className="filter-summary-box__badge badge badge-info"
+              <div
+                className="filter-summary-box__badge-group"
               >
-                is
-              </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Project.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
               <span
-                className="filter-summary-box__badge badge badge-secondary"
+                className="filter-summarybox__badge--separator"
               >
-                1
+                and
               </span>
-            </div>
-            <span
-              className="filter-summarybox__badge--separator badge badge-info"
-            >
-              AND
-            </span>
-            <div
-              className="filter-summary-box__badge-group"
-            >
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Experiment.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
               <span
-                className="filter-summary-box__badge badge badge-secondary"
+                className="filter-summarybox__badge--separator"
               >
-                Experiment.Schema
+                and
               </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Dataset.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
               <span
-                className="filter-summary-box__badge badge badge-info"
+                className="filter-summarybox__badge--separator"
               >
-                is
+                and
               </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
+              <div
+                className="filter-summary-box__badge-group"
               >
-                2
-              </span>
-            </div>
-            <span
-              className="filter-summarybox__badge--separator badge badge-info"
-            >
-              AND
-            </span>
-            <div
-              className="filter-summary-box__badge-group"
-            >
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                Dataset.Schema
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-info"
-              >
-                is
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                1
-              </span>
-            </div>
-            <span
-              className="filter-summarybox__badge--separator badge badge-info"
-            >
-              AND
-            </span>
-            <div
-              className="filter-summary-box__badge-group"
-            >
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                Datafile.Schema
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-info"
-              >
-                is
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                1
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                2
-              </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Datafile.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
+              .
             </div>
           </div>
           <div>
@@ -37599,103 +37623,111 @@ exports[`Storyshots Search page Loading 1`] = `
           className="card-body d-flex"
         >
           <div
-            className="flex-grow-1 h5"
+            className="flex-grow-1"
           >
             <div
-              className="filter-summary-box__badge-group"
+              className=""
             >
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                Project.Schema
+              <span>
+                Showing results where 
               </span>
-              <span
-                className="filter-summary-box__badge badge badge-info"
+              <div
+                className="filter-summary-box__badge-group"
               >
-                is
-              </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Project.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
               <span
-                className="filter-summary-box__badge badge badge-secondary"
+                className="filter-summarybox__badge--separator"
               >
-                1
+                and
               </span>
-            </div>
-            <span
-              className="filter-summarybox__badge--separator badge badge-info"
-            >
-              AND
-            </span>
-            <div
-              className="filter-summary-box__badge-group"
-            >
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Experiment.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
               <span
-                className="filter-summary-box__badge badge badge-secondary"
+                className="filter-summarybox__badge--separator"
               >
-                Experiment.Schema
+                and
               </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Dataset.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
               <span
-                className="filter-summary-box__badge badge badge-info"
+                className="filter-summarybox__badge--separator"
               >
-                is
+                and
               </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
+              <div
+                className="filter-summary-box__badge-group"
               >
-                2
-              </span>
-            </div>
-            <span
-              className="filter-summarybox__badge--separator badge badge-info"
-            >
-              AND
-            </span>
-            <div
-              className="filter-summary-box__badge-group"
-            >
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                Dataset.Schema
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-info"
-              >
-                is
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                1
-              </span>
-            </div>
-            <span
-              className="filter-summarybox__badge--separator badge badge-info"
-            >
-              AND
-            </span>
-            <div
-              className="filter-summary-box__badge-group"
-            >
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                Datafile.Schema
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-info"
-              >
-                is
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                1
-              </span>
-              <span
-                className="filter-summary-box__badge badge badge-secondary"
-              >
-                2
-              </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Datafile.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
+              .
             </div>
           </div>
           <div>
