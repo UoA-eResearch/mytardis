@@ -234,7 +234,7 @@ export function PureResultSection({ resultSets, selectedType,
     let selectedEntry = getSelectedEntry(resultSets, selectedResult, selectedType);
     const currentResultSet = resultSets ? resultSets[selectedType + "s"] : null;
     return (
-        <>
+        <section className="d-flex flex-column flex-grow-1">
             <ResultTabs />
             <div role="tabpanel" className="result-section--tabpanel">
                 {!error &&
@@ -255,7 +255,7 @@ export function PureResultSection({ resultSets, selectedType,
                     <Pager objectType={selectedType} />
                 }
             </div>
-        </>
+        </section>
     )
 }
 
