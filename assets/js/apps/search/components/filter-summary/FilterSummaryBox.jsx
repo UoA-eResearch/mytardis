@@ -25,7 +25,7 @@ function InvalidFilterBadge() {
 }
 
 function AndOperatorBadge() {
-    return <span className="filter-summarybox__badge--separator">and</span>;
+    return <span className="filter-summarybox__badge filter-summarybox__badge--separator">and</span>;
 }
 
 function MultiValueContentBadge({ content }) {
@@ -61,7 +61,7 @@ function FilterBadge({ fieldName, value }) {
         <Badge variant="secondary" className="filter-summary-box__badge">{fieldName}</Badge>
         {value.map(({ op, content }) =>
             <Fragment key={Array.isArray(content) ? content.join(",") : content}>
-                <Badge variant="secondary" className="filter-summary-box__badge">{op}</Badge>
+                <Badge variant="secondary" className="filter-summary-box__badge filter-summarybox__badge--op">{op}</Badge>
                 {op === "is" ?
                     <MultiValueContentBadge content={content} />
                     : <SingleValueContentBadge content={content} />}
@@ -232,7 +232,7 @@ function BadgeList() {
         state => hasActiveFiltersSelector(state.filters)
     );
     if (hasSearchTerm || hasFilters) {
-        return <div className=""><span>Showing results where </span> 
+        return <div className=""><span>Showing results that match </span> 
             <QuickSearchBadgeList />
             {hasSearchTerm && hasFilters ? <AndOperatorBadge /> : null}
             <FilterSummaryFilterList />.
