@@ -184,7 +184,7 @@
       </div>
     </nav>
 
-    <div class="container-fluid">
+    <div id="content-container" class="container-fluid">
       {% if subtitle %}
       <!-- Subtitle: {{ subtitle }} -->
       {% endif %}
@@ -270,7 +270,7 @@
         </script>
       </div>
 
-      <div class="row">
+      <div id="content-row"" class="row">
         {% load capture %}
         {% capture as sidebar %}
           {% block sidebar %}{% endblock sidebar %}
@@ -283,7 +283,7 @@
           <div id="sidebar-pane" class="col-md-3">{{sidebar}}</div>
           <div id="content-pane" class="col-md-9">{{content}}</div>
         {% else %}
-        <div class="col-md-12">{{content}}</div>
+        <div id="content" class="col-md-12">{{content}}</div>
         {% endif %}
       </div>
 
