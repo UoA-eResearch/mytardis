@@ -5,7 +5,6 @@ import { FiPieChart, FiLock } from 'react-icons/fi';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
-import Badge from 'react-bootstrap/Badge';
 import { useSelector, useDispatch } from "react-redux";
 import { updateSelectedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector } from "./searchSlice";
 import './ResultSection.css';
@@ -194,18 +193,20 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
     }
 
     return (
-        <Table className={listClassName} responsive hover>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Size</th>
-                </tr>
-            </thead>
-            <tbody>
-                {body}
-            </tbody>
-        </Table>
+        <div className={listClassName}> 
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Size</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {body}
+                </tbody>
+            </table>
+        </div>
     )
 }
 
