@@ -416,6 +416,16 @@ const getDisplayQueryString = (queryBody) => {
 };
 
 /**
+ * Selector for whether there are any active quick search terms.
+ * @param {*} searchSlice Redux search slice
+ */
+export const hasActiveSearchTermSelector = searchSlice => {
+    // Then look through whether there are any quick search terms.
+    return Object.keys(searchSlice.searchTerm || {}).length > 0;
+};
+
+
+/**
  * Given the search part of URL, returns the search term or filters serialised in there.
  * @param {string} searchString The search part of URL.
  * @private Only exported to run unit tests

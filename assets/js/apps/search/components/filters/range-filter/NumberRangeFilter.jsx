@@ -38,13 +38,13 @@ const toSubmitValue = localValue => {
 const toLocalValue = submitValue => {
     // Replace null value with empty string to represent null parameter value.
     if (!submitValue) {
-        return {};
+        return {min: "", max: ""};
     }
     if (!Array.isArray(submitValue)) {
         // Wrap value in array if not already in array.
         submitValue = [submitValue];
     }
-    const localValue = {};
+    const localValue = {min: "", max: ""};
     // Iterate over the filter values to get the min and max values.
     submitValue.forEach(filter => {
         if (!filter || !typeof filter === "object" || isNone(filter.op) || isNone(filter.content)) {
@@ -92,28 +92,31 @@ const NumberRangeFilter = ({value,options,onValueChange}) => {
         }
         onValueChange(toSubmitValue(localValue));
     };
+
+    const localMin = localValue.min;
+
     return (
         <Form className="num-range-filter" onSubmit={handleSubmit}>
-                    <Form.Group className="num-range-filter__field">
-                        <Form.Label>Min</Form.Label>
-                        <Form.Control  
-                            onChange={handleValueChange.bind(this,"min")} 
-                            value={localValue.min} 
-                            aria-label="Filter input for min value"
-                            placeholder={options.hintMin}
-                        >
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group className="num-range-filter__field">
-                        <Form.Label>Max</Form.Label>
-                        <Form.Control 
-                            onChange={handleValueChange.bind(this,"max")} 
-                            value={localValue.max} 
-                            aria-label="Filter input for max value"
-                            placeholder={options.hintMax}
-                        >
-                        </Form.Control>
-                    </Form.Group>
+            <Form.Group className="num-range-filter__field">
+                <Form.Label>Min</Form.Label>
+                <Form.Control
+                    onChange={handleValueChange.bind(this, "min")}
+                    value={localMin}
+                    aria-label="Filter input for min value"
+                    placeholder={options.hintMin}
+                >
+                </Form.Control>
+            </Form.Group>
+            <Form.Group className="num-range-filter__field">
+                <Form.Label>Max</Form.Label>
+                <Form.Control
+                    onChange={handleValueChange.bind(this, "max")}
+                    value={localValue.max}
+                    aria-label="Filter input for max value"
+                    placeholder={options.hintMax}
+                >
+                </Form.Control>
+            </Form.Group>
             <Button 
                 type="submit" 
                 className="num-range-filter__button" 

@@ -8,22 +8,27 @@ const getDateFields = (screen) => (
         screen.getByLabelText("End"),
         screen.getByText("Filter")
     ]
-)
+);
 
 it('should render start and end dates as specified', async () => {
-    render(<Default {...Default.args} />);
+    render(<Default {...Default.args} onValueChange={() => {}} />);
     const [startDateEl, endDateEl] = getDateFields(screen);
-    expect(startDateEl.value).toBe("01/05/2020");
-    expect(endDateEl.value).toBe("05/28/2020");
+    expect(startDateEl.value).toBe("2020-01-05");
+    expect(endDateEl.value).toBe("2020-05-28");
 });
 
 it('should change start date when end date becomes a date before it', async () => {
     render(<Default {...Default.args} onValueChange={() => {}} />);
-    const [startDateEl, endDateEl] = getDateFields(screen);
-    const anotherDate = "12/30/2019";
+    let [startDateEl, endDateEl] = getDateFields(screen);
+    const anotherDate = "2019-12-30";
     fireEvent.change(endDateEl, { target: {value: anotherDate } });
     // After changing the end date to an earlier date, 
-    // we should see both the start and end date fields to be the same.
+    // we should see both the start and end date fields to be the same
+    // Retrieve input elements again as we have replaced them
+    // to get around the react-datetime bug.
+    // https://github.com/arqex/react-datetime/issues/760
+
+    [startDateEl, endDateEl] = getDateFields(screen);
     await waitFor(() => expect(endDateEl.value).toBe(anotherDate));
     await waitFor(() => expect(startDateEl.value).toBe(anotherDate));
 });
@@ -37,16 +42,16 @@ it('should callback with right value after submitting', async () => {
     })
     render(<Empty {...props} />);
     const [startDateEl, endDateEl,filterButton] = getDateFields(screen);
-    fireEvent.change(startDateEl, {target: {value: "01/05/2020"}});
-    fireEvent.change(endDateEl, {target: {value: "01/07/2020"}});
+    fireEvent.change(startDateEl, {target: {value: "2020-01-05"}});
+    fireEvent.change(endDateEl, {target: {value: "2020-01-07"}});
     fireEvent.click(filterButton);
     await waitFor(
         () => {
             expect(mockHandleChangeFn).toHaveBeenCalledTimes(1);
             expect(mockHandleChangeFn).toBeCalledWith(
                 [
-                    {op:">=",content:new Date("01/05/2020").toISOString()},
-                    {op:"<=",content: new Date("01/07/2020").toISOString()}
+                    {op:">=",content:"2020-01-05"},
+                    {op:"<=",content: "2020-01-07"}
                 ]
             );
         }
@@ -73,5 +78,3 @@ it('should callback with null after clearing a filter', async () => {
     });
 });
 
-
-// TODO Add test to check null is returned to clear a field
