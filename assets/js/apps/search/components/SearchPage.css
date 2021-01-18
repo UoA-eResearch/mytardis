@@ -23,14 +23,8 @@ body {
 }
 
 .search-screen {
-    /* max-width: 1500px; */
     display: flex;
     height: 100%;
-}
-
-#search-page-title {
-    font-weight: bold;
-    margin: 1rem 0 2rem 0;
 }
 
 .filter-column, .result-column {
@@ -44,7 +38,6 @@ body {
     padding: 1.5rem 1rem;
     background-color: white;
     overflow-y: auto;
-    /* max-height: 800px; */
 }   
 
 .result-column {
