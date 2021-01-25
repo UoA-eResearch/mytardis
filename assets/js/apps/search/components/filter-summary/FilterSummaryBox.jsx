@@ -218,8 +218,8 @@ function ResetFiltersButton() {
     if (!hasActiveFiltersOrSearchTerm) {
         return null;
     } else {
-        return <Button className="ms-1" onClick={onResetFilters}>
-            Reset filters
+        return <Button variant="link" className="px-0" onClick={onResetFilters}>
+            Reset
         </Button>;
     }
 }
@@ -238,19 +238,15 @@ function BadgeList() {
             <FilterSummaryFilterList />.
         </div>;
     } else {
-        return <p>Showing all results. Use options on the left to refine your search.</p>;
+        return <p className="mb-0">Showing all results. Use options on the left to refine your search.</p>;
     }
 }
 export default function FilterSummaryBox() {
     return (
-        <div className="card" style={{ padding: "1rem" }}>
-            <div className="card-body d-flex">
-                <div className="flex-grow-1">
-                    <BadgeList />
-                </div>
-                <div>
-                    <ResetFiltersButton />
-                </div>
+        <div className="card">
+            <div className="card-body">
+                <BadgeList />
+                <ResetFiltersButton />
             </div>
         </div>
     );
