@@ -16,6 +16,7 @@ export const filtersData = {
   types: {
     byId: {
       projects: {
+        "full_name": "Project",
         attributes: {
           byId: {
             name: {
@@ -40,19 +41,20 @@ export const filtersData = {
               sortable: true
             },
             schema: {
+              full_name: "Schema",
               value: { op: "is", content: ["1"] },
-              filterable: true,
-              sortable: true
             }
           }, allIds: ["name", "createdDate", "institution", "schema"]
         }
       },
       experiments: {
+        full_name: "Experiment",
         attributes: {
           byId: {
             name: {
               full_name: "Name",
               id: "name",
+              
               data_type:"STRING",
               filterable: true,
               sortable: true
@@ -72,12 +74,14 @@ export const filtersData = {
               sortable: true
             },
             schema: {
+              full_name: "Schema",
               value: { op: "is", content: ["2"] }
             }
           }, allIds: ["name", "createdDate", "institution", "schema"]
         }
       },
       datasets: {
+        full_name: "Dataset",
         attributes: {
           byId: {
             name: {
@@ -102,6 +106,7 @@ export const filtersData = {
               sortable: true
             },
             schema: {
+              full_name: "Schema",
               value: { op: "is", content: ["1"] },
               filterable: true
             }
@@ -109,6 +114,7 @@ export const filtersData = {
         }
       },
       datafiles: {
+        full_name: "Datafile",
         attributes: {
           byId: {
             name: {
@@ -133,7 +139,8 @@ export const filtersData = {
               sortable: true
             },
             schema: {
-              value: { op: "is", content: ["1", "2"] }
+              value: { op: "is", content: ["1", "2"] },
+              full_name: "Schema"
             }
           }, allIds: ["name", "createdDate", "institution", "schema"]
         }
@@ -151,11 +158,29 @@ export const filtersData = {
     datasets: allSchemaIdsData,
     datafiles: allSchemaIdsData
   },
+  activeFilters: {
+    project: [{
+      kind: "typeAttribute",
+      target: ["projects", "schema"]
+    }],
+    experiment: [{
+      kind: "typeAttribute",
+      target: ["experiments", "schema"]
+    }],
+    dataset: [{
+      kind: "typeAttribute",
+      target: ["datasets", "schema"]
+    }],
+    datafile: [{
+      kind: "typeAttribute",
+      target: ["datafiles", "schema"]
+    }]
+  },
   isLoading: false,
   error: null
 };
 
-const makeMockStoreWithFilterSlice = (filterSlice) => (makeMockStore({filters:filterSlice}));
+const makeMockStoreWithFilterSlice = (filterSlice) => (makeMockStore({filters: filterSlice}));
 
 
 export const noFiltersData = Object.assign({},filtersData, {

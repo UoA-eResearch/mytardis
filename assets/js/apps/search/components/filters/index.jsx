@@ -16,4 +16,4 @@ export const mapTypeToFilter = (type) => {
         default:
             return TextFilter;
     }
-}
+};

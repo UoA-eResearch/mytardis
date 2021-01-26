@@ -39,13 +39,13 @@ const toSubmitValue = localValue => {
 const toLocalValue = submitValue => {
     // Replace null value with empty string to represent null parameter value.
     if (!submitValue) {
-        return {};
+        return {min: "", max: ""};
     }
     if (!Array.isArray(submitValue)) {
         // Wrap value in array if not already in array.
         submitValue = [submitValue];
     }
-    const localValue = {};
+    const localValue = {min: "", max: ""};
     // Iterate over the filter values to get the min and max values.
     submitValue.forEach(filter => {
         if (!filter || !typeof filter === "object" || isNone(filter.op) || isNone(filter.content)) {
@@ -119,6 +119,9 @@ const NumberRangeFilter = ({ value, options, onValueChange }) => {
         }
         onValueChange(toSubmitValue(localValue));
     };
+
+    const localMin = localValue.min;
+
     return (
         <Form className="num-range-filter" onSubmit={handleSubmit}>
             <Form.Group className="num-range-filter__field">

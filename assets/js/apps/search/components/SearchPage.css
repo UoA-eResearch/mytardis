@@ -1,18 +1,34 @@
-.search-page {
-    padding-top: 50px;
-    width:100%;
-    min-height: 90vh;
+/*
+Make the search page take up the whole viewport, but also to make sure
+search results show up as scrollable.
+*/
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
     background-color: #FAFCFF;
 }
 
-.search-screen {
-    margin-top:1em;
+#content-container, #content-row, #content, #search-app, .search-page {
     display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+}
+
+.search-page {
+    width:100%;
+    margin: 3rem 0;
+}
+
+.search-screen {
+    display: flex;
+    height: 100%;
 }
 
 .filter-column, .result-column {
-    height: 70vh;
-    overflow-y: auto;
+    height: 100%;
     justify-items: space-between;
 }
 
@@ -21,7 +37,8 @@
     border: 1px solid lightgray;
     padding: 1.5rem 1rem;
     background-color: white;
-}
+    overflow-y: auto;
+}   
 
 .result-column {
     flex: 1 0 600px;
@@ -35,4 +52,12 @@
     /* Make overflow hidden here so result list and entry preview card scrollable
        independently. */
     overflow: hidden
+}
+
+.result-column > * {
+    margin-bottom: 1rem;
+}
+
+.result-column > :last-child {
+    margin-bottom: 0;
 }
