@@ -339,6 +339,10 @@ def delete_if_all_false(instance, **kwargs):
 
 
 post_save.connect(delete_if_all_false, sender=ObjectACL)
+post_save.connect(delete_if_all_false, sender=ProjectACL)
+post_save.connect(delete_if_all_false, sender=ExperimentACL)
+post_save.connect(delete_if_all_false, sender=DatasetACL)
+post_save.connect(delete_if_all_false, sender=DatafileACL)
 
 
 if getattr(settings, 'AUTOGENERATE_API_KEY', False):
