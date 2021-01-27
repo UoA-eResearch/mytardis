@@ -12,11 +12,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
-from .project import Project
-from .experiment import Experiment
-from .dataset import Dataset
-from .datafile import DataFile
-
 #from ..tests import suspendingreceiver
 
 
@@ -311,16 +306,16 @@ class ObjectACL(models.Model):
 
 
 class ProjectACL(ObjectACL):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey("Project", on_delete=models.CASCADE)
 
 class ExperimentACL(ObjectACL):
-    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
+    experiment = models.ForeignKey("Experiment", on_delete=models.CASCADE)
 
 class DatasetACL(ObjectACL):
-    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
+    dataset = models.ForeignKey("Dataset", on_delete=models.CASCADE)
 
 class DatafileACL(ObjectACL):
-    datafile = models.ForeignKey(DataFile, on_delete=models.CASCADE)
+    datafile = models.ForeignKey("DataFile", on_delete=models.CASCADE)
 
 
 def create_user_api_key(sender, **kwargs):
