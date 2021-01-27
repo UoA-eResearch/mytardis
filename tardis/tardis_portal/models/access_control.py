@@ -12,6 +12,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
+from .project import Project
+from .experiment import Experiment
+from .dataset import Dataset
+from .datafile import DataFile
+
 #from ..tests import suspendingreceiver
 
 
@@ -241,8 +246,8 @@ class ObjectACL(models.Model):
 
     pluginId = models.CharField(null=False, blank=False, max_length=30)
     entityId = models.CharField(null=False, blank=False, max_length=320)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='objectacls')
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name='objectacls')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='%(class)sacls')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name='%(class)sacls')
 #    experiment = models.ForeignKey('Experiment')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -303,6 +308,19 @@ class ObjectACL(models.Model):
             (Q(expiryDate__gte=datetime.today()) |
              Q(expiryDate__isnull=True))
         return acl_effective_query
+
+
+class ProjectACL(ObjectACL):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+class ExperimentACL(ObjectACL):
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
+
+class DatasetACL(ObjectACL):
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
+
+class DatafileACL(ObjectACL):
+    datafile = models.ForeignKey(DataFile, on_delete=models.CASCADE)
 
 
 def create_user_api_key(sender, **kwargs):
