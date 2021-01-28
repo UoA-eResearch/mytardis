@@ -397,11 +397,6 @@ class ACL(models.Model):
     def __str__(self):
         return '%s | %i' % (self.content_type.name, self.object_id)
 
-    class Meta:
-        app_label = 'tardis_portal'
-        ordering = ['content_type', 'object_id']
-        verbose_name = "Object ACL"
-
     @classmethod
     def get_effective_query(cls):
         acl_effective_query = (Q(effectiveDate__lte=datetime.today()) |
