@@ -340,14 +340,14 @@ class ACL(models.Model):
         (SYSTEM_OWNED, 'System-owned'),
     )
 
-    pluginId = models.CharField(null=False, blank=False, max_length=30)
-    entityId = models.CharField(null=False, blank=False, max_length=320)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='%(class)sacls')
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name='%(class)sacls')
-#    experiment = models.ForeignKey('Experiment')
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
+    #pluginId = models.CharField(null=False, blank=False, max_length=30)
+    #entityId = models.CharField(null=False, blank=False, max_length=320)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='%(class)ss')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name='%(class)ss')
+    #experiment = models.ForeignKey('Experiment')
+    #content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    #object_id = models.PositiveIntegerField()
+    #content_object = GenericForeignKey('content_type', 'object_id')
     canRead = models.BooleanField(default=False)
     canDownload = models.BooleanField(default=False)
     canWrite = models.BooleanField(default=False)
@@ -374,28 +374,28 @@ class ACL(models.Model):
         super().save(*args, **kwargs)
 
 
-    def get_related_object(self):
-        """
-        If possible, resolve the pluginId/entityId combination to a user or
-        group object.
-        """
-        if self.pluginId == 'django_user':
-            return User.objects.get(pk=self.entityId)
-        if self.pluginId == 'django_group':
-            return Group.objects.get(pk=self.entityId)
-        return None
+    #def get_related_object(self):
+    #    """
+    #    If possible, resolve the pluginId/entityId combination to a user or
+    #    group object.
+    #    """
+    #    if self.pluginId == 'django_user':
+    #        return User.objects.get(pk=self.entityId)
+    #    if self.pluginId == 'django_group':
+    #        return Group.objects.get(pk=self.entityId)
+    #    return None
 
-    def get_related_object_group(self):
-        """
-        If possible, resolve the pluginId/entityId combination to a user or
-        group object.
-        """
-        if self.pluginId == 'django_group':
-            return Group.objects.get(pk=self.entityId)
-        return None
+    #def get_related_object_group(self):
+    #    """
+    #    If possible, resolve the pluginId/entityId combination to a user or
+    #    group object.
+    #    """
+    #    if self.pluginId == 'django_group':
+    #        return Group.objects.get(pk=self.entityId)
+    #    return None
 
     def __str__(self):
-        return '%s | %i' % (self.content_type.name, self.object_id)
+        return str(self.id)
 
     @classmethod
     def get_effective_query(cls):
