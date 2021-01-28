@@ -258,6 +258,11 @@ class ObjectACL(models.Model):
     aclOwnershipType = models.IntegerField(
         choices=__COMPARISON_CHOICES, default=OWNER_OWNED)
 
+    class Meta:
+        abstract = True
+        app_label = 'tardis_portal'
+        ordering = ['id']
+
     def save(self, *args, **kwargs):
         """
         Only save ACL if at least one of User/Group key is Null/None
