@@ -241,8 +241,8 @@ class ObjectACL(models.Model):
 
     pluginId = models.CharField(null=False, blank=False, max_length=30)
     entityId = models.CharField(null=False, blank=False, max_length=320)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='%(class)sacls')
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name='%(class)sacls')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='objectacls')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name='objectacls')
 #    experiment = models.ForeignKey('Experiment')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
