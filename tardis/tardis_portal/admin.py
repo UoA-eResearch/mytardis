@@ -227,6 +227,29 @@ class ObjectACLAdmin(admin.ModelAdmin):
         'canDownload', 'canWrite', 'canDelete', 'canSensitive', 'isOwner'
     ]
 
+class ProjectACLAdmin(admin.ModelAdmin):
+    list_display = [
+        '__str__', 'canRead',
+        'canDownload', 'canWrite', 'canDelete', 'canSensitive', 'isOwner'
+    ]
+
+class ExperimentACLAdmin(admin.ModelAdmin):
+    list_display = [
+        '__str__', 'canRead',
+        'canDownload', 'canWrite', 'canDelete', 'canSensitive', 'isOwner'
+    ]
+
+class DatasetACLAdmin(admin.ModelAdmin):
+    list_display = [
+        '__str__', 'canRead',
+        'canDownload', 'canWrite', 'canDelete', 'canSensitive', 'isOwner'
+    ]
+
+class DatafileACLAdmin(admin.ModelAdmin):
+    list_display = [
+        '__str__', 'canRead',
+        'canDownload', 'canWrite', 'canDelete', 'canSensitive', 'isOwner'
+    ]
 
 class FreeTextSearchFieldAdmin(admin.ModelAdmin):
     pass
@@ -277,6 +300,10 @@ admin.site.register(models.ExperimentParameterSet, ExperimentParameterSetAdmin)
 admin.site.register(models.GroupAdmin)
 admin.site.register(models.UserAuthentication, UserAuthenticationAdmin)
 admin.site.register(models.ObjectACL, ObjectACLAdmin)
+admin.site.register(models.ProjectACL, ProjectACLAdmin)
+admin.site.register(models.ExperimentACL, ExperimentACLAdmin)
+admin.site.register(models.DatasetACL, DatasetACLAdmin)
+admin.site.register(models.DatafileACL, DatafileACLAdmin)
 admin.site.register(models.FreeTextSearchField, FreeTextSearchFieldAdmin)
 # admin.site.register(MigrationHistory)
 admin.site.register(models.StorageBox, StorageBoxAdmin)
