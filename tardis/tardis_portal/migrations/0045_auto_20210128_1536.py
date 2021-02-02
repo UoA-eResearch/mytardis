@@ -21,7 +21,7 @@ def create_new_acl_objects(apps, schema_editor):
     DATAFILE = apps.get_model("tardis_portal", "DataFile")
 
 
-    for acl in OBJECTACL.objects.all():
+    for acl in OBJECTACL.objects.all().iterator():
 
         # pull out user/group corresponding to old ACL, ready for new foreignkey relation
         if acl.pluginId == 'django_user':

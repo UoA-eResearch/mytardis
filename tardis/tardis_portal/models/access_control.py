@@ -241,8 +241,8 @@ class ObjectACL(models.Model):
 
     pluginId = models.CharField(null=False, blank=False, max_length=30)
     entityId = models.CharField(null=False, blank=False, max_length=320)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='objectacls')
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name='objectacls')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='objectacls')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True, related_name='objectacls')
 #    experiment = models.ForeignKey('Experiment')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -260,7 +260,8 @@ class ObjectACL(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Only save ACL if at least one of User/Group key is Null/None
+        Only save ACL if only has at least one None for User/Group key
+        Note: both may be blank for external users/hyperlink sharing
         """
         if self.user is not None:
             if self.group is not None:
@@ -342,8 +343,8 @@ class ACL(models.Model):
 
     #pluginId = models.CharField(null=False, blank=False, max_length=30)
     #entityId = models.CharField(null=False, blank=False, max_length=320)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='%(class)ss')
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name='%(class)ss')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='%(class)ss')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True, related_name='%(class)ss')
     #experiment = models.ForeignKey('Experiment')
     #content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     #object_id = models.PositiveIntegerField()
@@ -366,7 +367,8 @@ class ACL(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Only save ACL if at least one of User/Group key is Null/None
+        Only save ACL if only has at least one None for User/Group key
+        Note: both may be blank for external users/hyperlink sharing
         """
         if self.user is not None:
             if self.group is not None:

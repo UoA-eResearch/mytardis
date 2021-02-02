@@ -10,7 +10,7 @@ def update_user_or_group(apps, schema_editor):
     USER = apps.get_model("auth", "User")
     GROUP = apps.get_model("auth", "Group")
 
-    for acl in ACL.objects.all():
+    for acl in ACL.objects.all().iterator():
         if acl.pluginId == 'django_user':
             try:
                 acl.user = USER.objects.get(pk=acl.entityId)
@@ -35,12 +35,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='objectacl',
             name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='objectacls', to='auth.Group'),
+            field=models.ForeignKey(null=True, blank=True, on_delete=django.db.models.deletion.CASCADE, related_name='objectacls', to='auth.Group'),
         ),
         migrations.AddField(
             model_name='objectacl',
             name='user',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='objectacls', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(null=True, blank=True, on_delete=django.db.models.deletion.CASCADE, related_name='objectacls', to=settings.AUTH_USER_MODEL),
         ),
         migrations.RunPython(update_user_or_group
         ),
