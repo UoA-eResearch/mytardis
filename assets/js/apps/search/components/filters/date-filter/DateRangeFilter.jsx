@@ -5,9 +5,12 @@ import PropTypes from "prop-types";
 import Datetime from "react-datetime";
 import moment from "moment";
 
+import "./DateRangeFilter.css";
+
 // React Datetime requires CSS to work.
 import "react-datetime/css/react-datetime.css";
 
+import DatePicker from 'react-date-picker';
 const DATE_FORMAT = "YYYY-MM-DD";
 
 const isNone = (value) => {
@@ -33,6 +36,7 @@ const isValueEmpty = (value) => {
  * @param {*} localValue The local value to convert
  */
 const toSubmitValue = localValue => {
+    console.log(localValue);
     // Replace empty string value with null to represent null parameter value.
     if (!localValue) {
         return null;
@@ -77,6 +81,7 @@ const toLocalValue = submitValue => {
     if (endValue.length > 0) {
         localValue.end = moment(endValue[0].content);
     }
+    console.log(JSON.stringify(localValue));
     return localValue;
 };
 
@@ -126,6 +131,11 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                 newValue.end = newValue.start;
             }
         }
+
+        console.log(valueFromForm);
+        let momentDate = moment(valueFromForm, "d-M-y")
+        console.log(momentDate);
+
         setLocalValue(newValue);
     };
 
@@ -176,12 +186,24 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                         // https://github.com/arqex/react-datetime/issues/760
                         key={startFieldId + localValue.start} 
                     />
+                    <DatePicker
+                        value={localValue.start}
+                        onChange={handleStartValueChange}
+                        // key={startFieldId + localValue.start}
+                        format={"y-MM-dd"}
+                    />
                 </Form.Group>
             }
             {options.hideEnd ? null : 
                 <Form.Group className="date-range-filter__field">
                     <Form.Label htmlFor={endFieldId} srOnly={options.hideLabels}>End</Form.Label>
-                    <Datetime
+                    <DatePicker
+                        onChange={handleEndValueChange}
+                        value={localValue.end}
+                        key={startFieldId + localValue.start}
+                        format={"y-M-d"}
+                    />
+                    {/* <Datetime
                         value={localValue.end}
                         onChange={handleEndValueChange}
                         inputProps={{ placeholder: options.hintEnd, id: endFieldId }}
@@ -191,7 +213,7 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                         // Hack for react-datetime bug: 
                         // https://github.com/arqex/react-datetime/issues/760
                         key={endFieldId + localValue.end} 
-                    />
+                    /> */}
                 </Form.Group>
             }
             <Button
