@@ -27,8 +27,12 @@ export function PureResultTabs({ counts, selectedType, onChange }) {
                     <Nav.Link onSelect={handleNavClicked.bind(this, id)} eventKey={id}>
                         <span className="text-capitalize">{name}</span> {hitTotal !== null &&
                             <span>
-                                ({hitTotal}) 
-                                <span className="sr-only">{hitTotal > 1 ? " results" : " result"}</span>
+                                (
+                                {hitTotal}
+                                <span className="sr-only">
+                                    {hitTotal > 1 ? " results" : " result"}
+                                </span>
+                                )
                             </span>
                         }
                     </Nav.Link>

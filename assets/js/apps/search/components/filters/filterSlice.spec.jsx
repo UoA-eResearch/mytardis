@@ -1,3 +1,5 @@
+/*eslint-env jest*/
+
 import reducer, { 
     updateTypeAttribute,
     updateSchemaParameter,
@@ -11,7 +13,7 @@ import { createNextState } from "@reduxjs/toolkit";
 const mockStoreState = {
     types: {
         byId: {
-            projects: {
+            project: {
                 attributes: {
                     byId: {
                         schema: {
@@ -23,7 +25,7 @@ const mockStoreState = {
                     allIds: ["schema"]
                 }
             },
-            experiments: {
+            experiment: {
                 attributes: {
                     byId: {
                         schema: {
@@ -42,10 +44,10 @@ const mockStoreState = {
                             value: null
                         }
                     },
-                    allIds: ["schema","createdDate"]
+                    allIds: ["schema", "createdDate"]
                 }
             },
-            datasets: {
+            dataset: {
                 attributes: {
                     byId: {
                         schema: {
@@ -61,10 +63,10 @@ const mockStoreState = {
                             value: { op: ">=", content: "2020-01-01" }
                         }
                     },
-                    allIds: ["schema","createdDate"]
+                    allIds: ["schema", "createdDate"]
                 }
             },
-            datafiles: {
+            datafile: {
                 attributes: {
                     byId: {
                         schema: {
@@ -78,19 +80,19 @@ const mockStoreState = {
             }
         },
         allIds: [
-            'projects',
-            'experiments',
-            'datasets',
-            'datafiles'
+            'project',
+            'experiment',
+            'dataset',
+            'datafile'
         ]
     },
     typeSchemas: {
 
-        datasets: [
+        dataset: [
             '2',
             '14'
         ],
-        experiments: [
+        experiment: [
             '1',
             '4'
         ],
@@ -127,7 +129,7 @@ const mockStoreState = {
                     }
                 },
                 schema_name: 'Schema_ACL_experiment',
-                type: 'experiments'
+                type: 'experiment'
             },
             '2': {
                 id: '2',
@@ -153,7 +155,7 @@ const mockStoreState = {
                     }
                 },
                 schema_name: 'Schema_ACL_dataset',
-                type: 'datasets'
+                type: 'dataset'
             },
             '4': {
                 id: '4',
@@ -170,7 +172,7 @@ const mockStoreState = {
                     }
                 },
                 schema_name: 'Schema_ACL_datafile2',
-                type: 'datafiles'
+                type: "datafile"
             },
             '14': {
                 id: '14',
@@ -187,7 +189,7 @@ const mockStoreState = {
                     }
                 },
                 schema_name: 'Default Project',
-                type: 'projects'
+                type: 'project'
             }
         },
         allIds: [
@@ -198,22 +200,22 @@ const mockStoreState = {
         ]
     },
     activeFilters: {
-        projects: [], 
-        experiments: [{
+        project: [], 
+        experiment: [{
             kind: 'typeAttribute',
-            target: ['experiments','schema'],
+            target: ['experiment','schema'],
         }],
-        datasets: [
+        dataset: [
             {
                 kind: 'typeAttribute',
-                target: ['datasets', 'createdDate'],
+                target: ['dataset', 'createdDate'],
             }, 
             {
-            kind: 'schemaParameter',
-            target: ['2', '4'],
+                kind: 'schemaParameter',
+                target: ['2', '4']
             }
         ],
-        datafiles: []
+        datafile: []
     },
     isLoading: false,
     error: null
@@ -222,7 +224,7 @@ const mockStoreState = {
 describe('Type attribute reducer', () => {
 
     it('can add filter for type attributes', () => {
-        const type = "experiments",
+        const type = "experiment",
             attribute = "createdDate",
             newValue = { op: ">=", content: "2020-01-23" },
             expectedNewState = createNextState(mockStoreState, draft => {
@@ -230,7 +232,7 @@ describe('Type attribute reducer', () => {
                     kind: 'typeAttribute',
                     target: [type, attribute]
                 });
-                draft.types.byId[type].attributes.byId.createdDate.value = newValue
+                draft.types.byId[type].attributes.byId.createdDate.value = newValue;
             });
         expect(reducer(mockStoreState, updateTypeAttribute({
             typeId: type,
@@ -240,13 +242,13 @@ describe('Type attribute reducer', () => {
     });
 
     it('can remove filter for type attributes', () => {
-        const type = "datasets",
+        const type = "dataset",
             attribute = "createdDate",
             newValue = null,
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.activeFilters[type] = draft.activeFilters[type].filter(
                     f => (
-                        f.target[0] != "datasets" && f.target[1] != "createdDate"
+                        f.target[0] != "dataset" && f.target[1] != "createdDate"
                     )
                 );
                 draft.types.byId[type].attributes.byId.createdDate.value = newValue;
@@ -259,7 +261,7 @@ describe('Type attribute reducer', () => {
     });
 
     it('can update filter value for type attributes', () => {
-        const type = "datasets",
+        const type = "dataset",
             attribute = "createdDate",
             newValue = { op: ">=", content: "2020-03-03" },
             expectedNewState = createNextState(mockStoreState, draft => {
@@ -279,7 +281,7 @@ describe('Schema parameter reducer', () => {
             parameter = "2",
             newValue = { op: 'contains', content: 'Blue' },
             expectedNewState = createNextState(mockStoreState, draft => {
-                draft.activeFilters["experiments"].push({
+                draft.activeFilters.experiment.push({
                     kind: "schemaParameter",
                     target: [schema, parameter]
                 });
@@ -297,7 +299,7 @@ describe('Schema parameter reducer', () => {
             parameter = "4",
             newValue = null,
             expectedNewState = createNextState(mockStoreState, draft => {
-                draft.activeFilters["datasets"] = draft.activeFilters["datasets"].filter(
+                draft.activeFilters["dataset"] = draft.activeFilters["dataset"].filter(
                     f => (
                         f.target[0] != "2" && f.target[1] != "4"
                     )
@@ -329,7 +331,7 @@ describe('Schema parameter reducer', () => {
 
 describe('Active schema reducer', () => {
     it('can add active schema', () => {
-        const typeId = "datasets",
+        const typeId = "dataset",
             value = {op: "is",content:["2"]},
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.types.byId[typeId].attributes.byId.schema.value = value;
@@ -345,7 +347,7 @@ describe('Active schema reducer', () => {
     });
 
     it('can remove active schema', () => {
-        const typeId = "experiments",
+        const typeId = "experiment",
             value = null,
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.types.byId[typeId].attributes.byId.schema.value = value;
@@ -364,7 +366,7 @@ describe('Active schema reducer', () => {
     });
 
     it('can update active schema along with associated parameters', () => {
-        const typeId = "datasets",
+        const typeId = "dataset",
             value = {op: "is",content:["14"]},
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.types.byId[typeId].attributes.byId.schema.value = value;
@@ -430,8 +432,8 @@ describe('Reset and update filter state by query body', () => {
     it('can reset and update filters with two values', () => {
         const expectedNewState = createNextState(mockStoreState, draft => {
             // The current values should be now null.
-            draft.types.byId['datasets'].attributes.byId['createdDate'].value = null;
-            draft.types.byId['experiments'].attributes.byId['schema'].value = null;
+            draft.types.byId['dataset'].attributes.byId['createdDate'].value = null;
+            draft.types.byId['experiment'].attributes.byId['schema'].value = null;
             draft.schemas.byId['2'].parameters['4'].value = null;
             draft.schemas.byId['1'].parameters['11'].value = [
                 {
@@ -440,7 +442,7 @@ describe('Reset and update filter state by query body', () => {
                     op: '<=', content: '15'
                 }
             ];
-            draft.activeFilters = {projects: [], datasets: [], datafiles: [], experiments: [{kind: 'schemaParameter', target: ['1','11']}]};
+            draft.activeFilters = {project: [], dataset: [], datafile: [], experiment: [{kind: 'schemaParameter', target: ['1','11']}]};
         });
         expect(reducer(mockStoreState,updateFiltersByQuery(twoValueQuery))).toEqual(expectedNewState);
     })
@@ -453,7 +455,7 @@ describe("Filter query builder", ()=> {
             content: [
                 {
                     kind: 'typeAttribute',
-                    target: ['experiments','schema'],
+                    target: ['experiment','schema'],
                     type: "STRING",
                     op: "is",
                     content: ["1"]
@@ -469,14 +471,14 @@ describe("Filter query builder", ()=> {
             content: [
                 {
                     kind: 'typeAttribute',
-                    target: ['experiments','schema'],
+                    target: ['experiment','schema'],
                     type: "STRING",
                     op: "is",
                     content: ["1"]
                 },
                 {
                     kind: 'typeAttribute',
-                    target: ['datasets', 'createdDate'],
+                    target: ['dataset', 'createdDate'],
                     type: "DATETIME",
                     op: ">=",
                     content: "2020-01-01"

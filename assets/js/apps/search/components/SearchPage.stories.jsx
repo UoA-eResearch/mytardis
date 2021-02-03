@@ -51,10 +51,10 @@ export const projectResultsData = [
 ]
 
 export const searchResultsData = {
-    projects: projectResultsData,
-    experiments: experimentListData,
-    datasets: dsResultsData,
-    datafiles: dfResultsData
+    project: projectResultsData,
+    experiment: experimentListData,
+    dataset: dsResultsData,
+    datafile: dfResultsData
 }
 
 export const searchInfoData = {
@@ -64,10 +64,10 @@ export const searchInfoData = {
     results: {
         hits: searchResultsData,
         totalHits: {
-            projects: projectResultsData.length,
-            experiments: experimentListData.length,
-            datasets: dsResultsData.length,
-            datafiles: dfResultsData.length
+            project: projectResultsData.length,
+            experiment: experimentListData.length,
+            dataset: dsResultsData.length,
+            datafile: dfResultsData.length
         }
     },
     showSensitiveData: false,
