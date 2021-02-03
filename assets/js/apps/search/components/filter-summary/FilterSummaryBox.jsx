@@ -106,8 +106,7 @@ function SchemaParameterFilterBadge({ fieldInfo }) {
 function TypeAttributeFilterBadge({ fieldInfo }) {
     const typeId = fieldInfo.target[0], attributeId = fieldInfo.target[1];
     const fullFieldName = useSelector(state => {
-        // Remove the extra s
-        const type = typeSelector(state.filters, typeId.substring(0, typeId.length - 1));
+        const type = typeSelector(state.filters, typeId);
         const attribute = typeAttrSelector(state.filters, typeId, attributeId);
         if (!type || !attribute) {
             return "";

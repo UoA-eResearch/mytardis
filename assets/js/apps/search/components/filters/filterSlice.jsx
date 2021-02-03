@@ -9,7 +9,7 @@ const initialState = {
         byId: {},
         allIds: []
     },
-    activeFilters: { projects: [], experiments: [], datasets: [], datafiles: [] },
+    activeFilters: { project: [], experiment: [], dataset: [], datafile: [] },
     isLoading: true,
     error: null
 }
@@ -94,14 +94,14 @@ export const typeAttrFilterValueSelector = (filtersSlice, typeId, attributeId) =
  * @param {*} filtersSlice Redux filters slice
  * @param {string} typeId The MyTardis object type ID
  */
-export const typeSelector = (filtersSlice, typeId) => filtersSlice.types.byId[typeId + "s"];
+export const typeSelector = (filtersSlice, typeId) => filtersSlice.types.byId[typeId];
 
 export const allTypeAttrIdsSelector = (filterSlice, typeId) => {
     return filterSlice.types
         .byId[typeId]
         .attributes
         .allIds;
-}
+};
 
 export const schemaParamSelector = (filterSlice, schemaId, paramId) => {
     return schemaSelector(filterSlice,schemaId)
@@ -136,11 +136,7 @@ export const schemaSelector = (filterSlice, schemaId) => {
  */
 export const schemaTypeSelector = (filtersSlice, schemaId) => {
     const schema = schemaSelector(filtersSlice, schemaId);
-    if (schema.type.endsWith("s")) {
-        return schema.type.substring(0, schema.type.length - 1);
-    } else {
-        return schema.type;
-    }
+    return schema.type;
 }
 
 const updateTypeAttributeReducer = (state, {payload}) => {
@@ -382,14 +378,14 @@ export const {
  */
 const getCrossFilteredTypes = (type) => {
     switch (type) {
-        case "projects":
-            return ["projects"];
-        case "experiments":
-            return ["projects", "experiments"];
-        case "datasets":
-            return ["projects", "experiments", "datasets"];
-        case "datafiles":
-            return ["projects", "experiments", "datasets", "datafiles"];
+        case "project":
+            return ["project"];
+        case "experiment":
+            return ["project", "experiment"];
+        case "dataset":
+            return ["project", "experiment", "dataset"];
+        case "datafile":
+            return ["project", "experiment", "dataset", "datafile"];
         default:
             return [];
     }
@@ -461,7 +457,7 @@ export function hasActiveFiltersSelector(filterSlice) {
 export const buildFilterQuery = (filtersSlice, matchesType) => {
     let typesToInclude = [];
     if (matchesType) {
-        typesToInclude = getCrossFilteredTypes(matchesType + "s");
+        typesToInclude = getCrossFilteredTypes(matchesType);
     } else {
         typesToInclude = filtersSlice.types.allIds;
     }

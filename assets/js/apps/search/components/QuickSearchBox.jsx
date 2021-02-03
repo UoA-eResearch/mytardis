@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { batch, useDispatch, useSelector } from 'react-redux';
 import { runSearch, updateSearchTerm, searchTermSelector } from './searchSlice';
 import "./QuickSearchBox.css";
+import { typeSelector } from './filters/filterSlice';
 
 export function PureQuickSearchBox({searchTerm, typeName, onChange, onSubmit}) {
     const handleChange = (e) => {
@@ -47,6 +48,7 @@ PureQuickSearchBox.propTypes = {
 
 const QuickSearchBox = ({typeId}) => {
     const searchTerm = useSelector(state => (searchTermSelector(state.search, typeId)));
+    const typeCollectionName = useSelector(state => typeSelector(state.filters, typeId).collection_name);
     const [localSearchTerm, onTermChange] = useState(searchTerm);
     const dispatch = useDispatch();
     useEffect(() => {
@@ -62,7 +64,7 @@ const QuickSearchBox = ({typeId}) => {
     return (
         <PureQuickSearchBox
             searchTerm={localSearchTerm}
-            typeName={typeId + "s"}
+            typeName={typeCollectionName}
             onChange={onTermChange}
             onSubmit={() => {
                 const newSearchTerm = {};

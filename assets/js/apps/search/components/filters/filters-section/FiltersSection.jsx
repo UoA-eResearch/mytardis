@@ -82,15 +82,14 @@ export function PureFiltersSection({ types, schemas, typeSchemas, isLoading, err
 
   return (
     <section>
-      <Tabs defaultActiveKey="projects" id="filters-section">
+      <Tabs defaultActiveKey="project" id="filters-section">
         {
           types.allIds.map(type => {
             const Sticker = OBJECT_TYPE_STICKERS[type];
 
             return (
               <Tab key={type} eventKey={type} title={<Sticker />}>
-                {/* FIXME: harmonise type names to be singular. */}
-                <QuickSearchBox typeId={type.substring(0, type.length - 1)} />
+                <QuickSearchBox typeId={type} />
                 <hr />
                 <TypeAttributesList typeId={type} />
                 <TypeSchemaList typeId={type} />

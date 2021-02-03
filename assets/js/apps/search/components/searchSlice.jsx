@@ -3,37 +3,61 @@ import Cookies from 'js-cookie';
 import { batch } from 'react-redux';
 import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeAttrSelector, allTypeAttrIdsSelector } from "./filters/filterSlice";
 
-const getResultFromHit = (hit,hitType,urlPrefix) => {
+const getResultFromHit = (hit, hitType, urlPrefix) => {
+    // eslint-disable-next-line no-underscore-dangle
     const source = hit._source;
     source.type = hitType;
     source.url = `${urlPrefix}/${source.id}`;
     return source;
-}
+};
 
 const getResultsFromResponse = (response) => {
 // Grab the "_source" object out of each hit and also
 // add a type attribute to them.
-const hits = response.hits,
-    results = {};
+    const hits = response.hits;
+    const results = {};
     if (hits.projects) {
-        results.projects = hits.projects.map((hit) => {
-            return getResultFromHit(hit,"project","/project/view")
+        results.project = hits.projects.map((hit) => {
+            return getResultFromHit(hit, "project", "/project/view");
         });
     }
     if (hits.experiments) {
-        results.experiments = hits.experiments.map((hit) => {
-            return getResultFromHit(hit,"experiment","/experiment/view")
+        results.experiment = hits.experiments.map((hit) => {
+            return getResultFromHit(hit, "experiment", "/experiment/view");
         });
     }
     if (hits.datasets) {
-        results.datasets = hits.datasets.map((hit) => {
-            return getResultFromHit(hit,"dataset","/dataset")
+        results.dataset = hits.datasets.map((hit) => {
+            return getResultFromHit(hit, "dataset", "/dataset");
         });
     }
     if (hits.datafiles) {
-        results.datafiles = hits["datafiles"].map((hit) => {
-            return getResultFromHit(hit,"datafile","/datafile/view")
+        results.datafile = hits.datafiles.map((hit) => {
+            return getResultFromHit(hit, "datafile", "/datafile/view");
         });
+    }
+    return results;
+};
+
+/**
+ * Process JSON results from search API and return the results.
+ * @private
+ * @param {object} response JSON result from search API endpoint. 
+ */
+function getHitTotalsFromResponse(response) {
+    const hitTotals = response.total_hits;
+    const results = {};
+    if (hitTotals.projects) {
+        results.project = hitTotals.projects;
+    }
+    if (hitTotals.experiments) {
+        results.experiment = hitTotals.experiments;
+    }
+    if (hitTotals.datasets) {
+        results.dataset = hitTotals.datasets;
+    }
+    if (hitTotals.datafiles) {
+        results.datafile = hitTotals.datafiles;
     }
     return results;
 }
@@ -57,7 +81,7 @@ export const pageNumberSelector = (searchSlice, type) => {
 };
 
 export const totalHitsSelector = (searchSlice, typeId) => (
-    searchSlice.results ? searchSlice.results.totalHits[typeId + "s"] : 0
+    searchSlice.results ? searchSlice.results.totalHits[typeId] : 0
 );
 
 export const SORT_ORDER = {
@@ -80,8 +104,8 @@ export const activeSortSelector = (searchSlice, typeId) => (
  * @param {string} typeId MyTardis object type.
  */
 export const sortableAttributesSelector = (filterSlice, typeId) => (
-    allTypeAttrIdsSelector(filterSlice, typeId + "s").map(attributeId => (
-        typeAttrSelector(filterSlice, typeId + "s", attributeId)
+    allTypeAttrIdsSelector(filterSlice, typeId).map(attributeId => (
+        typeAttrSelector(filterSlice, typeId, attributeId)
     )).filter(attribute => attribute.sortable)
 );
 
@@ -177,7 +201,7 @@ const initialState = {
 
 
 const search = createSlice({
-    name: 'search',
+    name: "search",
     initialState,
     reducers: {
         getResultsSuccess: {
@@ -198,9 +222,9 @@ const search = createSlice({
                 return {
                     payload: {
                         hits: getResultsFromResponse(rawResult),
-                        totalHits: rawResult.total_hits
+                        totalHits: getHitTotalsFromResponse(rawResult)
                     }
-                }
+                };
             }
         },
         updateSearchTerm: (state, {payload}) => {
@@ -349,7 +373,7 @@ const buildSortQuery = (state, typeToSearch) => {
         const sortOptions = activeSortSelector(state.search, typeId);
         const typeSortQuery = sortOptions.map(id => {
             const order = state.search.sort[typeId].order[id];
-            const attribute = typeAttrSelector(state.filters, typeId + "s", id);
+            const attribute = typeAttrSelector(state.filters, typeId, id);
             const fullField = [id].concat(attribute.nested_target || []);
             return {
                 field: fullField,

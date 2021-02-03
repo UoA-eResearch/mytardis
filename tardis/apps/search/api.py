@@ -88,23 +88,23 @@ class SchemasAppResource(Resource):
         logging.warning("Testing search app: get schemas")
         if not request.user.is_authenticated:
             result_dict = {
-                           "projects" : None,
-                           "experiments" : None,
-                           "datasets" : None,
-                           "datafiles" : None
+                           "project" : None,
+                           "experiment" : None,
+                           "dataset" : None,
+                           "datafile" : None
                            }
             return [SchemasObject(id=1, schemas=result_dict)]
         result_dict = {
-                       "projects" : [*{*Project.safe.all(request.user
+                       "project" : [*{*Project.safe.all(request.user
                                     ).prefetch_related('projectparameterset'
                                     ).values_list("projectparameterset__schema__id", flat=True)}],
-                       "experiments" : [*{*Experiment.safe.all(request.user
+                       "experiment" : [*{*Experiment.safe.all(request.user
                                        ).prefetch_related('experimentparameterset'
                                        ).values_list("experimentparameterset__schema__id", flat=True)}],
-                       "datasets" : [*{*Dataset.safe.all(request.user
+                       "dataset" : [*{*Dataset.safe.all(request.user
                                        ).prefetch_related('datasetparameterset'
                                        ).values_list("datasetparameterset__schema__id", flat=True)}],
-                       "datafiles" : [*{*DataFile.safe.all(request.user
+                       "datafile" : [*{*DataFile.safe.all(request.user
                                        ).prefetch_related('datafileparameterset'
                                        ).values_list("datafileparameterset__schema__id", flat=True)}]
                        }
@@ -335,7 +335,7 @@ class SearchAppResource(Resource):
                     # (3.2) Apply intrinsic object filters to search
                     if filter["kind"] == "typeAttribute":
                         target_objtype, target_fieldtype = filter["target"][0], filter["target"][1]
-                        if target_objtype == obj+"s":
+                        if target_objtype == obj:
 
                             # Update the heirarchy level at which the
                             # "parent-in-results" criteria must be applied
