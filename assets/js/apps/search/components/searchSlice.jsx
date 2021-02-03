@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie';
-import { batch } from 'react-redux';
+import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
+import { batch } from "react-redux";
 import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeAttrSelector, allTypeAttrIdsSelector } from "./filters/filterSlice";
 
 const getResultFromHit = (hit, hitType, urlPrefix) => {
@@ -132,7 +132,7 @@ export const pageFirstItemIndexSelector = (searchSlice, typeId) => {
     } else {
         return pageSizeSelector(searchSlice, typeId) * (pageNumberSelector(searchSlice, typeId) - 1) + 1;
     }
-}
+};
 
 /**
  * Selector for the total number of pages of results for a particular type.
@@ -161,8 +161,8 @@ export const searchTermSelector = (searchSlice, typeId) => (
 const initialState = {
     searchTerm: {},
     isLoading: false,
-    error:null,
-    results:null,
+    error: null,
+    results: null,
     selectedType: "experiment",
     selectedResult: null,
     pageSize: {
@@ -255,12 +255,12 @@ const search = createSlice({
             state.error = null;
             state.selectedResult = null;
         },
-        getResultsFailure: (state, {payload:error}) => {
+        getResultsFailure: (state, {payload: error}) => {
             state.isLoading = false;
             state.error = error.toString();
             state.results = null;
         },
-        updateSelectedType: (state,{payload: selectedType}) => {
+        updateSelectedType: (state, {payload: selectedType}) => {
             state.selectedType = selectedType;
             state.selectedResult = null;
         },
@@ -320,21 +320,34 @@ const search = createSlice({
     }
 });
 
+export const {
+    getResultsStart,
+    getResultsSuccess,
+    getResultsFailure,
+    updateSearchTerm,
+    updateSelectedType,
+    updateSelectedResult,
+    toggleShowSensitiveData,
+    updateResultSort,
+    removeResultSort
+} = search.actions;
+
+
 const fetchSearchResults = (queryBody) => {
-    return fetch(`/api/v1/search_simple-search/`,{
-        method: 'post',
+    return fetch(`/api/v1/search_simple-search/`, {
+        method: "post",
         headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRFToken': Cookies.get('csrftoken'),
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "X-CSRFToken": Cookies.get("csrftoken"),
         },
         body: JSON.stringify(queryBody)
     }).then(response => {
         if (!response.ok) {
-            throw new Error("An error on the server occurred.")
+            throw new Error("An error on the server occurred.");
         }
-        return response.json()
-    })
+        return response.json();
+    });
 };
 
 
@@ -492,10 +505,10 @@ export const parseQuery = (searchString) => {
         searchString = searchString.substring(1);
     }
     searchString = decodeURIComponent(searchString);
-    const parts = searchString.split('&');
+    const parts = searchString.split("&");
     let queryPart = null;
     for (const partIdx in parts) {
-        if (parts[partIdx].indexOf('q=') === 0) {
+        if (parts[partIdx].indexOf("q=") === 0) {
             queryPart = parts[partIdx].substring(2);
             break;
         }
@@ -516,8 +529,8 @@ const updateWithQuery = (queryBody) => {
             }));
             dispatch(updateFiltersByQuery(queryBody.filters));    
         });
-    }
-}
+    };
+};
 
 
 export const runSearch = () => {
@@ -527,8 +540,8 @@ export const runSearch = () => {
         dispatch(runSearchWithQuery(queryBody));
         dispatch(search.actions.resetPageNumber());
         window.history.pushState(queryBody, "", getDisplayQueryString(queryBody));
-    }
-}
+    };
+};
 
 /**
  * An async reducer for running a single type search. This is usually
@@ -540,15 +553,15 @@ export const runSingleTypeSearch = (typeToSearch) => {
         const state = getState();
         const queryBody = buildQueryBody(state, typeToSearch);
         dispatch(runSearchWithQuery(queryBody));
-    }
-}
+    };
+};
 
 export const restoreSearchFromHistory = (restoredState) => {
     return (dispatch) => {
         dispatch(runSearchWithQuery(restoredState));
         dispatch(updateWithQuery(restoredState));
-    }
-}
+    };
+};
 
 export const initialiseSearch = () => {
     return (dispatch, getState) => {
@@ -560,8 +573,8 @@ export const initialiseSearch = () => {
                 dispatch(updateWithQuery(queryBody));
             }
         });
-    }
-}
+    };
+};
 
 export const updatePageNumberAndRefetch = (typeId, number) => {
     return (dispatch, getState) => {
@@ -586,17 +599,5 @@ export const updatePageSizeAndRefetch = (typeId, size) => {
         return dispatch(runSingleTypeSearch(typeId));
     };
 };
-
-export const {
-    getResultsStart,
-    getResultsSuccess,
-    getResultsFailure,
-    updateSearchTerm,
-    updateSelectedType,
-    updateSelectedResult,
-    toggleShowSensitiveData,
-    updateResultSort,
-    removeResultSort
-} = search.actions;
 
 export default search.reducer;
