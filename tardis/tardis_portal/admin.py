@@ -105,20 +105,36 @@ class ObjectACLInline(GenericTabularInline):
     model = models.ObjectACL
     extra = 0
 
+class ProjectACLInline(admin.TabularInline):
+    model = models.ProjectACL
+    extra = 0
+
+class ExperimentACLInline(admin.TabularInline):
+    model = models.ExperimentACL
+    extra = 0
+
+class DatasetACLInline(admin.TabularInline):
+    model = models.DatasetACL
+    extra = 0
+
+class DatafileACLInline(admin.TabularInline):
+    model = models.DatafileACL
+    extra = 0
+
 
 class ExperimentAdmin(admin.ModelAdmin):
     search_fields = ['title', 'id']
-    inlines = [ObjectACLInline]
+    inlines = [ObjectACLInline, ExperimentACLInline]
 
 
 class DatasetAdmin(admin.ModelAdmin):
     search_fields = ['description', 'id']
-    inlines = [ObjectACLInline]
+    inlines = [ObjectACLInline, DatasetACLInline]
 
 
 class ProjectAdmin(admin.ModelAdmin):
     search_fields = ['name', 'id']
-    inlines = [ObjectACLInline]
+    inlines = [ObjectACLInline, ProjectACLInline]
 
 
 class StorageBoxAttributeInlineForm(forms.ModelForm):
@@ -203,7 +219,7 @@ class DatafileAdminForm(forms.ModelForm):
 class DatafileAdmin(admin.ModelAdmin):
     search_fields = ['filename', 'id']
     form = DatafileAdminForm
-    inlines = [DataFileObjectInline, ObjectACLInline]
+    inlines = [DataFileObjectInline, ObjectACLInline, DatafileACLInline]
 
 
 class ParameterNameInline(admin.TabularInline):
