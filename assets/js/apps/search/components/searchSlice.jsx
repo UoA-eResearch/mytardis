@@ -47,16 +47,16 @@ const getResultsFromResponse = (response) => {
 function getHitTotalsFromResponse(response) {
     const hitTotals = response.total_hits;
     const results = {};
-    if (hitTotals.projects) {
+    if (hitTotals.projects !== undefined) {
         results.project = hitTotals.projects;
     }
-    if (hitTotals.experiments) {
+    if (hitTotals.experiments !== undefined) {
         results.experiment = hitTotals.experiments;
     }
-    if (hitTotals.datasets) {
+    if (hitTotals.datasets !== undefined) {
         results.dataset = hitTotals.datasets;
     }
-    if (hitTotals.datafiles) {
+    if (hitTotals.datafiles !== undefined) {
         results.datafile = hitTotals.datafiles;
     }
     return results;
@@ -205,7 +205,7 @@ const search = createSlice({
     initialState,
     reducers: {
         getResultsSuccess: {
-            reducer: function (state, { payload }) {
+            reducer: function(state, { payload }) {
                 if (state.results && state.results.hits) {
                     // If there are already results, do a merge in case
                     // this was a single type query.
