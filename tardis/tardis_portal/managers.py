@@ -74,14 +74,13 @@ class SafeManager(models.Manager):
 
     def _query_owned(self, user, user_id=None):
 
-        user_value = user
         if user is None:
-            user_value = user_id
+            user = User.objects.get(pk=user_id)
 
         if self.model.get_ct(self.model).model.replace(' ','') == "project":
             from .models import Project
             query = Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("user"))
-                                                ).filter(projectacl__user=user_value,
+                                                ).filter(projectacl__user=user,
                                                          projectacl__isOwner=True,
                                                          ).exclude(projectacl__effectiveDate__gte=datetime.today(),
                                                                    projectacl__expiryDate__lte=datetime.today()
@@ -90,7 +89,7 @@ class SafeManager(models.Manager):
         if self.model.get_ct(self.model).model.replace(' ','') == "experiment":
             from .models import Experiment
             query = Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("user"))
-                                                ).filter(experimentacl__user=user_value,
+                                                ).filter(experimentacl__user=user,
                                                          experimentacl__isOwner=True,
                                                          ).exclude(experimentacl__effectiveDate__gte=datetime.today(),
                                                                    experimentacl__expiryDate__lte=datetime.today()
@@ -99,7 +98,7 @@ class SafeManager(models.Manager):
         if self.model.get_ct(self.model).model.replace(' ','') == "dataset":
             from .models import Dataset
             query = Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("user"))
-                                                ).filter(datasetacl__user=user_value,
+                                                ).filter(datasetacl__user=user,
                                                          datasetacl__isOwner=True,
                                                          ).exclude(datasetacl__effectiveDate__gte=datetime.today(),
                                                                    datasetacl__expiryDate__lte=datetime.today()
@@ -108,7 +107,7 @@ class SafeManager(models.Manager):
         if self.model.get_ct(self.model).model.replace(' ','') == "datafile":
             from .models import DataFile
             query = DataFile.objects.prefetch_related(Prefetch("datafileacl_set", queryset=DatafileACL.objects.select_related("user"))
-                                                ).filter(datafileacl__user=user_value,
+                                                ).filter(datafileacl__user=user,
                                                          datafileacl__isOwner=True,
                                                          ).exclude(datafileacl__effectiveDate__gte=datetime.today(),
                                                                    datafileacl__expiryDate__lte=datetime.today()
@@ -119,14 +118,13 @@ class SafeManager(models.Manager):
 
     def _query_owned_by_group(self, group, group_id=None):
 
-        group_value = group
         if group is None:
-            group_value = group_id
+            group = Group.objects.get(pk=group_id)
 
         if self.model.get_ct(self.model).model.replace(' ','') == "project":
             from .models import Project
             query = Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("group"))
-                                                ).filter(projectacl__group=group_value,
+                                                ).filter(projectacl__group=group,
                                                          projectacl__isOwner=True,
                                                          ).exclude(projectacl__effectiveDate__gte=datetime.today(),
                                                                    projectacl__expiryDate__lte=datetime.today()
@@ -135,7 +133,7 @@ class SafeManager(models.Manager):
         if self.model.get_ct(self.model).model.replace(' ','') == "experiment":
             from .models import Experiment
             query = Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("group"))
-                                                ).filter(experimentacl__group=group_value,
+                                                ).filter(experimentacl__group=group,
                                                          experimentacl__isOwner=True,
                                                          ).exclude(experimentacl__effectiveDate__gte=datetime.today(),
                                                                    experimentacl__expiryDate__lte=datetime.today()
@@ -144,7 +142,7 @@ class SafeManager(models.Manager):
         if self.model.get_ct(self.model).model.replace(' ','') == "dataset":
             from .models import Dataset
             query = Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("group"))
-                                                ).filter(datasetacl__group=group_value,
+                                                ).filter(datasetacl__group=group,
                                                          datasetacl__isOwner=True,
                                                          ).exclude(datasetacl__effectiveDate__gte=datetime.today(),
                                                                    datasetacl__expiryDate__lte=datetime.today()
@@ -153,7 +151,7 @@ class SafeManager(models.Manager):
         if self.model.get_ct(self.model).model.replace(' ','') == "datafile":
             from .models import DataFile
             query = DataFile.objects.prefetch_related(Prefetch("datafileacl_set", queryset=DatafileACL.objects.select_related("group"))
-                                                ).filter(datafileacl__group=group_value,
+                                                ).filter(datafileacl__group=group,
                                                          datafileacl__isOwner=True,
                                                          ).exclude(datafileacl__effectiveDate__gte=datetime.today(),
                                                                    datafileacl__expiryDate__lte=datetime.today()
