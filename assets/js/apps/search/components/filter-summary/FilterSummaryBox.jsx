@@ -97,8 +97,15 @@ function SchemaParameterFilterBadge({ fieldInfo }) {
         return <InvalidFilterBadge />;
     } else {
         const filterValue = useSelector(
-            state => schemaParamFilterValueSelector(state.filters, schemaId, parameterId)
+            state => {
+                let value = schemaParamFilterValueSelector(state.filters, schemaId, parameterId);
+                if (value && !Array.isArray(value)) {
+                    value = [value];
+                }
+                return value;
+            }
         );
+
         return <FilterBadge typeId={typeId} fieldName={fullFieldName} value={filterValue} />;
     }
 }

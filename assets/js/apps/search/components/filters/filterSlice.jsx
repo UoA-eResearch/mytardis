@@ -12,7 +12,7 @@ const initialState = {
     activeFilters: { project: [], experiment: [], dataset: [], datafile: [] },
     isLoading: true,
     error: null
-}
+};
 
 const mapSchemasById = (schemasByType) => {
     // Generate a hashmap of schemas by their id, so we can look up
@@ -82,12 +82,8 @@ export const typeAttrSelector = (filterSlice, typeId, attributeId) => {
 
 export const typeAttrFilterValueSelector = (filtersSlice, typeId, attributeId) => {
     const value = typeAttrSelector(filtersSlice, typeId, attributeId).value;
-    if (!Array.isArray(value)) {
-        return [value];
-    } else {
-        return value;
-    }
-}
+    return value;
+};
 
 /**
  * Selector for type metadata of a MyTardis object type
@@ -116,11 +112,7 @@ export const schemaParamSelector = (filterSlice, schemaId, paramId) => {
  */
 export const schemaParamFilterValueSelector = (filtersSlice, schemaId, paramId) => {
     const value = schemaParamSelector(filtersSlice, schemaId, paramId).value;
-    if (!Array.isArray(value)) {
-        return [value];
-    } else {
-        return value;
-    }
+    return value;
 };
 
 export const schemaSelector = (filterSlice, schemaId) => {
@@ -302,7 +294,7 @@ const filters = createSlice({
                     // by both typeAttribute and schemaParameter.
                     case "typeAttribute":
                         // We may have added value for this field earlier in the iteration.
-                        currValue = typeAttrSelector(state,target[0],target[1]).value;
+                        currValue = typeAttrFilterValueSelector(state,target[0],target[1]);
                         if (!currValue) {
                             newValue = value;
                         } else {
@@ -320,7 +312,7 @@ const filters = createSlice({
                         }
                         break;
                     case "schemaParameter":
-                        currValue = schemaParamSelector(state,target[0],target[1]).value;
+                        currValue = schemaParamFilterValueSelector(state,target[0],target[1]);
                         if (!currValue) {
                             newValue = value;
                         } else {
@@ -485,6 +477,6 @@ export const initialiseFilters = () => (dispatch) => {
     }).catch((e) => {
         dispatch(getFiltersFailure(e));
     });
-}
+};
 
 export default filters.reducer;
