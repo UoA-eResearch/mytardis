@@ -36,7 +36,7 @@ const isValueEmpty = (value) => {
  * @param {*} localValue The local value to convert
  */
 const toSubmitValue = localValue => {
-    console.log(localValue);
+    // console.log(localValue);
     // Replace empty string value with null to represent null parameter value.
     if (!localValue) {
         return null;
@@ -45,13 +45,13 @@ const toSubmitValue = localValue => {
     if (!isNone(localValue.start)) {
         submitValue.push({
             op: ">=",
-            content: localValue.start.format(DATE_FORMAT)
+            content: moment(localValue.start, 'd-M-y').format(DATE_FORMAT)
         });
     }
     if (!isNone(localValue.end)) {
         submitValue.push({
             op: "<=",
-            content: localValue.end.format(DATE_FORMAT)
+            content: moment(localValue.end, 'd-M-y').format(DATE_FORMAT)
         });
     }
     if (submitValue.length === 0) {
@@ -67,21 +67,25 @@ const toSubmitValue = localValue => {
  */
 const toLocalValue = submitValue => {
     if (!submitValue) {
-        return {start: "", end: ""};
+        return { start: "", end: "" };
     }
     if (!Array.isArray(submitValue)) {
         submitValue = [submitValue];
     }
-    const localValue = {start: "", end: ""};
+    const localValue = { start: "", end: "" };
     const startValue = submitValue.filter(value => value.op === ">=");
     const endValue = submitValue.filter(value => value.op === "<=");
     if (startValue.length > 0) {
-        localValue.start = moment(startValue[0].content);
+        localValue.start = moment(startValue[0].content).toDate();
+        // console.log('local val start:: ', localValue.start._d);
+        // console.log('local val start:: ', localValue.start.toDate());
     }
     if (endValue.length > 0) {
-        localValue.end = moment(endValue[0].content);
+        localValue.end = moment(endValue[0].content).toDate();
+        // console.log('local val start:: ', localValue.end);
     }
-    console.log(JSON.stringify(localValue));
+    // console.log("Local value converted from API -> filter:: ", localValue);
+    // console.log(localValue);
     return localValue;
 };
 
@@ -124,18 +128,17 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
         // Copy the value object, then assign new value into the start field.
         const newValue = Object.assign({}, localValue);
         newValue.start = valueFromForm;
+
+        // TEST: 
+        // newValue.start = moment(valueFromForm, "d-M-y");
+
         if (isValidDate(newValue.start) && !options.hideEnd) {
             if (isValidDate(newValue.end) && newValue.start.isAfter(newValue.end)) {
-            // If new start date is before the end date,
-            // we auto-fill end date to be same as start date.
+                // If new start date is before the end date,
+                // we auto-fill end date to be same as start date.
                 newValue.end = newValue.start;
             }
         }
-
-        console.log(valueFromForm);
-        let momentDate = moment(valueFromForm, "d-M-y")
-        console.log(momentDate);
-
         setLocalValue(newValue);
     };
 
@@ -143,6 +146,7 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
         // Copy the value object, then assign new value into the start field.
         const newValue = Object.assign({}, localValue);
         newValue.end = valueFromForm;
+        // newValue.end = moment(valueFromForm, "d-M-y");
         if (isValidDate(newValue.end) && !options.hideStart) {
             if (isValidDate(newValue.start) && newValue.end.isBefore(newValue.start)) {
                 // If new end date is before the start date,
@@ -150,6 +154,7 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                 newValue.start = newValue.end;
             }
         }
+        console.log('end date new val://', newValue);
         setLocalValue(newValue);
     };
 
@@ -163,6 +168,7 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
             return;
         }
         const newValue = toSubmitValue(localValue);
+        console.log("about to call on value change w/ this newValue", newValue);
         onValueChange(newValue);
     };
 
@@ -175,45 +181,29 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
             {options.hideStart ? null :
                 <Form.Group className="date-range-filter__field">
                     <Form.Label htmlFor={startFieldId} srOnly={options.hideLabels}>Start</Form.Label>
-                    <Datetime
-                        value={localValue.start}
-                        onChange={handleStartValueChange}
-                        inputProps={{ placeholder: options.hintStart, id: startFieldId }}
-                        closeOnSelect={true}
-                        dateFormat={DATE_FORMAT}
-                        timeFormat={false}
-                        // Hack for react-datetime bug:
-                        // https://github.com/arqex/react-datetime/issues/760
-                        key={startFieldId + localValue.start} 
-                    />
                     <DatePicker
-                        value={localValue.start}
-                        onChange={handleStartValueChange}
-                        // key={startFieldId + localValue.start}
-                        format={"y-MM-dd"}
-                    />
+                            value={localValue.start}
+                            // selected={localValue.start}
+                            name={startFieldId}
+                            onChange={handleStartValueChange}
+                            // key={startFieldId + localValue.start}
+                            format={"y-M-d"}
+                            nativeInputAriaLabel={startFieldId}
+                        />
                 </Form.Group>
             }
-            {options.hideEnd ? null : 
+            {options.hideEnd ? null :
                 <Form.Group className="date-range-filter__field">
                     <Form.Label htmlFor={endFieldId} srOnly={options.hideLabels}>End</Form.Label>
                     <DatePicker
-                        onChange={handleEndValueChange}
-                        value={localValue.end}
-                        key={startFieldId + localValue.start}
-                        format={"y-M-d"}
-                    />
-                    {/* <Datetime
-                        value={localValue.end}
-                        onChange={handleEndValueChange}
-                        inputProps={{ placeholder: options.hintEnd, id: endFieldId }}
-                        closeOnSelect={true}
-                        dateFormat={DATE_FORMAT}
-                        timeFormat={false}
-                        // Hack for react-datetime bug: 
-                        // https://github.com/arqex/react-datetime/issues/760
-                        key={endFieldId + localValue.end} 
-                    /> */}
+                            onChange={handleEndValueChange}
+                            // selected={localValue.end}
+                            name={endFieldId}
+                            value={localValue.end}
+                            key={startFieldId + localValue.start}
+                            format={"y-M-d"}
+                            nativeInputAriaLabel={endFieldId}
+                        />
                 </Form.Group>
             }
             <Button
