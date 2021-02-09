@@ -29,6 +29,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # pylint: disable=R1702
+from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -308,13 +309,49 @@ def get_obj_parameter(pn_id, obj_id, ct_type):
 
 def has_ownership(request, obj_id, ct_type):
     if ct_type == 'project':
-        return Project.safe.owned(request.user).filter(pk=obj_id).exists()
+        query = request.user.projectacls.select_related("project"
+                                 ).filter(project__id=obj_id, isOwner=True
+                                 ).exclude(effectiveDate__gte=datetime.today(),
+                                           expiryDate__lte=datetime.today())
+        for group in request.user.groups.all():
+            query |= group.projectacls.select_related("project"
+                                     ).filter(project__id=obj_id, isOwner=True
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today())
+        return query.exists()
     if ct_type == 'experiment':
-        return Experiment.safe.owned(request.user).filter(pk=obj_id).exists()
+        query = request.user.experimentacls.select_related("experiment"
+                                 ).filter(experiment__id=obj_id, isOwner=True
+                                 ).exclude(effectiveDate__gte=datetime.today(),
+                                           expiryDate__lte=datetime.today())
+        for group in request.user.groups.all():
+            query |= group.experimentacls.select_related("experiment"
+                                     ).filter(experiment__id=obj_id, isOwner=True
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today())
+        return query.exists()
     if ct_type == 'dataset':
-        return Dataset.safe.owned(request.user).filter(pk=obj_id).exists()
+        query = request.user.datasetacls.select_related("dataset"
+                                 ).filter(dataset__id=obj_id, isOwner=True
+                                 ).exclude(effectiveDate__gte=datetime.today(),
+                                           expiryDate__lte=datetime.today())
+        for group in request.user.groups.all():
+            query |= group.datasetacls.select_related("dataset"
+                                     ).filter(dataset__id=obj_id, isOwner=True
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today())
+        return query.exists()
     if ct_type == 'datafile':
-        return DataFile.safe.owned(request.user).filter(pk=obj_id).exists()
+        query = request.user.datafileacls.select_related("datafile"
+                                 ).filter(datafile__id=obj_id, isOwner=True
+                                 ).exclude(effectiveDate__gte=datetime.today(),
+                                           expiryDate__lte=datetime.today())
+        for group in request.user.groups.all():
+            query |= group.datafileacls.select_related("datafile"
+                                     ).filter(datafile__id=obj_id, isOwner=True
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today())
+        return query.exists()
     return None
 
 
@@ -390,53 +427,52 @@ def has_read_or_owner_ACL(request, obj_id, ct_type):
     As such, this method should NOT be used to check whether the user has
     general read permission.
     """
-    from datetime import datetime
-    from .localdb_auth import django_user
 
     if ct_type == 'project':
-        obj = Project.safe.get(request.user, obj_id)
+        query = request.user.projectacls.select_related("project"
+                                 ).filter(project__id=obj_id
+                                 ).exclude(effectiveDate__gte=datetime.today(),
+                                           expiryDate__lte=datetime.today())
+        for group in request.user.groups.all():
+            query |= group.projectacls.select_related("project"
+                                     ).filter(project__id=obj_id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today())
+        return query.exists()
     if ct_type == 'experiment':
-        obj = Experiment.safe.get(request.user, obj_id)
+        query = request.user.experimentacls.select_related("experiment"
+                                 ).filter(experiment__id=obj_id
+                                 ).exclude(effectiveDate__gte=datetime.today(),
+                                           expiryDate__lte=datetime.today())
+        for group in request.user.groups.all():
+            query |= group.experimentacls.select_related("experiment"
+                                     ).filter(experiment__id=obj_id, isOwner=True
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today())
+        return query.exists()
     if ct_type == 'dataset':
-        obj = Dataset.safe.get(request.user, obj_id)
+        query = request.user.datasetacls.select_related("dataset"
+                                 ).filter(dataset__id=obj_id
+                                 ).exclude(effectiveDate__gte=datetime.today(),
+                                           expiryDate__lte=datetime.today())
+        for group in request.user.groups.all():
+            query |= group.datasetacls.select_related("dataset"
+                                     ).filter(dataset__id=obj_id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today())
+        return query.exists()
     if ct_type == 'datafile':
-        obj = DataFile.safe.get(request.user, obj_id)
-
-    # does the user own this experiment
-    query = Q(content_type=obj.get_ct(),
-              object_id=obj.id,
-              pluginId=django_user,
-              entityId=str(request.user.id),
-              isOwner=True)
-
-    # check if there is a user based authorisation role
-    query |= Q(content_type=obj.get_ct(),
-               object_id=obj.id,
-               pluginId=django_user,
-               entityId=str(request.user.id),
-               canRead=True)\
-        & (Q(effectiveDate__lte=datetime.today())
-           | Q(effectiveDate__isnull=True))\
-        & (Q(expiryDate__gte=datetime.today())
-           | Q(expiryDate__isnull=True))
-
-    # and finally check all the group based authorisation roles
-    for name, group in request.user.userprofile.ext_groups:
-        query |= Q(pluginId=name,
-                   entityId=str(group),
-                   content_type=obj.get_ct(),
-                   object_id=obj.id,
-                   canRead=True)\
-            & (Q(effectiveDate__lte=datetime.today())
-               | Q(effectiveDate__isnull=True))\
-            & (Q(expiryDate__gte=datetime.today())
-               | Q(expiryDate__isnull=True))
-
-    # is there at least one ACL rule which satisfies the rules?
-    from ..models.access_control import ObjectACL
-    acl = ObjectACL.objects.filter(query)
-    return bool(acl)
-
+        query = request.user.datafileacls.select_related("datafile"
+                                 ).filter(datafile__id=obj_id
+                                 ).exclude(effectiveDate__gte=datetime.today(),
+                                           expiryDate__lte=datetime.today())
+        for group in request.user.groups.all():
+            query |= group.datafileacls.select_related("datafile"
+                                     ).filter(datafile__id=obj_id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today())
+        return query.exists()
+    return None
 
 # MIKEACL: REFACTOR for future proj/set/file delete options?
 def has_delete_permissions(request, experiment_id):
