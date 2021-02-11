@@ -14,9 +14,8 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from ...auth.localdb_auth import django_user
-from ...models import \
-    ObjectACL, Experiment, Dataset, DataFile, Schema, \
-    DatafileParameterSet
+from ...models import (ExperimentACL, DatasetACL, DatafileACL, Experiment,
+                       Dataset, DataFile, Schema, DatafileParameterSet)
 
 
 class ContextualViewTest(TestCase):
@@ -31,16 +30,15 @@ class ContextualViewTest(TestCase):
         self.user = User.objects.create_user(user, email, pwd)
         self.exp = Experiment(title='test exp1', created_by=self.user)
         self.exp.save()
-        self.acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.exp,
+        self.acl = ExperimentACL(
+            user=self.user,
+            experiment=self.exp,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=ExperimentACL.OWNER_OWNED,
         )
         self.acl.save()
         self.dataset = Dataset(description='dataset description...')
@@ -48,16 +46,15 @@ class ContextualViewTest(TestCase):
         self.dataset.experiments.add(self.exp)
         self.dataset.save()
 
-        self.acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.dataset,
+        self.acl = DatasetACL(
+            user=self.user,
+            dataset=self.dataset,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         self.acl.save()
 
@@ -66,16 +63,15 @@ class ContextualViewTest(TestCase):
                                  md5sum="junk")
         self.datafile.save()
 
-        self.acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.datafile,
+        self.acl = DatafileACL(
+            user=self.user,
+            datafile=self.datafile,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatafileACL.OWNER_OWNED,
         )
         self.acl.save()
 

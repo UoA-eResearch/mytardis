@@ -25,7 +25,7 @@ from ..auth import decorators as authz
 from ..auth.localdb_auth import auth_key as localdb_auth_key, \
     django_user
 from ..models import UserAuthentication, UserProfile, Experiment, \
-    Token, GroupAdmin, ObjectACL
+    Token, GroupAdmin, ExperimentACL
 from ..shortcuts import render_response_index
 
 logger = logging.getLogger(__name__)
@@ -488,24 +488,21 @@ def add_experiment_access_user(request, experiment_id, username):
             'Experiment (id=%d) does not exist.' % (experiment.id),
             status=400)
 
-    acl = ObjectACL.objects.filter(
-        content_type=experiment.get_ct(),
-        object_id=experiment.id,
-        pluginId=django_user,
-        entityId=str(user.id),
-        aclOwnershipType=ObjectACL.OWNER_OWNED)
+    acl = ExperimentACL.objects.filter(
+        experiment=experiment,
+        user=user,
+        aclOwnershipType=ExperimentACL.OWNER_OWNED)
 
     if acl.count() == 0:
-        acl = ObjectACL(content_object=experiment,
-                        pluginId=django_user,
-                        entityId=str(user.id),
+        acl = ExperimentACL(experiment=experiment,
+                        user=user,
                         canRead=canRead,
                         canDownload=canDownload,
                         canWrite=canWrite,
                         canDelete=canDelete,
                         canSensitive=canSensitive,
                         isOwner=isOwner,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=ExperimentACL.OWNER_OWNED)
 
         acl.save()
         c = {'authMethod': authMethod,
@@ -664,12 +661,10 @@ def add_experiment_access_group(request, experiment_id, groupname):
         return HttpResponse(
             'Group %s does not exist' % (groupname), status=400)
 
-    acl = ObjectACL.objects.filter(
-        content_type=experiment.get_ct(),
-        object_id=experiment.id,
-        pluginId='django_group',
-        entityId=str(group.id),
-        aclOwnershipType=ObjectACL.OWNER_OWNED)
+    acl = ExperimentACL.objects.filter(
+        experiment=experiment,
+        group=group,
+        aclOwnershipType=ExperimentACL.OWNER_OWNED)
 
     if acl.count() > 0:
         # An ACL already exists for this experiment/group.
@@ -678,16 +673,15 @@ def add_experiment_access_group(request, experiment_id, groupname):
                             (groupname),
                             status=400)
 
-    acl = ObjectACL(content_object=experiment,
-                    pluginId='django_group',
-                    entityId=str(group.id),
+    acl = ExperimentACL(experiment=experiment,
+                    group=group,
                     canRead=canRead,
                     canDownload=canDownload,
                     canWrite=canWrite,
                     canDelete=canDelete,
                     canSensitive=canSensitive,
                     isOwner=isOwner,
-                    aclOwnershipType=ObjectACL.OWNER_OWNED)
+                    aclOwnershipType=ExperimentACL.OWNER_OWNED)
     acl.save()
 
     c = {'group': group,
@@ -715,12 +709,10 @@ def remove_experiment_access_group(request, experiment_id, group_id):
         # checked this.
         return HttpResponse('Experiment does not exist')
 
-    acl = ObjectACL.objects.filter(
-        content_type=experiment.get_ct(),
-        object_id=experiment.id,
-        pluginId='django_group',
-        entityId=str(group.id),
-        aclOwnershipType=ObjectACL.OWNER_OWNED)
+    acl = ExperimentACL.objects.filter(
+        experiment=experiment,
+        group=group,
+        aclOwnershipType=ExperimentACL.OWNER_OWNED)
 
     if acl.count() == 1:
         acl[0].delete()

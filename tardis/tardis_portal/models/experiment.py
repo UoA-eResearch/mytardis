@@ -12,7 +12,7 @@ from django.utils.safestring import SafeText
 from django.utils.encoding import python_2_unicode_compatible
 
 from ..managers import OracleSafeManager, SafeManager
-from .access_control import ObjectACL
+from .access_control import ExperimentACL
 from .project import Project
 from .institution import Institution
 
@@ -32,7 +32,7 @@ class Experiment(models.Model):
     A :class:`~tardis.tardis_portal.models.dataset.Dataset` record can appear
     in multiple ``Experiment`` records.  Access controls are configured at the
     ``Experiment`` level by creating
-    :class:`~tardis.tardis_portal.models.access_control.ObjectACL` records.
+    :class:`~tardis.tardis_portal.models.access_control.ExperimentACL` records.
 
     :attribute url: An optional URL associated with the data collection
     :attribute approved: An optional field indicating whether the collection is approved
@@ -91,7 +91,6 @@ class Experiment(models.Model):
     license = models.ForeignKey(License,  # @ReservedAssignment
                                 blank=True, null=True,
                                 on_delete=models.CASCADE)
-    objectacls = GenericRelation(ObjectACL)
     objects = OracleSafeManager()
     safe = SafeManager()  # The acl-aware specific manager.
     embargo_until = models.DateTimeField(null=True, blank=True)
@@ -254,26 +253,18 @@ class Experiment(models.Model):
         return ContentType.objects.get_for_model(self)
 
     def get_owners(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        isOwner=True)
+        acls = self.experimentacl_set.select_related("user").filter(
+                                            user__isnull=False, isOwner=True)
         return [acl.get_related_object() for acl in acls]
 
     def get_users(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True,
-                                        isOwner=False)
+        acls = self.experimentacl_set.select_related("user").filter(
+                                            user__isnull=False, isOwner=False)
         return [acl.get_related_object() for acl in acls]
 
     def get_users_and_perms(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True,
-                                        isOwner=False)
+        acls = self.experimentacl_set.select_related("user").filter(
+                                            user__isnull=False, isOwner=False)
         ret_list = []
         for acl in acls:
             user = acl.get_related_object()
@@ -285,17 +276,13 @@ class Experiment(models.Model):
         return ret_list
 
     def get_groups(self):
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True)
+        acls = self.experimentacl_set.select_related("group").filter(
+                                            group__isnull=False)
         return [acl.get_related_object() for acl in acls]
 
     def get_groups_and_perms(self):
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True)
+        acls = self.experimentacl_set.select_related("group").filter(
+                                            group__isnull=False)
         ret_list = []
         for acl in acls:
             if not acl.isOwner:
@@ -308,10 +295,8 @@ class Experiment(models.Model):
         return ret_list
 
     def get_admins(self):
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        isOwner=True)
+        acls = self.experimentacl_set.select_related("group").filter(
+                                            user__isnull=False, isOwner=True)
         return [acl.get_related_object() for acl in acls]
 
     def _has_view_perm(self, user_obj):
@@ -321,7 +306,7 @@ class Experiment(models.Model):
 
         Returning None means we won't override permissions here,
         i.e. we'll leave it to ACLAwareBackend's has_perm method
-        to determine permissions from ObjectACLs
+        to determine permissions from ExperimentACLs
         '''
         if not hasattr(self, 'id'):
             return False
@@ -338,7 +323,7 @@ class Experiment(models.Model):
 
         Returning None means we won't override permissions here,
         i.e. we'll leave it to ACLAwareBackend's has_perm method
-        to determine permissions from ObjectACLs
+        to determine permissions from ExperimentACLs
         '''
         if not hasattr(self, 'id'):
             return False
@@ -355,7 +340,7 @@ class Experiment(models.Model):
 
         Returning None means we won't override permissions here,
         i.e. we'll leave it to ACLAwareBackend's has_perm method
-        to determine permissions from ObjectACLs
+        to determine permissions from ExperimentACLs
         '''
         if not hasattr(self, 'id'):
             return False

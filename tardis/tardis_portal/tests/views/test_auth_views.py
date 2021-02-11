@@ -19,7 +19,7 @@ from django.test.client import Client
 from django.contrib.auth.models import User, Group
 
 from ...auth.localdb_auth import django_user
-from ...models import ObjectACL, Experiment
+from ...models import ExperimentACL, Experiment
 
 
 class UserGroupListsTestCase(TestCase):
@@ -177,13 +177,12 @@ class RightsTestCase(TestCase):
         experiment = Experiment(title='Text Experiment',
                                 created_by=user)
         experiment.save()
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(user.id),
-            content_object=experiment,
+        acl = ExperimentACL(
+            user=user,
+            experiment=experiment,
             canRead=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=ExperimentACL.OWNER_OWNED,
         )
         acl.save()
 

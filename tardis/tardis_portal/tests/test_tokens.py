@@ -46,7 +46,7 @@ from django.contrib.auth.models import User
 from mock import patch
 
 from ..models import Experiment
-from ..models import ObjectACL
+from ..models import ExperimentACL
 from ..models import Token
 
 from ..views.authorisation import retrieve_access_list_tokens
@@ -213,9 +213,8 @@ class TokenTestCase(TestCase):
         sys.modules['datetime'].datetime = old_datetime
         experiment = Experiment(title='test exp1', created_by=self.user)
         experiment.save()
-        acl = ObjectACL(pluginId='django_user',
-                        entityId=str(self.user.id),
-                        content_object=experiment,
+        acl = ExperimentACL(user=self.user,
+                        experiment=experiment,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
@@ -252,9 +251,8 @@ class TokenTestCase(TestCase):
 
         experiment = Experiment(title='test exp1', created_by=self.user)
         experiment.save()
-        acl = ObjectACL(pluginId='django_user',
-                        entityId=str(self.user.id),
-                        content_object=experiment,
+        acl = ExperimentACL(user=self.user,
+                        experiment=experiment,
                         isOwner=True)
         acl.save()
 
@@ -300,13 +298,12 @@ class TokenTestCase(TestCase):
         response = token_delete(
             request, token_id=token.id)
         response_dict = json.loads(response.content.decode())
-        # We haven't yet created an ObjectACL to associate self.user
+        # We haven't yet created an ExperimentACL to associate self.user
         # with the experiment, so request.user shouldn't be allowed
         # to delete the token:
         self.assertEqual(response_dict['success'], False)
-        acl = ObjectACL(pluginId='django_user',
-                        entityId=str(self.user.id),
-                        content_object=experiment,
+        acl = ExperimentACL(user=self.user,
+                        experiment=experiment,
                         isOwner=True)
         acl.save()
         response = token_delete(

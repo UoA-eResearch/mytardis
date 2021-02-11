@@ -12,7 +12,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Prefetch
 
 from .auth.localdb_auth import django_user, django_group
-from .models.access_control import (ObjectACL, ProjectACL, ExperimentACL,
+from .models.access_control import (ProjectACL, ExperimentACL,
                                     DatasetACL, DatafileACL)
 
 
@@ -77,7 +77,7 @@ class SafeManager(models.Manager):
         if user is None:
             user = User.objects.get(pk=user_id)
 
-        if self.model.get_ct(self.model).model.replace(' ','') == "project":
+        if self.model.get_ct(self.model).model == "project":
             from .models import Project
             query = Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("user"))
                                                 ).filter(projectacl__user=user,
@@ -86,7 +86,7 @@ class SafeManager(models.Manager):
                                                                    projectacl__expiryDate__lte=datetime.today()
                                                                    )
 
-        if self.model.get_ct(self.model).model.replace(' ','') == "experiment":
+        if self.model.get_ct(self.model).model == "experiment":
             from .models import Experiment
             query = Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("user"))
                                                 ).filter(experimentacl__user=user,
@@ -95,7 +95,7 @@ class SafeManager(models.Manager):
                                                                    experimentacl__expiryDate__lte=datetime.today()
                                                                    )
 
-        if self.model.get_ct(self.model).model.replace(' ','') == "dataset":
+        if self.model.get_ct(self.model).model == "dataset":
             from .models import Dataset
             query = Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("user"))
                                                 ).filter(datasetacl__user=user,
@@ -121,7 +121,7 @@ class SafeManager(models.Manager):
         if group is None:
             group = Group.objects.get(pk=group_id)
 
-        if self.model.get_ct(self.model).model.replace(' ','') == "project":
+        if self.model.get_ct(self.model).model == "project":
             from .models import Project
             query = Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("group"))
                                                 ).filter(projectacl__group=group,
@@ -130,7 +130,7 @@ class SafeManager(models.Manager):
                                                                    projectacl__expiryDate__lte=datetime.today()
                                                                    )
 
-        if self.model.get_ct(self.model).model.replace(' ','') == "experiment":
+        if self.model.get_ct(self.model).model == "experiment":
             from .models import Experiment
             query = Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("group"))
                                                 ).filter(experimentacl__group=group,
@@ -139,7 +139,7 @@ class SafeManager(models.Manager):
                                                                    experimentacl__expiryDate__lte=datetime.today()
                                                                    )
 
-        if self.model.get_ct(self.model).model.replace(' ','') == "dataset":
+        if self.model.get_ct(self.model).model == "dataset":
             from .models import Dataset
             query = Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("group"))
                                                 ).filter(datasetacl__group=group,
@@ -160,7 +160,6 @@ class SafeManager(models.Manager):
         return query
 
 
-    # ARE THE TOKENS EXP ONLY?
     def _query_shared(self, user, downloadable=False, viewsensitive=False):
         '''
         get all shared proj/exp/set/files, not owned ones
@@ -169,6 +168,7 @@ class SafeManager(models.Manager):
         # this is almost duplicate code of end of has_perm in authorisation.py
         # should be refactored, but cannot think of good way atm
         if not user.is_authenticated:
+            # Token - refactor when tokens ready
             from .auth.token_auth import TokenGroupProvider
             query = Q(id=None)
             tgp = TokenGroupProvider()
@@ -181,7 +181,7 @@ class SafeManager(models.Manager):
                     if viewsensitive:
                         query_inputs[self.model.get_ct(self.model).model.replace(' ','')+"acl__canSensitive"] = True
 
-                    if self.model.get_ct(self.model).model.replace(' ','') == "project":
+                    if self.model.get_ct(self.model).model == "project":
                         from .models import Project
                         query |= Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("group"))
                                                             ).filter(projectacl__group=group,
@@ -191,7 +191,7 @@ class SafeManager(models.Manager):
                                                                                projectacl__expiryDate__lte=datetime.today()
                                                                                )
 
-                    if self.model.get_ct(self.model).model.replace(' ','') == "experiment":
+                    if self.model.get_ct(self.model).model == "experiment":
                         from .models import Experiment
                         query |= Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("group"))
                                                             ).filter(experimentacl__group=group,
@@ -201,7 +201,7 @@ class SafeManager(models.Manager):
                                                                                experimentacl__expiryDate__lte=datetime.today()
                                                                                )
 
-                    if self.model.get_ct(self.model).model.replace(' ','') == "dataset":
+                    if self.model.get_ct(self.model).model == "dataset":
                         from .models import Dataset
                         query |= Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("group"))
                                                             ).filter(datasetacl__group=group,
@@ -222,7 +222,7 @@ class SafeManager(models.Manager):
                                                                                )
 
                 else:
-                    if self.model.get_ct(self.model).model.replace(' ','') == "project":
+                    if self.model.get_ct(self.model).model == "project":
                         from .models import Project
                         query |= Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("group"))
                                                             ).filter(projectacl__group=group,
@@ -231,7 +231,7 @@ class SafeManager(models.Manager):
                                                                                projectacl__expiryDate__lte=datetime.today()
                                                                                )
 
-                    if self.model.get_ct(self.model).model.replace(' ','') == "experiment":
+                    if self.model.get_ct(self.model).model == "experiment":
                         from .models import Experiment
                         query |= Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("group"))
                                                             ).filter(experimentacl__group=group,
@@ -240,7 +240,7 @@ class SafeManager(models.Manager):
                                                                                experimentacl__expiryDate__lte=datetime.today()
                                                                                )
 
-                    if self.model.get_ct(self.model).model.replace(' ','') == "dataset":
+                    if self.model.get_ct(self.model).model == "dataset":
                         from .models import Dataset
                         query |= Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("group"))
                                                             ).filter(datasetacl__group=group,
@@ -268,7 +268,7 @@ class SafeManager(models.Manager):
             if viewsensitive:
                 query_inputs[self.model.get_ct(self.model).model.replace(' ','')+"acl__canSensitive"] = True
 
-            if self.model.get_ct(self.model).model.replace(' ','') == "project":
+            if self.model.get_ct(self.model).model == "project":
                 from .models import Project
                 query = Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("user"))
                                                     ).filter(projectacl__user=user,
@@ -278,7 +278,7 @@ class SafeManager(models.Manager):
                                                                        projectacl__expiryDate__lte=datetime.today()
                                                                        )
 
-            if self.model.get_ct(self.model).model.replace(' ','') == "experiment":
+            if self.model.get_ct(self.model).model == "experiment":
                 from .models import Experiment
                 query = Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("user"))
                                                     ).filter(experimentacl__user=user,
@@ -288,7 +288,7 @@ class SafeManager(models.Manager):
                                                                        experimentacl__expiryDate__lte=datetime.today()
                                                                        )
 
-            if self.model.get_ct(self.model).model.replace(' ','') == "dataset":
+            if self.model.get_ct(self.model).model == "dataset":
                 from .models import Dataset
                 query = Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("user"))
                                                     ).filter(datasetacl__user=user,
@@ -309,7 +309,7 @@ class SafeManager(models.Manager):
                                                                        )
 
         else:
-            if self.model.get_ct(self.model).model.replace(' ','') == "project":
+            if self.model.get_ct(self.model).model == "project":
                 from .models import Project
                 query = Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("user"))
                                                     ).filter(projectacl__user=user,
@@ -318,7 +318,7 @@ class SafeManager(models.Manager):
                                                                        projectacl__expiryDate__lte=datetime.today()
                                                                        )
 
-            if self.model.get_ct(self.model).model.replace(' ','') == "experiment":
+            if self.model.get_ct(self.model).model == "experiment":
                 from .models import Experiment
                 query = Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("user"))
                                                     ).filter(experimentacl__user=user,
@@ -327,7 +327,7 @@ class SafeManager(models.Manager):
                                                                        experimentacl__expiryDate__lte=datetime.today()
                                                                        )
 
-            if self.model.get_ct(self.model).model.replace(' ','') == "dataset":
+            if self.model.get_ct(self.model).model == "dataset":
                 from .models import Dataset
                 query = Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("user"))
                                                     ).filter(datasetacl__user=user,
@@ -354,7 +354,7 @@ class SafeManager(models.Manager):
                 if viewsensitive:
                     query_inputs[self.model.get_ct(self.model).model.replace(' ','')+"acl__canSensitive"] = True
 
-                if self.model.get_ct(self.model).model.replace(' ','') == "project":
+                if self.model.get_ct(self.model).model == "project":
                     from .models import Project
                     query |= Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("group"))
                                                         ).filter(projectacl__group=group,
@@ -364,7 +364,7 @@ class SafeManager(models.Manager):
                                                                            projectacl__expiryDate__lte=datetime.today()
                                                                            )
 
-                if self.model.get_ct(self.model).model.replace(' ','') == "experiment":
+                if self.model.get_ct(self.model).model == "experiment":
                     from .models import Experiment
                     query |= Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("group"))
                                                         ).filter(experimentacl__group=group,
@@ -374,7 +374,7 @@ class SafeManager(models.Manager):
                                                                            experimentacl__expiryDate__lte=datetime.today()
                                                                            )
 
-                if self.model.get_ct(self.model).model.replace(' ','') == "dataset":
+                if self.model.get_ct(self.model).model == "dataset":
                     from .models import Dataset
                     query |= Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("group"))
                                                         ).filter(datasetacl__group=group,
@@ -395,7 +395,7 @@ class SafeManager(models.Manager):
                                                                            )
 
             else:
-                if self.model.get_ct(self.model).model.replace(' ','') == "project":
+                if self.model.get_ct(self.model).model == "project":
                     from .models import Project
                     query |= Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("group"))
                                                         ).filter(projectacl__group=group,
@@ -404,7 +404,7 @@ class SafeManager(models.Manager):
                                                                            projectacl__expiryDate__lte=datetime.today()
                                                                            )
 
-                if self.model.get_ct(self.model).model.replace(' ','') == "experiment":
+                if self.model.get_ct(self.model).model == "experiment":
                     from .models import Experiment
                     query |= Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("group"))
                                                         ).filter(experimentacl__group=group,
@@ -413,7 +413,7 @@ class SafeManager(models.Manager):
                                                                            experimentacl__expiryDate__lte=datetime.today()
                                                                            )
 
-                if self.model.get_ct(self.model).model.replace(' ','') == "dataset":
+                if self.model.get_ct(self.model).model == "dataset":
                     from .models import Dataset
                     query |= Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("group"))
                                                         ).filter(datasetacl__group=group,
@@ -521,11 +521,19 @@ class SafeManager(models.Manager):
         """
         obj = super().get(pk=obj_id)
 
-        return ObjectACL.objects.filter(
-            pluginId=django_user,
-            content_type=self.model.get_ct(self.model),
-            object_id=obj_id,
-            aclOwnershipType=ObjectACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model == "project":
+            return obj.projectacl_set.select_related("user").filter(user__isnull=False,
+                                             aclOwnershipType=ProjectACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model == "experiment":
+            return obj.experimentacl_set.select_related("user").filter(user__isnull=False,
+                                             aclOwnershipType=ExperimentACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model == "dataset":
+            return obj.datasetacl_set.select_related("user").filter(user__isnull=False,
+                                             aclOwnershipType=DatasetACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
+            return obj.datafileacl_set.select_related("user").filter(user__isnull=False,
+                                             aclOwnershipType=DatafileACL.OWNER_OWNED)
+        return super().get_queryset().none()
 
 
     def users(self, obj_id):
@@ -537,7 +545,7 @@ class SafeManager(models.Manager):
         :rtype: QuerySet
         """
         acl = self.user_acls(obj_id)
-        return User.objects.filter(pk__in=[int(a.entityId) for a in acl])
+        return User.objects.filter(pk__in=[int(a.user.id) for a in acl])
 
     def group_acls(self, obj_id):
         """
@@ -549,11 +557,19 @@ class SafeManager(models.Manager):
         """
         obj = super().get(pk=obj_id)
 
-        return ObjectACL.objects.filter(
-            pluginId=django_group,
-            content_type=self.model.get_ct(self.model),
-            object_id=obj_id,
-            aclOwnershipType=ObjectACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model == "project":
+            return obj.projectacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=ProjectACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model == "experiment":
+            return obj.experimentacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=ExperimentACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model == "dataset":
+            return obj.datasetacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=DatasetACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
+            return obj.datafileacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=DatafileACL.OWNER_OWNED)
+        return super().get_queryset().none()
 
     def groups(self, obj_id):
         """
@@ -564,7 +580,7 @@ class SafeManager(models.Manager):
         :rtype: QuerySet
         """
         acl = self.group_acls(obj_id)
-        return Group.objects.filter(pk__in=[int(a.entityId) for a in acl])
+        return Group.objects.filter(pk__in=[int(a.group.id) for a in acl])
 
     def user_owned_groups(self, obj_id):
         """
@@ -575,13 +591,22 @@ class SafeManager(models.Manager):
         :rtype: QuerySet
         """
 
-        acl = ObjectACL.objects.filter(
-            pluginId='django_group',
-            content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-            object_id=obj_id,
-            aclOwnershipType=ObjectACL.OWNER_OWNED)
+        obj = super().get(pk=obj_id)
 
-        return Group.objects.filter(pk__in=[str(a.entityId) for a in acl])
+        if self.model.get_ct(self.model).model == "project":
+            acl = obj.projectacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=ProjectACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model == "experiment":
+            acl = obj.experimentacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=ExperimentACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model == "dataset":
+            acl = obj.datasetacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=DatasetACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
+            acl = obj.datafileacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=DatafileACL.OWNER_OWNED)
+
+        return Group.objects.filter(pk__in=[str(a.group.id) for a in acl])
 
 
     def group_acls_user_owned(self, obj_id):
@@ -591,11 +616,23 @@ class SafeManager(models.Manager):
         :returns: QuerySet of ACLs
         :rtype: QuerySet
         """
-        return ObjectACL.objects.filter(
-            pluginId='django_group',
-            content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-            object_id=obj_id,
-            aclOwnershipType=ObjectACL.OWNER_OWNED)
+
+        obj = super().get(pk=obj_id)
+
+        if self.model.get_ct(self.model).model == "project":
+            return obj.projectacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=ProjectACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model == "experiment":
+            return obj.experimentacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=ExperimentACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model == "dataset":
+            return obj.datasetacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=DatasetACL.OWNER_OWNED)
+        if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
+            return obj.datafileacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=DatafileACL.OWNER_OWNED)
+        return super().get_queryset().none()
+
 
     def group_acls_system_owned(self, obj_id):
         """
@@ -604,11 +641,22 @@ class SafeManager(models.Manager):
         :returns: QuerySet of system-owned ACLs for proj/exp/set/file
         :rtype: QuerySet
         """
-        return ObjectACL.objects.filter(
-            pluginId='django_group',
-            content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-            object_id=obj_id,
-            aclOwnershipType=ObjectACL.SYSTEM_OWNED)
+
+        obj = super().get(pk=obj_id)
+
+        if self.model.get_ct(self.model).model == "project":
+            return obj.projectacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=ProjectACL.SYSTEM_OWNED)
+        if self.model.get_ct(self.model).model == "experiment":
+            return obj.experimentacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=ExperimentACL.SYSTEM_OWNED)
+        if self.model.get_ct(self.model).model == "dataset":
+            return obj.datasetacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=DatasetACL.SYSTEM_OWNED)
+        if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
+            return obj.datafileacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=DatafileACL.SYSTEM_OWNED)
+        return super().get_queryset().none()
 
 
     def system_owned_groups(self, obj_id):
@@ -620,13 +668,23 @@ class SafeManager(models.Manager):
         :returns: system owned groups for proj/exp/set/file
         :rtype: QuerySet
         """
-        acl = ObjectACL.objects.filter(
-            pluginId='django_group',
-            content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-            object_id=obj_id,
-            aclOwnershipType=ObjectACL.SYSTEM_OWNED)
 
-        return Group.objects.filter(pk__in=[str(a.entityId) for a in acl])
+        obj = super().get(pk=obj_id)
+
+        if self.model.get_ct(self.model).model == "project":
+            acl = obj.projectacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=ProjectACL.SYSTEM_OWNED)
+        if self.model.get_ct(self.model).model == "experiment":
+            acl = obj.experimentacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=ExperimentACL.SYSTEM_OWNED)
+        if self.model.get_ct(self.model).model == "dataset":
+            acl = obj.datasetacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=DatasetACL.SYSTEM_OWNED)
+        if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
+            acl = obj.datafileacl_set.select_related("group").filter(group__isnull=False,
+                                             aclOwnershipType=DatafileACL.SYSTEM_OWNED)
+
+        return Group.objects.filter(pk__in=[str(a.group.id) for a in acl])
 
 
     def external_users(self, obj_id):
@@ -637,11 +695,18 @@ class SafeManager(models.Manager):
         :rtype: list
         """
 
-        from .models import ObjectACL
-        acl = ObjectACL.objects.exclude(pluginId=django_user)
-        acl = acl.exclude(pluginId='django_group')
-        acl = acl.filter(content_type__model=self.model.get_ct(self.model).model.replace(' ',''),
-                         object_id=obj_id)
+        if self.model.get_ct(self.model).model == "project":
+            acl = obj.projectacl_set.select_related("user", "group").filter(
+                                        user__isnull=True, group__isnull=True)
+        if self.model.get_ct(self.model).model == "experiment":
+            acl = obj.experimentacl_set.select_related("user", "group").filter(
+                                        user__isnull=True, group__isnull=True)
+        if self.model.get_ct(self.model).model == "dataset":
+            acl = obj.datasetacl_set.select_related("user", "group").filter(
+                                        user__isnull=True, group__isnull=True)
+        if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
+            acl = obj.datafileacl_set.select_related("user", "group").filter(
+                                        user__isnull=True, group__isnull=True)
 
         if not acl:
             return None
@@ -649,6 +714,7 @@ class SafeManager(models.Manager):
         from .auth import AuthService
         authService = AuthService()
 
+        # Token - refactor when tokens ready
         result = []
         for a in acl:
             group = authService.searchGroups(plugin=a.pluginId,

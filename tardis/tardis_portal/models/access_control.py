@@ -274,10 +274,10 @@ class ObjectACL(models.Model):
         If possible, resolve the pluginId/entityId combination to a user or
         group object.
         """
-        if self.pluginId == 'django_user':
-            return User.objects.get(pk=self.entityId)
-        if self.pluginId == 'django_group':
-            return Group.objects.get(pk=self.entityId)
+        if self.user is not None:
+            return self.user
+        if self.group is not None:
+            return self.group
         return None
 
     def get_related_object_group(self):
@@ -285,8 +285,8 @@ class ObjectACL(models.Model):
         If possible, resolve the pluginId/entityId combination to a user or
         group object.
         """
-        if self.pluginId == 'django_group':
-            return Group.objects.get(pk=self.entityId)
+        if self.group is not None:
+            return self.group
         return None
 
     def __str__(self):
@@ -429,14 +429,12 @@ def create_user_api_key(sender, **kwargs):
     create_api_key(User, **kwargs)
 
 
-# @suspendingreceiver(post_save, sender=ObjectACL)
 def delete_if_all_false(instance, **kwargs):
     if not any([instance.canRead, instance.canDownload, instance.canWrite,
                 instance.canDelete, instance.canSensitive, instance.isOwner]):
         instance.delete()
 
 
-post_save.connect(delete_if_all_false, sender=ObjectACL)
 post_save.connect(delete_if_all_false, sender=ProjectACL)
 post_save.connect(delete_if_all_false, sender=ExperimentACL)
 post_save.connect(delete_if_all_false, sender=DatasetACL)

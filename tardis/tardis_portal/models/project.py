@@ -11,7 +11,7 @@ from django.utils.timezone import now as django_time_now
 from .institution import Institution
 # from ..models import DataManagementPlan # Hook in place for future proofing
 from ..managers import OracleSafeManager, SafeManager
-from .access_control import ObjectACL
+from .access_control import ProjectACL
 
 
 logger = logging.getLogger(__name__)
@@ -50,7 +50,6 @@ class Project(models.Model):
     lead_researcher = models.ForeignKey(User,
                                         related_name='lead_researcher',
                                         on_delete=models.CASCADE)
-    objectacls = GenericRelation(ObjectACL)
     objects = OracleSafeManager()
     embargo_until = models.DateTimeField(null=True, blank=True)
     start_time = models.DateTimeField(default=django_time_now)
@@ -148,26 +147,18 @@ class Project(models.Model):
         return ContentType.objects.get_for_model(self)
 
     def get_owners(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        isOwner=True)
+        acls = self.projectacl_set.select_related("user").filter(
+                                            user__isnull=False, isOwner=True)
         return [acl.get_related_object() for acl in acls]
 
     def get_users(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True,
-                                        isOwner=False)
+        acls = self.projectacl_set.select_related("user").filter(
+                                            user__isnull=False, isOwner=False)
         return [acl.get_related_object() for acl in acls]
 
     def get_users_and_perms(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True,
-                                        isOwner=False)
+        acls = self.projectacl_set.select_related("user").filter(
+                                            user__isnull=False, isOwner=False)
         ret_list = []
         for acl in acls:
             user = acl.get_related_object()
@@ -179,24 +170,18 @@ class Project(models.Model):
         return ret_list
 
     def get_admins(self):
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        isOwner=True)
+        acls = self.projectacl_set.select_related("group").filter(
+                                            user__isnull=False, isOwner=True)
         return [acl.get_related_object() for acl in acls]
 
     def get_groups(self):
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True)
+        acls = self.projectacl_set.select_related("group").filter(
+                                            group__isnull=False)
         return [acl.get_related_object() for acl in acls]
 
     def get_groups_and_perms(self):
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True)
+        acls = self.projectacl_set.select_related("group").filter(
+                                            group__isnull=False)
         ret_list = []
         for acl in acls:
             if not acl.isOwner:
@@ -215,7 +200,7 @@ class Project(models.Model):
 
         Returning None means we won't override permissions here,
         i.e. we'll leave it to ACLAwareBackend's has_perm method
-        to determine permissions from ObjectACLs
+        to determine permissions from ProjectACLs
         '''
         if not hasattr(self, 'id'):
             return False
@@ -231,7 +216,7 @@ class Project(models.Model):
 
         Returning None means we won't override permissions here,
         i.e. we'll leave it to ACLAwareBackend's has_perm method
-        to determine permissions from ObjectACLs
+        to determine permissions from ProjectACLs
         '''
         if not hasattr(self, 'id'):
             return False
@@ -246,7 +231,7 @@ class Project(models.Model):
 
         Returning None means we won't override permissions here,
         i.e. we'll leave it to ACLAwareBackend's has_perm method
-        to determine permissions from ObjectACLs
+        to determine permissions from ProjectACLs
         '''
         if not hasattr(self, 'id'):
             return False

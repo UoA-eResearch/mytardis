@@ -14,7 +14,7 @@ from django.test import Client, TestCase
 
 from ..auth.localdb_auth import django_user
 from ..models.experiment import Experiment
-from ..models.access_control import ObjectACL
+from ..models.access_control import ExperimentACL, DatasetACL, DatafileACL
 
 
 class TarDownloadTestCase(TestCase):
@@ -33,16 +33,15 @@ class TarDownloadTestCase(TestCase):
                               public_access=Experiment.PUBLIC_ACCESS_FULL)
         self.exp.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.testuser.id),
-            content_object=self.exp,
+        acl = ExperimentACL(
+            user=self.testuser,
+            experiment=self.exp,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=ExperimentACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -51,16 +50,15 @@ class TarDownloadTestCase(TestCase):
             description="testing tar download dataset")
         self.ds.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.testuser.id),
-            content_object=self.ds,
+        acl = DatasetACL(
+            user=self.testuser,
+            dataset=self.ds,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -81,16 +79,15 @@ class TarDownloadTestCase(TestCase):
                     'testdir%d' % i
                     for i in range(i, i + 4)
                 ]))
-            acl = ObjectACL(
-                pluginId=django_user,
-                entityId=str(self.testuser.id),
-                content_object=df,
+            acl = DatafileACL(
+                user=self.testuser,
+                datafile=df,
                 canRead=True,
                 canDownload=True,
                 canWrite=True,
                 canSensitive=True,
                 isOwner=True,
-                aclOwnershipType=ObjectACL.OWNER_OWNED,
+                aclOwnershipType=DatafileACL.OWNER_OWNED,
             )
             acl.save()
             df.file_object = BytesIO(datafile_content)

@@ -28,7 +28,8 @@ from ..auth.decorators import (
 )
 from ..auth.localdb_auth import django_user
 from ..forms import ExperimentForm, DatasetForm, ProjectForm
-from ..models import Experiment, Dataset, DataFile, ObjectACL, Project
+from ..models import (Experiment, Dataset, DataFile, Project, ProjectACL,
+                      ExperimentACL, DatasetACL)
 from ..shortcuts import render_response_index, \
     return_response_error, return_response_not_found, get_experiment_referer
 from ..views.utils import (
@@ -747,16 +748,15 @@ def create_experiment(request,
             full_experiment.save_m2m()
 
             # add defaul ACL
-            acl = ObjectACL(content_object=experiment,
-                            pluginId=django_user,
-                            entityId=str(request.user.id),
+            acl = ExperimentACL(experiment=experiment,
+                            user=request.user,
                             canRead=True,
                             canDownload=True,
                             canWrite=True,
                             canDelete=True,
                             canSensitive=True,
                             isOwner=True,
-                            aclOwnershipType=ObjectACL.OWNER_OWNED)
+                            aclOwnershipType=ExperimentACL.OWNER_OWNED)
             acl.save()
 
             request.POST = {'status': "Experiment Created."}
@@ -798,16 +798,15 @@ def create_project(request):
             project.save()
 
             # add defaul ACL
-            acl = ObjectACL(content_object=project,
-                            pluginId=django_user,
-                            entityId=str(request.user.id),
+            acl = ProjectACL(project=project,
+                            user=request.user,
                             canRead=True,
                             canDownload=True,
                             canWrite=True,
                             canDelete=True,
                             canSensitive=True,
                             isOwner=True,
-                            aclOwnershipType=ObjectACL.OWNER_OWNED)
+                            aclOwnershipType=ProjectACL.OWNER_OWNED)
             acl.save()
 
             return _redirect_303('tardis_portal.create_project',
@@ -909,16 +908,15 @@ def add_dataset(request, experiment_id):
             dataset.save()
 
             # add defaul ACL
-            acl = ObjectACL(content_object=dataset,
-                            pluginId=django_user,
-                            entityId=str(request.user.id),
+            acl = DatasetACL(dataset=dataset,
+                            user=request.user,
                             canRead=True,
                             canDownload=True,
                             canWrite=True,
                             canDelete=True,
                             canSensitive=True,
                             isOwner=True,
-                            aclOwnershipType=ObjectACL.OWNER_OWNED)
+                            aclOwnershipType=DatasetACL.OWNER_OWNED)
             acl.save()
 
             return _redirect_303('tardis_portal.view_dataset',

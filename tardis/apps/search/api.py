@@ -30,8 +30,8 @@ from tardis.tardis_portal.api import default_authentication
 from tardis.tardis_portal.models import (Project, Experiment, Dataset,
                                          DataFile, Schema, ParameterName)
 
-from tardis.tardis_portal.models.access_control import (ObjectACL, ProjectACL, ExperimentACL,
-                                    DatasetACL, DatafileACL)
+from tardis.tardis_portal.models.access_control import (ProjectACL,
+                                        ExperimentACL, DatasetACL, DatafileACL)
 
 
 LOCAL_TZ = pytz.timezone(settings.TIME_ZONE)

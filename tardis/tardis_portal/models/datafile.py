@@ -26,7 +26,7 @@ import magic
 
 from .. import tasks
 from ..managers import OracleSafeManager, SafeManager
-from .access_control import ObjectACL
+from .access_control import DatafileACL
 from .dataset import Dataset
 from .storage import StorageBox, StorageBoxOption, StorageBoxAttribute
 
@@ -74,7 +74,6 @@ class DataFile(models.Model):
     deleted = models.BooleanField(default=False)
     deleted_time = models.DateTimeField(blank=True, null=True)
     version = models.IntegerField(default=1)
-    objectacls = GenericRelation(ObjectACL)
     objects = OracleSafeManager()
     safe = SafeManager()  # The acl-aware specific manager.
 
@@ -483,33 +482,25 @@ class DataFile(models.Model):
         return ContentType.objects.get_for_model(self)
 
     def get_owners(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        isOwner=True)
+        acls = self.datafileacl_set.select_related("user").filter(
+                                            user__isnull=False, isOwner=True)
         return [acl.get_related_object() for acl in acls]
 
     def get_users(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True)
+        acls = self.datafileacl_set.select_related("user").filter(
+                                            user__isnull=False)
         return [acl.get_related_object() for acl in acls]
 
     def get_groups(self):
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True)
+        acls = self.datafileacl_set.select_related("group").filter(
+                                            group__isnull=False)
         return [acl.get_related_object() for acl in acls]
 
     def get_admins(self):
         logger.error(self.id)
         logger.error(self.get_ct())
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        isOwner=True)
+        acls = self.datafileacl_set.select_related("group").filter(
+                                            group__isnull=False, isOwner=True)
         logger.error(acls)
         return [acl.get_related_object() for acl in acls]
 
