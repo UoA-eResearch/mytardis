@@ -32,7 +32,7 @@ class TabTestCase(TestCase):
                                 created_by=user)
         experiment.save()
         acl = ExperimentACL(experiment=experiment,
-                        entityId=user,
+                        user=user,
                         isOwner=False,
                         canRead=True,
                         canWrite=False,
