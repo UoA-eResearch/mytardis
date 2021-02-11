@@ -252,7 +252,7 @@ class ExperimentListsTest(TestCase):
         # 100 to 10, so pagination isn't needed:
         deleted_count = 0
         for acl in list(self.acls):
-            exp = Experiment.objects.get(id=acl.object_id)
+            exp = acl.experiment
             if acl.isOwner and deleted_count < 90:
                 self.exps.remove(exp)
                 self.acls.remove(acl)
@@ -299,7 +299,7 @@ class ExperimentListsTest(TestCase):
         # 200 to 10, so pagination isn't needed:
         deleted_count = 0
         for acl in list(self.acls):
-            exp = Experiment.objects.get(id=acl.object_id)
+            exp = acl.experiment
             if not acl.isOwner and deleted_count < 190:
                 self.exps.remove(exp)
                 self.acls.remove(acl)

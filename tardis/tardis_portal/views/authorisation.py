@@ -533,7 +533,7 @@ def remove_experiment_access_user(request, experiment_id, username):
 
     expt_acls = Experiment.safe.user_acls(experiment_id)
 
-    target_acl = expt_acls.filter(entityId=str(user.id))
+    target_acl = expt_acls.filter(user=user.id)
     owner_acls = [acl for acl in expt_acls if acl.isOwner]
 
     if target_acl.count() == 0:

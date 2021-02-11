@@ -376,25 +376,25 @@ class ACL(models.Model):
         super().save(*args, **kwargs)
 
 
-    #def get_related_object(self):
-    #    """
-    #    If possible, resolve the pluginId/entityId combination to a user or
-    #    group object.
-    #    """
-    #    if self.pluginId == 'django_user':
-    #        return User.objects.get(pk=self.entityId)
-    #    if self.pluginId == 'django_group':
-    #        return Group.objects.get(pk=self.entityId)
-    #    return None
+    def get_related_object(self):
+        """
+        If possible, resolve the pluginId/entityId combination to a user or
+        group object.
+        """
+        if self.user is not None:
+            return self.user
+        if self.group is not None:
+            return self.group
+        return None
 
-    #def get_related_object_group(self):
-    #    """
-    #    If possible, resolve the pluginId/entityId combination to a user or
-    #    group object.
-    #    """
-    #    if self.pluginId == 'django_group':
-    #        return Group.objects.get(pk=self.entityId)
-    #    return None
+    def get_related_object_group(self):
+        """
+        If possible, resolve the pluginId/entityId combination to a user or
+        group object.
+        """
+        if self.group is not None:
+            return self.group
+        return None
 
     def __str__(self):
         return str(self.id)
