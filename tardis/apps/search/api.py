@@ -496,44 +496,44 @@ class SearchAppResource(Resource):
         # load in object IDs for all objects a user has sensitive access to
         #projects_sens = {*Project.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
         projects_sens_query = user.projectacls.select_related("project").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
-                                                expiryDate__lte=datetime.today()).values_list("project__id")
+                                                expiryDate__lte=datetime.today()).values_list("project__id", flat=True)
         for group in groups:
             projects_sens_query |= group.projectacls.select_related("project").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
-                                                    expiryDate__lte=datetime.today()).values_list("project__id")
+                                                    expiryDate__lte=datetime.today()).values_list("project__id", flat=True)
         projects_sens = [*projects_sens_query.distinct()]
 
         #experiments_sens = {*Experiment.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
         experiments_sens_query = user.experimentacls.select_related("experiment").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
-                                                expiryDate__lte=datetime.today()).values_list("experiment__id")
+                                                expiryDate__lte=datetime.today()).values_list("experiment__id", flat=True)
         for group in groups:
             experiments_sens_query |= group.experimentacls.select_related("experiment").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
-                                                    expiryDate__lte=datetime.today()).values_list("experiment__id")
+                                                    expiryDate__lte=datetime.today()).values_list("experiment__id", flat=True)
         experiments_sens = [*experiments_sens_query.distinct()]
 
         #datasets_sens = {*Dataset.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
         datasets_sens_query = user.datasetacls.select_related("dataset").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
-                                                expiryDate__lte=datetime.today()).values_list("dataset__id")
+                                                expiryDate__lte=datetime.today()).values_list("dataset__id", flat=True)
         for group in groups:
             datasets_sens_query |= group.datasetacls.select_related("dataset").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
-                                                    expiryDate__lte=datetime.today()).values_list("dataset__id")
+                                                    expiryDate__lte=datetime.today()).values_list("dataset__id", flat=True)
         datasets_sens = [*datasets_sens_query.distinct()]
 
         #datafiles_sens = {*DataFile.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
         datafiles_sens_query = user.datafileacls.select_related("datafile").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
-                                                expiryDate__lte=datetime.today()).values_list("datafile__id")
+                                                expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
         for group in groups:
             datafiles_sens_query |= group.datafileacls.select_related("datafile").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
-                                                    expiryDate__lte=datetime.today()).values_list("datafile__id")
+                                                    expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
         datafiles_sens = [*datafiles_sens_query.distinct()]
 
         # load in datafile IDs for all datafiles a user has download access to
         #datafiles_dl = {*DataFile.safe.all(user, downloadable=True).values_list("id", flat=True)}
 
         datafiles_dl_query = user.datafileacls.select_related("datafile").filter(canDownload=True).exclude(effectiveDate__gte=datetime.today(),
-                                                expiryDate__lte=datetime.today()).values_list("datafile__id")
+                                                expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
         for group in groups:
             datafiles_dl_query |= group.datafileacls.select_related("datafile").filter(canDownload=True).exclude(effectiveDate__gte=datetime.today(),
-                                                    expiryDate__lte=datetime.today()).values_list("datafile__id")
+                                                    expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
         datafiles_dl = [*datafiles_dl_query.distinct()]
 
 
