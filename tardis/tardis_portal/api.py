@@ -52,7 +52,7 @@ from .auth.decorators import (
     bulk_replace_existing_acls
 )
 from .auth.localdb_auth import django_user, django_group
-from .models.access_control import (ProjectACL, ExperimentACL, DatasetACL,
+from .models.access_control import (ObjectACL, ProjectACL, ExperimentACL, DatasetACL,
                                     DatafileACL, UserProfile, GroupAdmin,
                                     UserAuthentication)
 from .models.datafile import DataFile, DataFileObject, compute_checksums
