@@ -52,7 +52,9 @@ from .auth.decorators import (
     bulk_replace_existing_acls
 )
 from .auth.localdb_auth import django_user, django_group
-from .models.access_control import ObjectACL, UserProfile, UserAuthentication, GroupAdmin
+from .models.access_control import (ProjectACL, ExperimentACL, DatasetACL,
+                                    DatafileACL, UserProfile, GroupAdmin,
+                                    UserAuthentication)
 from .models.datafile import DataFile, DataFileObject, compute_checksums
 from .models.dataset import Dataset
 from .models.experiment import Experiment, ExperimentAuthor
@@ -164,35 +166,6 @@ def get_user_from_upi(upi):
         return details
 
 
-def create_acl(content_type,
-               object_id,
-               plugin_id,
-               entity_id,
-               write=False,
-               download=False,
-               sensitive=False,
-               owner=False,
-               admin=False):
-    if admin:
-        download = True
-        sensitive = True
-        owner = True
-        write = True
-    acl = ObjectACL(content_type=content_type,
-                    object_id=object_id,
-                    pluginId=plugin_id,
-                    entityId=str(entity_id),
-                    canRead=True,
-                    canDownload=download,
-                    canWrite=write,
-                    canDelete=False,
-                    canSensitive=sensitive,
-                    isOwner=owner,
-                    aclOwnershipType=ObjectACL.OWNER_OWNED)
-    acl.save()
-    return True
-
-
 def check_and_create_user(username,
                           is_admin=False):
     if not User.objects.filter(username=username).exists():
@@ -234,48 +207,90 @@ def create_traverse_perms(plugin_id,
                           dataset=None):
     if plugin_id == django_user:
         if entity not in Project.safe.users(project.id):
-            create_acl(project.get_ct(),
-                       project.id,
-                       plugin_id,
-                       entity.id)
+            acl = ProjectACL(project=project,
+                             user=entity.id,
+                             canRead=True,
+                             canDownload=download,
+                             canWrite=write,
+                             canDelete=False,
+                             canSensitive=sensitive,
+                             isOwner=owner,
+                             aclOwnershipType=ProjectACL.OWNER_OWNED)
+            acl.save()
+            return True
         if experiment:
             if entity not in Experiment.safe.users(experiment.id):
-                create_acl(experiment.get_ct(),
-                           experiment.id,
-                           plugin_id,
-                           entity.id)
+                acl = ExperimentACL(experiment=experiment,
+                                 user=entity.id,
+                                 canRead=True,
+                                 canDownload=download,
+                                 canWrite=write,
+                                 canDelete=False,
+                                 canSensitive=sensitive,
+                                 isOwner=owner,
+                                 aclOwnershipType=ExperimentACL.OWNER_OWNED)
+                acl.save()
+                return True
             # Wrapping the dataset into the experiment
             # if to minimise errors since if a dataset
             # traverse is needed then an experiment one
             # is also necessary
             if dataset:
                 if entity not in Dataset.safe.users(dataset.id):
-                    create_acl(dataset.get_ct(),
-                               dataset.id,
-                               plugin_id,
-                               entity.id)
+                    acl = DatasetACL(dataset=dataset,
+                                     user=entity.id,
+                                     canRead=True,
+                                     canDownload=download,
+                                     canWrite=write,
+                                     canDelete=False,
+                                     canSensitive=sensitive,
+                                     isOwner=owner,
+                                     aclOwnershipType=DatasetACL.OWNER_OWNED)
+                    acl.save()
+                    return True
     elif plugin_id == django_group:
         if entity not in Project.safe.groups(project.id):
-            create_acl(project.get_ct(),
-                       project.id,
-                       plugin_id,
-                       entity.id)
+            acl = ProjectACL(project=project,
+                             group=entity.id,
+                             canRead=True,
+                             canDownload=download,
+                             canWrite=write,
+                             canDelete=False,
+                             canSensitive=sensitive,
+                             isOwner=owner,
+                             aclOwnershipType=ProjectACL.OWNER_OWNED)
+            acl.save()
+            return True
         if experiment:
             if entity not in Experiment.safe.groups(experiment.id):
-                create_acl(experiment.get_ct(),
-                           experiment.id,
-                           plugin_id,
-                           entity.id)
+                acl = ExperimentACL(experiment=experiment,
+                                 group=entity.id,
+                                 canRead=True,
+                                 canDownload=download,
+                                 canWrite=write,
+                                 canDelete=False,
+                                 canSensitive=sensitive,
+                                 isOwner=owner,
+                                 aclOwnershipType=ExperimentACL.OWNER_OWNED)
+                acl.save()
+                return True
             # Wrapping the dataset into the experiment
             # if to minimise errors since if a dataset
             # traverse is needed then an experiment one
             # is also necessary
             if dataset:
                 if entity not in Dataset.safe.groups(dataset.id):
-                    create_acl(dataset.get_ct(),
-                               dataset.id,
-                               plugin_id,
-                               entity.id)
+                    acl = DatasetACL(dataset=dataset,
+                                     group=entity.id,
+                                     canRead=True,
+                                     canDownload=download,
+                                     canWrite=write,
+                                     canDelete=False,
+                                     canSensitive=sensitive,
+                                     isOwner=owner,
+                                     aclOwnershipType=DatasetACL.OWNER_OWNED)
+                    acl.save()
+                    return True
     return True
 
 
@@ -720,12 +735,32 @@ class ACLAuthorization(Authorization):
             return object_list
         if isinstance(bundle.obj, ParameterName):
             return object_list
-        if isinstance(bundle.obj, ObjectACL):
+        if isinstance(bundle.obj, ExperimentACL):
             experiment_ids = Experiment.safe.all(
                 bundle.request.user).values_list('id', flat=True)
-            return ObjectACL.objects.filter(
-                content_type__model='experiment',
-                object_id__in=experiment_ids,
+            return ExperimentACL.objects.filter(
+                experiment__id__in=experiment_ids,
+                id__in=obj_ids
+            )
+        if isinstance(bundle.obj, DatasetACL):
+            dataset_ids = Dataset.safe.all(
+                bundle.request.user).values_list('id', flat=True)
+            return DatasetACL.objects.filter(
+                dataset__id__in=dataset_ids,
+                id__in=obj_ids
+            )
+        if isinstance(bundle.obj, DatafileACL):
+            datafile_ids = DataFile.safe.all(
+                bundle.request.user).values_list('id', flat=True)
+            return DatafileACL.objects.filter(
+                datafile__id__in=datafile_ids,
+                id__in=obj_ids
+            )
+        if isinstance(bundle.obj, ProjectACL):
+            project_ids = Project.safe.all(
+                bundle.request.user).values_list('id', flat=True)
+            return ProjectACL.objects.filter(
+                experiment__id__in=project_ids,
                 id__in=obj_ids
             )
         if bundle.request.user.is_authenticated and \
@@ -996,7 +1031,13 @@ class ACLAuthorization(Authorization):
                           bundle.obj.datafile.id, "datafile"),
             ])
 
-        if isinstance(bundle.obj, ObjectACL):
+        if isinstance(bundle.obj, ProjectACL):
+            return bundle.request.user.has_perm('tardis_portal.add_objectacl')
+        if isinstance(bundle.obj, ExperimentACL):
+            return bundle.request.user.has_perm('tardis_portal.add_objectacl')
+        if isinstance(bundle.obj, DatasetACL):
+            return bundle.request.user.has_perm('tardis_portal.add_objectacl')
+        if isinstance(bundle.obj, DatafileACL):
             return bundle.request.user.has_perm('tardis_portal.add_objectacl')
         if isinstance(bundle.obj, Group):
             return bundle.request.user.has_perm('tardis_portal.add_group')

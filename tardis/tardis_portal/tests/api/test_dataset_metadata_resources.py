@@ -12,7 +12,7 @@ from ...models.parameters import (Schema,
                                   ParameterName,
                                   DatasetParameter,
                                   DatasetParameterSet)
-from ...models.access_control import ObjectACL
+from ...models.access_control import DatasetACL
 from ...auth.localdb_auth import django_user
 from . import MyTardisResourceTestCase
 
@@ -28,19 +28,18 @@ class DatasetParameterSetResourceTest(MyTardisResourceTestCase):
             name='param1_name',
             data_type=ParameterName.STRING)
         self.test_dataset = Dataset.objects.create(description='Test dataset')
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.test_dataset,
+        acl = DatasetACL(
+            user=self.user,
+            dataset=self.test_dataset,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
-        # Add to experiment with ObjectACL granting access to self.user
+        # Add to experiment with ACL granting access to self.user
         # so auth with self.get_credentials() will succeed:
         self.test_dataset.experiments.add(self.testexp)
 

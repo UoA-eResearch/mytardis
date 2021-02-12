@@ -21,7 +21,7 @@ from ...models.datafile import DataFile, DataFileObject
 from ...models.dataset import Dataset
 from ...models.parameters import ParameterName
 from ...models.parameters import Schema
-from ...models.access_control import ObjectACL
+from ...models.access_control import DatasetACL, DatafileACL
 from ...auth.localdb_auth import django_user
 from . import MyTardisResourceTestCase
 
@@ -35,16 +35,15 @@ class DataFileResourceTest(MyTardisResourceTestCase):
         self.testds = Dataset()
         self.testds.description = "test dataset"
         self.testds.save()
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.testds,
+        acl = DatasetACL(
+            user=self.user,
+            dataset=self.testds,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
         self.testds.experiments.add(self.testexp)
@@ -65,16 +64,15 @@ class DataFileResourceTest(MyTardisResourceTestCase):
                                  filename="testfile.txt",
                                  size="42", md5sum='bogus')
         self.datafile.save()
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.datafile,
+        acl = DatafileACL(
+            user=self.user,
+            datafile=self.datafile,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatafileACL.OWNER_OWNED,
         )
         acl.save()
     def test_post_single_file(self):

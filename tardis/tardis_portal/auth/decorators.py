@@ -39,9 +39,9 @@ from django.http import HttpResponseRedirect
 from django.db.models import Q
 from django.conf import settings
 
-from ..models import Project, Experiment, Dataset, DataFile, GroupAdmin, \
-    ProjectParameter, ExperimentParameter, DatasetParameter, \
-    DatafileParameter, ObjectACL
+from ..models import (Project, Experiment, Dataset, DataFile, GroupAdmin,
+    ProjectParameter, ExperimentParameter, DatasetParameter,
+    DatafileParameter, ProjectACL, ExperimentACL, DatasetACL, DatafileACL)
 from ..shortcuts import return_response_error
 from .localdb_auth import django_user, django_group
 
@@ -100,24 +100,46 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
     for new_acls in some_request:
         # Collect either admin(isOwner) or non-admin users/groups
         if not admin_flag:
-            old_acls = ObjectACL.objects.filter(
-                object_id=new_acls["id"],
-                content_type=new_acls["content_type"],
-                aclOwnershipType=ObjectACL.OWNER_OWNED,
-                isOwner=False)
+            if new_acls["content_type"] == "project":
+                old_acls = ProjectACL.objects.filter(
+                            project=new_acls["id"], isOwner = False,
+                            aclOwnershipType=ProjectACL.OWNER_OWNED)
+            if new_acls["content_type"] == "experiment":
+                old_acls = ExperimentACL.objects.filter(
+                            experiment=new_acls["id"], isOwner = False,
+                            aclOwnershipType=ExperimentACL.OWNER_OWNED)
+            if new_acls["content_type"] == "dataset":
+                old_acls = DatasetACL.objects.filter(
+                            dataset=new_acls["id"], isOwner = False,
+                            aclOwnershipType=DatasetACL.OWNER_OWNED)
+            if new_acls["content_type"] == "data file":
+                old_acls = DatafileACL.objects.filter(
+                            datafile=new_acls["id"], isOwner = False,
+                            aclOwnershipType=DatafileACL.OWNER_OWNED)
         else:
-            old_acls = ObjectACL.objects.filter(
-                object_id=new_acls["id"],
-                content_type=new_acls["content_type"],
-                aclOwnershipType=ObjectACL.OWNER_OWNED,
-                isOwner=True)
+            if new_acls["content_type"] == "project":
+                old_acls = ProjectACL.objects.filter(
+                            project=new_acls["id"], isOwner = True,
+                            aclOwnershipType=ProjectACL.OWNER_OWNED)
+            if new_acls["content_type"] == "experiment":
+                old_acls = ExperimentACL.objects.filter(
+                            experiment=new_acls["id"], isOwner = True,
+                            aclOwnershipType=ExperimentACL.OWNER_OWNED)
+            if new_acls["content_type"] == "dataset":
+                old_acls = DatasetACL.objects.filter(
+                            dataset=new_acls["id"], isOwner = True,
+                            aclOwnershipType=DatasetACL.OWNER_OWNED)
+            if new_acls["content_type"] == "data file":
+                old_acls = DatafileACL.objects.filter(
+                            datafile=new_acls["id"], isOwner = True,
+                            aclOwnershipType=DatafileACL.OWNER_OWNED)
         #Used to filter out any duplicate ACLs
         modified_user_acls = []
         modified_group_acls = []
 
         for old_acl in old_acls:
 
-            if old_acl.pluginId == "django_user":
+            if old_acl.user is not None:
                 if "users" in new_acls.keys():
                     # If old ACL user_entity is a project_lead or creator (created_by)
                     # for any (parent) projects or experiments, then we do not wish to
@@ -135,9 +157,9 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                         protected_users = list(DataFile.objects.get(id=new_acls["id"]
                                                ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
                     protected_users = [str(id) for id in user_id_dict.values() for user_id_dict in protected_users]
-                    if old_acl.entityId in protected_users:
+                    if old_acl.user.id in protected_users:
                         # if we've already dealt with this protected user before, delete any duplicates
-                        if old_acl.entityId in [d.entityId for d in modified_user_acls]:
+                        if old_acl.user.id in [d.user.id for d in modified_user_acls]:
                             old_acl.delete()
                         else:
                             # For robustness sake, make sure the protected user has every permission
@@ -155,17 +177,17 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                         old_acl.delete()
                         continue
                     # If old ACL user is not in new list of users, delete ACL
-                    if old_acl.entityId not in [d['id'] for d in new_acls["users"]]:
+                    if old_acl.user.id not in [d['id'] for d in new_acls["users"]]:
                         old_acl.delete()
                     else:
                         # If this ACL is a duplicate, delete it
-                        if old_acl.entityId in [d.entityId for d in modified_user_acls]:
+                        if old_acl.user.id in [d.user.id for d in modified_user_acls]:
                             old_acl.delete()
                         else:
                             # If user already has permissions, update old ACL
                             # according to new permissions
                             matched_idx = [d['id'] for d in new_acls["users"]].index(
-                                old_acl.entityId)
+                                old_acl.user.id)
                             old_acl.canRead = new_acls["users"][matched_idx]["canRead"]
                             old_acl.canDownload = new_acls["users"][matched_idx]["canDownload"]
                             old_acl.canWrite = new_acls["users"][matched_idx]["canWrite"]
@@ -177,24 +199,24 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                             # any further duplicate entries of it in the database
                             modified_user_acls.append(old_acl)
 
-            if old_acl.pluginId == "django_group":
+            if old_acl.group is not None:
                 if "groups" in new_acls.keys():
                     # If requested list is empty: delete old ACLs
                     if not new_acls["groups"]:
                         old_acl.delete()
                         continue
                     # If old ACL group is not in new list of groups, delete ACL
-                    if old_acl.entityId not in [d['id'] for d in new_acls["groups"]]:
+                    if old_acl.group.id not in [d['id'] for d in new_acls["groups"]]:
                         old_acl.delete()
                     else:
                         # If this ACL is a duplicate, delete it
-                        if old_acl.entityId in [d.entityId for d in modified_group_acls]:
+                        if old_acl.group.id in [d.group.id for d in modified_group_acls]:
                             old_acl.delete()
                         else:
                             # If group already has permissions, update old ACL
                             # according to new permissions
                             matched_idx = [d['id'] for d in new_acls["groups"]].index(
-                                old_acl.entityId)
+                                old_acl.group.id)
                             old_acl.canRead = new_acls["groups"][matched_idx]["canRead"]
                             old_acl.canDownload = new_acls["groups"][matched_idx]["canDownload"]
                             old_acl.canWrite = new_acls["groups"][matched_idx]["canWrite"]
@@ -209,54 +231,141 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
         if "users" in new_acls.keys():
             # likely inefficient to partially "duplicate" the first query,
             # but convenient flat list of IDs
-            old_acls_user_ids = ObjectACL.objects.filter(
-                pluginId=django_user,
-                object_id=new_acls["id"],
-                content_type=new_acls["content_type"],
-                aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
+            if new_acls["content_type"] == "project":
+                old_acls_user_ids = ProjectACL.objects.filter(
+                    project=new_acls["id"], user__isnull = False,
+                    aclOwnershipType=ProjectACL.OWNER_OWNED).values_list('user__id', flat=True)
+            if new_acls["content_type"] == "experiment":
+                old_acls_user_ids = ExperimentACL.objects.filter(
+                    experiment=new_acls["id"], user__isnull = False,
+                    aclOwnershipType=ExperimentACL.OWNER_OWNED).values_list('user__id', flat=True)
+            if new_acls["content_type"] == "dataset":
+                old_acls_user_ids = DatasetACL.objects.filter(
+                    dataset=new_acls["id"], user__isnull = False,
+                    aclOwnershipType=DatasetACL.OWNER_OWNED).values_list('user__id', flat=True)
+            if new_acls["content_type"] == "data file":
+                old_acls_user_ids = DatafileACL.objects.filter(
+                    datafile=new_acls["id"], user__isnull = False,
+                    aclOwnershipType=DatafileACL.OWNER_OWNED).values_list('user__id', flat=True)
 
             if new_acls["users"]:
                 for new_acl in new_acls["users"]:
                     # if user doesn't already have an ACL for this object, create one
                     if new_acl["id"] not in old_acls_user_ids:
-                        acl = ObjectACL(content_type=new_acls["content_type"],
-                                        object_id=new_acls["id"],
-                                        pluginId=django_user,
-                                        entityId=str(new_acl["id"]),
-                                        canRead=new_acl["canRead"],
-                                        canDownload=new_acl["canDownload"],
-                                        canWrite=new_acl["canWrite"],
-                                        canDelete=new_acl["canDelete"],
-                                        canSensitive=new_acl["canSensitive"],
-                                        isOwner=new_acl["isOwner"],
-                                        aclOwnershipType=ObjectACL.OWNER_OWNED)
-                        acl.save()
+                        if new_acls["content_type"] == "project":
+                            acl = ProjectACL(project=new_acls["id"],
+                                             user=new_acl["id"],
+                                             canRead=new_acl["canRead"],
+                                             canDownload=new_acl["canDownload"],
+                                             canWrite=new_acl["canWrite"],
+                                             canDelete=new_acl["canDelete"],
+                                             canSensitive=new_acl["canSensitive"],
+                                             isOwner=new_acl["isOwner"],
+                                             aclOwnershipType=ProjectACL.OWNER_OWNED)
+                            acl.save()
+                        if new_acls["content_type"] == "experiment":
+                            acl = ExperimentACL(experiment=new_acls["id"],
+                                                user=new_acl["id"],
+                                                canRead=new_acl["canRead"],
+                                                canDownload=new_acl["canDownload"],
+                                                canWrite=new_acl["canWrite"],
+                                                canDelete=new_acl["canDelete"],
+                                                canSensitive=new_acl["canSensitive"],
+                                                isOwner=new_acl["isOwner"],
+                                                aclOwnershipType=ExperimentACL.OWNER_OWNED)
+                            acl.save()
+                        if new_acls["content_type"] == "dataset":
+                            acl = DatasetACL(dataset=new_acls["id"],
+                                             user=new_acl["id"],
+                                             canRead=new_acl["canRead"],
+                                             canDownload=new_acl["canDownload"],
+                                             canWrite=new_acl["canWrite"],
+                                             canDelete=new_acl["canDelete"],
+                                             canSensitive=new_acl["canSensitive"],
+                                             isOwner=new_acl["isOwner"],
+                                             aclOwnershipType=DatasetACL.OWNER_OWNED)
+                            acl.save()
+                        if new_acls["content_type"] == "data file":
+                            acl = DatafileACL(datafile=new_acls["id"],
+                                              user=new_acl["id"],
+                                              canRead=new_acl["canRead"],
+                                              canDownload=new_acl["canDownload"],
+                                              canWrite=new_acl["canWrite"],
+                                              canDelete=new_acl["canDelete"],
+                                              canSensitive=new_acl["canSensitive"],
+                                              isOwner=new_acl["isOwner"],
+                                              aclOwnershipType=DatafileACL.OWNER_OWNED)
+                            acl.save()
 
         if "groups" in new_acls.keys():
             # likely inefficient to partially "duplicate" the first query,
             # but convenient flat list of IDs
-            old_acls_group_ids = ObjectACL.objects.filter(
-                pluginId=django_group,
-                object_id=new_acls["id"],
-                content_type=new_acls["content_type"],
-                aclOwnershipType=ObjectACL.OWNER_OWNED).values_list('entityId', flat=True)
+
+            if new_acls["content_type"] == "project":
+                old_acls_group_ids = ProjectACL.objects.filter(
+                    project=new_acls["id"], group__isnull = False,
+                    aclOwnershipType=ProjectACL.OWNER_OWNED).values_list('group__id', flat=True)
+            if new_acls["content_type"] == "experiment":
+                old_acls_group_ids = ExperimentACL.objects.filter(
+                    experiment=new_acls["id"], group__isnull = False,
+                    aclOwnershipType=ExperimentACL.OWNER_OWNED).values_list('group__id', flat=True)
+            if new_acls["content_type"] == "dataset":
+                old_acls_group_ids = DatasetACL.objects.filter(
+                    dataset=new_acls["id"], group__isnull = False,
+                    aclOwnershipType=DatasetACL.OWNER_OWNED).values_list('group__id', flat=True)
+            if new_acls["content_type"] == "data file":
+                old_acls_group_ids = DatafileACL.objects.filter(
+                    datafile=new_acls["id"], group__isnull = False,
+                    aclOwnershipType=DatafileACL.OWNER_OWNED).values_list('group__id', flat=True)
 
             if new_acls["groups"]:
                 for new_acl in new_acls["groups"]:
                     # if group doesn't already have an ACL for this object, create one
                     if new_acl["id"] not in old_acls_group_ids:
-                        acl = ObjectACL(content_type=new_acls["content_type"],
-                                        object_id=new_acls["id"],
-                                        pluginId=django_group,
-                                        entityId=str(new_acl["id"]),
-                                        canRead=new_acl["canRead"],
-                                        canDownload=new_acl["canDownload"],
-                                        canWrite=new_acl["canWrite"],
-                                        canDelete=new_acl["canDelete"],
-                                        canSensitive=new_acl["canSensitive"],
-                                        isOwner=new_acl["isOwner"],
-                                        aclOwnershipType=ObjectACL.OWNER_OWNED)
-                        acl.save()
+                        if new_acls["content_type"] == "project":
+                            acl = ProjectACL(project=new_acls["id"],
+                                             group=new_acl["id"],
+                                             canRead=new_acl["canRead"],
+                                             canDownload=new_acl["canDownload"],
+                                             canWrite=new_acl["canWrite"],
+                                             canDelete=new_acl["canDelete"],
+                                             canSensitive=new_acl["canSensitive"],
+                                             isOwner=new_acl["isOwner"],
+                                             aclOwnershipType=ProjectACL.OWNER_OWNED)
+                            acl.save()
+                        if new_acls["content_type"] == "experiment":
+                            acl = ExperimentACL(experiment=new_acls["id"],
+                                                group=new_acl["id"],
+                                                canRead=new_acl["canRead"],
+                                                canDownload=new_acl["canDownload"],
+                                                canWrite=new_acl["canWrite"],
+                                                canDelete=new_acl["canDelete"],
+                                                canSensitive=new_acl["canSensitive"],
+                                                isOwner=new_acl["isOwner"],
+                                                aclOwnershipType=ExperimentACL.OWNER_OWNED)
+                            acl.save()
+                        if new_acls["content_type"] == "dataset":
+                            acl = DatasetACL(dataset=new_acls["id"],
+                                             group=new_acl["id"],
+                                             canRead=new_acl["canRead"],
+                                             canDownload=new_acl["canDownload"],
+                                             canWrite=new_acl["canWrite"],
+                                             canDelete=new_acl["canDelete"],
+                                             canSensitive=new_acl["canSensitive"],
+                                             isOwner=new_acl["isOwner"],
+                                             aclOwnershipType=DatasetACL.OWNER_OWNED)
+                            acl.save()
+                        if new_acls["content_type"] == "data file":
+                            acl = DatafileACL(datafile=new_acls["id"],
+                                              group=new_acl["id"],
+                                              canRead=new_acl["canRead"],
+                                              canDownload=new_acl["canDownload"],
+                                              canWrite=new_acl["canWrite"],
+                                              canDelete=new_acl["canDelete"],
+                                              canSensitive=new_acl["canSensitive"],
+                                              isOwner=new_acl["isOwner"],
+                                              aclOwnershipType=DatafileACL.OWNER_OWNED)
+                            acl.save()
 
 
 def get_accessible_experiments(request):

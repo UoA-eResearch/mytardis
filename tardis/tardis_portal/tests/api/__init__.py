@@ -11,7 +11,7 @@ from tastypie.test import ResourceTestCaseMixin
 
 from ...auth.authservice import AuthService
 from ...auth.localdb_auth import django_user
-from ...models.access_control import ObjectACL
+from ...models.access_control import ProjectACL, ExperimentACL
 from ...models.project import Project
 from ...models.experiment import Experiment
 from ...models.facility import Facility
@@ -69,32 +69,28 @@ class MyTardisResourceTestCase(ResourceTestCaseMixin, TransactionTestCase):
         self.testproject.lead_researcher = self.user
 
         self.testproject.save()
-        testacl = ObjectACL(
-            content_type=self.testproject.get_ct(),
-            object_id=self.testproject.id,
-            pluginId=django_user,
-            entityId=str(self.user.id),
+        testacl = ProjectACL(
+            project=self.testproject,
+            user=self.user,
             canRead=True,
             canWrite=True,
             canDelete=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED)
+            aclOwnershipType=ProjectACL.OWNER_OWNED)
         testacl.save()
         self.testexp = Experiment(title="test exp", project=self.testproject)
         self.testexp.approved = True
         self.testexp.created_by = self.user
         self.testexp.locked = False
         self.testexp.save()
-        testacl = ObjectACL(
-            content_type=self.testexp.get_ct(),
-            object_id=self.testexp.id,
-            pluginId=django_user,
-            entityId=str(self.user.id),
+        testacl = ExperimentACL(
+            experiment=self.testexp,
+            user=self.user,
             canRead=True,
             canWrite=True,
             canDelete=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED)
+            aclOwnershipType=ExperimentACL.OWNER_OWNED)
         testacl.save()
 
     def get_credentials(self):
