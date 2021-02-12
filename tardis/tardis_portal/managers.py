@@ -12,9 +12,6 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Prefetch
 
 #from .auth.localdb_auth import django_user, django_group
-from .models.access_control import (ProjectACL, ExperimentACL,
-                                    DatasetACL, DatafileACL)
-
 
 class OracleSafeManager(models.Manager):
     """
@@ -73,7 +70,8 @@ class SafeManager(models.Manager):
         return query.distinct()
 
     def _query_owned(self, user, user_id=None):
-
+        from .models.access_control import (ProjectACL, ExperimentACL,
+                                            DatasetACL, DatafileACL)
         if user is None:
             user = User.objects.get(pk=user_id)
 
@@ -117,7 +115,8 @@ class SafeManager(models.Manager):
 
 
     def _query_owned_by_group(self, group, group_id=None):
-
+        from .models.access_control import (ProjectACL, ExperimentACL,
+                                            DatasetACL, DatafileACL)
         if group is None:
             group = Group.objects.get(pk=group_id)
 
@@ -161,6 +160,8 @@ class SafeManager(models.Manager):
 
 
     def _query_shared(self, user, downloadable=False, viewsensitive=False):
+        from .models.access_control import (ProjectACL, ExperimentACL,
+                                            DatasetACL, DatafileACL)
         '''
         get all shared proj/exp/set/files, not owned ones
         '''
@@ -519,6 +520,9 @@ class SafeManager(models.Manager):
         :returns: QuerySet of ACLs
         :rtype: QuerySet
         """
+        from .models.access_control import (ProjectACL, ExperimentACL,
+                                            DatasetACL, DatafileACL)
+
         obj = super().get(pk=obj_id)
 
         if self.model.get_ct(self.model).model == "project":
@@ -555,6 +559,9 @@ class SafeManager(models.Manager):
         :returns: QuerySet of ACLs
         :rtype: QuerySet
         """
+        from .models.access_control import (ProjectACL, ExperimentACL,
+                                            DatasetACL, DatafileACL)
+
         obj = super().get(pk=obj_id)
 
         if self.model.get_ct(self.model).model == "project":
@@ -590,7 +597,8 @@ class SafeManager(models.Manager):
         :returns: QuerySet of non system Groups
         :rtype: QuerySet
         """
-
+        from .models.access_control import (ProjectACL, ExperimentACL,
+                                            DatasetACL, DatafileACL)
         obj = super().get(pk=obj_id)
 
         if self.model.get_ct(self.model).model == "project":
@@ -616,7 +624,8 @@ class SafeManager(models.Manager):
         :returns: QuerySet of ACLs
         :rtype: QuerySet
         """
-
+        from .models.access_control import (ProjectACL, ExperimentACL,
+                                            DatasetACL, DatafileACL)
         obj = super().get(pk=obj_id)
 
         if self.model.get_ct(self.model).model == "project":
@@ -641,7 +650,8 @@ class SafeManager(models.Manager):
         :returns: QuerySet of system-owned ACLs for proj/exp/set/file
         :rtype: QuerySet
         """
-
+        from .models.access_control import (ProjectACL, ExperimentACL,
+                                            DatasetACL, DatafileACL)
         obj = super().get(pk=obj_id)
 
         if self.model.get_ct(self.model).model == "project":
@@ -668,7 +678,8 @@ class SafeManager(models.Manager):
         :returns: system owned groups for proj/exp/set/file
         :rtype: QuerySet
         """
-
+        from .models.access_control import (ProjectACL, ExperimentACL,
+                                            DatasetACL, DatafileACL)
         obj = super().get(pk=obj_id)
 
         if self.model.get_ct(self.model).model == "project":
