@@ -82,8 +82,8 @@ class Project(models.Model):
             schema__schema_type=Schema.PROJECT)
 
     def getParametersforIndexing(self):
-        """Returns the experiment parameters associated with this
-        experiment, formatted for elasticsearch.
+        """Returns the project parameters associated with this
+        project, formatted for elasticsearch.
 
         """
         from .parameters import ProjectParameter, ParameterName
@@ -119,6 +119,28 @@ class Project(models.Model):
                             param_dict['value'] = float(value)
                 parameter_groups[param_type[type_idx]].append(param_dict)
         return parameter_groups
+
+    def getACLsforIndexing(self):
+        """Returns the projectACLs associated with this
+        project, formatted for elasticsearch.
+
+        """
+        return_list = []
+        for acl in self.projectacl_set.all():
+            acl_dict = {}
+            if acl.user is not None:
+                acl_dict["pluginId"] = "django_user"
+                acl_dict["entityId"] = acl.user.id
+                return_list.append(acl_dict)
+            if acl.group is not None:
+                acl_dict["pluginId"] = "django_group"
+                acl_dict["entityId"] = acl.group.id
+                return_list.append(acl_dict)
+            #if acl.token is not None:
+            #    acl_dict["pluginId"] = "token"
+            #    acl_dict["entityId"] = acl.token.id
+            #    return_list.append(acl_dict)
+        return return_list
 
     def is_embargoed(self):
         if self.embargo_until:

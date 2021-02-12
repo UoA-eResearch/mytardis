@@ -170,6 +170,28 @@ class Experiment(models.Model):
                 parameter_groups[param_type[type_idx]].append(param_dict)
         return parameter_groups
 
+    def getACLsforIndexing(self):
+        """Returns the ExperimentACLs associated with this
+        experiment, formatted for elasticsearch.
+
+        """
+        return_list = []
+        for acl in self.experimentacl_set.all():
+            acl_dict = {}
+            if acl.user is not None:
+                acl_dict["pluginId"] = "django_user"
+                acl_dict["entityId"] = acl.user.id
+                return_list.append(acl_dict)
+            if acl.group is not None:
+                acl_dict["pluginId"] = "django_group"
+                acl_dict["entityId"] = acl.group.id
+                return_list.append(acl_dict)
+            #if acl.token is not None:
+            #    acl_dict["pluginId"] = "token"
+            #    acl_dict["entityId"] = acl.token.id
+            #    return_list.append(acl_dict)
+        return return_list
+
     def __str__(self):
         return self.title
 
