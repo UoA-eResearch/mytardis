@@ -11,7 +11,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User, Group
 from django.db.models import Prefetch
 
-from .auth.localdb_auth import django_user, django_group
+#from .auth.localdb_auth import django_user, django_group
 from .models.access_control import (ProjectACL, ExperimentACL,
                                     DatasetACL, DatafileACL)
 
