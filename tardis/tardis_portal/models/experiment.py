@@ -12,7 +12,6 @@ from django.utils.safestring import SafeText
 from django.utils.encoding import python_2_unicode_compatible
 
 from ..managers import OracleSafeManager, SafeManager
-from .access_control import ExperimentACL
 from .project import Project
 from .institution import Institution
 
@@ -175,6 +174,8 @@ class Experiment(models.Model):
         experiment, formatted for elasticsearch.
 
         """
+        from .access_control import ExperimentACL
+
         return_list = []
         for acl in self.experimentacl_set.all():
             acl_dict = {}

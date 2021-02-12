@@ -14,7 +14,6 @@ from taggit.managers import TaggableManager
 from ..managers import OracleSafeManager, SafeManager
 from .storage import StorageBox
 
-from .access_control import DatasetACL
 from .experiment import Experiment
 from .instrument import Instrument
 
@@ -162,6 +161,8 @@ class Dataset(models.Model):
         dataset, formatted for elasticsearch.
 
         """
+        from .access_control import DatasetACL
+
         return_list = []
         for acl in self.datasetacl_set.all():
             acl_dict = {}

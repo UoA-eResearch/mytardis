@@ -11,7 +11,6 @@ from django.utils.timezone import now as django_time_now
 from .institution import Institution
 # from ..models import DataManagementPlan # Hook in place for future proofing
 from ..managers import OracleSafeManager, SafeManager
-from .access_control import ProjectACL
 
 
 logger = logging.getLogger(__name__)
@@ -125,6 +124,8 @@ class Project(models.Model):
         project, formatted for elasticsearch.
 
         """
+        from .access_control import ProjectACL
+
         return_list = []
         for acl in self.projectacl_set.all():
             acl_dict = {}

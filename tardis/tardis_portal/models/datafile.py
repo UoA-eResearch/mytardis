@@ -26,7 +26,6 @@ import magic
 
 from .. import tasks
 from ..managers import OracleSafeManager, SafeManager
-from .access_control import DatafileACL
 from .dataset import Dataset
 from .storage import StorageBox, StorageBoxOption, StorageBoxAttribute
 
@@ -268,6 +267,8 @@ class DataFile(models.Model):
         datafile, formatted for elasticsearch.
 
         """
+        from .access_control import DatafileACL
+
         return_list = []
         for acl in self.datafileacl_set.all():
             acl_dict = {}
