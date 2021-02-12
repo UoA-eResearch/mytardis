@@ -12,7 +12,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
-from .token import token
+from .token import Token
 #from ..tests import suspendingreceiver
 
 
