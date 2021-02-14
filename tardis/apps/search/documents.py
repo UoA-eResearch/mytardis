@@ -7,11 +7,12 @@ from elasticsearch_dsl import analysis, analyzer
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
 
-from tardis.tardis_portal.models import Project, Dataset, Experiment, \
-    DataFile, Instrument, ObjectACL, ParameterName, Schema, ProjectParameter, \
-    ExperimentParameter, DatasetParameter, DatafileParameter, \
-    ProjectParameterSet, ExperimentParameterSet, DatasetParameterSet, \
-    DatafileParameterSet, DataFileObject
+from tardis.tardis_portal.models import (Project, Dataset, Experiment,
+    DataFile)
+    # Schema, ObjectACL
+    #Instrument, ParameterName, DatasetParameter, ProjectParameter,
+    #ExperimentParameter, DataFileObject, DatafileParameter, ProjectParameterSet,
+    #ExperimentParameterSet, DatasetParameterSet, DatafileParameterSet,   )
 
 # from tardis.tardis_portal.tests import suspendingreceiver
 
