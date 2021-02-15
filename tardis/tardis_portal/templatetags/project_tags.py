@@ -8,6 +8,7 @@ from ..util import get_local_time
 from ..util import render_mustache # render_public_access_badge
 from ..models.experiment import Experiment
 from ..models.dataset import Dataset
+from ..models.access_control import ExperimentACL, DatafileACL, DatasetACL
 
 register = template.Library()
 
@@ -32,15 +33,25 @@ def project_experiments_badge(project_id, user):
     """
     #count = Experiment.safe.all(user).filter(project__id=project_id).count()
 
-    query = user.experimentacls.select_related("experiment").prefetch_related("experiment__project"
-                             ).filter(experiment__project__id=project_id
-                             ).exclude(effectiveDate__gte=datetime.today(),
-                                       expiryDate__lte=datetime.today()).values_list("experiment__id")
-    for group in user.groups.all():
-        query |= group.experimentacls.select_related("experiment").prefetch_related("experiment__project"
+    if not user.is_authenticated:
+        from .auth.token_auth import TokenGroupProvider
+        tgp = TokenGroupProvider()
+        query = ExperimentACL.objects.none()
+        for token in tgp.getGroups(user):
+            query |= token.experimentacls.select_related("experiment").prefetch_related("experiment__project"
+                                     ).filter(experiment__project__id=project_id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("experiment__id")
+    else:
+        query = user.experimentacls.select_related("experiment").prefetch_related("experiment__project"
                                  ).filter(experiment__project__id=project_id
                                  ).exclude(effectiveDate__gte=datetime.today(),
                                            expiryDate__lte=datetime.today()).values_list("experiment__id")
+        for group in user.groups.all():
+            query |= group.experimentacls.select_related("experiment").prefetch_related("experiment__project"
+                                     ).filter(experiment__project__id=project_id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("experiment__id")
 
     count = query.distinct().count()
     return render_mustache('tardis_portal/badges/experiment_count', {
@@ -54,16 +65,26 @@ def project_datafiles_badge(project, user):
     Displays a badge with the number of datafiles for this project.
     """
     #count = project.get_datafiles(user).count()
+    if not user.is_authenticated:
+        from .auth.token_auth import TokenGroupProvider
+        tgp = TokenGroupProvider()
+        query = DatafileACL.objects.none()
+        for token in tgp.getGroups(user):
+            query |= token.datafileacls.select_related("datafile").prefetch_related("datafile__dataset__experiments__project"
+                                     ).filter(datafile__dataset__experiments__project__id=project.id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("datafile__id")
 
-    query = user.datafileacls.select_related("datafile").prefetch_related("datafile__dataset__experiments__project"
-                             ).filter(datafile__dataset__experiments__project__id=project.id
-                             ).exclude(effectiveDate__gte=datetime.today(),
-                                       expiryDate__lte=datetime.today()).values_list("datafile__id")
-    for group in user.groups.all():
-        query |= group.datafileacls.select_related("datafile").prefetch_related("datafile__dataset__experiments__project"
+    else:
+        query = user.datafileacls.select_related("datafile").prefetch_related("datafile__dataset__experiments__project"
                                  ).filter(datafile__dataset__experiments__project__id=project.id
                                  ).exclude(effectiveDate__gte=datetime.today(),
                                            expiryDate__lte=datetime.today()).values_list("datafile__id")
+        for group in user.groups.all():
+            query |= group.datafileacls.select_related("datafile").prefetch_related("datafile__dataset__experiments__project"
+                                     ).filter(datafile__dataset__experiments__project__id=project.id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("datafile__id")
 
     count = query.distinct().count()
     return render_mustache('tardis_portal/badges/datafile_count', {
@@ -76,16 +97,25 @@ def project_datasets_badge(project_id, user):
     """
     Displays a badge with the number of datasets for this project
     """
-
-    query = user.datasetacls.select_related("dataset").prefetch_related("dataset__experiments__project"
-                             ).filter(dataset__experiments__project__id=project_id
-                             ).exclude(effectiveDate__gte=datetime.today(),
-                                       expiryDate__lte=datetime.today()).values_list("dataset__id")
-    for group in user.groups.all():
-        query |= group.datasetacls.select_related("dataset").prefetch_related("dataset__experiments__project"
+    if not user.is_authenticated:
+        from .auth.token_auth import TokenGroupProvider
+        tgp = TokenGroupProvider()
+        query = DatasetACL.objects.none()
+        for token in tgp.getGroups(user):
+            query |= token.datasetacls.select_related("dataset").prefetch_related("dataset__experiments__project"
+                                     ).filter(dataset__experiments__project__id=project_id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("dataset__id")
+    else:
+        query = user.datasetacls.select_related("dataset").prefetch_related("dataset__experiments__project"
                                  ).filter(dataset__experiments__project__id=project_id
                                  ).exclude(effectiveDate__gte=datetime.today(),
                                            expiryDate__lte=datetime.today()).values_list("dataset__id")
+        for group in user.groups.all():
+            query |= group.datasetacls.select_related("dataset").prefetch_related("dataset__experiments__project"
+                                     ).filter(dataset__experiments__project__id=project_id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("dataset__id")
 
     count = query.distinct().count()
     return render_mustache('tardis_portal/badges/dataset_count', {

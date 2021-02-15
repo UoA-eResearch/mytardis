@@ -8,6 +8,7 @@ from ..views import get_dataset_info
 from ..models.dataset import Dataset
 from ..models.experiment import Experiment
 from ..models.datafile import DataFile
+from ..models.access_control import DatasetACL, DatafileACL, ExperimentACL
 
 register = template.Library()
 
@@ -65,15 +66,26 @@ def dataset_count(experiment_id, user):
     Count the number of Datasets in Experiment, obeying ACLs for user
     """
     #count = Dataset.safe.all(user).filter(experiments__id=experiment_id).count()
-    query = user.datasetacls.select_related("dataset").prefetch_related("dataset__experiments"
-                             ).filter(dataset__experiments__id=experiment_id
-                             ).exclude(effectiveDate__gte=datetime.today(),
-                                       expiryDate__lte=datetime.today()).values_list("dataset__id")
-    for group in user.groups.all():
-        query |= group.datasetacls.select_related("dataset").prefetch_related("dataset__experiments"
+
+    if not user.is_authenticated:
+        from .auth.token_auth import TokenGroupProvider
+        tgp = TokenGroupProvider()
+        query = DatasetACL.objects.none()
+        for token in tgp.getGroups(user):
+            query |= token.datasetacls.select_related("dataset").prefetch_related("dataset__experiments"
+                                     ).filter(dataset__experiments__id=experiment_id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("dataset__id")
+    else:
+        query = user.datasetacls.select_related("dataset").prefetch_related("dataset__experiments"
                                  ).filter(dataset__experiments__id=experiment_id
                                  ).exclude(effectiveDate__gte=datetime.today(),
                                            expiryDate__lte=datetime.today()).values_list("dataset__id")
+        for group in user.groups.all():
+            query |= group.datasetacls.select_related("dataset").prefetch_related("dataset__experiments"
+                                     ).filter(dataset__experiments__id=experiment_id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("dataset__id")
 
     count = query.distinct().count()
     return count
@@ -85,16 +97,26 @@ def datafile_count(dataset_id, user):
     Count the number of Datafiles in Dataset, obeying ACLs for user
     """
     #count = DataFile.safe.all(user).filter(dataset__id=dataset_id).count()
+    if not user.is_authenticated:
+        from .auth.token_auth import TokenGroupProvider
+        tgp = TokenGroupProvider()
+        query = DatafileACL.objects.none()
+        for token in tgp.getGroups(user):
+            query |= token.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
+                                     ).filter(datafile__dataset__id=dataset_id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("datafile__id")
 
-    query = user.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
-                             ).filter(datafile__dataset__id=dataset_id
-                             ).exclude(effectiveDate__gte=datetime.today(),
-                                       expiryDate__lte=datetime.today()).values_list("datafile__id")
-    for group in user.groups.all():
-        query |= group.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
+    else:
+        query = user.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
                                  ).filter(datafile__dataset__id=dataset_id
                                  ).exclude(effectiveDate__gte=datetime.today(),
                                            expiryDate__lte=datetime.today()).values_list("datafile__id")
+        for group in user.groups.all():
+            query |= group.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
+                                     ).filter(datafile__dataset__id=dataset_id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("datafile__id")
 
     count = query.distinct().count()
 
@@ -106,16 +128,25 @@ def dataset_experiments_badge(dataset, user):
     """
     Displays a badge with the number of experiments for this dataset
     """
-
-    query = user.experimentacls.select_related("experiment").prefetch_related("experiment__datasets"
-                             ).filter(experiment__datasets__id=dataset.id
-                             ).exclude(effectiveDate__gte=datetime.today(),
-                                       expiryDate__lte=datetime.today()).values_list("experiment__id")
-    for group in user.groups.all():
-        query |= group.experimentacls.select_related("experiment").prefetch_related("experiment__datasets"
+    if not user.is_authenticated:
+        from .auth.token_auth import TokenGroupProvider
+        tgp = TokenGroupProvider()
+        query = ExperimentACL.objects.none()
+        for token in tgp.getGroups(user):
+            query |= token.experimentacls.select_related("experiment").prefetch_related("experiment__datasets"
+                                     ).filter(experiment__datasets__id=dataset.id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("experiment__id")
+    else:
+        query = user.experimentacls.select_related("experiment").prefetch_related("experiment__datasets"
                                  ).filter(experiment__datasets__id=dataset.id
                                  ).exclude(effectiveDate__gte=datetime.today(),
                                            expiryDate__lte=datetime.today()).values_list("experiment__id")
+        for group in user.groups.all():
+            query |= group.experimentacls.select_related("experiment").prefetch_related("experiment__datasets"
+                                     ).filter(experiment__datasets__id=dataset.id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("experiment__id")
     count = query.distinct().count()
 
     return render_mustache('tardis_portal/badges/experiment_count', {
@@ -131,15 +162,25 @@ def dataset_datafiles_badge(dataset=None, count=None):
     """
     if count is None:
 
-        query = user.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
-                                 ).filter(datafile__dataset__id=dataset.id
-                                 ).exclude(effectiveDate__gte=datetime.today(),
-                                           expiryDate__lte=datetime.today()).values_list("datafile__id")
-        for group in user.groups.all():
-            query |= group.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
+        if not user.is_authenticated:
+            from .auth.token_auth import TokenGroupProvider
+            tgp = TokenGroupProvider()
+            query = DatafileACL.objects.none()
+            for token in tgp.getGroups(user):
+                query |= token.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
+                                         ).filter(datafile__dataset__id=dataset.id
+                                         ).exclude(effectiveDate__gte=datetime.today(),
+                                                   expiryDate__lte=datetime.today()).values_list("datafile__id")
+        else:
+            query = user.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
                                      ).filter(datafile__dataset__id=dataset.id
                                      ).exclude(effectiveDate__gte=datetime.today(),
                                                expiryDate__lte=datetime.today()).values_list("datafile__id")
+            for group in user.groups.all():
+                query |= group.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
+                                         ).filter(datafile__dataset__id=dataset.id
+                                         ).exclude(effectiveDate__gte=datetime.today(),
+                                                   expiryDate__lte=datetime.today()).values_list("datafile__id")
 
         count = query.distinct().count()
         #count = dataset.datafile_set.count()
@@ -156,15 +197,26 @@ def dataset_datafiles_badge_notile(dataset, user):
     None tile mode
     """
     #count = DataFile.safe.all(user).filter(dataset__id=dataset.id).count()
-    query = user.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
-                             ).filter(datafile__dataset__id=dataset.id
-                             ).exclude(effectiveDate__gte=datetime.today(),
-                                       expiryDate__lte=datetime.today()).values_list("datafile__id")
-    for group in user.groups.all():
-        query |= group.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
+
+    if not user.is_authenticated:
+        from .auth.token_auth import TokenGroupProvider
+        tgp = TokenGroupProvider()
+        query = DatafileACL.objects.none()
+        for token in tgp.getGroups(user):
+            query |= token.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
+                                     ).filter(datafile__dataset__id=dataset.id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("datafile__id")
+    else:
+        query = user.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
                                  ).filter(datafile__dataset__id=dataset.id
                                  ).exclude(effectiveDate__gte=datetime.today(),
                                            expiryDate__lte=datetime.today()).values_list("datafile__id")
+        for group in user.groups.all():
+            query |= group.datafileacls.select_related("datafile").prefetch_related("datafile__dataset"
+                                     ).filter(datafile__dataset__id=dataset.id
+                                     ).exclude(effectiveDate__gte=datetime.today(),
+                                               expiryDate__lte=datetime.today()).values_list("datafile__id")
 
     count = query.distinct().count()
     return render_mustache('tardis_portal/badges/datafile_count', {
