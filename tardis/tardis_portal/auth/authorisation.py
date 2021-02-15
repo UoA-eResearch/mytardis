@@ -113,9 +113,9 @@ class ACLAwareBackend(object):
             else:
                 # the only authorisation available for anonymous users is tokenauth
                 tgp = TokenGroupProvider()
-                query = Q(id=None)
-                for group in tgp.getGroups(user_obj):
-                    query |= group.projectacls.select_related("project"
+                query = ProjectACL.objects.none()
+                for token in tgp.getGroups(user_obj):
+                    query |= token.projectacls.select_related("project"
                                              ).filter(project__id=obj.id).filter(self.get_perm_bool(perm_action)
                                              ).exclude(effectiveDate__gte=datetime.today(),
                                                        expiryDate__lte=datetime.today())
@@ -136,9 +136,9 @@ class ACLAwareBackend(object):
             else:
                 # the only authorisation available for anonymous users is tokenauth
                 tgp = TokenGroupProvider()
-                query = Q(id=None)
-                for group in tgp.getGroups(user_obj):
-                    query |= group.experimentacls.select_related("experiment"
+                query = ExperimentACL.objects.none()
+                for token in tgp.getGroups(user_obj):
+                    query |= token.experimentacls.select_related("experiment"
                                              ).filter(experiment__id=obj.id).filter(self.get_perm_bool(perm_action)
                                              ).exclude(effectiveDate__gte=datetime.today(),
                                                        expiryDate__lte=datetime.today())
@@ -159,9 +159,9 @@ class ACLAwareBackend(object):
             else:
                 # the only authorisation available for anonymous users is tokenauth
                 tgp = TokenGroupProvider()
-                query = Q(id=None)
-                for group in tgp.getGroups(user_obj):
-                    query |= group.datasetacls.select_related("dataset"
+                query = DatasetACL.objects.none()
+                for token in tgp.getGroups(user_obj):
+                    query |= token.datasetacls.select_related("dataset"
                                              ).filter(dataset__id=obj.id).filter(self.get_perm_bool(perm_action)
                                              ).exclude(effectiveDate__gte=datetime.today(),
                                                        expiryDate__lte=datetime.today())
@@ -182,9 +182,9 @@ class ACLAwareBackend(object):
             else:
                 # the only authorisation available for anonymous users is tokenauth
                 tgp = TokenGroupProvider()
-                query = Q(id=None)
-                for group in tgp.getGroups(user_obj):
-                    query |= group.datafileacls.select_related("datafile"
+                query = DatafileACL.objects.none()
+                for token in tgp.getGroups(user_obj):
+                    query |= token.datafileacls.select_related("datafile"
                                              ).filter(datafile__id=obj.id).filter(self.get_perm_bool(perm_action)
                                              ).exclude(effectiveDate__gte=datetime.today(),
                                                        expiryDate__lte=datetime.today())

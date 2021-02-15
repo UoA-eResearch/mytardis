@@ -7,17 +7,6 @@ from ..auth.interfaces import GroupProvider
 TOKEN_EXPERIMENT = '_token_experiment'
 
 
-def _ensure_acl_exists(experiment_id):
-    experiment = Experiment.objects.get(pk=experiment_id)
-
-    ObjectACL.objects.get_or_create(
-        pluginId=TokenGroupProvider.name,
-        entityId=str(experiment.id), canRead=True,
-        content_type=experiment.get_ct(),
-        object_id=experiment.id,
-        aclOwnershipType=ObjectACL.OWNER_OWNED)
-
-
 class TokenGroupProvider(GroupProvider):
     '''
     Transforms tokens into auth groups
@@ -28,12 +17,11 @@ class TokenGroupProvider(GroupProvider):
         if hasattr(user, 'allowed_tokens'):
             tokens = Token.objects.filter(
                 token__in=user.allowed_tokens)
-            experiment_ids = []
+            valid_tokens = []
             for token in tokens:
                 if not token.is_expired():
-                    _ensure_acl_exists(token.experiment.id)
-                    experiment_ids.append(token.experiment.id)
-            return experiment_ids
+                    valid_tokens.append(token)
+            return valid_tokens
         return []
 
     def searchGroups(self, **kwargs):

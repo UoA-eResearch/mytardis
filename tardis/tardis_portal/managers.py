@@ -169,11 +169,19 @@ class SafeManager(models.Manager):
         # this is almost duplicate code of end of has_perm in authorisation.py
         # should be refactored, but cannot think of good way atm
         if not user.is_authenticated:
-            # Token - refactor when tokens ready
             from .auth.token_auth import TokenGroupProvider
-            query = Q(id=None)
+
+            if self.model.get_ct(self.model).model == "project":
+                query = Project.objects.none()
+            if self.model.get_ct(self.model).model == "experiment":
+                query = Experiment.objects.none()
+            if self.model.get_ct(self.model).model == "dataset":
+                query = Dataset.objects.none()
+            if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
+                query = DataFile.objects.none()
+
             tgp = TokenGroupProvider()
-            for group in tgp.getGroups(user):
+            for token in tgp.getGroups(user):
 
                 if any([downloadable, viewsensitive]):
                     query_inputs={}
@@ -184,8 +192,8 @@ class SafeManager(models.Manager):
 
                     if self.model.get_ct(self.model).model == "project":
                         from .models import Project
-                        query |= Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("group"))
-                                                            ).filter(projectacl__group=group,
+                        query |= Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("token"))
+                                                            ).filter(projectacl__token=token,
                                                                      projectacl__isOwner=False,
                                                                      **query_inputs,
                                                                      ).exclude(projectacl__effectiveDate__gte=datetime.today(),
@@ -194,8 +202,8 @@ class SafeManager(models.Manager):
 
                     if self.model.get_ct(self.model).model == "experiment":
                         from .models import Experiment
-                        query |= Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("group"))
-                                                            ).filter(experimentacl__group=group,
+                        query |= Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("token"))
+                                                            ).filter(experimentacl__token=token,
                                                                      experimentacl__isOwner=False,
                                                                      **query_inputs,
                                                                      ).exclude(experimentacl__effectiveDate__gte=datetime.today(),
@@ -204,8 +212,8 @@ class SafeManager(models.Manager):
 
                     if self.model.get_ct(self.model).model == "dataset":
                         from .models import Dataset
-                        query |= Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("group"))
-                                                            ).filter(datasetacl__group=group,
+                        query |= Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("token"))
+                                                            ).filter(datasetacl__token=token,
                                                                      datasetacl__isOwner=False,
                                                                      **query_inputs,
                                                                      ).exclude(datasetacl__effectiveDate__gte=datetime.today(),
@@ -214,8 +222,8 @@ class SafeManager(models.Manager):
 
                     if self.model.get_ct(self.model).model.replace(' ','') == "datafile":
                         from .models import DataFile
-                        query |= DataFile.objects.prefetch_related(Prefetch("datafileacl_set", queryset=DatafileACL.objects.select_related("group"))
-                                                            ).filter(datafileacl__group=group,
+                        query |= DataFile.objects.prefetch_related(Prefetch("datafileacl_set", queryset=DatafileACL.objects.select_related("token"))
+                                                            ).filter(datafileacl__token=token,
                                                                      datafileacl__isOwner=False,
                                                                      **query_inputs,
                                                                      ).exclude(datafileacl__effectiveDate__gte=datetime.today(),
@@ -225,8 +233,8 @@ class SafeManager(models.Manager):
                 else:
                     if self.model.get_ct(self.model).model == "project":
                         from .models import Project
-                        query |= Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("group"))
-                                                            ).filter(projectacl__group=group,
+                        query |= Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("token"))
+                                                            ).filter(projectacl__token=token,
                                                                      projectacl__isOwner=False,
                                                                      ).exclude(projectacl__effectiveDate__gte=datetime.today(),
                                                                                projectacl__expiryDate__lte=datetime.today()
@@ -234,8 +242,8 @@ class SafeManager(models.Manager):
 
                     if self.model.get_ct(self.model).model == "experiment":
                         from .models import Experiment
-                        query |= Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("group"))
-                                                            ).filter(experimentacl__group=group,
+                        query |= Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("token"))
+                                                            ).filter(experimentacl__token=token,
                                                                      experimentacl__isOwner=False,
                                                                      ).exclude(experimentacl__effectiveDate__gte=datetime.today(),
                                                                                experimentacl__expiryDate__lte=datetime.today()
@@ -243,8 +251,8 @@ class SafeManager(models.Manager):
 
                     if self.model.get_ct(self.model).model == "dataset":
                         from .models import Dataset
-                        query |= Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("group"))
-                                                            ).filter(datasetacl__group=group,
+                        query |= Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("token"))
+                                                            ).filter(datasetacl__token=token,
                                                                      datasetacl__isOwner=False,
                                                                  ).exclude(datasetacl__effectiveDate__gte=datetime.today(),
                                                                                datasetacl__expiryDate__lte=datetime.today()
@@ -252,8 +260,8 @@ class SafeManager(models.Manager):
 
                     if self.model.get_ct(self.model).model.replace(' ','') == "datafile":
                         from .models import DataFile
-                        query |= DataFile.objects.prefetch_related(Prefetch("datafileacl_set", queryset=DatafileACL.objects.select_related("group"))
-                                                            ).filter(datafileacl__group=group,
+                        query |= DataFile.objects.prefetch_related(Prefetch("datafileacl_set", queryset=DatafileACL.objects.select_related("token"))
+                                                            ).filter(datafileacl__token=token,
                                                                      datafileacl__isOwner=False,
                                                                      ).exclude(datafileacl__effectiveDate__gte=datetime.today(),
                                                                                datafileacl__expiryDate__lte=datetime.today()
@@ -707,17 +715,13 @@ class SafeManager(models.Manager):
         """
 
         if self.model.get_ct(self.model).model == "project":
-            acl = obj.projectacl_set.select_related("user", "group").filter(
-                                        user__isnull=True, group__isnull=True)
+            acl = obj.projectacl_set.select_related("token").filter(token__isnull=False)
         if self.model.get_ct(self.model).model == "experiment":
-            acl = obj.experimentacl_set.select_related("user", "group").filter(
-                                        user__isnull=True, group__isnull=True)
+            acl = obj.experimentacl_set.select_related("token").filter(token__isnull=False)
         if self.model.get_ct(self.model).model == "dataset":
-            acl = obj.datasetacl_set.select_related("user", "group").filter(
-                                        user__isnull=True, group__isnull=True)
+            acl = obj.datasetacl_set.select_related("token").filter(token__isnull=False)
         if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
-            acl = obj.datafileacl_set.select_related("user", "group").filter(
-                                        user__isnull=True, group__isnull=True)
+            acl = obj.datafileacl_set.select_related("token").filter(token__isnull=False)
 
         if not acl:
             return None
@@ -725,11 +729,10 @@ class SafeManager(models.Manager):
         from .auth import AuthService
         authService = AuthService()
 
-        # Token - refactor when tokens ready
         result = []
         for a in acl:
-            group = authService.searchGroups(plugin=a.pluginId,
-                                             name=a.entityId)
+            group = authService.searchGroups(plugin=u'token_group',
+                                             name=acl.experiment.id)
             if group:
                 result += group
         return result

@@ -15,7 +15,8 @@ from django.contrib.auth.models import User, Group
 from django.contrib.sites.models import Site
 from django.db import transaction
 from django.db import IntegrityError
-from django.db.models import Q
+from django.db.models import Q, Prefetch
+
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
@@ -167,7 +168,9 @@ def retrieve_access_list_external(request, experiment_id):
 @never_cache
 @authz.experiment_download_required
 def retrieve_access_list_tokens(request, experiment_id):
-    tokens = Token.objects.filter(experiment=experiment_id)
+    tokens = Token.objects.prefetch_related(Prefetch("experimentacls",
+                        ExperimentACL.objects.select_related("experiment"
+                        ))).filter(experimentacls__experiment__id=experiment_id)
 
     def token_url(url, token):
         if not url:
@@ -192,7 +195,7 @@ def retrieve_access_list_tokens(request, experiment_id):
                'id': token.id,
                'experiment_id': experiment_id,
                'is_owner': request.user.has_perm('tardis_acls.owns_experiment',
-                                                 token.experiment),
+                                                 Experiment.objects.get(pk=experiment_id)),
                } for token in tokens]
 
     has_archive_download_url = False
@@ -728,7 +731,12 @@ def remove_experiment_access_group(request, experiment_id, group_id):
 @authz.experiment_ownership_required
 def create_token(request, experiment_id):
     experiment = Experiment.objects.get(id=experiment_id)
-    token = Token(experiment=experiment, user=request.user)
+    token = Token(user=request.user)
+    acl = ExperimentACL(token=token,
+                        experiment=experiment,
+                        canRead=True,
+                        aclOwnershipType=ExperimentACL.OWNER_OWNED)
+    acl.save()
     token.save_with_random_token()
     logger.info('created token: %s' % token)
     return HttpResponse('{"success": true}', content_type='application/json')
@@ -737,7 +745,9 @@ def create_token(request, experiment_id):
 @require_POST
 def token_delete(request, token_id):
     token = Token.objects.get(id=token_id)
-    if authz.has_ownership(request, token.experiment_id, 'experiment'):
+    # To refactor once token more generic than just an experiment
+    experiment_id = token.experimentacls.select_related("experiment").values_list("experiment__id", flat=True)
+    if authz.has_ownership(request, experiment_id[0], 'experiment'):
         token.delete()
         return HttpResponse('{"success": true}', content_type='application/json')
     return HttpResponse('{"success": false}', content_type='application/json')

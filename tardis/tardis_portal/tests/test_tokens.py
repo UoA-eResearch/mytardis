@@ -189,15 +189,16 @@ class TokenTestCase(TestCase):
         self.assertRaises(ObjectDoesNotExist, t.save_with_random_token)
         self.assertEqual('', t.token)
 
-        t = Token(experiment=self.experiment)
-        self.assertRaises(ObjectDoesNotExist, t.save_with_random_token)
-        self.assertEqual('', t.token)
-
 # check that failure happens eventually
     def test_save_with_random_token_gives_up(self):
         from django.db import IntegrityError
-        t = Token(user=self.user, experiment=self.experiment)
+        t = Token(user=self.user)
 
+        acl = ExperimentACL(token=t,
+                            experiment=self.experiment,
+                            canRead=True,
+                            aclOwnershipType=ExperimentACL.OWNER_OWNED)
+        acl.save()
         t.save = _raise_integrity_error
         self.assertRaises(IntegrityError, t.save_with_random_token)
 
@@ -205,7 +206,12 @@ class TokenTestCase(TestCase):
         self.assertTrue(len(t.token) > 0)
 
     def test_save_with_random_token(self):
-        t = Token(user=self.user, experiment=self.experiment)
+        t = Token(user=self.user)
+        acl = ExperimentACL(token=t,
+                            experiment=self.experiment,
+                            canRead=True,
+                            aclOwnershipType=ExperimentACL.OWNER_OWNED)
+        acl.save()
         t.save_with_random_token()
         self.assertTrue(len(t.token) > 0)
 
@@ -225,7 +231,12 @@ class TokenTestCase(TestCase):
         today = now.date()
         tomorrow = today + datetime.timedelta(1)
 
-        token = Token(experiment=experiment, user=self.user)
+        token = Token(user=self.user)
+        acl = ExperimentACL(token=token,
+                            experiment=self.experiment,
+                            canRead=True,
+                            aclOwnershipType=ExperimentACL.OWNER_OWNED)
+        acl.save()
         token.expiry_date = tomorrow
         token.save()
 
@@ -269,7 +280,7 @@ class TokenTestCase(TestCase):
         response_dict = json.loads(response.content.decode())
         self.assertEqual(response_dict['success'], True)
 
-        token = Token.objects.get(experiment=experiment)
+        token = Token.objects.get(experimentacls__experiment=experiment)
         url = "/experiment/view/%s/?token=%s" % (experiment.id, token.token)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -284,7 +295,12 @@ class TokenTestCase(TestCase):
         experiment = Experiment(title='test exp1', created_by=self.user)
         experiment.save()
 
-        token = Token(experiment=experiment, user=self.user)
+        token = Token(user=self.user)
+        acl = ExperimentACL(token=token,
+                            experiment=self.experiment,
+                            canRead=True,
+                            aclOwnershipType=ExperimentACL.OWNER_OWNED)
+        acl.save()
         token.save()
 
         factory = RequestFactory()
