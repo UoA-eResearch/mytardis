@@ -31,7 +31,7 @@ def experiment_datasets_badge(experiment_id, user):
     """
 
     if not user.is_authenticated:
-        from .auth.token_auth import TokenGroupProvider
+        from ..auth.token_auth import TokenGroupProvider
         tgp = TokenGroupProvider()
         query = DatasetACL.objects.none()
         for token in tgp.getGroups(user):
@@ -63,7 +63,7 @@ def experiment_datafiles_badge(experiment, user):
     Displays an badge with the number of datafiles for this experiment
     """
     if not user.is_authenticated:
-        from .auth.token_auth import TokenGroupProvider
+        from ..auth.token_auth import TokenGroupProvider
         tgp = TokenGroupProvider()
         query = DatafileACL.objects.none()
         for token in tgp.getGroups(user):

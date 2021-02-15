@@ -68,7 +68,7 @@ def dataset_count(experiment_id, user):
     #count = Dataset.safe.all(user).filter(experiments__id=experiment_id).count()
 
     if not user.is_authenticated:
-        from .auth.token_auth import TokenGroupProvider
+        from ..auth.token_auth import TokenGroupProvider
         tgp = TokenGroupProvider()
         query = DatasetACL.objects.none()
         for token in tgp.getGroups(user):
@@ -98,7 +98,7 @@ def datafile_count(dataset_id, user):
     """
     #count = DataFile.safe.all(user).filter(dataset__id=dataset_id).count()
     if not user.is_authenticated:
-        from .auth.token_auth import TokenGroupProvider
+        from ..auth.token_auth import TokenGroupProvider
         tgp = TokenGroupProvider()
         query = DatafileACL.objects.none()
         for token in tgp.getGroups(user):
@@ -129,7 +129,7 @@ def dataset_experiments_badge(dataset, user):
     Displays a badge with the number of experiments for this dataset
     """
     if not user.is_authenticated:
-        from .auth.token_auth import TokenGroupProvider
+        from ..auth.token_auth import TokenGroupProvider
         tgp = TokenGroupProvider()
         query = ExperimentACL.objects.none()
         for token in tgp.getGroups(user):
@@ -163,7 +163,7 @@ def dataset_datafiles_badge(dataset=None, count=None):
     if count is None:
 
         if not user.is_authenticated:
-            from .auth.token_auth import TokenGroupProvider
+            from ..auth.token_auth import TokenGroupProvider
             tgp = TokenGroupProvider()
             query = DatafileACL.objects.none()
             for token in tgp.getGroups(user):
@@ -199,7 +199,7 @@ def dataset_datafiles_badge_notile(dataset, user):
     #count = DataFile.safe.all(user).filter(dataset__id=dataset.id).count()
 
     if not user.is_authenticated:
-        from .auth.token_auth import TokenGroupProvider
+        from ..auth.token_auth import TokenGroupProvider
         tgp = TokenGroupProvider()
         query = DatafileACL.objects.none()
         for token in tgp.getGroups(user):

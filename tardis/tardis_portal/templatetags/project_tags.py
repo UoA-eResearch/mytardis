@@ -34,7 +34,7 @@ def project_experiments_badge(project_id, user):
     #count = Experiment.safe.all(user).filter(project__id=project_id).count()
 
     if not user.is_authenticated:
-        from .auth.token_auth import TokenGroupProvider
+        from ..auth.token_auth import TokenGroupProvider
         tgp = TokenGroupProvider()
         query = ExperimentACL.objects.none()
         for token in tgp.getGroups(user):
@@ -66,7 +66,7 @@ def project_datafiles_badge(project, user):
     """
     #count = project.get_datafiles(user).count()
     if not user.is_authenticated:
-        from .auth.token_auth import TokenGroupProvider
+        from ..auth.token_auth import TokenGroupProvider
         tgp = TokenGroupProvider()
         query = DatafileACL.objects.none()
         for token in tgp.getGroups(user):
@@ -98,7 +98,7 @@ def project_datasets_badge(project_id, user):
     Displays a badge with the number of datasets for this project
     """
     if not user.is_authenticated:
-        from .auth.token_auth import TokenGroupProvider
+        from ..auth.token_auth import TokenGroupProvider
         tgp = TokenGroupProvider()
         query = DatasetACL.objects.none()
         for token in tgp.getGroups(user):
