@@ -72,6 +72,21 @@ class SafeManager(models.Manager):
     def _query_owned(self, user, user_id=None):
         from .models.access_control import (ProjectACL, ExperimentACL,
                                             DatasetACL, DatafileACL)
+
+        if not user.is_authenticated:
+            if self.model.get_ct(self.model).model == "project":
+                from .models import Project
+                return Project.objects.none()
+            if self.model.get_ct(self.model).model == "experiment":
+                from .models import Experiment
+                return Experiment.objects.none()
+            if self.model.get_ct(self.model).model == "dataset":
+                from .models import Dataset
+                return Dataset.objects.none()
+            if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
+                from .models import DataFile
+                return DataFile.objects.none()
+
         if user is None:
             user = User.objects.get(pk=user_id)
 
