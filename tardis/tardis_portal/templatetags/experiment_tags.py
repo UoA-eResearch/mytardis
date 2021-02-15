@@ -68,7 +68,7 @@ def experiment_datafiles_badge(experiment, user):
         query = DatafileACL.objects.none()
         for token in tgp.getGroups(user):
             query |= token.datafileacls.select_related("DataFile").prefetch_related("datafile__dataset__experiments"
-                                     ).filter(datafile__dataset__experiments__id=experiment_id
+                                     ).filter(datafile__dataset__experiments__id=experiment.id
                                      ).exclude(effectiveDate__gte=datetime.today(),
                                                expiryDate__lte=datetime.today()).values_list("datafile__id")
     else:
