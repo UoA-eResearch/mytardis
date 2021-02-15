@@ -72,24 +72,11 @@ class SafeManager(models.Manager):
     def _query_owned(self, user, user_id=None):
         from .models.access_control import (ProjectACL, ExperimentACL,
                                             DatasetACL, DatafileACL)
+        if user_id is not None:
+            user = User.objects.get(pk=user_id)
 
-        if user is None:
-
-            if not user.is_authenticated:
-                if self.model.get_ct(self.model).model == "project":
-                    from .models import Project
-                    return Project.objects.none()
-                if self.model.get_ct(self.model).model == "experiment":
-                    from .models import Experiment
-                    return Experiment.objects.none()
-                if self.model.get_ct(self.model).model == "dataset":
-                    from .models import Dataset
-                    return Dataset.objects.none()
-                if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
-                    from .models import DataFile
-                    return DataFile.objects.none()
-            else:
-                user = User.objects.get(pk=user_id)
+        if user.id == None:
+            return super().get_queryset().none()
 
         if self.model.get_ct(self.model).model == "project":
             from .models import Project
@@ -133,8 +120,11 @@ class SafeManager(models.Manager):
     def _query_owned_by_group(self, group, group_id=None):
         from .models.access_control import (ProjectACL, ExperimentACL,
                                             DatasetACL, DatafileACL)
-        if group is None:
+        if group_id is not None:
             group = Group.objects.get(pk=group_id)
+
+        if group.id == None:
+            return super().get_queryset().none()
 
         if self.model.get_ct(self.model).model == "project":
             from .models import Project
