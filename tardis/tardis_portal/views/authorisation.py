@@ -732,6 +732,7 @@ def remove_experiment_access_group(request, experiment_id, group_id):
 def create_token(request, experiment_id):
     experiment = Experiment.objects.get(id=experiment_id)
     token = Token(user=request.user)
+    token.save()
     acl = ExperimentACL(token=token,
                         experiment=experiment,
                         canRead=True,

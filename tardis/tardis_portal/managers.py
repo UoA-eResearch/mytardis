@@ -172,12 +172,16 @@ class SafeManager(models.Manager):
             from .auth.token_auth import TokenGroupProvider
 
             if self.model.get_ct(self.model).model == "project":
+                from .models import Project
                 query = Project.objects.none()
             if self.model.get_ct(self.model).model == "experiment":
+                from .models import Experiment
                 query = Experiment.objects.none()
             if self.model.get_ct(self.model).model == "dataset":
+                from .models import Dataset
                 query = Dataset.objects.none()
             if self.model.get_ct(self.model).model.replace(" ","") == "datafile":
+                from .models import DataFile
                 query = DataFile.objects.none()
 
             tgp = TokenGroupProvider()
@@ -191,7 +195,6 @@ class SafeManager(models.Manager):
                         query_inputs[self.model.get_ct(self.model).model.replace(' ','')+"acl__canSensitive"] = True
 
                     if self.model.get_ct(self.model).model == "project":
-                        from .models import Project
                         query |= Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("token"))
                                                             ).filter(projectacl__token=token,
                                                                      projectacl__isOwner=False,
@@ -201,7 +204,6 @@ class SafeManager(models.Manager):
                                                                                )
 
                     if self.model.get_ct(self.model).model == "experiment":
-                        from .models import Experiment
                         query |= Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("token"))
                                                             ).filter(experimentacl__token=token,
                                                                      experimentacl__isOwner=False,
@@ -211,7 +213,6 @@ class SafeManager(models.Manager):
                                                                                )
 
                     if self.model.get_ct(self.model).model == "dataset":
-                        from .models import Dataset
                         query |= Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("token"))
                                                             ).filter(datasetacl__token=token,
                                                                      datasetacl__isOwner=False,
@@ -221,7 +222,6 @@ class SafeManager(models.Manager):
                                                                                )
 
                     if self.model.get_ct(self.model).model.replace(' ','') == "datafile":
-                        from .models import DataFile
                         query |= DataFile.objects.prefetch_related(Prefetch("datafileacl_set", queryset=DatafileACL.objects.select_related("token"))
                                                             ).filter(datafileacl__token=token,
                                                                      datafileacl__isOwner=False,
@@ -232,7 +232,6 @@ class SafeManager(models.Manager):
 
                 else:
                     if self.model.get_ct(self.model).model == "project":
-                        from .models import Project
                         query |= Project.objects.prefetch_related(Prefetch("projectacl_set", queryset=ProjectACL.objects.select_related("token"))
                                                             ).filter(projectacl__token=token,
                                                                      projectacl__isOwner=False,
@@ -241,7 +240,6 @@ class SafeManager(models.Manager):
                                                                                )
 
                     if self.model.get_ct(self.model).model == "experiment":
-                        from .models import Experiment
                         query |= Experiment.objects.prefetch_related(Prefetch("experimentacl_set", queryset=ExperimentACL.objects.select_related("token"))
                                                             ).filter(experimentacl__token=token,
                                                                      experimentacl__isOwner=False,
@@ -250,7 +248,6 @@ class SafeManager(models.Manager):
                                                                                )
 
                     if self.model.get_ct(self.model).model == "dataset":
-                        from .models import Dataset
                         query |= Dataset.objects.prefetch_related(Prefetch("datasetacl_set", queryset=DatasetACL.objects.select_related("token"))
                                                             ).filter(datasetacl__token=token,
                                                                      datasetacl__isOwner=False,
@@ -259,7 +256,6 @@ class SafeManager(models.Manager):
                                                                                )
 
                     if self.model.get_ct(self.model).model.replace(' ','') == "datafile":
-                        from .models import DataFile
                         query |= DataFile.objects.prefetch_related(Prefetch("datafileacl_set", queryset=DatafileACL.objects.select_related("token"))
                                                             ).filter(datafileacl__token=token,
                                                                      datafileacl__isOwner=False,

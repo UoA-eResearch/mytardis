@@ -193,7 +193,7 @@ class TokenTestCase(TestCase):
     def test_save_with_random_token_gives_up(self):
         from django.db import IntegrityError
         t = Token(user=self.user)
-
+        t.save()
         acl = ExperimentACL(token=t,
                             experiment=self.experiment,
                             canRead=True,
@@ -207,6 +207,7 @@ class TokenTestCase(TestCase):
 
     def test_save_with_random_token(self):
         t = Token(user=self.user)
+        t.save()
         acl = ExperimentACL(token=t,
                             experiment=self.experiment,
                             canRead=True,
@@ -232,14 +233,13 @@ class TokenTestCase(TestCase):
         tomorrow = today + datetime.timedelta(1)
 
         token = Token(user=self.user)
+        token.expiry_date = tomorrow
+        token.save()
         acl = ExperimentACL(token=token,
                             experiment=self.experiment,
                             canRead=True,
                             aclOwnershipType=ExperimentACL.OWNER_OWNED)
         acl.save()
-        token.expiry_date = tomorrow
-        token.save()
-
         factory = RequestFactory()
         request = factory.get(
             '/experiment/control_panel/%s/access_list/tokens/'
@@ -296,12 +296,12 @@ class TokenTestCase(TestCase):
         experiment.save()
 
         token = Token(user=self.user)
+        token.save()
         acl = ExperimentACL(token=token,
                             experiment=self.experiment,
                             canRead=True,
                             aclOwnershipType=ExperimentACL.OWNER_OWNED)
         acl.save()
-        token.save()
 
         factory = RequestFactory()
         request = factory.post(
