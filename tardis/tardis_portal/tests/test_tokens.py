@@ -185,10 +185,6 @@ class TokenTestCase(TestCase):
         self.assertRaises(ObjectDoesNotExist, t.save_with_random_token)
         self.assertEqual('', t.token)
 
-        t = Token(user=self.user)
-        self.assertRaises(ObjectDoesNotExist, t.save_with_random_token)
-        self.assertEqual('', t.token)
-
 # check that failure happens eventually
     def test_save_with_random_token_gives_up(self):
         from django.db import IntegrityError
