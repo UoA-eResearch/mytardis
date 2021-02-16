@@ -747,8 +747,11 @@ def create_token(request, experiment_id):
 def token_delete(request, token_id):
     token = Token.objects.get(id=token_id)
     # To refactor once token more generic than just an experiment
-    experiment_id = token.experimentacls.select_related("experiment").values_list("experiment__id", flat=True)
-    if authz.has_ownership(request, experiment_id[0], 'experiment'):
+    experiment_ids = token.experimentacls.select_related("experiment").values_list("experiment__id", flat=True)
+    is_owner_of_any = []
+    for exp_id in experiment_ids:
+        is_owner_of_any.append(authz.has_ownership(request, exp_id, 'experiment'))
+    if any(is_owner_of_any):
         token.delete()
         return HttpResponse('{"success": true}', content_type='application/json')
     return HttpResponse('{"success": false}', content_type='application/json')

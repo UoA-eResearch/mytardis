@@ -232,7 +232,7 @@ class TokenTestCase(TestCase):
         token.expiry_date = tomorrow
         token.save()
         acl = ExperimentACL(token=token,
-                            experiment=self.experiment,
+                            experiment=experiment,
                             canRead=True,
                             aclOwnershipType=ExperimentACL.OWNER_OWNED)
         acl.save()
@@ -290,11 +290,16 @@ class TokenTestCase(TestCase):
 
         experiment = Experiment(title='test exp1', created_by=self.user)
         experiment.save()
-
+        acl = ExperimentACL(user=self.user,
+                            experiment=experiment,
+                            canRead=True,
+                            aclOwnershipType=ExperimentACL.OWNER_OWNED)
+        acl.save()
+        # saving this way doesn't require isOwner to be true, only the views do
         token = Token(user=self.user)
         token.save()
         acl = ExperimentACL(token=token,
-                            experiment=self.experiment,
+                            experiment=experiment,
                             canRead=True,
                             aclOwnershipType=ExperimentACL.OWNER_OWNED)
         acl.save()
@@ -310,7 +315,7 @@ class TokenTestCase(TestCase):
         response = token_delete(
             request, token_id=token.id)
         response_dict = json.loads(response.content.decode())
-        # We haven't yet created an ExperimentACL to associate self.user
+        # We haven't yet created an "isOwner" ExperimentACL to associate self.user
         # with the experiment, so request.user shouldn't be allowed
         # to delete the token:
         self.assertEqual(response_dict['success'], False)
