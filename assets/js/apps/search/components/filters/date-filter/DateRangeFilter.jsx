@@ -188,7 +188,7 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                             onChange={handleStartValueChange}
                             // key={startFieldId + localValue.start}
                             format={"y-M-d"}
-                            nativeInputAriaLabel={startFieldId}
+                            nativeInputAriaLabel={"Start"}
                         />
                 </Form.Group>
             }
@@ -202,7 +202,7 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                             value={localValue.end}
                             key={startFieldId + localValue.start}
                             format={"y-M-d"}
-                            nativeInputAriaLabel={endFieldId}
+                            nativeInputAriaLabel={"End"}
                         />
                 </Form.Group>
             }
