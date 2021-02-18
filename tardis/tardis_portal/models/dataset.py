@@ -298,14 +298,15 @@ class Dataset(models.Model):
         acls = self.datasetacl_set.select_related("user").filter(
                                             user__isnull=False, isOwner=False)
         ret_list = []
-        for acl in acls:
-            user = acl.get_related_object()
-            sensitive_flg = acl.canSensitive
-            download_flg = acl.canDownload
-            ret_list.append([user,
-                             sensitive_flg,
-                             download_flg])
-        return ret_list
+        if acls.exists():
+            for acl in acls:
+                user = acl.get_related_object()
+                sensitive_flg = acl.canSensitive
+                download_flg = acl.canDownload
+                ret_list.append([user,
+                                 sensitive_flg,
+                                 download_flg])
+            return ret_list
 
     def get_groups(self):
         acls = self.datasetacl_set.select_related("group").filter(
@@ -318,7 +319,7 @@ class Dataset(models.Model):
                                             group__isnull=False)
         print(acls)
         ret_list = []
-        if acls:
+        if acls.exists():
             for acl in acls:
                 print(acl)
                 if not acl.isOwner:

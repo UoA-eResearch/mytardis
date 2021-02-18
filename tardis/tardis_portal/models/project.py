@@ -183,14 +183,15 @@ class Project(models.Model):
         acls = self.projectacl_set.select_related("user").filter(
                                             user__isnull=False, isOwner=False)
         ret_list = []
-        for acl in acls:
-            user = acl.get_related_object()
-            sensitive_flg = acl.canSensitive
-            download_flg = acl.canDownload
-            ret_list.append([user,
-                             sensitive_flg,
-                             download_flg])
-        return ret_list
+        if acls.exists():
+            for acl in acls:
+                user = acl.get_related_object()
+                sensitive_flg = acl.canSensitive
+                download_flg = acl.canDownload
+                ret_list.append([user,
+                                 sensitive_flg,
+                                 download_flg])
+            return ret_list
 
     def get_admins(self):
         acls = self.projectacl_set.select_related("group").filter(
@@ -203,18 +204,23 @@ class Project(models.Model):
         return [acl.get_related_object() for acl in acls]
 
     def get_groups_and_perms(self):
+        print('proj groups')
         acls = self.projectacl_set.select_related("group").filter(
                                             group__isnull=False)
         ret_list = []
-        if acls:
+        if acls.exists():
             for acl in acls:
+                print(acl)
                 if not acl.isOwner:
+                    print("getting group")
                     group = acl.get_related_object()
+                    print(group)
                     sensitive_flg = acl.canSensitive
                     download_flg = acl.canDownload
                     ret_list.append([group,
                                      sensitive_flg,
                                      download_flg])
+                    print(ret_list)
             return ret_list
 
     def _has_view_perm(self, user_obj):
