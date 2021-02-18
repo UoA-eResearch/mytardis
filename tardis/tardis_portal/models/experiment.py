@@ -307,15 +307,16 @@ class Experiment(models.Model):
         acls = self.experimentacl_set.select_related("group").filter(
                                             group__isnull=False)
         ret_list = []
-        for acl in acls:
-            if not acl.isOwner:
-                group = acl.get_related_object()
-                sensitive_flg = acl.canSensitive
-                download_flg = acl.canDownload
-                ret_list.append([group,
-                                 sensitive_flg,
-                                 download_flg])
-        return ret_list
+        if acls:
+            for acl in acls:
+                if not acl.isOwner:
+                    group = acl.get_related_object()
+                    sensitive_flg = acl.canSensitive
+                    download_flg = acl.canDownload
+                    ret_list.append([group,
+                                     sensitive_flg,
+                                     download_flg])
+            return ret_list
 
     def get_admins(self):
         acls = self.experimentacl_set.select_related("group").filter(
