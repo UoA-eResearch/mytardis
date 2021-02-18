@@ -487,6 +487,7 @@ def process_acls(bundle):
             if ct != 'project':
                 logger.debug('Cascading from parent')
                 member_groups = parent.get_groups_and_perms()
+                logger.debug(member_group)
         if member_groups and member_groups != []:
             for member_group in member_groups:
                 logger.debug(member_group)
@@ -511,11 +512,13 @@ def process_acls(bundle):
                         'Unable to find user with id: {}'.format(user_id))
                     logger.warning('Error: {}'.format(error))
                     continue
+                logger.debug("creating transverse perms")
                 create_traverse_perms(django_user,
                                       user,
                                       project,
                                       experiment=experiment,
                                       dataset=dataset)
+                logger.debug("transverse created")
             for group_dict in groups:
                 group_id = int(group_dict['id'])
                 try:
@@ -544,6 +547,8 @@ def process_acls(bundle):
                     'groups': groups}
         if ct == 'datafile':
             acl_dict['content_type'] = 'data file'
+        logger.debug(acl_dict)
+
         return [acl_dict]
     return False
 
