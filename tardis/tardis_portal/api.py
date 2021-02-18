@@ -549,7 +549,7 @@ def process_acls(bundle):
                 for admin in admin_users:
                     group_admin.admin_users.add(admin.id)
                 logger.debug(group_admin)
-        acl_dict = {'content_type': ct,
+        acl_dict = {'content_type': ct.model,
                     'id': obj_id,
                     'users': users,
                     'groups': groups}
