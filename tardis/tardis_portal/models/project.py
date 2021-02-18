@@ -191,7 +191,7 @@ class Project(models.Model):
                 ret_list.append([user,
                                  sensitive_flg,
                                  download_flg])
-            return ret_list
+        return ret_list
 
     def get_admins(self):
         acls = self.projectacl_set.select_related("group").filter(
@@ -221,7 +221,7 @@ class Project(models.Model):
                                      sensitive_flg,
                                      download_flg])
                     print(ret_list)
-            return ret_list
+        return ret_list
 
     def _has_view_perm(self, user_obj):
         '''
