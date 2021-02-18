@@ -7,7 +7,6 @@ from django.contrib.humanize.templatetags.humanize import naturalday
 from ..util import get_local_time
 from ..util import render_mustache # render_public_access_badge
 from ..models.experiment import Experiment
-from ..models.dataset import Dataset
 from ..models.access_control import ExperimentACL, DatafileACL, DatasetACL
 
 register = template.Library()

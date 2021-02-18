@@ -47,7 +47,6 @@ from django.contrib.auth.models import User
 from mock import patch
 
 from ..models import Experiment, ExperimentACL, DatasetACL, Dataset
-from ..auth.localdb_auth import django_user
 
 
 # http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html

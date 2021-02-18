@@ -17,7 +17,6 @@ from django.conf import settings
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from ...auth.localdb_auth import django_user
 from ...models import (ExperimentACL, DatasetACL, DatafileACL, Experiment,
                        Dataset, DataFile)
 

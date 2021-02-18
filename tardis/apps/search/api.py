@@ -10,14 +10,12 @@ Implemented with Tastypie.
 
 import json
 import logging
+from datetime import datetime
 
 import pytz
-from datetime import datetime
 
 from django.conf import settings
 from django.template.defaultfilters import filesizeformat
-from django.db.models import Prefetch
-from django.contrib.auth.models import User, Group
 
 from tastypie import fields
 from tastypie.resources import Resource, Bundle
@@ -29,9 +27,6 @@ from tardis.tardis_portal.api import default_authentication
 #from tardis.tardis_portal.auth import decorators as authz
 from tardis.tardis_portal.models import (Project, Experiment, Dataset,
                                          DataFile, Schema, ParameterName)
-
-from tardis.tardis_portal.models.access_control import (ProjectACL,
-                                        ExperimentACL, DatasetACL, DatafileACL)
 
 
 LOCAL_TZ = pytz.timezone(settings.TIME_ZONE)

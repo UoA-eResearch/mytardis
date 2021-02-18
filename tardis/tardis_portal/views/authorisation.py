@@ -23,8 +23,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.models import Permission
 
 from ..auth import decorators as authz
-from ..auth.localdb_auth import auth_key as localdb_auth_key, \
-    django_user
+from ..auth.localdb_auth import auth_key as localdb_auth_key
 from ..models import UserAuthentication, UserProfile, Experiment, \
     Token, GroupAdmin, ExperimentACL
 from ..shortcuts import render_response_index

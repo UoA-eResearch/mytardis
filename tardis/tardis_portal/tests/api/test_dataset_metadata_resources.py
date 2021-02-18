@@ -13,7 +13,6 @@ from ...models.parameters import (Schema,
                                   DatasetParameter,
                                   DatasetParameterSet)
 from ...models.access_control import DatasetACL
-from ...auth.localdb_auth import django_user
 from . import MyTardisResourceTestCase
 
 

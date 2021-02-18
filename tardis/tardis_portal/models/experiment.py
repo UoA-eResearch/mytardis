@@ -4,7 +4,6 @@ from os import path
 from datetime import datetime
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.db import models
@@ -174,8 +173,6 @@ class Experiment(models.Model):
         experiment, formatted for elasticsearch.
 
         """
-        from .access_control import ExperimentACL
-
         return_list = []
         for acl in self.experimentacl_set.all():
             acl_dict = {}

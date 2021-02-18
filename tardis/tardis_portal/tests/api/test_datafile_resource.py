@@ -22,7 +22,6 @@ from ...models.dataset import Dataset
 from ...models.parameters import ParameterName
 from ...models.parameters import Schema
 from ...models.access_control import DatasetACL, DatafileACL
-from ...auth.localdb_auth import django_user
 from . import MyTardisResourceTestCase
 
 @unittest.skip("Tests need refactoring due to API changes")

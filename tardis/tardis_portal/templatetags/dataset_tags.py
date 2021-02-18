@@ -6,8 +6,6 @@ from django.template.defaultfilters import pluralize, filesizeformat
 from ..util import render_mustache
 from ..views import get_dataset_info
 from ..models.dataset import Dataset
-from ..models.experiment import Experiment
-from ..models.datafile import DataFile
 from ..models.access_control import DatasetACL, DatafileACL, ExperimentACL
 
 register = template.Library()
@@ -45,9 +43,9 @@ def dataset_tiles(experiment_id, request, include_thumbnails):
 
         def dataset_datafiles_badge(self):
             if hasattr(self, 'datafiles'):
-                return dataset_datafiles_badge(count=len(self.datafiles))
+                return dataset_datafiles_badge(request.user, count=len(self.datafiles))
             ds = Dataset.objects.get(id=self.id)
-            return dataset_datafiles_badge(ds)
+            return dataset_datafiles_badge(request.user, dataset=ds)
 
     class DatasetsInfo(object):
         # Generator which renders a dataset at a time
@@ -156,7 +154,7 @@ def dataset_experiments_badge(dataset, user):
 
 
 @register.filter
-def dataset_datafiles_badge(dataset=None, count=None):
+def dataset_datafiles_badge(user, dataset=None, count=None):
     """
     Displays an badge with the number of datafiles for this dataset
     """

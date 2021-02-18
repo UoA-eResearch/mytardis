@@ -43,7 +43,6 @@ from ..models import (Project, Experiment, Dataset, DataFile, GroupAdmin,
     ProjectParameter, ExperimentParameter, DatasetParameter,
     DatafileParameter, ProjectACL, ExperimentACL, DatasetACL, DatafileACL)
 from ..shortcuts import return_response_error
-from .localdb_auth import django_user, django_group
 
 
 def bulk_replace_existing_acls(some_request, admin_flag=False):
@@ -84,7 +83,6 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
             }
         ]
     """
-    print("bulk replace time")
     # used for heirarchical look up of lead_researcher/creator, in order to
     # preserve their ACLs from being edited
     createdby_lead_dict = {"project": ["created_by__id","lead_researcher__id"],
@@ -98,9 +96,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                                          "dataset__experiments__project__lead_researcher__id"]}
     for new_acls in some_request:
         # Collect either admin(isOwner) or non-admin users/groups
-        print("#1")
         if not admin_flag:
-            print("#2")
 
             if new_acls["content_type"] == "project":
                 old_acls = ProjectACL.objects.filter(
@@ -119,7 +115,6 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                             datafile=new_acls["id"], isOwner = False,
                             aclOwnershipType=DatafileACL.OWNER_OWNED)
         else:
-            print("#3")
             if new_acls["content_type"] == "project":
                 old_acls = ProjectACL.objects.filter(
                             project=new_acls["id"], isOwner = True,
@@ -140,10 +135,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
         modified_user_acls = []
         modified_group_acls = []
 
-        print("#4")
-        print(old_acls)
         for old_acl in old_acls:
-            print(acl)
             if old_acl.user is not None:
                 if "users" in new_acls.keys():
                     # If old ACL user_entity is a project_lead or creator (created_by)
@@ -258,7 +250,6 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                     # if user doesn't already have an ACL for this object, create one
                     if new_acl["id"] not in old_acls_user_ids:
                         if new_acls["content_type"] == "project":
-                            print("project before")
                             acl = ProjectACL(project_id=new_acls["id"],
                                              user_id=new_acl["id"],
                                              canRead=new_acl["canRead"],
@@ -268,10 +259,8 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                                              canSensitive=new_acl["canSensitive"],
                                              isOwner=new_acl["isOwner"],
                                              aclOwnershipType=ProjectACL.OWNER_OWNED)
-                            print("project after")
                             acl.save()
                         if new_acls["content_type"] == "experiment":
-                            print("exp before")
                             acl = ExperimentACL(experiment_id=new_acls["id"],
                                                 user_id=new_acl["id"],
                                                 canRead=new_acl["canRead"],
@@ -281,10 +270,8 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                                                 canSensitive=new_acl["canSensitive"],
                                                 isOwner=new_acl["isOwner"],
                                                 aclOwnershipType=ExperimentACL.OWNER_OWNED)
-                            print("exp after")
                             acl.save()
                         if new_acls["content_type"] == "dataset":
-                            print("set before")
                             acl = DatasetACL(dataset_id=new_acls["id"],
                                              user_id=new_acl["id"],
                                              canRead=new_acl["canRead"],
@@ -294,7 +281,6 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                                              canSensitive=new_acl["canSensitive"],
                                              isOwner=new_acl["isOwner"],
                                              aclOwnershipType=DatasetACL.OWNER_OWNED)
-                            print("set after")
                             acl.save()
                         if new_acls["content_type"] == "data file":
                             acl = DatafileACL(datafile_id=new_acls["id"],

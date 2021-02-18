@@ -1,7 +1,7 @@
 """
 token authentication module
 """
-from ..models import Token, ObjectACL, Experiment
+from ..models import Token
 from ..auth.interfaces import GroupProvider
 
 TOKEN_EXPERIMENT = '_token_experiment'

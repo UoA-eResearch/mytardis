@@ -409,16 +409,19 @@ class ACL(models.Model):
              Q(expiryDate__isnull=True))
         return acl_effective_query
 
-
+@python_2_unicode_compatible
 class ProjectACL(ACL):
     project = models.ForeignKey("Project", on_delete=models.CASCADE)
 
+@python_2_unicode_compatible
 class ExperimentACL(ACL):
     experiment = models.ForeignKey("Experiment", on_delete=models.CASCADE)
 
+@python_2_unicode_compatible
 class DatasetACL(ACL):
     dataset = models.ForeignKey("Dataset", on_delete=models.CASCADE)
 
+@python_2_unicode_compatible
 class DatafileACL(ACL):
     datafile = models.ForeignKey("DataFile", on_delete=models.CASCADE)
 

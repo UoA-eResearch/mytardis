@@ -13,7 +13,6 @@ from ...models.dataset import Dataset
 from ...models.experiment import Experiment
 from ...models.instrument import Instrument
 from ...models.access_control import DatasetACL
-from ...auth.localdb_auth import django_user
 from . import MyTardisResourceTestCase
 
 

@@ -6,7 +6,6 @@ import logging
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from ..auth.localdb_auth import django_user
 
 from ..auth import decorators as authz
 from ..models import Dataset, DataFile, DatafileACL

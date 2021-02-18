@@ -11,8 +11,6 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User, Group
 from django.db.models import Prefetch
 
-#from .auth.localdb_auth import django_user, django_group
-
 class OracleSafeManager(models.Manager):
     """
     Implements a custom manager which automatically defers the
@@ -75,7 +73,7 @@ class SafeManager(models.Manager):
         if user_id is not None:
             user = User.objects.get(pk=user_id)
 
-        if user.id == None:
+        if user.id is None:
             return super().get_queryset().none()
 
         if self.model.get_ct(self.model).model == "project":
@@ -123,7 +121,7 @@ class SafeManager(models.Manager):
         if group_id is not None:
             group = Group.objects.get(pk=group_id)
 
-        if group.id == None:
+        if group.id is None:
             return super().get_queryset().none()
 
         if self.model.get_ct(self.model).model == "project":
@@ -715,6 +713,7 @@ class SafeManager(models.Manager):
         :returns: list of groups with external ACLs
         :rtype: list
         """
+        obj = super().get(pk=obj_id)
 
         if self.model.get_ct(self.model).model == "project":
             acl = obj.projectacl_set.select_related("token").filter(token__isnull=False)

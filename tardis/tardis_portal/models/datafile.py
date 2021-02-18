@@ -9,7 +9,6 @@ from os import path
 import mimetypes
 
 from django.conf import settings
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.core.files import File
 from django.urls import reverse
@@ -60,7 +59,6 @@ class DataFile(models.Model):
     :attribute sha512sum: Digest of length 128, containing only hexadecimal
         digits
     """
-
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
     filename = models.CharField(max_length=400)
     directory = models.CharField(blank=True, null=True, max_length=255)
@@ -250,9 +248,7 @@ class DataFile(models.Model):
                             param_dict['sensitive'] = True
                         else:
                             param_dict['sensitive'] = False
-
                         type_idx = idx+1
-
                         if type_idx == 1:
                             param_dict['value'] = value
                         elif type_idx == 2:
@@ -267,8 +263,6 @@ class DataFile(models.Model):
         datafile, formatted for elasticsearch.
 
         """
-        from .access_control import DatafileACL
-
         return_list = []
         for acl in self.datafileacl_set.all():
             acl_dict = {}
@@ -280,10 +274,6 @@ class DataFile(models.Model):
                 acl_dict["pluginId"] = "django_group"
                 acl_dict["entityId"] = acl.group.id
                 return_list.append(acl_dict)
-            #if acl.token is not None:
-            #    acl_dict["pluginId"] = "token"
-            #    acl_dict["entityId"] = acl.token.id
-            #    return_list.append(acl_dict)
         return return_list
 
     def get_mimetype(self):

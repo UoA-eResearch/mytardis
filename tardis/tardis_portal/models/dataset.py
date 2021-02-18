@@ -3,7 +3,6 @@ from os import path
 
 from datetime import datetime
 from django.conf import settings
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.db import models
@@ -161,7 +160,6 @@ class Dataset(models.Model):
         dataset, formatted for elasticsearch.
 
         """
-        from .access_control import DatasetACL
 
         return_list = []
         for acl in self.datasetacl_set.all():
@@ -174,10 +172,6 @@ class Dataset(models.Model):
                 acl_dict["pluginId"] = "django_group"
                 acl_dict["entityId"] = acl.group.id
                 return_list.append(acl_dict)
-            #if acl.token is not None:
-            #    acl_dict["pluginId"] = "token"
-            #    acl_dict["entityId"] = acl.token.id
-            #    return_list.append(acl_dict)
         return return_list
 
     def __str__(self):

@@ -210,11 +210,11 @@ def create_traverse_perms(plugin_id,
             acl = ProjectACL(project=project,
                              user=entity.id,
                              canRead=True,
-                             canDownload=download,
-                             canWrite=write,
+                             canDownload=False,
+                             canWrite=False,
                              canDelete=False,
-                             canSensitive=sensitive,
-                             isOwner=owner,
+                             canSensitive=False,
+                             isOwner=False,
                              aclOwnershipType=ProjectACL.OWNER_OWNED)
             acl.save()
             return True
@@ -223,11 +223,11 @@ def create_traverse_perms(plugin_id,
                 acl = ExperimentACL(experiment=experiment,
                                  user=entity.id,
                                  canRead=True,
-                                 canDownload=download,
-                                 canWrite=write,
+                                 canDownload=False,
+                                 canWrite=False,
                                  canDelete=False,
-                                 canSensitive=sensitive,
-                                 isOwner=owner,
+                                 canSensitive=False,
+                                 isOwner=False,
                                  aclOwnershipType=ExperimentACL.OWNER_OWNED)
                 acl.save()
                 return True
@@ -240,11 +240,11 @@ def create_traverse_perms(plugin_id,
                     acl = DatasetACL(dataset=dataset,
                                      user=entity.id,
                                      canRead=True,
-                                     canDownload=download,
-                                     canWrite=write,
+                                     canDownload=False,
+                                     canWrite=False,
                                      canDelete=False,
-                                     canSensitive=sensitive,
-                                     isOwner=owner,
+                                     canSensitive=False,
+                                     isOwner=False,
                                      aclOwnershipType=DatasetACL.OWNER_OWNED)
                     acl.save()
                     return True
@@ -253,11 +253,11 @@ def create_traverse_perms(plugin_id,
             acl = ProjectACL(project=project,
                              group=entity.id,
                              canRead=True,
-                             canDownload=download,
-                             canWrite=write,
+                             canDownload=False,
+                             canWrite=False,
                              canDelete=False,
-                             canSensitive=sensitive,
-                             isOwner=owner,
+                             canSensitive=False,
+                             isOwner=False,
                              aclOwnershipType=ProjectACL.OWNER_OWNED)
             acl.save()
             return True

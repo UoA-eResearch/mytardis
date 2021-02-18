@@ -26,7 +26,6 @@ from ..auth import decorators as authz
 from ..auth.decorators import (
     has_write
 )
-from ..auth.localdb_auth import django_user
 from ..forms import ExperimentForm, DatasetForm, ProjectForm
 from ..models import (Experiment, Dataset, DataFile, Project, ProjectACL,
                       ExperimentACL, DatasetACL)

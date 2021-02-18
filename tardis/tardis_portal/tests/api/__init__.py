@@ -10,7 +10,6 @@ from django.test import TransactionTestCase
 from tastypie.test import ResourceTestCaseMixin
 
 from ...auth.authservice import AuthService
-from ...auth.localdb_auth import django_user
 from ...models.access_control import ProjectACL, ExperimentACL
 from ...models.project import Project
 from ...models.experiment import Experiment

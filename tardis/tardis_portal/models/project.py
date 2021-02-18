@@ -2,7 +2,6 @@ import logging
 from datetime import datetime
 
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.db import models
@@ -124,8 +123,6 @@ class Project(models.Model):
         project, formatted for elasticsearch.
 
         """
-        from .access_control import ProjectACL
-
         return_list = []
         for acl in self.projectacl_set.all():
             acl_dict = {}
