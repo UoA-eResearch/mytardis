@@ -413,17 +413,29 @@ class ACL(models.Model):
 class ProjectACL(ACL):
     project = models.ForeignKey("Project", on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.id)
+
 @python_2_unicode_compatible
 class ExperimentACL(ACL):
     experiment = models.ForeignKey("Experiment", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
 
 @python_2_unicode_compatible
 class DatasetACL(ACL):
     dataset = models.ForeignKey("Dataset", on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.id)
+
 @python_2_unicode_compatible
 class DatafileACL(ACL):
     datafile = models.ForeignKey("DataFile", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
 
 
 def create_user_api_key(sender, **kwargs):

@@ -13,7 +13,6 @@ from tardis.tardis_portal.models.datafile import DataFile, DataFileObject
 from tardis.tardis_portal.models.dataset import Dataset
 from tardis.tardis_portal.models.storage import StorageBox, StorageBoxOption
 from tardis.tardis_portal.models.access_control import (DatasetACL, DatafileACL)
-from tardis.tardis_portal.auth.localdb_auth import django_user
 
 
 class S3UtilsAppApiTestCase(MyTardisResourceTestCase):

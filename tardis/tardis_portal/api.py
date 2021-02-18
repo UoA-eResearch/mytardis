@@ -283,11 +283,11 @@ def create_traverse_perms(plugin_id,
                     acl = DatasetACL(dataset=dataset,
                                      group=entity.id,
                                      canRead=True,
-                                     canDownload=download,
-                                     canWrite=write,
+                                     canDownload=False,
+                                     canWrite=False,
                                      canDelete=False,
-                                     canSensitive=sensitive,
-                                     isOwner=owner,
+                                     canSensitive=False,
+                                     isOwner=False,
                                      aclOwnershipType=DatasetACL.OWNER_OWNED)
                     acl.save()
                     return True
