@@ -386,8 +386,9 @@ def process_acls(bundle):
                 logger.debug('Bad Stuff')
                 raise ValueError  # should never get here
         user = check_and_create_user(project_lead)
-        users.append(package_perms(user.id,
-                                   is_admin=True))
+        if bundle.request.user != project_lead:
+            users.append(package_perms(user.id,
+                                       is_admin=True))
         admin_users.append(user)
         if 'admins' in bundle.data.keys():
             logger.debug('Admins found')
@@ -411,14 +412,14 @@ def process_acls(bundle):
                 member_flg = False
                 for admin in parent_admins:
                     # If admin is lead_researcher don't downgrade perms
-                    if admin.username != project_lead:
+                    if admin != project_lead:
                         # Check if user is explicitly defined as a member
                         # in which case they lose admin status
                         if 'members' in bundle.data.keys():
                             for member in bundle.data['members']:
-                                if member[0] == admin.username:
+                                if member[0] == admin:
                                     member_flg = True
-                    if not member_flg and admin.username != project_lead:
+                    if not member_flg and admin != project_lead:
                         if str(user.id) not in [d['id'] for d in users]:
                             users.append(package_perms(admin.id,
                                                        is_admin=True))

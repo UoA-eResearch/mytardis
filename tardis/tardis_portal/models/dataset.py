@@ -328,7 +328,7 @@ class Dataset(models.Model):
 
     def get_admins(self):
         acls = self.datasetacl_set.select_related("group").filter(
-                                            user__isnull=False, isOwner=True)
+                                            group__isnull=False, isOwner=True)
         return [acl.get_related_object() for acl in acls]
 
     def get_dir_tuples(self, user, basedir=""):
