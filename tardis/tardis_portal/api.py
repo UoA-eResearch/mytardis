@@ -1355,7 +1355,8 @@ class ProjectResource(MyTardisModelResource):
 
     def hydrate_m2m(self, bundle):
         acls = process_acls(bundle)
-        bulk_replace_existing_acls(acls)
+        if acls:
+            bulk_replace_existing_acls(acls)
         if 'admins' in bundle.data.keys():
             bundle.data.pop('admins')
         if 'admin_groups' in bundle.data.keys():
@@ -1482,7 +1483,8 @@ class ExperimentResource(MyTardisModelResource):
         ACL permissions for those objects.
         '''
         acls = process_acls(bundle)
-        bulk_replace_existing_acls(acls)
+        if acls:
+            bulk_replace_existing_acls(acls)
         if 'admins' in bundle.data.keys():
             bundle.data.pop('admins')
         if 'admin_groups' in bundle.data.keys():
@@ -1622,7 +1624,8 @@ class DatasetResource(MyTardisModelResource):
                 except NotFound:
                     pass  # This probably should raise an error
         acls = process_acls(bundle)
-        bulk_replace_existing_acls(acls)
+        if acls:
+            bulk_replace_existing_acls(acls)
         if 'admins' in bundle.data.keys():
             bundle.data.pop('admins')
         if 'admin_groups' in bundle.data.keys():
@@ -1912,7 +1915,8 @@ class DataFileResource(MyTardisModelResource):
             self.temp_url = dfo.get_full_path()
         datafile = new_bundle.obj
         acls = process_acls(new_bundle)
-        bulk_replace_existing_acls(acls)
+        if acls:
+            bulk_replace_existing_acls(acls)
         if 'admin_groups' in new_bundle.data.keys():
             admin_groups = new_bundle.data.pop('admin_groups')
         if 'member_groups' in new_bundle.data.keys():
