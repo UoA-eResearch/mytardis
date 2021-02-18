@@ -486,6 +486,7 @@ def process_acls(bundle):
             logger.debug('Member groups not found')
             if ct != 'project':
                 logger.debug('Cascading from parent')
+                logger.debug(parent)
                 member_groups = parent.get_groups_and_perms()
                 logger.debug(member_group)
         if member_groups and member_groups != []:
