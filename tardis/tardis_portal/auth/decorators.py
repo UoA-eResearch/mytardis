@@ -260,7 +260,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                         if new_acls["content_type"] == "project":
                             print("project before")
                             acl = ProjectACL(project_id=new_acls["id"],
-                                             user=new_acl["id"],
+                                             user_id=new_acl["id"],
                                              canRead=new_acl["canRead"],
                                              canDownload=new_acl["canDownload"],
                                              canWrite=new_acl["canWrite"],
@@ -273,7 +273,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                         if new_acls["content_type"] == "experiment":
                             print("exp before")
                             acl = ExperimentACL(experiment_id=new_acls["id"],
-                                                user=new_acl["id"],
+                                                user_id=new_acl["id"],
                                                 canRead=new_acl["canRead"],
                                                 canDownload=new_acl["canDownload"],
                                                 canWrite=new_acl["canWrite"],
@@ -286,7 +286,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                         if new_acls["content_type"] == "dataset":
                             print("set before")
                             acl = DatasetACL(dataset_id=new_acls["id"],
-                                             user=new_acl["id"],
+                                             user_id=new_acl["id"],
                                              canRead=new_acl["canRead"],
                                              canDownload=new_acl["canDownload"],
                                              canWrite=new_acl["canWrite"],
@@ -298,7 +298,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                             acl.save()
                         if new_acls["content_type"] == "data file":
                             acl = DatafileACL(datafile_id=new_acls["id"],
-                                              user=new_acl["id"],
+                                              user_id=new_acl["id"],
                                               canRead=new_acl["canRead"],
                                               canDownload=new_acl["canDownload"],
                                               canWrite=new_acl["canWrite"],
@@ -335,7 +335,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                     if new_acl["id"] not in old_acls_group_ids:
                         if new_acls["content_type"] == "project":
                             acl = ProjectACL(project_id=new_acls["id"],
-                                             group=new_acl["id"],
+                                             group_id=new_acl["id"],
                                              canRead=new_acl["canRead"],
                                              canDownload=new_acl["canDownload"],
                                              canWrite=new_acl["canWrite"],
@@ -346,7 +346,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                             acl.save()
                         if new_acls["content_type"] == "experiment":
                             acl = ExperimentACL(experiment_id=new_acls["id"],
-                                                group=new_acl["id"],
+                                                group_id=new_acl["id"],
                                                 canRead=new_acl["canRead"],
                                                 canDownload=new_acl["canDownload"],
                                                 canWrite=new_acl["canWrite"],
@@ -357,7 +357,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                             acl.save()
                         if new_acls["content_type"] == "dataset":
                             acl = DatasetACL(dataset_id=new_acls["id"],
-                                             group=new_acl["id"],
+                                             group_id=new_acl["id"],
                                              canRead=new_acl["canRead"],
                                              canDownload=new_acl["canDownload"],
                                              canWrite=new_acl["canWrite"],
@@ -368,7 +368,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                             acl.save()
                         if new_acls["content_type"] == "data file":
                             acl = DatafileACL(datafile_id=new_acls["id"],
-                                              group=new_acl["id"],
+                                              group_id=new_acl["id"],
                                               canRead=new_acl["canRead"],
                                               canDownload=new_acl["canDownload"],
                                               canWrite=new_acl["canWrite"],
