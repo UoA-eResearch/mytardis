@@ -84,7 +84,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
             }
         ]
     """
-
+    print("bulk replace time")
     # used for heirarchical look up of lead_researcher/creator, in order to
     # preserve their ACLs from being edited
     createdby_lead_dict = {"project": ["created_by__id","lead_researcher__id"],
@@ -96,10 +96,12 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                            "data file": ["dataset__experiments__created_by__id",
                                          "dataset__experiments__project__created_by__id",
                                          "dataset__experiments__project__lead_researcher__id"]}
-
     for new_acls in some_request:
         # Collect either admin(isOwner) or non-admin users/groups
+        print("#1")
         if not admin_flag:
+            print("#2")
+
             if new_acls["content_type"] == "project":
                 old_acls = ProjectACL.objects.filter(
                             project=new_acls["id"], isOwner = False,
@@ -117,6 +119,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                             datafile=new_acls["id"], isOwner = False,
                             aclOwnershipType=DatafileACL.OWNER_OWNED)
         else:
+            print("#3")
             if new_acls["content_type"] == "project":
                 old_acls = ProjectACL.objects.filter(
                             project=new_acls["id"], isOwner = True,
@@ -137,8 +140,10 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
         modified_user_acls = []
         modified_group_acls = []
 
+        print("#4")
+        print(old_acls)
         for old_acl in old_acls:
-
+            print(acl)
             if old_acl.user is not None:
                 if "users" in new_acls.keys():
                     # If old ACL user_entity is a project_lead or creator (created_by)
