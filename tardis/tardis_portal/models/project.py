@@ -226,6 +226,7 @@ class Project(models.Model):
                                      sensitive_flg,
                                      download_flg])
                     print(ret_list)
+        print("definitely returning it?")
         print(ret_list)
         return ret_list
 

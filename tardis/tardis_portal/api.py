@@ -488,8 +488,9 @@ def process_acls(bundle):
                 logger.debug('Cascading from parent')
                 logger.debug(parent)
                 member_groups = parent.get_groups_and_perms()
-                logger.debug(member_group)
+                logger.debug("member_groups found")
         if member_groups and member_groups != []:
+            logger.debug("member_groups not empty")
             for member_group in member_groups:
                 logger.debug(member_group)
                 group_name = member_group[0]
@@ -502,12 +503,18 @@ def process_acls(bundle):
                                             write=True,
                                             download=download,
                                             sensitive=sensitive))
+        logger.debug("makes it this far")
         if ct != 'project':
             # Build traverse ACLs and add GroupAdmins
+            logger.debug("iter over users")
+            logger.debug(users)
             for user_dict in users:
+                logger.debug(user_dict)
                 user_id = int(user_dict['id'])
                 try:
+                    logger.debug("attempt to find it")
                     user = User.objects.get(id=user_id)
+                    logger.debug(user)
                 except Exception as error:
                     logger.warning(
                         'Unable to find user with id: {}'.format(user_id))
