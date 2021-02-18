@@ -209,6 +209,7 @@ class Project(models.Model):
                                             group__isnull=False)
         ret_list = []
         if acls.exists():
+            print("hmm, uh uh")
             for acl in acls:
                 print(acl)
                 if not acl.isOwner:
