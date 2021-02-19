@@ -99,17 +99,6 @@ class ACLAwareBackend(object):
                     return True'''
 
         if ct.model == 'project':
-            if user_obj.is_authenticated:
-                query = user_obj.projectacls.select_related("project"
-                                         ).filter(project__id=obj.id).filter(self.get_perm_bool(perm_action)
-                                         ).exclude(effectiveDate__gte=datetime.today(),
-                                                   expiryDate__lte=datetime.today())
-                for group in user_obj.groups.all():
-                    query |= group.projectacls.select_related("project"
-                                             ).filter(project__id=obj.id).filter(self.get_perm_bool(perm_action)
-                                             ).exclude(effectiveDate__gte=datetime.today(),
-                                                       expiryDate__lte=datetime.today())
-                return query.exists()
             # the only authorisation available for anonymous users is tokenauth
             tgp = TokenGroupProvider()
             query = ProjectACL.objects.none()
@@ -118,20 +107,19 @@ class ACLAwareBackend(object):
                                          ).filter(project__id=obj.id).filter(self.get_perm_bool(perm_action)
                                          ).exclude(effectiveDate__gte=datetime.today(),
                                                    expiryDate__lte=datetime.today())
-            return query.exists()
-
-        if ct.model == 'experiment':
             if user_obj.is_authenticated:
-                query = user_obj.experimentacls.select_related("experiment"
-                                         ).filter(experiment__id=obj.id).filter(self.get_perm_bool(perm_action)
+                query |= user_obj.projectacls.select_related("project"
+                                         ).filter(project__id=obj.id).filter(self.get_perm_bool(perm_action)
                                          ).exclude(effectiveDate__gte=datetime.today(),
                                                    expiryDate__lte=datetime.today())
                 for group in user_obj.groups.all():
-                    query |= group.experimentacls.select_related("experiment"
-                                             ).filter(experiment__id=obj.id).filter(self.get_perm_bool(perm_action)
+                    query |= group.projectacls.select_related("project"
+                                             ).filter(project__id=obj.id).filter(self.get_perm_bool(perm_action)
                                              ).exclude(effectiveDate__gte=datetime.today(),
                                                        expiryDate__lte=datetime.today())
-                return query.exists()
+            return query.exists()
+
+        if ct.model == 'experiment':
             # the only authorisation available for anonymous users is tokenauth
             tgp = TokenGroupProvider()
             query = ExperimentACL.objects.none()
@@ -140,20 +128,19 @@ class ACLAwareBackend(object):
                                          ).filter(experiment__id=obj.id).filter(self.get_perm_bool(perm_action)
                                          ).exclude(effectiveDate__gte=datetime.today(),
                                                    expiryDate__lte=datetime.today())
-            return query.exists()
-
-        if ct.model == 'dataset':
             if user_obj.is_authenticated:
-                query = user_obj.datasetacls.select_related("dataset"
-                                         ).filter(dataset__id=obj.id).filter(self.get_perm_bool(perm_action)
+                query |= user_obj.experimentacls.select_related("experiment"
+                                         ).filter(experiment__id=obj.id).filter(self.get_perm_bool(perm_action)
                                          ).exclude(effectiveDate__gte=datetime.today(),
                                                    expiryDate__lte=datetime.today())
                 for group in user_obj.groups.all():
-                    query |= group.datasetacls.select_related("dataset"
-                                             ).filter(dataset__id=obj.id).filter(self.get_perm_bool(perm_action)
+                    query |= group.experimentacls.select_related("experiment"
+                                             ).filter(experiment__id=obj.id).filter(self.get_perm_bool(perm_action)
                                              ).exclude(effectiveDate__gte=datetime.today(),
                                                        expiryDate__lte=datetime.today())
-                return query.exists()
+            return query.exists()
+
+        if ct.model == 'dataset':
             # the only authorisation available for anonymous users is tokenauth
             tgp = TokenGroupProvider()
             query = DatasetACL.objects.none()
@@ -162,20 +149,19 @@ class ACLAwareBackend(object):
                                          ).filter(dataset__id=obj.id).filter(self.get_perm_bool(perm_action)
                                          ).exclude(effectiveDate__gte=datetime.today(),
                                                    expiryDate__lte=datetime.today())
-            return query.exists()
-
-        if ct.model.replace(' ','') == 'datafile':
             if user_obj.is_authenticated:
-                query = user_obj.datafileacls.select_related("datafile"
-                                         ).filter(datafile__id=obj.id).filter(self.get_perm_bool(perm_action)
+                query |= user_obj.datasetacls.select_related("dataset"
+                                         ).filter(dataset__id=obj.id).filter(self.get_perm_bool(perm_action)
                                          ).exclude(effectiveDate__gte=datetime.today(),
                                                    expiryDate__lte=datetime.today())
                 for group in user_obj.groups.all():
-                    query |= group.datafileacls.select_related("datafile"
-                                             ).filter(datafile__id=obj.id).filter(self.get_perm_bool(perm_action)
+                    query |= group.datasetacls.select_related("dataset"
+                                             ).filter(dataset__id=obj.id).filter(self.get_perm_bool(perm_action)
                                              ).exclude(effectiveDate__gte=datetime.today(),
                                                        expiryDate__lte=datetime.today())
-                return query.exists()
+            return query.exists()
+
+        if ct.model.replace(' ','') == 'datafile':
             # the only authorisation available for anonymous users is tokenauth
             tgp = TokenGroupProvider()
             query = DatafileACL.objects.none()
@@ -184,6 +170,17 @@ class ACLAwareBackend(object):
                                          ).filter(datafile__id=obj.id).filter(self.get_perm_bool(perm_action)
                                          ).exclude(effectiveDate__gte=datetime.today(),
                                                    expiryDate__lte=datetime.today())
+            if user_obj.is_authenticated:
+                query |= user_obj.datafileacls.select_related("datafile"
+                                         ).filter(datafile__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                         ).exclude(effectiveDate__gte=datetime.today(),
+                                                   expiryDate__lte=datetime.today())
+                for group in user_obj.groups.all():
+                    query |= group.datafileacls.select_related("datafile"
+                                             ).filter(datafile__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                             ).exclude(effectiveDate__gte=datetime.today(),
+                                                       expiryDate__lte=datetime.today())
             return query.exists()
+
 
         return False

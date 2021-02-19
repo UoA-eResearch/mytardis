@@ -355,7 +355,7 @@ class SafeManager(models.Manager):
                                                                        )
         # for which does proj/exp/set/files does the user have read access
         # based on GROUP permissions
-        for name, group in user.userprofile.ext_groups:
+        for group in user.groups.all():
             if any([downloadable, viewsensitive]):
                 query_inputs={}
                 if downloadable:
