@@ -4,6 +4,7 @@ import { initialiseSearch, restoreSearchFromHistory } from "./searchSlice";
 import { useDispatch } from "react-redux";
 import FilterSidebar from './FilterSidebar'
 import ResultSection from './ResultSection'
+import FilterSummaryBox from "./filter-summary/FilterSummaryBox";
 
 export const SearchPage = () => {
     const dispatch = useDispatch();
@@ -22,17 +23,17 @@ export const SearchPage = () => {
         }
     },[dispatch]);
     return (
-            <div className="search-page">
-                <h1>Search</h1>
-                <div className="search-screen">
-                    <aside className="filter-column" md={4}>
-                        <FilterSidebar />
-                    </aside>
-                    <main className="result-column" md={8}>
-                        <ResultSection />
-                    </main>
-                </div>
+        <div className="search-page">
+            <div className="search-screen">
+                <aside className="filter-column" md={4}>
+                    <FilterSidebar />
+                </aside>
+                <main className="result-column" md={8}>
+                    <FilterSummaryBox />
+                    <ResultSection />
+                </main>
             </div>
+        </div>
     )
 }
 

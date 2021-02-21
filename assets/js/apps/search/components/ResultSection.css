@@ -55,6 +55,11 @@
 
 .result-section__container .result-section--row {
     transition: opacity 0.3s;
+    
+}
+
+.result-section--row:nth-child(odd) {
+    background-color: #f8fbff;
 }
 
 .result-section__container.loading .result-section--row {

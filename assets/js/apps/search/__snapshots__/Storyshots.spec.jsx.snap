@@ -2086,32 +2086,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
   <div
     className="filter-sidebar"
   >
-    <form
-      className=""
-      onSubmit={[Function]}
-    >
-      <input
-        aria-label="Quick find search input"
-        className="quick-search-box__input form-control"
-        onChange={[Function]}
-        placeholder="Find by title or description"
-        value=""
-      />
-      <button
-        aria-label="Quick find search button"
-        className="btn btn-primary"
-        disabled={false}
-        type="submit"
-      >
-        Search
-      </button>
-    </form>
     <section>
-      <h2
-        className="h3"
-      >
-        Filters
-      </h2>
       <nav
         className="nav nav-tabs"
         onKeyDown={[Function]}
@@ -2235,9 +2210,30 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           id="filters-section-tabpane-projects"
           role="tabpanel"
         >
+          <form
+            className="quick-search-box"
+            onSubmit={[Function]}
+          >
+            <input
+              aria-label="Quick find search input"
+              className="quick-search-box__input form-control"
+              onChange={[Function]}
+              placeholder="Find projects by title or description"
+              value=""
+            />
+            <button
+              aria-label="Quick find search button"
+              className="btn btn-primary"
+              disabled={false}
+              type="submit"
+            >
+              Search
+            </button>
+          </form>
+          <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Name
             </h3>
@@ -2273,7 +2269,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Created date
             </h3>
@@ -2300,7 +2296,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                     type="text"
                     value=""
                   />
@@ -2792,7 +2788,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                     type="text"
                     value=""
                   />
@@ -3278,7 +3274,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Institution
             </h3>
@@ -3314,7 +3310,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Schemas
             </h3>
@@ -3389,7 +3385,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Parameter 1
                       </h5>
@@ -3427,7 +3423,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Parameter 2
                       </h5>
@@ -3465,7 +3461,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Sensitive Parameter
                       </h5>
@@ -3512,9 +3508,30 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           id="filters-section-tabpane-experiments"
           role="tabpanel"
         >
+          <form
+            className="quick-search-box"
+            onSubmit={[Function]}
+          >
+            <input
+              aria-label="Quick find search input"
+              className="quick-search-box__input form-control"
+              onChange={[Function]}
+              placeholder="Find experiments by title or description"
+              value=""
+            />
+            <button
+              aria-label="Quick find search button"
+              className="btn btn-primary"
+              disabled={false}
+              type="submit"
+            >
+              Search
+            </button>
+          </form>
+          <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Name
             </h3>
@@ -3550,7 +3567,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Created date
             </h3>
@@ -3577,7 +3594,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                     type="text"
                     value=""
                   />
@@ -4069,7 +4086,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                     type="text"
                     value=""
                   />
@@ -4555,7 +4572,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Institution
             </h3>
@@ -4591,7 +4608,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Schemas
             </h3>
@@ -4666,7 +4683,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Another parameter 2
                       </h5>
@@ -4704,7 +4721,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Another parameter 1
                       </h5>
@@ -4742,7 +4759,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Sensitive Parameter
                       </h5>
@@ -4789,9 +4806,30 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           id="filters-section-tabpane-datasets"
           role="tabpanel"
         >
+          <form
+            className="quick-search-box"
+            onSubmit={[Function]}
+          >
+            <input
+              aria-label="Quick find search input"
+              className="quick-search-box__input form-control"
+              onChange={[Function]}
+              placeholder="Find datasets by title or description"
+              value=""
+            />
+            <button
+              aria-label="Quick find search button"
+              className="btn btn-primary"
+              disabled={false}
+              type="submit"
+            >
+              Search
+            </button>
+          </form>
+          <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Name
             </h3>
@@ -4827,7 +4865,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Created date
             </h3>
@@ -4854,7 +4892,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                     type="text"
                     value=""
                   />
@@ -5346,7 +5384,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                     type="text"
                     value=""
                   />
@@ -5832,7 +5870,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Institution
             </h3>
@@ -5868,7 +5906,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Schemas
             </h3>
@@ -5943,7 +5981,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Parameter 1
                       </h5>
@@ -5981,7 +6019,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Parameter 2
                       </h5>
@@ -6019,7 +6057,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Sensitive Parameter
                       </h5>
@@ -6066,9 +6104,30 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           id="filters-section-tabpane-datafiles"
           role="tabpanel"
         >
+          <form
+            className="quick-search-box"
+            onSubmit={[Function]}
+          >
+            <input
+              aria-label="Quick find search input"
+              className="quick-search-box__input form-control"
+              onChange={[Function]}
+              placeholder="Find datafiles by title or description"
+              value=""
+            />
+            <button
+              aria-label="Quick find search button"
+              className="btn btn-primary"
+              disabled={false}
+              type="submit"
+            >
+              Search
+            </button>
+          </form>
+          <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Name
             </h3>
@@ -6104,7 +6163,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Created date
             </h3>
@@ -6131,7 +6190,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                     type="text"
                     value=""
                   />
@@ -6623,7 +6682,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                     onClick={[Function]}
                     onFocus={[Function]}
                     onKeyDown={[Function]}
-                    placeholder="MM/DD/YYYY"
+                    placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                     type="text"
                     value=""
                   />
@@ -7109,7 +7168,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Institution
             </h3>
@@ -7145,7 +7204,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <hr />
           <section>
             <h3
-              className="h5"
+              className="h6"
             >
               Schemas
             </h3>
@@ -7220,7 +7279,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Parameter 1
                       </h5>
@@ -7258,7 +7317,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Parameter 2
                       </h5>
@@ -7296,7 +7355,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Sensitive Parameter
                       </h5>
@@ -7359,7 +7418,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Another parameter 2
                       </h5>
@@ -7397,7 +7456,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Another parameter 1
                       </h5>
@@ -7435,7 +7494,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                       className="single-schema-list__filter"
                     >
                       <h5
-                        className="single-schema-list__filter-label"
+                        className="h6 single-schema-list__filter-label"
                       >
                         Sensitive Parameter
                       </h5>
@@ -7477,6 +7536,148 @@ exports[`Storyshots Filter sidebar Default 1`] = `
         </div>
       </div>
     </section>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Filter summary box Default 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+    }
+  }
+>
+  <div
+    className="card"
+    style={
+      Object {
+        "padding": "1rem",
+      }
+    }
+  >
+    <div
+      className="card-body d-flex"
+    >
+      <div
+        className="flex-grow-1"
+      >
+        <div
+          className=""
+        >
+          <span>
+            Showing results where 
+          </span>
+          <div
+            className="filter-summary-box__badge-group"
+          >
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              Project.Schema
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              is
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              1
+            </span>
+          </div>
+          <span
+            className="filter-summarybox__badge--separator"
+          >
+            and
+          </span>
+          <div
+            className="filter-summary-box__badge-group"
+          >
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              Experiment.Schema
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              is
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              2
+            </span>
+          </div>
+          <span
+            className="filter-summarybox__badge--separator"
+          >
+            and
+          </span>
+          <div
+            className="filter-summary-box__badge-group"
+          >
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              Dataset.Schema
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              is
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              1
+            </span>
+          </div>
+          <span
+            className="filter-summarybox__badge--separator"
+          >
+            and
+          </span>
+          <div
+            className="filter-summary-box__badge-group"
+          >
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              Datafile.Schema
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              is
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              1
+            </span>
+            <span
+              className="filter-summary-box__badge badge badge-secondary"
+            >
+              2
+            </span>
+          </div>
+          .
+        </div>
+      </div>
+      <div>
+        <button
+          className="ms-1 btn btn-primary"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          Reset filters
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -7734,7 +7935,7 @@ exports[`Storyshots Filters/Date range filter Default 1`] = `
           onKeyDown={[Function]}
           placeholder="Start date"
           type="text"
-          value="01/05/2020"
+          value="2020-01-05"
         />
         <div
           className="rdtPicker"
@@ -8226,7 +8427,7 @@ exports[`Storyshots Filters/Date range filter Default 1`] = `
           onKeyDown={[Function]}
           placeholder="End date"
           type="text"
-          value="05/28/2020"
+          value="2020-05-28"
         />
         <div
           className="rdtPicker"
@@ -9752,7 +9953,7 @@ exports[`Storyshots Filters/Date range filter No Labels 1`] = `
           onKeyDown={[Function]}
           placeholder="Start date"
           type="text"
-          value="01/05/2020"
+          value="2020-01-05"
         />
         <div
           className="rdtPicker"
@@ -10244,7 +10445,7 @@ exports[`Storyshots Filters/Date range filter No Labels 1`] = `
           onKeyDown={[Function]}
           placeholder="End date"
           type="text"
-          value="05/28/2020"
+          value="2020-05-28"
         />
         <div
           className="rdtPicker"
@@ -10761,7 +10962,7 @@ exports[`Storyshots Filters/Date range filter Only Show End 1`] = `
           onKeyDown={[Function]}
           placeholder="End date"
           type="text"
-          value="05/28/2020"
+          value="2020-05-28"
         />
         <div
           className="rdtPicker"
@@ -11278,7 +11479,7 @@ exports[`Storyshots Filters/Date range filter Only Show Start 1`] = `
           onKeyDown={[Function]}
           placeholder="Start date"
           type="text"
-          value="01/05/2020"
+          value="2020-01-05"
         />
         <div
           className="rdtPicker"
@@ -11771,11 +11972,6 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
   }
 >
   <section>
-    <h2
-      className="h3"
-    >
-      Filters
-    </h2>
     <nav
       className="nav nav-tabs"
       onKeyDown={[Function]}
@@ -11899,9 +12095,30 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         id="filters-section-tabpane-projects"
         role="tabpanel"
       >
+        <form
+          className="quick-search-box"
+          onSubmit={[Function]}
+        >
+          <input
+            aria-label="Quick find search input"
+            className="quick-search-box__input form-control"
+            onChange={[Function]}
+            placeholder="Find projects by title or description"
+            value=""
+          />
+          <button
+            aria-label="Quick find search button"
+            className="btn btn-primary"
+            disabled={false}
+            type="submit"
+          >
+            Search
+          </button>
+        </form>
+        <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Name
           </h3>
@@ -11937,7 +12154,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Created date
           </h3>
@@ -11964,7 +12181,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                   type="text"
                   value=""
                 />
@@ -12456,7 +12673,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                   type="text"
                   value=""
                 />
@@ -12942,7 +13159,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Institution
           </h3>
@@ -12978,7 +13195,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Schemas
           </h3>
@@ -13053,7 +13270,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Parameter 1
                     </h5>
@@ -13091,7 +13308,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Parameter 2
                     </h5>
@@ -13129,7 +13346,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Sensitive Parameter
                     </h5>
@@ -13176,9 +13393,30 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         id="filters-section-tabpane-experiments"
         role="tabpanel"
       >
+        <form
+          className="quick-search-box"
+          onSubmit={[Function]}
+        >
+          <input
+            aria-label="Quick find search input"
+            className="quick-search-box__input form-control"
+            onChange={[Function]}
+            placeholder="Find experiments by title or description"
+            value=""
+          />
+          <button
+            aria-label="Quick find search button"
+            className="btn btn-primary"
+            disabled={false}
+            type="submit"
+          >
+            Search
+          </button>
+        </form>
+        <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Name
           </h3>
@@ -13214,7 +13452,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Created date
           </h3>
@@ -13241,7 +13479,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                   type="text"
                   value=""
                 />
@@ -13733,7 +13971,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                   type="text"
                   value=""
                 />
@@ -14219,7 +14457,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Institution
           </h3>
@@ -14255,7 +14493,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Schemas
           </h3>
@@ -14330,7 +14568,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Another parameter 2
                     </h5>
@@ -14368,7 +14606,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Another parameter 1
                     </h5>
@@ -14406,7 +14644,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Sensitive Parameter
                     </h5>
@@ -14453,9 +14691,30 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         id="filters-section-tabpane-datasets"
         role="tabpanel"
       >
+        <form
+          className="quick-search-box"
+          onSubmit={[Function]}
+        >
+          <input
+            aria-label="Quick find search input"
+            className="quick-search-box__input form-control"
+            onChange={[Function]}
+            placeholder="Find datasets by title or description"
+            value=""
+          />
+          <button
+            aria-label="Quick find search button"
+            className="btn btn-primary"
+            disabled={false}
+            type="submit"
+          >
+            Search
+          </button>
+        </form>
+        <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Name
           </h3>
@@ -14491,7 +14750,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Created date
           </h3>
@@ -14518,7 +14777,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                   type="text"
                   value=""
                 />
@@ -15010,7 +15269,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                   type="text"
                   value=""
                 />
@@ -15496,7 +15755,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Institution
           </h3>
@@ -15532,7 +15791,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Schemas
           </h3>
@@ -15607,7 +15866,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Parameter 1
                     </h5>
@@ -15645,7 +15904,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Parameter 2
                     </h5>
@@ -15683,7 +15942,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Sensitive Parameter
                     </h5>
@@ -15730,9 +15989,30 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         id="filters-section-tabpane-datafiles"
         role="tabpanel"
       >
+        <form
+          className="quick-search-box"
+          onSubmit={[Function]}
+        >
+          <input
+            aria-label="Quick find search input"
+            className="quick-search-box__input form-control"
+            onChange={[Function]}
+            placeholder="Find datafiles by title or description"
+            value=""
+          />
+          <button
+            aria-label="Quick find search button"
+            className="btn btn-primary"
+            disabled={false}
+            type="submit"
+          >
+            Search
+          </button>
+        </form>
+        <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Name
           </h3>
@@ -15768,7 +16048,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Created date
           </h3>
@@ -15795,7 +16075,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                   type="text"
                   value=""
                 />
@@ -16287,7 +16567,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                   onClick={[Function]}
                   onFocus={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="MM/DD/YYYY"
+                  placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                   type="text"
                   value=""
                 />
@@ -16773,7 +17053,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Institution
           </h3>
@@ -16809,7 +17089,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <hr />
         <section>
           <h3
-            className="h5"
+            className="h6"
           >
             Schemas
           </h3>
@@ -16884,7 +17164,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Parameter 1
                     </h5>
@@ -16922,7 +17202,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Parameter 2
                     </h5>
@@ -16960,7 +17240,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Sensitive Parameter
                     </h5>
@@ -17023,7 +17303,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Another parameter 2
                     </h5>
@@ -17061,7 +17341,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Another parameter 1
                     </h5>
@@ -17099,7 +17379,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
                     className="single-schema-list__filter"
                   >
                     <h5
-                      className="single-schema-list__filter-label"
+                      className="h6 single-schema-list__filter-label"
                     >
                       Sensitive Parameter
                     </h5>
@@ -17268,6 +17548,7 @@ exports[`Storyshots Filters/Number range filter Empty 1`] = `
         className="form-control"
         onChange={[Function]}
         placeholder="Minimum"
+        value=""
       />
     </div>
     <div
@@ -17283,6 +17564,7 @@ exports[`Storyshots Filters/Number range filter Empty 1`] = `
         className="form-control"
         onChange={[Function]}
         placeholder="Maximum"
+        value=""
       />
     </div>
     <button
@@ -17386,7 +17668,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
 >
   <section>
     <h3
-      className="h5"
+      className="h6"
     >
       Schemas
     </h3>
@@ -17461,7 +17743,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Parameter 1
               </h5>
@@ -17499,7 +17781,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Parameter 2
               </h5>
@@ -17537,7 +17819,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Sensitive Parameter
               </h5>
@@ -17600,7 +17882,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Another parameter 2
               </h5>
@@ -17638,7 +17920,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Another parameter 1
               </h5>
@@ -17676,7 +17958,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Sensitive Parameter
               </h5>
@@ -17729,7 +18011,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
 >
   <section>
     <h3
-      className="h5"
+      className="h6"
     >
       Schemas
     </h3>
@@ -17804,7 +18086,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Parameter 1
               </h5>
@@ -17842,7 +18124,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Parameter 2
               </h5>
@@ -17880,7 +18162,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Sensitive Parameter
               </h5>
@@ -17943,7 +18225,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Another parameter 2
               </h5>
@@ -17981,7 +18263,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Another parameter 1
               </h5>
@@ -18019,7 +18301,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Sensitive Parameter
               </h5>
@@ -18083,7 +18365,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
 >
   <section>
     <h3
-      className="h5"
+      className="h6"
     >
       Schemas
     </h3>
@@ -18158,7 +18440,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Parameter 1
               </h5>
@@ -18196,7 +18478,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Parameter 2
               </h5>
@@ -18234,7 +18516,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
               className="single-schema-list__filter"
             >
               <h5
-                className="single-schema-list__filter-label"
+                className="h6 single-schema-list__filter-label"
               >
                 Sensitive Parameter
               </h5>
@@ -19302,14 +19584,14 @@ exports[`Storyshots Quick search box Default 1`] = `
   }
 >
   <form
-    className=""
+    className="quick-search-box"
     onSubmit={[Function]}
   >
     <input
       aria-label="Quick find search input"
       className="quick-search-box__input form-control"
       onChange={[Function]}
-      placeholder="Find by title or description"
+      placeholder="Find experiments by title or description"
       value=""
     />
     <button
@@ -19333,14 +19615,14 @@ exports[`Storyshots Quick search box Filled 1`] = `
   }
 >
   <form
-    className=""
+    className="quick-search-box"
     onSubmit={[Function]}
   >
     <input
       aria-label="Quick find search input"
       className="quick-search-box__input form-control"
       onChange={[Function]}
-      placeholder="Find by title or description"
+      placeholder="Find experiments by title or description"
       value="A search term!"
     />
     <button
@@ -20075,9 +20357,6 @@ exports[`Storyshots Search page Default 1`] = `
 <div
   className="search-page"
 >
-  <h1>
-    Search
-  </h1>
   <div
     className="search-screen"
   >
@@ -20088,32 +20367,7 @@ exports[`Storyshots Search page Default 1`] = `
       <div
         className="filter-sidebar"
       >
-        <form
-          className=""
-          onSubmit={[Function]}
-        >
-          <input
-            aria-label="Quick find search input"
-            className="quick-search-box__input form-control"
-            onChange={[Function]}
-            placeholder="Find by title or description"
-            value=""
-          />
-          <button
-            aria-label="Quick find search button"
-            className="btn btn-primary"
-            disabled={false}
-            type="submit"
-          >
-            Search
-          </button>
-        </form>
         <section>
-          <h2
-            className="h3"
-          >
-            Filters
-          </h2>
           <nav
             className="nav nav-tabs"
             onKeyDown={[Function]}
@@ -20237,9 +20491,30 @@ exports[`Storyshots Search page Default 1`] = `
               id="filters-section-tabpane-projects"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find projects by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -20275,7 +20550,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -20302,7 +20577,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -20794,7 +21069,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -21280,7 +21555,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -21316,7 +21591,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -21391,7 +21666,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 1
                           </h5>
@@ -21429,7 +21704,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 2
                           </h5>
@@ -21467,7 +21742,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -21514,9 +21789,30 @@ exports[`Storyshots Search page Default 1`] = `
               id="filters-section-tabpane-experiments"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find experiments by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -21552,7 +21848,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -21579,7 +21875,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -22071,7 +22367,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -22557,7 +22853,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -22593,7 +22889,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -22668,7 +22964,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 2
                           </h5>
@@ -22706,7 +23002,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 1
                           </h5>
@@ -22744,7 +23040,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -22791,9 +23087,30 @@ exports[`Storyshots Search page Default 1`] = `
               id="filters-section-tabpane-datasets"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find datasets by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -22829,7 +23146,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -22856,7 +23173,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -23348,7 +23665,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -23834,7 +24151,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -23870,7 +24187,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -23945,7 +24262,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 1
                           </h5>
@@ -23983,7 +24300,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 2
                           </h5>
@@ -24021,7 +24338,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -24068,9 +24385,30 @@ exports[`Storyshots Search page Default 1`] = `
               id="filters-section-tabpane-datafiles"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find datafiles by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -24106,7 +24444,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -24133,7 +24471,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -24625,7 +24963,7 @@ exports[`Storyshots Search page Default 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -25111,7 +25449,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -25147,7 +25485,7 @@ exports[`Storyshots Search page Default 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -25222,7 +25560,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 1
                           </h5>
@@ -25260,7 +25598,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 2
                           </h5>
@@ -25298,7 +25636,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -25361,7 +25699,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 2
                           </h5>
@@ -25399,7 +25737,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 1
                           </h5>
@@ -25437,7 +25775,7 @@ exports[`Storyshots Search page Default 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -25485,6 +25823,137 @@ exports[`Storyshots Search page Default 1`] = `
       className="result-column"
       md={8}
     >
+      <div
+        className="card"
+        style={
+          Object {
+            "padding": "1rem",
+          }
+        }
+      >
+        <div
+          className="card-body d-flex"
+        >
+          <div
+            className="flex-grow-1"
+          >
+            <div
+              className=""
+            >
+              <span>
+                Showing results where 
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Project.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
+              <span
+                className="filter-summarybox__badge--separator"
+              >
+                and
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Experiment.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
+              <span
+                className="filter-summarybox__badge--separator"
+              >
+                and
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Dataset.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
+              <span
+                className="filter-summarybox__badge--separator"
+              >
+                and
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Datafile.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
+              .
+            </div>
+          </div>
+          <div>
+            <button
+              className="ms-1 btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Reset filters
+            </button>
+          </div>
+        </div>
+      </div>
       <div
         className="nav nav-tabs"
         onKeyDown={[Function]}
@@ -25985,9 +26454,6 @@ exports[`Storyshots Search page Error 1`] = `
 <div
   className="search-page"
 >
-  <h1>
-    Search
-  </h1>
   <div
     className="search-screen"
   >
@@ -25998,32 +26464,7 @@ exports[`Storyshots Search page Error 1`] = `
       <div
         className="filter-sidebar"
       >
-        <form
-          className=""
-          onSubmit={[Function]}
-        >
-          <input
-            aria-label="Quick find search input"
-            className="quick-search-box__input form-control"
-            onChange={[Function]}
-            placeholder="Find by title or description"
-            value=""
-          />
-          <button
-            aria-label="Quick find search button"
-            className="btn btn-primary"
-            disabled={false}
-            type="submit"
-          >
-            Search
-          </button>
-        </form>
         <section>
-          <h2
-            className="h3"
-          >
-            Filters
-          </h2>
           <nav
             className="nav nav-tabs"
             onKeyDown={[Function]}
@@ -26147,9 +26588,30 @@ exports[`Storyshots Search page Error 1`] = `
               id="filters-section-tabpane-projects"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find projects by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -26185,7 +26647,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -26212,7 +26674,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -26704,7 +27166,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -27190,7 +27652,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -27226,7 +27688,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -27301,7 +27763,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 1
                           </h5>
@@ -27339,7 +27801,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 2
                           </h5>
@@ -27377,7 +27839,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -27424,9 +27886,30 @@ exports[`Storyshots Search page Error 1`] = `
               id="filters-section-tabpane-experiments"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find experiments by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -27462,7 +27945,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -27489,7 +27972,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -27981,7 +28464,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -28467,7 +28950,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -28503,7 +28986,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -28578,7 +29061,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 2
                           </h5>
@@ -28616,7 +29099,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 1
                           </h5>
@@ -28654,7 +29137,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -28701,9 +29184,30 @@ exports[`Storyshots Search page Error 1`] = `
               id="filters-section-tabpane-datasets"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find datasets by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -28739,7 +29243,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -28766,7 +29270,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -29258,7 +29762,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -29744,7 +30248,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -29780,7 +30284,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -29855,7 +30359,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 1
                           </h5>
@@ -29893,7 +30397,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 2
                           </h5>
@@ -29931,7 +30435,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -29978,9 +30482,30 @@ exports[`Storyshots Search page Error 1`] = `
               id="filters-section-tabpane-datafiles"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find datafiles by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -30016,7 +30541,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -30043,7 +30568,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -30535,7 +31060,7 @@ exports[`Storyshots Search page Error 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -31021,7 +31546,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -31057,7 +31582,7 @@ exports[`Storyshots Search page Error 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -31132,7 +31657,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 1
                           </h5>
@@ -31170,7 +31695,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 2
                           </h5>
@@ -31208,7 +31733,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -31271,7 +31796,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 2
                           </h5>
@@ -31309,7 +31834,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 1
                           </h5>
@@ -31347,7 +31872,7 @@ exports[`Storyshots Search page Error 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -31395,6 +31920,137 @@ exports[`Storyshots Search page Error 1`] = `
       className="result-column"
       md={8}
     >
+      <div
+        className="card"
+        style={
+          Object {
+            "padding": "1rem",
+          }
+        }
+      >
+        <div
+          className="card-body d-flex"
+        >
+          <div
+            className="flex-grow-1"
+          >
+            <div
+              className=""
+            >
+              <span>
+                Showing results where 
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Project.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
+              <span
+                className="filter-summarybox__badge--separator"
+              >
+                and
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Experiment.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
+              <span
+                className="filter-summarybox__badge--separator"
+              >
+                and
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Dataset.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
+              <span
+                className="filter-summarybox__badge--separator"
+              >
+                and
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Datafile.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
+              .
+            </div>
+          </div>
+          <div>
+            <button
+              className="ms-1 btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Reset filters
+            </button>
+          </div>
+        </div>
+      </div>
       <div
         className="nav nav-tabs"
         onKeyDown={[Function]}
@@ -31489,9 +32145,6 @@ exports[`Storyshots Search page Loading 1`] = `
 <div
   className="search-page"
 >
-  <h1>
-    Search
-  </h1>
   <div
     className="search-screen"
   >
@@ -31502,32 +32155,7 @@ exports[`Storyshots Search page Loading 1`] = `
       <div
         className="filter-sidebar"
       >
-        <form
-          className=""
-          onSubmit={[Function]}
-        >
-          <input
-            aria-label="Quick find search input"
-            className="quick-search-box__input form-control"
-            onChange={[Function]}
-            placeholder="Find by title or description"
-            value=""
-          />
-          <button
-            aria-label="Quick find search button"
-            className="btn btn-primary"
-            disabled={false}
-            type="submit"
-          >
-            Search
-          </button>
-        </form>
         <section>
-          <h2
-            className="h3"
-          >
-            Filters
-          </h2>
           <nav
             className="nav nav-tabs"
             onKeyDown={[Function]}
@@ -31651,9 +32279,30 @@ exports[`Storyshots Search page Loading 1`] = `
               id="filters-section-tabpane-projects"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find projects by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -31689,7 +32338,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -31716,7 +32365,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -32208,7 +32857,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -32694,7 +33343,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -32730,7 +33379,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -32805,7 +33454,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 1
                           </h5>
@@ -32843,7 +33492,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 2
                           </h5>
@@ -32881,7 +33530,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -32928,9 +33577,30 @@ exports[`Storyshots Search page Loading 1`] = `
               id="filters-section-tabpane-experiments"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find experiments by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -32966,7 +33636,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -32993,7 +33663,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -33485,7 +34155,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -33971,7 +34641,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -34007,7 +34677,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -34082,7 +34752,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 2
                           </h5>
@@ -34120,7 +34790,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 1
                           </h5>
@@ -34158,7 +34828,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -34205,9 +34875,30 @@ exports[`Storyshots Search page Loading 1`] = `
               id="filters-section-tabpane-datasets"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find datasets by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -34243,7 +34934,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -34270,7 +34961,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -34762,7 +35453,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -35248,7 +35939,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -35284,7 +35975,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -35359,7 +36050,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 1
                           </h5>
@@ -35397,7 +36088,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 2
                           </h5>
@@ -35435,7 +36126,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -35482,9 +36173,30 @@ exports[`Storyshots Search page Loading 1`] = `
               id="filters-section-tabpane-datafiles"
               role="tabpanel"
             >
+              <form
+                className="quick-search-box"
+                onSubmit={[Function]}
+              >
+                <input
+                  aria-label="Quick find search input"
+                  className="quick-search-box__input form-control"
+                  onChange={[Function]}
+                  placeholder="Find datafiles by title or description"
+                  value=""
+                />
+                <button
+                  aria-label="Quick find search button"
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+              <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Name
                 </h3>
@@ -35520,7 +36232,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Created date
                 </h3>
@@ -35547,7 +36259,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-23)"
                         type="text"
                         value=""
                       />
@@ -36039,7 +36751,7 @@ exports[`Storyshots Search page Loading 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="MM/DD/YYYY"
+                        placeholder="YYYY-MM-DD (e.g. 2020-11-30)"
                         type="text"
                         value=""
                       />
@@ -36525,7 +37237,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Institution
                 </h3>
@@ -36561,7 +37273,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <hr />
               <section>
                 <h3
-                  className="h5"
+                  className="h6"
                 >
                   Schemas
                 </h3>
@@ -36636,7 +37348,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 1
                           </h5>
@@ -36674,7 +37386,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Parameter 2
                           </h5>
@@ -36712,7 +37424,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -36775,7 +37487,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 2
                           </h5>
@@ -36813,7 +37525,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Another parameter 1
                           </h5>
@@ -36851,7 +37563,7 @@ exports[`Storyshots Search page Loading 1`] = `
                           className="single-schema-list__filter"
                         >
                           <h5
-                            className="single-schema-list__filter-label"
+                            className="h6 single-schema-list__filter-label"
                           >
                             Sensitive Parameter
                           </h5>
@@ -36899,6 +37611,137 @@ exports[`Storyshots Search page Loading 1`] = `
       className="result-column"
       md={8}
     >
+      <div
+        className="card"
+        style={
+          Object {
+            "padding": "1rem",
+          }
+        }
+      >
+        <div
+          className="card-body d-flex"
+        >
+          <div
+            className="flex-grow-1"
+          >
+            <div
+              className=""
+            >
+              <span>
+                Showing results where 
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Project.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
+              <span
+                className="filter-summarybox__badge--separator"
+              >
+                and
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Experiment.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
+              <span
+                className="filter-summarybox__badge--separator"
+              >
+                and
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Dataset.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+              </div>
+              <span
+                className="filter-summarybox__badge--separator"
+              >
+                and
+              </span>
+              <div
+                className="filter-summary-box__badge-group"
+              >
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  Datafile.Schema
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  is
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  1
+                </span>
+                <span
+                  className="filter-summary-box__badge badge badge-secondary"
+                >
+                  2
+                </span>
+              </div>
+              .
+            </div>
+          </div>
+          <div>
+            <button
+              className="ms-1 btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Reset filters
+            </button>
+          </div>
+        </div>
+      </div>
       <div
         className="nav nav-tabs"
         onKeyDown={[Function]}

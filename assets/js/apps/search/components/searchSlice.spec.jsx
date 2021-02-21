@@ -10,11 +10,11 @@ import { searchInfoData } from "./SearchPage.stories";
 
 describe("Query parser", () => {
     it("can parse text search terms", () => {
-        expect(parseQuery("?q=abc")).toEqual({query: "abc"});
+        expect(parseQuery("?q={\"query\":{\"project\":\"abc\"}}")).toEqual({query: {project: "abc"}});
     });
 
     it("can parse numerical search terms", () => {
-        expect(parseQuery("?q=2")).toEqual({query: "2"});
+        expect(parseQuery("?q={\"query\": {\"project\": 2}}")).toEqual({query: {project: 2}});
     });
 
     it("can parse complex search query", () => {
@@ -22,11 +22,30 @@ describe("Query parser", () => {
     });
 
     it("can parse special characters", () => {
-        expect(parseQuery("?q=%3A")).toEqual({query: ":"});
+        expect(parseQuery("?q=%3A")).toEqual({query: {
+            project: ":",
+            experiment: ":",
+            dataset: ":",
+            datafile: ":"
+        }});
+    });
+
+    it("can parse legacy search URLs that have search term strings", () => {
+        expect(parseQuery("?q=test")).toEqual({query: {
+            project: "test",
+            experiment: "test",
+            dataset: "test",
+            datafile: "test"
+        }});
     });
 
     it("can parse square brackets as a search term", () => {
-        expect(parseQuery("?q=%5B2%5D")).toEqual({query: "[2]"});
+        expect(parseQuery("?q=%5B2%5D")).toEqual({query: {
+            project: "[2]",
+            experiment: "[2]",
+            dataset: "[2]",
+            datafile: "[2]"
+        }});
     });
 });
 

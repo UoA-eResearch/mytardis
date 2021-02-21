@@ -1,6 +1,7 @@
 {
     "byId": {
         "projects": {
+            "full_name": "Project",
             "attributes": {
                 "byId": {
                     "name": {
@@ -73,6 +74,7 @@
             }
         },
         "experiments": {
+            "full_name": "Experiment",
             "attributes": {
                 "byId": {
                     "title": {
@@ -136,6 +138,7 @@
             }
         },
         "datasets": {
+            "full_name": "Dataset",
             "attributes": {
                 "byId": {
                     "description": {
@@ -193,6 +196,7 @@
             }
         },
         "datafiles": {
+            "full_name": "Datafile",
             "attributes": {
                 "byId": {
                     "filename": {

@@ -36,7 +36,7 @@ const SchemaFilterList = ({ schema }) => {
                             ApplicableFilter = mapTypeToFilter(param.data_type);
                     return (
                             <section key={parameterId} className="single-schema-list__filter">
-                                <h5 className="single-schema-list__filter-label">{full_name}</h5>
+                                <h5 className="h6 single-schema-list__filter-label">{full_name}</h5>
                                 <ApplicableFilter 
                                     id={schemaId+"."+parameterId}
                                     value={value}
@@ -83,7 +83,7 @@ export const PureTypeSchemaList = ({ value: schemaValue, onValueChange, options 
 
     return (
         <section>
-            <h3 className="h5">Schemas</h3>
+            <h3 className="h6">Schemas</h3>
             <CategoryFilter value={schemaValue} onValueChange={onValueChange} options={{
                 checkAllByDefault: true,
                 categories: schemaList

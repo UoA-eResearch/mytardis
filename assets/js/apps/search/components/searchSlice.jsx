@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
+import { batch } from 'react-redux';
 import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeAttrSelector, allTypeAttrIdsSelector } from "./filters/filterSlice";
 
 const getResultFromHit = (hit,hitType,urlPrefix) => {
@@ -118,8 +119,23 @@ export const totalPagesSelector = (searchSlice, typeId) => (
     Math.ceil(totalHitsSelector(searchSlice, typeId) / pageSizeSelector(searchSlice, typeId))
 );
 
+/**
+ * Selector for the search term, if any, for a particular type.
+ * @param {string} typeId MyTardis object type.
+ */
+export const searchTermSelector = (searchSlice, typeId) => (
+    // Check search term exists and is an object before returning
+    // search term.
+    (searchSlice && 
+        searchSlice.searchTerm &&
+        typeof searchSlice.searchTerm === "object" && 
+        !Array.isArray(searchSlice.searchTerm))
+        ? 
+        searchSlice.searchTerm[typeId] : ""
+);
+
 const initialState = {
-    searchTerm: null,
+    searchTerm: {},
     isLoading: false,
     error:null,
     results:null,
@@ -188,7 +204,27 @@ const search = createSlice({
             }
         },
         updateSearchTerm: (state, {payload}) => {
-            state.searchTerm = payload;
+            const {searchTerm = {}, replaceState = false} = payload;
+            if (replaceState) {
+                // If replaceState is set, then replace
+                // state as a whole rather than update
+                // specified search terms.
+                state.searchTerm = searchTerm;
+            } else {
+                const currentSearchTerm = state.searchTerm || {};
+                state.searchTerm = Object.assign(currentSearchTerm, searchTerm);
+            }
+            // Clean up empty string search terms
+            Object.keys(state.searchTerm).forEach(type => {
+                if (state.searchTerm[type] === "") {
+                    delete state.searchTerm[type];
+                }
+            });
+            // Finally, if there are no search terms, delete
+            // the empty object. 
+            if (Object.keys(state.searchTerm).length === 0) {
+                state.searchTerm = undefined;
+            }
         },
         getResultsStart: (state) => {
             state.isLoading = true;
@@ -347,7 +383,7 @@ const buildQueryBody = (state, typeToSearch) => {
         // Add pagination query
         Object.assign(queryBody, buildPaginationQuery(state.search, typeToSearch));
     }
-    if (term !== null && term !== "") {
+    if (term !== null) {
         queryBody.query = term;
     }
     if (filters !== null) {
@@ -370,25 +406,46 @@ const runSearchWithQuery = (queryBody) => {
 
 const getDisplayQueryString = (queryBody) => {
     // Determine how to show the query in the URL, depending on what's in the query body.
-    const queryPrefix = "?q=";
-    if (queryBody.filters) {
+    if (queryBody.filters || (queryBody.query && Object.keys(queryBody.query).length > 0 )) {
         // If the query contains filters, then use the stringified JSON format.
-        return queryPrefix + encodeURIComponent(JSON.stringify(queryBody));
-    } else if (queryBody.query) {
-        // If the query only has a search term, then just use the search term.
-        return queryPrefix + encodeURIComponent(queryBody.query);
+        return "?q=" + encodeURIComponent(JSON.stringify(queryBody));
     } else {
         // when there aren't any filters or search terms don't show a query at all.
         return location.pathname;
     }
-}
+};
+
+/**
+ * Selector for whether there are any active quick search terms.
+ * @param {*} searchSlice Redux search slice
+ */
+export const hasActiveSearchTermSelector = searchSlice => {
+    // Then look through whether there are any quick search terms.
+    return Object.keys(searchSlice.searchTerm || {}).length > 0;
+};
+
 
 /**
  * Given the search part of URL, returns the search term or filters serialised in there.
  * @param {string} searchString The search part of URL.
- * @private 
+ * @private Only exported to run unit tests
  */
 export const parseQuery = (searchString) => {
+    const convertLegacySearchTermQuery = (searchTerm) => {
+        // Convert text string search term queries 
+        // to new format if so.
+        if (!searchTerm) {
+            return {};
+        }
+        return {
+            query: {
+                project: searchTerm,
+                experiment: searchTerm,
+                dataset: searchTerm,
+                datafile: searchTerm
+            }
+        };
+    };
 
     const buildResultForParsedQuery = (queryString) => {
         if (!queryString) { return {}; }
@@ -397,13 +454,14 @@ export const parseQuery = (searchString) => {
             if (typeof parsed === "object" && !Array.isArray(parsed)) {
                 return parsed;
             } else {
-                return { query: queryString };
+                return convertLegacySearchTermQuery(queryString);
             }
         } catch (e) {
             // When we fail to parse, we assume it's a search term string.
-            return { query: queryString };
+            return convertLegacySearchTermQuery(queryString);
         }
     };
+
     
     // Find and return the query string or JSON body.
     if (searchString[0] === "?") {
@@ -421,11 +479,19 @@ export const parseQuery = (searchString) => {
     return buildResultForParsedQuery(queryPart);
 };
 
-
+/**
+ * An async reducer for updating the Redux state tree from saved state.
+ * @param {object} queryBody the serialised query body
+ */
 const updateWithQuery = (queryBody) => {
     return (dispatch) => {
-        dispatch(updateSearchTerm(queryBody.query));
-        dispatch(updateFiltersByQuery(queryBody.filters));
+        batch(() => {
+            dispatch(updateSearchTerm({
+                searchTerm: queryBody.query,
+                replaceState: true
+            }));
+            dispatch(updateFiltersByQuery(queryBody.filters));    
+        });
     }
 }
 
@@ -436,7 +502,7 @@ export const runSearch = () => {
         const queryBody = buildQueryBody(state);
         dispatch(runSearchWithQuery(queryBody));
         dispatch(search.actions.resetPageNumber());
-        window.history.pushState(queryBody,"",getDisplayQueryString(queryBody));
+        window.history.pushState(queryBody, "", getDisplayQueryString(queryBody));
     }
 }
 
@@ -460,14 +526,13 @@ export const restoreSearchFromHistory = (restoredState) => {
     }
 }
 
-
 export const initialiseSearch = () => {
     return (dispatch, getState) => {
         const queryBody = parseQuery(window.location.search);
-        window.history.replaceState(queryBody,"",getDisplayQueryString(queryBody));
+        window.history.replaceState(queryBody, "", getDisplayQueryString(queryBody));
         dispatch(runSearchWithQuery(queryBody));
         dispatch(initialiseFilters()).then(() => {
-            if (!!queryBody) {
+            if (queryBody) {
                 dispatch(updateWithQuery(queryBody));
             }
         });
