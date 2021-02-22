@@ -187,10 +187,10 @@ class Command(BaseCommand):
 
         #if n_proj == 100:
         # Generate random samples for level below
-        rng_proj_dict = {"1" : [80],#rng.choice(100, size=1, replace=False),
+        rng_proj_dict = {"1" : [0],#rng.choice(100, size=1, replace=False),
                         "25" : list(range(0, 25)),#rng.choice(100, size=25, replace=False),
                         "50" : list(range(0, 50)),#rng.choice(100, size=50, replace=False),
-                        "75" : list(range(0, 745))}#rng.choice(100, size=75, replace=False)}
+                        "75" : list(range(0, 75))}#rng.choice(100, size=75, replace=False)}
 
         sys.stderr.write("Creating Projects...\n")
         #Create the projects
