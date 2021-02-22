@@ -4,7 +4,7 @@ import React from 'react';
 
 const getDateFields = (screen) => (
     [
-        screen.getByLabelText("Start"), 
+        screen.getByLabelText("Start"),
         screen.getByLabelText("End"),
         screen.getByText("Filter")
     ]
@@ -64,10 +64,10 @@ it('should callback with null after clearing a filter', async () => {
         onValueChange: mockHandleChangeFn
     });
     render(<Default {...props} />);
-    const [startDateEl, endDateEl,filterButton] = getDateFields(screen);
+    const [startDateEl, endDateEl, filterButton] = getDateFields(screen);
     // Clear the dates
-    fireEvent.change(startDateEl, {target: {value: ""}});
-    fireEvent.change(endDateEl, {target: {value: ""}});
+    fireEvent.change(startDateEl, { target: { value: "" } });
+    fireEvent.change(endDateEl, { target: { value: "" } });
     // Filter button should still be clickable to clear the field.
     expect(filterButton.disabled).toBeFalsy();
     fireEvent.click(filterButton);
@@ -75,6 +75,24 @@ it('should callback with null after clearing a filter', async () => {
         () => {
             expect(mockHandleChangeFn).toHaveBeenCalledTimes(1);
             expect(mockHandleChangeFn).toBeCalledWith(null);
-    });
+        });
 });
 
+
+it('Should show an error message when ', async () => {
+    const mockHandleChangeFn = jest.fn();
+    const props = Object.assign({}, Default.args, {
+        onValueChange: mockHandleChangeFn
+    });
+    render(<Default {...props} />);
+    const [startDateEl, endDateEl, filterButton] = getDateFields(screen);
+    // Input invalid dates
+    fireEvent.change(startDateEl, { target: { value: "abcd" } });
+    fireEvent.change(endDateEl, { target: { value: "efg" } });
+    // Filter button should still be clickable to clear the field.
+    expect(filterButton.disabled).toBeFalsy();
+    expect(screen.getByLabelText('Filter error message').innerHTML).toContain('Invalid date');
+})
+
+
+// TODO Add test to check null is returned to clear a field
