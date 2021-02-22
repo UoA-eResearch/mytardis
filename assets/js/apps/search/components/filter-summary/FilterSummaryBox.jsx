@@ -57,6 +57,7 @@ SingleValueContentBadge.propTypes = {
 };
 
 function FilterBadge({ fieldName, value }) {
+    
     return <div className="filter-summary-box__badge-group">
         <Badge variant="secondary" className="filter-summary-box__badge">{fieldName}</Badge>
         {value.map(({ op, content }) =>
@@ -125,7 +126,13 @@ function TypeAttributeFilterBadge({ fieldInfo }) {
         return <InvalidFilterBadge />;
     } else {
         const filterValue = useSelector(
-            state => typeAttrFilterValueSelector(state.filters, typeId, attributeId)
+            state => {
+                let value = typeAttrFilterValueSelector(state.filters, typeId, attributeId);
+                if (value && !Array.isArray(value)) {
+                    value = [value];
+                }
+                return value;
+            }
         );
         return <FilterBadge typeId={typeId} fieldName={fullFieldName} value={filterValue} />;
     }

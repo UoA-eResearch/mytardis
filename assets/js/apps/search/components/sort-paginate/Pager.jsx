@@ -130,7 +130,7 @@ export const PurePager = ({typeId, pageNum, pageSize, totalPages, onPageNumChang
                 <Pagination.Next key="next" onClick={handleClicked.bind(this, pageNum + 1)} />
                 <Pagination.Last key="last" onClick={handleClicked.bind(this, totalPages)} />
             </Pagination>
-            <label for={typeId + "-pager"} className="sr-only">Result page number</label>
+            <label htmlFor={typeId + "-pager"} className="sr-only">Result page number</label>
         </form>
     );
 };

@@ -4,6 +4,7 @@ search results show up as scrollable.
 */
 body {
     height: 100vh;
+    min-height: 600px;
     display: flex;
     flex-direction: column;
     background-color: #FAFCFF;
