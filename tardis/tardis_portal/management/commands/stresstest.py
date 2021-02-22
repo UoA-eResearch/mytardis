@@ -2,6 +2,9 @@
  Command for stress-testing mytardis by inserting large numbers of dummy objects
  into the database.
 """
+
+# pylint: disable=R1702
+
 import sys
 
 from django.core.management.base import BaseCommand, CommandError
