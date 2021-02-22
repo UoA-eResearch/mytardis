@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import Datetime from "react-datetime";
 import moment from "moment";
 
+import FilterError from "../filter-error/FilterError";
+
 // React Datetime requires CSS to work.
 import "react-datetime/css/react-datetime.css";
 
@@ -107,6 +109,7 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
     options = mergeOptionsWithDefaults(options);
 
     const [localValue, setLocalValue] = useState(toLocalValue(value));
+    const [isValidValue, setIsValidValue] = useState(true);
 
     useEffect(() => {
         // Update the filter when there is a new value,
@@ -140,8 +143,18 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                 newValue.start = newValue.end;
             }
         }
+        checkValidation(newValue);
         setLocalValue(newValue);
     };
+
+    const checkValidation = (val) => {
+        // for all date points (e.g start or end) if it is an invalid Moment object set invalid values to true
+        let valid = Object.keys(val).every(key => {
+            let date = val[key];
+            return date._isAMomentObject;
+        })
+        setIsValidValue(valid)
+    }
 
     // We should disable the filter button if there's nothing in the filter box.
     // But we should be able to clear a field if there's a value on the filter.
@@ -178,10 +191,11 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                     />
                 </Form.Group>
             }
-            {options.hideEnd ? null : 
+            {options.hideEnd ? null :
                 <Form.Group className="date-range-filter__field">
                     <Form.Label htmlFor={endFieldId} srOnly={options.hideLabels}>End</Form.Label>
                     <Datetime
+                        isInvalid={!isValidValue}
                         value={localValue.end}
                         onChange={handleEndValueChange}
                         inputProps={{ placeholder: options.hintEnd, id: endFieldId }}
@@ -193,6 +207,13 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                         key={endFieldId + localValue.end} 
                     />
                 </Form.Group>
+            }
+            {isValidValue ? null :
+                <FilterError
+                    message={"Invalid date"}
+                    showIcon={true}
+                    longMessage={"You have entered an invalid date. Select a date by clicking on the date and selecting from the calendar or by typing a valid date format."}
+                />
             }
             <Button
                 type="submit"

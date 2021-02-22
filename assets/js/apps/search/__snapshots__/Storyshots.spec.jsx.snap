@@ -2075,6 +2075,172 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
 </div>
 `;
 
+exports[`Storyshots Filter Error Popup Custom Messages 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+      "width": "300px",
+    }
+  }
+>
+  <div
+    className="filter-error"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+  >
+    <p
+      aria-label="Filter error message"
+      className="filter-error___text"
+    >
+      custom short message
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Filter Error Popup Date Range 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+      "width": "300px",
+    }
+  }
+>
+  <div
+    className="filter-error"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+  >
+    <p
+      aria-label="Filter error message"
+      className="filter-error___text"
+    >
+      Invalid Date Range
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Filter Error Popup Default 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+      "width": "300px",
+    }
+  }
+>
+  <div
+    className="filter-error"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+  >
+    <p
+      aria-label="Filter error message"
+      className="filter-error___text"
+    >
+      message
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Filter Error Popup Number Range 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+      "width": "300px",
+    }
+  }
+>
+  <div
+    className="filter-error"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+  >
+    <p
+      aria-label="Filter error message"
+      className="filter-error___text"
+    >
+      Invalid Range Values
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Filter Error Popup With Label 1`] = `
+<div
+  style={
+    Object {
+      "padding": "3rem",
+      "width": "300px",
+    }
+  }
+>
+  <div
+    className="filter-error"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+  >
+    <p
+      aria-label="Filter error message"
+      className="filter-error___text"
+    >
+      custom short message
+    </p>
+    <svg
+      aria-label="error message icon"
+      className="filter-error___icon"
+      fill="none"
+      height="1em"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      style={
+        Object {
+          "color": undefined,
+        }
+      }
+      viewBox="0 0 24 24"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+      />
+      <line
+        x1="12"
+        x2="12"
+        y1="8"
+        y2="12"
+      />
+      <line
+        x1="12"
+        x2="12"
+        y1="16"
+        y2="16"
+      />
+    </svg>
+  </div>
+</div>
+`;
+
 exports[`Storyshots Filter sidebar Default 1`] = `
 <div
   style={
@@ -7550,133 +7716,122 @@ exports[`Storyshots Filter summary box Default 1`] = `
 >
   <div
     className="card"
-    style={
-      Object {
-        "padding": "1rem",
-      }
-    }
   >
     <div
-      className="card-body d-flex"
+      className="card-body"
     >
       <div
-        className="flex-grow-1"
+        className=""
       >
+        <span>
+          Showing results that match 
+        </span>
         <div
-          className=""
+          className="filter-summary-box__badge-group"
         >
-          <span>
-            Showing results where 
-          </span>
-          <div
-            className="filter-summary-box__badge-group"
-          >
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              Project.Schema
-            </span>
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              is
-            </span>
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              1
-            </span>
-          </div>
           <span
-            className="filter-summarybox__badge--separator"
+            className="filter-summary-box__badge badge badge-secondary"
           >
-            and
+            Project.Schema
           </span>
-          <div
-            className="filter-summary-box__badge-group"
-          >
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              Experiment.Schema
-            </span>
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              is
-            </span>
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              2
-            </span>
-          </div>
           <span
-            className="filter-summarybox__badge--separator"
+            className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
           >
-            and
+            is
           </span>
-          <div
-            className="filter-summary-box__badge-group"
-          >
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              Dataset.Schema
-            </span>
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              is
-            </span>
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              1
-            </span>
-          </div>
           <span
-            className="filter-summarybox__badge--separator"
+            className="filter-summary-box__badge badge badge-secondary"
           >
-            and
+            1
           </span>
-          <div
-            className="filter-summary-box__badge-group"
-          >
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              Datafile.Schema
-            </span>
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              is
-            </span>
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              1
-            </span>
-            <span
-              className="filter-summary-box__badge badge badge-secondary"
-            >
-              2
-            </span>
-          </div>
-          .
         </div>
-      </div>
-      <div>
-        <button
-          className="ms-1 btn btn-primary"
-          disabled={false}
-          onClick={[Function]}
-          type="button"
+        <span
+          className="filter-summarybox__badge filter-summarybox__badge--separator"
         >
-          Reset filters
-        </button>
+          and
+        </span>
+        <div
+          className="filter-summary-box__badge-group"
+        >
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            Experiment.Schema
+          </span>
+          <span
+            className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+          >
+            is
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            2
+          </span>
+        </div>
+        <span
+          className="filter-summarybox__badge filter-summarybox__badge--separator"
+        >
+          and
+        </span>
+        <div
+          className="filter-summary-box__badge-group"
+        >
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            Dataset.Schema
+          </span>
+          <span
+            className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+          >
+            is
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            1
+          </span>
+        </div>
+        <span
+          className="filter-summarybox__badge filter-summarybox__badge--separator"
+        >
+          and
+        </span>
+        <div
+          className="filter-summary-box__badge-group"
+        >
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            Datafile.Schema
+          </span>
+          <span
+            className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+          >
+            is
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            1
+          </span>
+          <span
+            className="filter-summary-box__badge badge badge-secondary"
+          >
+            2
+          </span>
+        </div>
+        .
       </div>
+      <button
+        className="px-0 btn btn-link"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Reset
+      </button>
     </div>
   </div>
 </div>
@@ -17489,6 +17644,7 @@ exports[`Storyshots Filters/Number range filter Default 1`] = `
       <input
         aria-label="Filter input for min value"
         className="form-control"
+        onBlur={[Function]}
         onChange={[Function]}
         placeholder="Minimum"
         value={2}
@@ -17505,6 +17661,7 @@ exports[`Storyshots Filters/Number range filter Default 1`] = `
       <input
         aria-label="Filter input for max value"
         className="form-control"
+        onBlur={[Function]}
         onChange={[Function]}
         placeholder="Maximum"
         value={10}
@@ -17546,6 +17703,7 @@ exports[`Storyshots Filters/Number range filter Empty 1`] = `
       <input
         aria-label="Filter input for min value"
         className="form-control"
+        onBlur={[Function]}
         onChange={[Function]}
         placeholder="Minimum"
         value=""
@@ -17562,6 +17720,7 @@ exports[`Storyshots Filters/Number range filter Empty 1`] = `
       <input
         aria-label="Filter input for max value"
         className="form-control"
+        onBlur={[Function]}
         onChange={[Function]}
         placeholder="Maximum"
         value=""
@@ -19646,10 +19805,10 @@ exports[`Storyshots Result list All Access 1`] = `
   }
 >
   <div
-    className="table-responsive"
+    className="result-section__container"
   >
     <table
-      className="result-section__container table table-hover"
+      className="table"
     >
       <thead>
         <tr>
@@ -19702,10 +19861,10 @@ exports[`Storyshots Result list Default 1`] = `
   }
 >
   <div
-    className="table-responsive"
+    className="result-section__container"
   >
     <table
-      className="result-section__container table table-hover"
+      className="table"
     >
       <thead>
         <tr>
@@ -19881,10 +20040,10 @@ exports[`Storyshots Result list Empty 1`] = `
   }
 >
   <div
-    className="table-responsive"
+    className="result-section__container"
   >
     <table
-      className="result-section__container table table-hover"
+      className="table"
     >
       <thead>
         <tr>
@@ -19944,10 +20103,10 @@ exports[`Storyshots Result list Loading 1`] = `
   }
 >
   <div
-    className="table-responsive"
+    className="result-section__container loading"
   >
     <table
-      className="result-section__container loading table table-hover"
+      className="table"
     >
       <thead>
         <tr>
@@ -19975,10 +20134,10 @@ exports[`Storyshots Result list Some Access 1`] = `
   }
 >
   <div
-    className="table-responsive"
+    className="result-section__container"
   >
     <table
-      className="result-section__container table table-hover"
+      className="table"
     >
       <thead>
         <tr>
@@ -20065,10 +20224,10 @@ exports[`Storyshots Result list View Only Access 1`] = `
   }
 >
   <div
-    className="table-responsive"
+    className="result-section__container"
   >
     <table
-      className="result-section__container table table-hover"
+      className="table"
     >
       <thead>
         <tr>
@@ -25825,626 +25984,619 @@ exports[`Storyshots Search page Default 1`] = `
     >
       <div
         className="card"
-        style={
-          Object {
-            "padding": "1rem",
-          }
-        }
       >
         <div
-          className="card-body d-flex"
+          className="card-body"
         >
           <div
-            className="flex-grow-1"
+            className=""
           >
+            <span>
+              Showing results that match 
+            </span>
             <div
-              className=""
+              className="filter-summary-box__badge-group"
             >
-              <span>
-                Showing results where 
-              </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Project.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  1
-                </span>
-              </div>
               <span
-                className="filter-summarybox__badge--separator"
+                className="filter-summary-box__badge badge badge-secondary"
               >
-                and
+                Project.Schema
               </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Experiment.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  2
-                </span>
-              </div>
               <span
-                className="filter-summarybox__badge--separator"
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
               >
-                and
+                is
               </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Dataset.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  1
-                </span>
-              </div>
               <span
-                className="filter-summarybox__badge--separator"
+                className="filter-summary-box__badge badge badge-secondary"
               >
-                and
+                1
               </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Datafile.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  1
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  2
-                </span>
-              </div>
-              .
             </div>
-          </div>
-          <div>
-            <button
-              className="ms-1 btn btn-primary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
+            <span
+              className="filter-summarybox__badge filter-summarybox__badge--separator"
             >
-              Reset filters
-            </button>
-          </div>
-        </div>
-      </div>
-      <div
-        className="nav nav-tabs"
-        onKeyDown={[Function]}
-      >
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link"
-            data-rb-event-key="project"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Projects
-             
-            <span>
-              (
-              1
-              <span
-                className="sr-only"
-              >
-                 result
-              </span>
-              )
+              and
             </span>
-          </a>
-        </div>
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link active"
-            data-rb-event-key="experiment"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Experiments
-             
-            <span>
-              (
-              3
+            <div
+              className="filter-summary-box__badge-group"
+            >
               <span
-                className="sr-only"
+                className="filter-summary-box__badge badge badge-secondary"
               >
-                 results
+                Experiment.Schema
               </span>
-              )
-            </span>
-          </a>
-        </div>
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link"
-            data-rb-event-key="dataset"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Datasets
-             
-            <span>
-              (
-              1
               <span
-                className="sr-only"
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
               >
-                 result
+                is
               </span>
-              )
-            </span>
-          </a>
-        </div>
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link"
-            data-rb-event-key="datafile"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Datafiles
-             
-            <span>
-              (
-              1
               <span
-                className="sr-only"
+                className="filter-summary-box__badge badge badge-secondary"
               >
-                 result
+                2
               </span>
-              )
+            </div>
+            <span
+              className="filter-summarybox__badge filter-summarybox__badge--separator"
+            >
+              and
             </span>
-          </a>
-        </div>
-      </div>
-      <div
-        className="result-section--tabpanel"
-        role="tabpanel"
-      >
-        <p
-          className="result-section--count-summary"
-        >
-          <span>
-            Showing 
-            1
-             - 
-            3
-             of 
-            3
-             
-            results
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Dataset.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge filter-summarybox__badge--separator"
+            >
+              and
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Datafile.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                2
+              </span>
+            </div>
             .
-          </span>
-        </p>
-        <div
-          className="sortoptions dropdown"
-          onKeyDown={[Function]}
-        >
+          </div>
           <button
-            aria-expanded={false}
-            aria-haspopup={true}
-            className="dropdown-toggle btn btn-primary"
+            className="px-0 btn btn-link"
             disabled={false}
             onClick={[Function]}
             type="button"
           >
-            <svg
-              fill="currentColor"
-              height="1em"
-              stroke="currentColor"
-              strokeWidth="0"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 1024 1024"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M839.6 433.8L749 150.5a9.24 9.24 0 0 0-8.9-6.5h-77.4c-4.1 0-7.6 2.6-8.9 6.5l-91.3 283.3c-.3.9-.5 1.9-.5 2.9 0 5.1 4.2 9.3 9.3 9.3h56.4c4.2 0 7.8-2.8 9-6.8l17.5-61.6h89l17.3 61.5c1.1 4 4.8 6.8 9 6.8h61.2c1 0 1.9-.1 2.8-.4 2.4-.8 4.3-2.4 5.5-4.6 1.1-2.2 1.3-4.7.6-7.1zM663.3 325.5l32.8-116.9h6.3l32.1 116.9h-71.2zm143.5 492.9H677.2v-.4l132.6-188.9c1.1-1.6 1.7-3.4 1.7-5.4v-36.4c0-5.1-4.2-9.3-9.3-9.3h-204c-5.1 0-9.3 4.2-9.3 9.3v43c0 5.1 4.2 9.3 9.3 9.3h122.6v.4L587.7 828.9a9.35 9.35 0 0 0-1.7 5.4v36.4c0 5.1 4.2 9.3 9.3 9.3h211.4c5.1 0 9.3-4.2 9.3-9.3v-43a9.2 9.2 0 0 0-9.2-9.3zM416 702h-76V172c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v530h-76c-6.7 0-10.5 7.8-6.3 13l112 141.9a8 8 0 0 0 12.6 0l112-141.9c4.1-5.2.4-13-6.3-13z"
-              />
-            </svg>
-            <span>
-              Sort: Institution
-            </span>
+            Reset
           </button>
         </div>
+      </div>
+      <section
+        className="d-flex flex-column flex-grow-1 overflow-hidden"
+      >
         <div
-          className="tabpanel__container--horizontal"
+          className="nav nav-tabs"
+          onKeyDown={[Function]}
         >
           <div
-            className="table-responsive"
+            className="nav-item"
+            role="tab"
           >
-            <table
-              className="result-section__container table table-hover"
-            >
-              <thead>
-                <tr>
-                  <th />
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Size
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  className="result-section--row row-primary"
-                  onClick={[Function]}
-                  onKeyUp={[Function]}
-                  role="button"
-                  tabIndex="0"
-                >
-                  <td
-                    className="result-row--download-col"
-                  />
-                  <td>
-                    <a
-                      href=""
-                      target="_blank"
-                    >
-                      siNET
-                    </a>
-                  </td>
-                  <td>
-                    <span>
-                      35MB
-                    </span>
-                  </td>
-                </tr>
-                <tr
-                  className="result-section--row row-primary"
-                  onClick={[Function]}
-                  onKeyUp={[Function]}
-                  role="button"
-                  tabIndex="0"
-                >
-                  <td
-                    className="result-row--download-col"
-                  >
-                    <span
-                      onBlur={[Function]}
-                      onFocus={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    >
-                      <svg
-                        fill="none"
-                        height="1em"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        style={
-                          Object {
-                            "color": undefined,
-                          }
-                        }
-                        viewBox="0 0 24 24"
-                        width="1em"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <title>
-                          Some files cannot be downloaded.
-                        </title>
-                        <path
-                          d="M21.21 15.89A10 10 0 1 1 8 2.83"
-                        />
-                        <path
-                          d="M22 12A10 10 0 0 0 12 2v10z"
-                        />
-                      </svg>
-                    </span>
-                  </td>
-                  <td>
-                    <a
-                      href=""
-                      target="_blank"
-                    >
-                      Gastroblastoma
-                    </a>
-                  </td>
-                  <td>
-                    <span>
-                      4GB
-                    </span>
-                  </td>
-                </tr>
-                <tr
-                  className="result-section--row row-primary"
-                  onClick={[Function]}
-                  onKeyUp={[Function]}
-                  role="button"
-                  tabIndex="0"
-                >
-                  <td
-                    className="result-row--download-col"
-                  >
-                    <span
-                      onBlur={[Function]}
-                      onFocus={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    >
-                      <svg
-                        fill="none"
-                        height="1em"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        style={
-                          Object {
-                            "color": undefined,
-                          }
-                        }
-                        viewBox="0 0 24 24"
-                        width="1em"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <title>
-                          This item cannot be downloaded.
-                        </title>
-                        <rect
-                          height="11"
-                          rx="2"
-                          ry="2"
-                          width="18"
-                          x="3"
-                          y="11"
-                        />
-                        <path
-                          d="M7 11V7a5 5 0 0 1 10 0v4"
-                        />
-                      </svg>
-                    </span>
-                  </td>
-                  <td>
-                    <a
-                      href=""
-                      target="_blank"
-                    >
-                      Lung
-                    </a>
-                  </td>
-                  <td>
-                    <span
-                      aria-label="Not applicable"
-                    >
-                      —
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div
-            className="preview-card__body"
-          >
-            Please select a row to view the details.
-          </div>
-        </div>
-        <form
-          className="pager"
-        >
-          <fieldset
-            className="pagesize"
-          >
-            <label
-              htmlFor="experiment-pagesize-dropdown"
-            >
-              Items per page
-            </label>
-            <div
-              className="pagesize--dropdown dropdown"
+            <a
+              className="nav-link"
+              data-rb-event-key="project"
+              href="#"
+              onClick={[Function]}
               onKeyDown={[Function]}
+              role="button"
             >
-              <button
-                aria-expanded={false}
-                aria-haspopup={true}
-                className="dropdown-toggle btn btn-outline-primary"
-                disabled={false}
-                id="experiment-pagesize--dropdown"
-                onClick={[Function]}
-                type="button"
-              >
-                10
-              </button>
-            </div>
-          </fieldset>
-          <ul
-            aria-live="polite"
-            className="pagination"
-            id="experiment-pager"
-          >
-            <span
-              className="sr-only"
-            >
-              Result page
-            </span>
-            <li
-              className="page-item"
-            >
-              <a
-                className="page-link"
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  «
-                </span>
-                <span
-                  className="sr-only"
-                >
-                  First
-                </span>
-              </a>
-            </li>
-            <li
-              className="page-item"
-            >
-              <a
-                className="page-link"
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ‹
-                </span>
-                <span
-                  className="sr-only"
-                >
-                  Previous
-                </span>
-              </a>
-            </li>
-            <li
-              className="page-item active"
-            >
-              <span
-                className="page-link"
-                disabled={false}
-                onClick={[Function]}
-              >
+              Projects
+               
+              <span>
+                (
                 1
                 <span
                   className="sr-only"
                 >
-                  (current)
+                   result
                 </span>
+                )
               </span>
-            </li>
-            <li
-              className="page-item"
-            >
-              <a
-                className="page-link"
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ›
-                </span>
-                <span
-                  className="sr-only"
-                >
-                  Next
-                </span>
-              </a>
-            </li>
-            <li
-              className="page-item"
-            >
-              <a
-                className="page-link"
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  »
-                </span>
-                <span
-                  className="sr-only"
-                >
-                  Last
-                </span>
-              </a>
-            </li>
-          </ul>
-          <label
-            className="sr-only"
-            for="experiment-pager"
+            </a>
+          </div>
+          <div
+            className="nav-item"
+            role="tab"
           >
-            Result page number
-          </label>
-        </form>
-      </div>
+            <a
+              className="nav-link active"
+              data-rb-event-key="experiment"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              Experiments
+               
+              <span>
+                (
+                3
+                <span
+                  className="sr-only"
+                >
+                   results
+                </span>
+                )
+              </span>
+            </a>
+          </div>
+          <div
+            className="nav-item"
+            role="tab"
+          >
+            <a
+              className="nav-link"
+              data-rb-event-key="dataset"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              Datasets
+               
+              <span>
+                (
+                1
+                <span
+                  className="sr-only"
+                >
+                   result
+                </span>
+                )
+              </span>
+            </a>
+          </div>
+          <div
+            className="nav-item"
+            role="tab"
+          >
+            <a
+              className="nav-link"
+              data-rb-event-key="datafile"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              Datafiles
+               
+              <span>
+                (
+                1
+                <span
+                  className="sr-only"
+                >
+                   result
+                </span>
+                )
+              </span>
+            </a>
+          </div>
+        </div>
+        <div
+          className="result-section--tabpanel"
+          role="tabpanel"
+        >
+          <p
+            className="result-section--count-summary"
+          >
+            <span>
+              Showing 
+              1
+               - 
+              3
+               of 
+              3
+               
+              results
+              .
+            </span>
+          </p>
+          <div
+            className="sortoptions dropdown"
+            onKeyDown={[Function]}
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                strokeWidth="0"
+                style={
+                  Object {
+                    "color": undefined,
+                  }
+                }
+                viewBox="0 0 1024 1024"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M839.6 433.8L749 150.5a9.24 9.24 0 0 0-8.9-6.5h-77.4c-4.1 0-7.6 2.6-8.9 6.5l-91.3 283.3c-.3.9-.5 1.9-.5 2.9 0 5.1 4.2 9.3 9.3 9.3h56.4c4.2 0 7.8-2.8 9-6.8l17.5-61.6h89l17.3 61.5c1.1 4 4.8 6.8 9 6.8h61.2c1 0 1.9-.1 2.8-.4 2.4-.8 4.3-2.4 5.5-4.6 1.1-2.2 1.3-4.7.6-7.1zM663.3 325.5l32.8-116.9h6.3l32.1 116.9h-71.2zm143.5 492.9H677.2v-.4l132.6-188.9c1.1-1.6 1.7-3.4 1.7-5.4v-36.4c0-5.1-4.2-9.3-9.3-9.3h-204c-5.1 0-9.3 4.2-9.3 9.3v43c0 5.1 4.2 9.3 9.3 9.3h122.6v.4L587.7 828.9a9.35 9.35 0 0 0-1.7 5.4v36.4c0 5.1 4.2 9.3 9.3 9.3h211.4c5.1 0 9.3-4.2 9.3-9.3v-43a9.2 9.2 0 0 0-9.2-9.3zM416 702h-76V172c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v530h-76c-6.7 0-10.5 7.8-6.3 13l112 141.9a8 8 0 0 0 12.6 0l112-141.9c4.1-5.2.4-13-6.3-13z"
+                />
+              </svg>
+              <span>
+                Sort: Institution
+              </span>
+            </button>
+          </div>
+          <div
+            className="tabpanel__container--horizontal"
+          >
+            <div
+              className="result-section__container"
+            >
+              <table
+                className="table"
+              >
+                <thead>
+                  <tr>
+                    <th />
+                    <th>
+                      Name
+                    </th>
+                    <th>
+                      Size
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    className="result-section--row row-primary"
+                    onClick={[Function]}
+                    onKeyUp={[Function]}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    <td
+                      className="result-row--download-col"
+                    />
+                    <td>
+                      <a
+                        href=""
+                        target="_blank"
+                      >
+                        siNET
+                      </a>
+                    </td>
+                    <td>
+                      <span>
+                        35MB
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    className="result-section--row row-primary"
+                    onClick={[Function]}
+                    onKeyUp={[Function]}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    <td
+                      className="result-row--download-col"
+                    >
+                      <span
+                        onBlur={[Function]}
+                        onFocus={[Function]}
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <svg
+                          fill="none"
+                          height="1em"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          style={
+                            Object {
+                              "color": undefined,
+                            }
+                          }
+                          viewBox="0 0 24 24"
+                          width="1em"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <title>
+                            Some files cannot be downloaded.
+                          </title>
+                          <path
+                            d="M21.21 15.89A10 10 0 1 1 8 2.83"
+                          />
+                          <path
+                            d="M22 12A10 10 0 0 0 12 2v10z"
+                          />
+                        </svg>
+                      </span>
+                    </td>
+                    <td>
+                      <a
+                        href=""
+                        target="_blank"
+                      >
+                        Gastroblastoma
+                      </a>
+                    </td>
+                    <td>
+                      <span>
+                        4GB
+                      </span>
+                    </td>
+                  </tr>
+                  <tr
+                    className="result-section--row row-primary"
+                    onClick={[Function]}
+                    onKeyUp={[Function]}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    <td
+                      className="result-row--download-col"
+                    >
+                      <span
+                        onBlur={[Function]}
+                        onFocus={[Function]}
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <svg
+                          fill="none"
+                          height="1em"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          style={
+                            Object {
+                              "color": undefined,
+                            }
+                          }
+                          viewBox="0 0 24 24"
+                          width="1em"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <title>
+                            This item cannot be downloaded.
+                          </title>
+                          <rect
+                            height="11"
+                            rx="2"
+                            ry="2"
+                            width="18"
+                            x="3"
+                            y="11"
+                          />
+                          <path
+                            d="M7 11V7a5 5 0 0 1 10 0v4"
+                          />
+                        </svg>
+                      </span>
+                    </td>
+                    <td>
+                      <a
+                        href=""
+                        target="_blank"
+                      >
+                        Lung
+                      </a>
+                    </td>
+                    <td>
+                      <span
+                        aria-label="Not applicable"
+                      >
+                        —
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div
+              className="preview-card__body"
+            >
+              Please select a row to view the details.
+            </div>
+          </div>
+          <form
+            className="pager"
+          >
+            <fieldset
+              className="pagesize"
+            >
+              <label
+                htmlFor="experiment-pagesize-dropdown"
+              >
+                Items per page
+              </label>
+              <div
+                className="pagesize--dropdown dropdown"
+                onKeyDown={[Function]}
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-primary"
+                  disabled={false}
+                  id="experiment-pagesize--dropdown"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  10
+                </button>
+              </div>
+            </fieldset>
+            <ul
+              aria-live="polite"
+              className="pagination"
+              id="experiment-pager"
+            >
+              <span
+                className="sr-only"
+              >
+                Result page
+              </span>
+              <li
+                className="page-item"
+              >
+                <a
+                  className="page-link"
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    «
+                  </span>
+                  <span
+                    className="sr-only"
+                  >
+                    First
+                  </span>
+                </a>
+              </li>
+              <li
+                className="page-item"
+              >
+                <a
+                  className="page-link"
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ‹
+                  </span>
+                  <span
+                    className="sr-only"
+                  >
+                    Previous
+                  </span>
+                </a>
+              </li>
+              <li
+                className="page-item active"
+              >
+                <span
+                  className="page-link"
+                  disabled={false}
+                  onClick={[Function]}
+                >
+                  1
+                  <span
+                    className="sr-only"
+                  >
+                    (current)
+                  </span>
+                </span>
+              </li>
+              <li
+                className="page-item"
+              >
+                <a
+                  className="page-link"
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ›
+                  </span>
+                  <span
+                    className="sr-only"
+                  >
+                    Next
+                  </span>
+                </a>
+              </li>
+              <li
+                className="page-item"
+              >
+                <a
+                  className="page-link"
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    »
+                  </span>
+                  <span
+                    className="sr-only"
+                  >
+                    Last
+                  </span>
+                </a>
+              </li>
+            </ul>
+            <label
+              className="sr-only"
+              for="experiment-pager"
+            >
+              Result page number
+            </label>
+          </form>
+        </div>
+      </section>
     </main>
   </div>
 </div>
@@ -31922,220 +32074,213 @@ exports[`Storyshots Search page Error 1`] = `
     >
       <div
         className="card"
-        style={
-          Object {
-            "padding": "1rem",
-          }
-        }
       >
         <div
-          className="card-body d-flex"
+          className="card-body"
         >
           <div
-            className="flex-grow-1"
+            className=""
+          >
+            <span>
+              Showing results that match 
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Project.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge filter-summarybox__badge--separator"
+            >
+              and
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Experiment.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                2
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge filter-summarybox__badge--separator"
+            >
+              and
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Dataset.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge filter-summarybox__badge--separator"
+            >
+              and
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Datafile.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                2
+              </span>
+            </div>
+            .
+          </div>
+          <button
+            className="px-0 btn btn-link"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+      <section
+        className="d-flex flex-column flex-grow-1 overflow-hidden"
+      >
+        <div
+          className="nav nav-tabs"
+          onKeyDown={[Function]}
+        >
+          <div
+            className="nav-item"
+            role="tab"
+          >
+            <a
+              className="nav-link"
+              data-rb-event-key="project"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              Projects
+               
+            </a>
+          </div>
+          <div
+            className="nav-item"
+            role="tab"
+          >
+            <a
+              className="nav-link active"
+              data-rb-event-key="experiment"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              Experiments
+               
+            </a>
+          </div>
+          <div
+            className="nav-item"
+            role="tab"
+          >
+            <a
+              className="nav-link"
+              data-rb-event-key="dataset"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              Datasets
+               
+            </a>
+          </div>
+          <div
+            className="nav-item"
+            role="tab"
+          >
+            <a
+              className="nav-link"
+              data-rb-event-key="datafile"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              Datafiles
+               
+            </a>
+          </div>
+        </div>
+        <div
+          className="result-section--tabpanel"
+          role="tabpanel"
+        >
+          <div
+            className="tabpanel__container--horizontal"
           >
             <div
-              className=""
+              className="result-section--msg result-section--error-msg"
             >
-              <span>
-                Showing results where 
-              </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Project.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  1
-                </span>
-              </div>
-              <span
-                className="filter-summarybox__badge--separator"
-              >
-                and
-              </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Experiment.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  2
-                </span>
-              </div>
-              <span
-                className="filter-summarybox__badge--separator"
-              >
-                and
-              </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Dataset.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  1
-                </span>
-              </div>
-              <span
-                className="filter-summarybox__badge--separator"
-              >
-                and
-              </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Datafile.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  1
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  2
-                </span>
-              </div>
-              .
+              <p>
+                An error occurred. Please try another query, or refresh the page and try searching again.
+              </p>
             </div>
           </div>
-          <div>
-            <button
-              className="ms-1 btn btn-primary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Reset filters
-            </button>
-          </div>
         </div>
-      </div>
-      <div
-        className="nav nav-tabs"
-        onKeyDown={[Function]}
-      >
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link"
-            data-rb-event-key="project"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Projects
-             
-          </a>
-        </div>
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link active"
-            data-rb-event-key="experiment"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Experiments
-             
-          </a>
-        </div>
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link"
-            data-rb-event-key="dataset"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Datasets
-             
-          </a>
-        </div>
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link"
-            data-rb-event-key="datafile"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Datafiles
-             
-          </a>
-        </div>
-      </div>
-      <div
-        className="result-section--tabpanel"
-        role="tabpanel"
-      >
-        <div
-          className="tabpanel__container--horizontal"
-        >
-          <div
-            className="result-section--msg result-section--error-msg"
-          >
-            <p>
-              An error occurred. Please try another query, or refresh the page and try searching again.
-            </p>
-          </div>
-        </div>
-      </div>
+      </section>
     </main>
   </div>
 </div>
@@ -37613,422 +37758,415 @@ exports[`Storyshots Search page Loading 1`] = `
     >
       <div
         className="card"
-        style={
-          Object {
-            "padding": "1rem",
-          }
-        }
       >
         <div
-          className="card-body d-flex"
+          className="card-body"
         >
           <div
-            className="flex-grow-1"
+            className=""
           >
+            <span>
+              Showing results that match 
+            </span>
             <div
-              className=""
+              className="filter-summary-box__badge-group"
             >
-              <span>
-                Showing results where 
-              </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Project.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  1
-                </span>
-              </div>
               <span
-                className="filter-summarybox__badge--separator"
+                className="filter-summary-box__badge badge badge-secondary"
               >
-                and
+                Project.Schema
               </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Experiment.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  2
-                </span>
-              </div>
               <span
-                className="filter-summarybox__badge--separator"
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
               >
-                and
+                is
               </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Dataset.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  1
-                </span>
-              </div>
               <span
-                className="filter-summarybox__badge--separator"
+                className="filter-summary-box__badge badge badge-secondary"
               >
-                and
+                1
               </span>
-              <div
-                className="filter-summary-box__badge-group"
-              >
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  Datafile.Schema
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  is
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  1
-                </span>
-                <span
-                  className="filter-summary-box__badge badge badge-secondary"
-                >
-                  2
-                </span>
-              </div>
-              .
             </div>
-          </div>
-          <div>
-            <button
-              className="ms-1 btn btn-primary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
+            <span
+              className="filter-summarybox__badge filter-summarybox__badge--separator"
             >
-              Reset filters
-            </button>
-          </div>
-        </div>
-      </div>
-      <div
-        className="nav nav-tabs"
-        onKeyDown={[Function]}
-      >
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link"
-            data-rb-event-key="project"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Projects
-             
-          </a>
-        </div>
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link active"
-            data-rb-event-key="experiment"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Experiments
-             
-          </a>
-        </div>
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link"
-            data-rb-event-key="dataset"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Datasets
-             
-          </a>
-        </div>
-        <div
-          className="nav-item"
-          role="tab"
-        >
-          <a
-            className="nav-link"
-            data-rb-event-key="datafile"
-            href="#"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-          >
-            Datafiles
-             
-          </a>
-        </div>
-      </div>
-      <div
-        className="result-section--tabpanel"
-        role="tabpanel"
-      >
-        <p
-          className="result-section--count-summary"
-        >
-          <span>
-            Showing 
-            0
-             - 
-            0
-             of 
-            0
-             
-            result
+              and
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Experiment.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                2
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge filter-summarybox__badge--separator"
+            >
+              and
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Dataset.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+            </div>
+            <span
+              className="filter-summarybox__badge filter-summarybox__badge--separator"
+            >
+              and
+            </span>
+            <div
+              className="filter-summary-box__badge-group"
+            >
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                Datafile.Schema
+              </span>
+              <span
+                className="filter-summary-box__badge filter-summarybox__badge--op badge badge-secondary"
+              >
+                is
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                1
+              </span>
+              <span
+                className="filter-summary-box__badge badge badge-secondary"
+              >
+                2
+              </span>
+            </div>
             .
-          </span>
-        </p>
-        <div
-          className="sortoptions dropdown"
-          onKeyDown={[Function]}
-        >
+          </div>
           <button
-            aria-expanded={false}
-            aria-haspopup={true}
-            className="dropdown-toggle btn btn-primary"
+            className="px-0 btn btn-link"
             disabled={false}
             onClick={[Function]}
             type="button"
           >
-            <svg
-              fill="currentColor"
-              height="1em"
-              stroke="currentColor"
-              strokeWidth="0"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 1024 1024"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M839.6 433.8L749 150.5a9.24 9.24 0 0 0-8.9-6.5h-77.4c-4.1 0-7.6 2.6-8.9 6.5l-91.3 283.3c-.3.9-.5 1.9-.5 2.9 0 5.1 4.2 9.3 9.3 9.3h56.4c4.2 0 7.8-2.8 9-6.8l17.5-61.6h89l17.3 61.5c1.1 4 4.8 6.8 9 6.8h61.2c1 0 1.9-.1 2.8-.4 2.4-.8 4.3-2.4 5.5-4.6 1.1-2.2 1.3-4.7.6-7.1zM663.3 325.5l32.8-116.9h6.3l32.1 116.9h-71.2zm143.5 492.9H677.2v-.4l132.6-188.9c1.1-1.6 1.7-3.4 1.7-5.4v-36.4c0-5.1-4.2-9.3-9.3-9.3h-204c-5.1 0-9.3 4.2-9.3 9.3v43c0 5.1 4.2 9.3 9.3 9.3h122.6v.4L587.7 828.9a9.35 9.35 0 0 0-1.7 5.4v36.4c0 5.1 4.2 9.3 9.3 9.3h211.4c5.1 0 9.3-4.2 9.3-9.3v-43a9.2 9.2 0 0 0-9.2-9.3zM416 702h-76V172c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v530h-76c-6.7 0-10.5 7.8-6.3 13l112 141.9a8 8 0 0 0 12.6 0l112-141.9c4.1-5.2.4-13-6.3-13z"
-              />
-            </svg>
-            <span>
-              Sort: Institution
-            </span>
+            Reset
           </button>
         </div>
+      </div>
+      <section
+        className="d-flex flex-column flex-grow-1 overflow-hidden"
+      >
         <div
-          className="tabpanel__container--horizontal"
+          className="nav nav-tabs"
+          onKeyDown={[Function]}
         >
           <div
-            className="table-responsive"
+            className="nav-item"
+            role="tab"
           >
-            <table
-              className="result-section__container loading table table-hover"
+            <a
+              className="nav-link"
+              data-rb-event-key="project"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
             >
-              <thead>
-                <tr>
-                  <th />
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Size
-                  </th>
-                </tr>
-              </thead>
-              <tbody />
-            </table>
+              Projects
+               
+            </a>
           </div>
           <div
-            className="preview-card__body"
+            className="nav-item"
+            role="tab"
           >
-            Please select a row to view the details.
+            <a
+              className="nav-link active"
+              data-rb-event-key="experiment"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              Experiments
+               
+            </a>
+          </div>
+          <div
+            className="nav-item"
+            role="tab"
+          >
+            <a
+              className="nav-link"
+              data-rb-event-key="dataset"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              Datasets
+               
+            </a>
+          </div>
+          <div
+            className="nav-item"
+            role="tab"
+          >
+            <a
+              className="nav-link"
+              data-rb-event-key="datafile"
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              Datafiles
+               
+            </a>
           </div>
         </div>
-        <form
-          className="pager"
+        <div
+          className="result-section--tabpanel"
+          role="tabpanel"
         >
-          <fieldset
-            className="pagesize"
+          <p
+            className="result-section--count-summary"
           >
-            <label
-              htmlFor="experiment-pagesize-dropdown"
-            >
-              Items per page
-            </label>
-            <div
-              className="pagesize--dropdown dropdown"
-              onKeyDown={[Function]}
-            >
-              <button
-                aria-expanded={false}
-                aria-haspopup={true}
-                className="dropdown-toggle btn btn-outline-primary"
-                disabled={false}
-                id="experiment-pagesize--dropdown"
-                onClick={[Function]}
-                type="button"
-              >
-                10
-              </button>
-            </div>
-          </fieldset>
-          <ul
-            aria-live="polite"
-            className="pagination"
-            id="experiment-pager"
-          >
-            <span
-              className="sr-only"
-            >
-              Result page
+            <span>
+              Showing 
+              0
+               - 
+              0
+               of 
+              0
+               
+              result
+              .
             </span>
-            <li
-              className="page-item"
-            >
-              <a
-                className="page-link"
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  «
-                </span>
-                <span
-                  className="sr-only"
-                >
-                  First
-                </span>
-              </a>
-            </li>
-            <li
-              className="page-item"
-            >
-              <a
-                className="page-link"
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ‹
-                </span>
-                <span
-                  className="sr-only"
-                >
-                  Previous
-                </span>
-              </a>
-            </li>
-            <li
-              className="page-item"
-            >
-              <a
-                className="page-link"
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ›
-                </span>
-                <span
-                  className="sr-only"
-                >
-                  Next
-                </span>
-              </a>
-            </li>
-            <li
-              className="page-item"
-            >
-              <a
-                className="page-link"
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  »
-                </span>
-                <span
-                  className="sr-only"
-                >
-                  Last
-                </span>
-              </a>
-            </li>
-          </ul>
-          <label
-            className="sr-only"
-            for="experiment-pager"
+          </p>
+          <div
+            className="sortoptions dropdown"
+            onKeyDown={[Function]}
           >
-            Result page number
-          </label>
-        </form>
-      </div>
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                strokeWidth="0"
+                style={
+                  Object {
+                    "color": undefined,
+                  }
+                }
+                viewBox="0 0 1024 1024"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M839.6 433.8L749 150.5a9.24 9.24 0 0 0-8.9-6.5h-77.4c-4.1 0-7.6 2.6-8.9 6.5l-91.3 283.3c-.3.9-.5 1.9-.5 2.9 0 5.1 4.2 9.3 9.3 9.3h56.4c4.2 0 7.8-2.8 9-6.8l17.5-61.6h89l17.3 61.5c1.1 4 4.8 6.8 9 6.8h61.2c1 0 1.9-.1 2.8-.4 2.4-.8 4.3-2.4 5.5-4.6 1.1-2.2 1.3-4.7.6-7.1zM663.3 325.5l32.8-116.9h6.3l32.1 116.9h-71.2zm143.5 492.9H677.2v-.4l132.6-188.9c1.1-1.6 1.7-3.4 1.7-5.4v-36.4c0-5.1-4.2-9.3-9.3-9.3h-204c-5.1 0-9.3 4.2-9.3 9.3v43c0 5.1 4.2 9.3 9.3 9.3h122.6v.4L587.7 828.9a9.35 9.35 0 0 0-1.7 5.4v36.4c0 5.1 4.2 9.3 9.3 9.3h211.4c5.1 0 9.3-4.2 9.3-9.3v-43a9.2 9.2 0 0 0-9.2-9.3zM416 702h-76V172c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v530h-76c-6.7 0-10.5 7.8-6.3 13l112 141.9a8 8 0 0 0 12.6 0l112-141.9c4.1-5.2.4-13-6.3-13z"
+                />
+              </svg>
+              <span>
+                Sort: Institution
+              </span>
+            </button>
+          </div>
+          <div
+            className="tabpanel__container--horizontal"
+          >
+            <div
+              className="result-section__container loading"
+            >
+              <table
+                className="table"
+              >
+                <thead>
+                  <tr>
+                    <th />
+                    <th>
+                      Name
+                    </th>
+                    <th>
+                      Size
+                    </th>
+                  </tr>
+                </thead>
+                <tbody />
+              </table>
+            </div>
+            <div
+              className="preview-card__body"
+            >
+              Please select a row to view the details.
+            </div>
+          </div>
+          <form
+            className="pager"
+          >
+            <fieldset
+              className="pagesize"
+            >
+              <label
+                htmlFor="experiment-pagesize-dropdown"
+              >
+                Items per page
+              </label>
+              <div
+                className="pagesize--dropdown dropdown"
+                onKeyDown={[Function]}
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-primary"
+                  disabled={false}
+                  id="experiment-pagesize--dropdown"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  10
+                </button>
+              </div>
+            </fieldset>
+            <ul
+              aria-live="polite"
+              className="pagination"
+              id="experiment-pager"
+            >
+              <span
+                className="sr-only"
+              >
+                Result page
+              </span>
+              <li
+                className="page-item"
+              >
+                <a
+                  className="page-link"
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    «
+                  </span>
+                  <span
+                    className="sr-only"
+                  >
+                    First
+                  </span>
+                </a>
+              </li>
+              <li
+                className="page-item"
+              >
+                <a
+                  className="page-link"
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ‹
+                  </span>
+                  <span
+                    className="sr-only"
+                  >
+                    Previous
+                  </span>
+                </a>
+              </li>
+              <li
+                className="page-item"
+              >
+                <a
+                  className="page-link"
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ›
+                  </span>
+                  <span
+                    className="sr-only"
+                  >
+                    Next
+                  </span>
+                </a>
+              </li>
+              <li
+                className="page-item"
+              >
+                <a
+                  className="page-link"
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    »
+                  </span>
+                  <span
+                    className="sr-only"
+                  >
+                    Last
+                  </span>
+                </a>
+              </li>
+            </ul>
+            <label
+              className="sr-only"
+              for="experiment-pager"
+            >
+              Result page number
+            </label>
+          </form>
+        </div>
+      </section>
     </main>
   </div>
 </div>
