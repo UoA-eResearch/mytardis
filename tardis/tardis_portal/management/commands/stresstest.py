@@ -203,6 +203,7 @@ class Command(BaseCommand):
             testproject = Project(name=test_raid, raid=test_raid)
             testproject.created_by = user
             testproject.lead_researcher = user
+            testproject.institutions.add(test_institution)
             testproject.save()
             #Create ACL for "owner"
             create_owner_acl(user, testproject)
@@ -295,6 +296,7 @@ class Command(BaseCommand):
                     testset = Dataset(description=test_desc)
                     testset.save()
                     testset.experiments.add(testexp)
+                    testet.instrument = test_instrument
                     testset.save()
                     #Create ACL for "owner"
                     create_owner_acl(user, testset)
