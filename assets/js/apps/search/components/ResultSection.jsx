@@ -159,8 +159,8 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
         return (
             // If there was an error during the search
             <div className="result-section--msg result-section--error-msg">
-                <p>An error occurred. Please try another query, or refresh the page and try searching again.</p>
-                <p><Button onClick={() => location.reload()}><FiRefreshCcw /> Reload</Button></p>
+                <p>An error occurred. Please try another query, or reload the page and try searching again.</p>
+                <p><Button onClick={() => location.assign("/apps/search")}><FiRefreshCcw /> Reload</Button></p>
             </div>
         );
     }
