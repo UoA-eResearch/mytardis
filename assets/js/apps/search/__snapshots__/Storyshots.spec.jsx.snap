@@ -631,7 +631,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
     <div
       className="preview-card__count-detail"
     >
-      Contains 0 datafile from 0 dataset, across 0 experiment.
+      Contains 0 datafiles from 0 datasets, across 0 experiments.
     </div>
     <div
       className="preview-card__date-added"
