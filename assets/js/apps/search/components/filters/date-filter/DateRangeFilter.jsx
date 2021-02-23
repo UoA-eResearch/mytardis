@@ -36,7 +36,6 @@ const isValueEmpty = (value) => {
  * @param {*} localValue The local value to convert
  */
 const toSubmitValue = localValue => {
-    // console.log(localValue);
     // Replace empty string value with null to represent null parameter value.
     if (!localValue) {
         return null;
@@ -77,15 +76,10 @@ const toLocalValue = submitValue => {
     const endValue = submitValue.filter(value => value.op === "<=");
     if (startValue.length > 0) {
         localValue.start = moment(startValue[0].content).toDate();
-        // console.log('local val start:: ', localValue.start._d);
-        // console.log('local val start:: ', localValue.start.toDate());
     }
     if (endValue.length > 0) {
         localValue.end = moment(endValue[0].content).toDate();
-        // console.log('local val start:: ', localValue.end);
     }
-    // console.log("Local value converted from API -> filter:: ", localValue);
-    // console.log(localValue);
     return localValue;
 };
 
@@ -108,7 +102,7 @@ function mergeOptionsWithDefaults(options) {
 }
 
 const isValidDate = date => {
-    return date instanceof moment;
+    return date instanceof Date;
 };
 
 const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChange }) => {
@@ -129,12 +123,8 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
         // Copy the value object, then assign new value into the start field.
         const newValue = Object.assign({}, localValue);
         newValue.start = valueFromForm;
-
-        // TEST: 
-        // newValue.start = moment(valueFromForm, "d-M-y");
-
         if (isValidDate(newValue.start) && !options.hideEnd) {
-            if (isValidDate(newValue.end) && newValue.start.isAfter(newValue.end)) {
+            if (isValidDate(newValue.end) && newValue.start > newValue.end) {
                 // If new start date is before the end date,
                 // we auto-fill end date to be same as start date.
                 newValue.end = newValue.start;
@@ -147,15 +137,13 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
         // Copy the value object, then assign new value into the start field.
         const newValue = Object.assign({}, localValue);
         newValue.end = valueFromForm;
-        // newValue.end = moment(valueFromForm, "d-M-y");
         if (isValidDate(newValue.end) && !options.hideStart) {
-            if (isValidDate(newValue.start) && newValue.end.isBefore(newValue.start)) {
+            if (isValidDate(newValue.start) && newValue.end < newValue.start) {
                 // If new end date is before the start date,
                 // we auto-fill start date to be same as end date.
                 newValue.start = newValue.end;
             }
         }
-        console.log('end date new val://', newValue);
         setLocalValue(newValue);
     };
 
@@ -178,7 +166,6 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
             return;
         }
         const newValue = toSubmitValue(localValue);
-        console.log("about to call on value change w/ this newValue", newValue);
         onValueChange(newValue);
     };
 
@@ -192,28 +179,25 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                 <Form.Group className="date-range-filter__field">
                     <Form.Label htmlFor={startFieldId} srOnly={options.hideLabels}>Start</Form.Label>
                     <DatePicker
-                            value={localValue.start}
-                            // selected={localValue.start}
-                            name={startFieldId}
-                            onChange={handleStartValueChange}
-                            // key={startFieldId + localValue.start}
-                            format={"y-M-d"}
-                            nativeInputAriaLabel={"Start"}
-                        />
+                        value={localValue.start}
+                        name={startFieldId}
+                        onChange={handleStartValueChange}
+                        format={"y-M-d"}
+                        nativeInputAriaLabel={"Start"}
+                    />
                 </Form.Group>
             }
             {options.hideEnd ? null :
                 <Form.Group className="date-range-filter__field">
                     <Form.Label htmlFor={endFieldId} srOnly={options.hideLabels}>End</Form.Label>
                     <DatePicker
-                            onChange={handleEndValueChange}
-                            // selected={localValue.end}
-                            name={endFieldId}
-                            value={localValue.end}
-                            key={startFieldId + localValue.start}
-                            format={"y-M-d"}
-                            nativeInputAriaLabel={"End"}
-                        />
+                        onChange={handleEndValueChange}
+                        name={endFieldId}
+                        value={localValue.end}
+                        key={startFieldId + localValue.start}
+                        format={"y-M-d"}
+                        nativeInputAriaLabel={"End"}
+                    />
                 </Form.Group>
             }
             {isValidValue ? null :
