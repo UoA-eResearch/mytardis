@@ -36,7 +36,7 @@ from tardis.tardis_portal.views import (
 )
 
 json_urls = [
-    url(r'^dataset/(?P<dataset_id>\d+)$', dataset_json,
+    url(r'^dataset/view/(?P<dataset_id>\d+)/$', dataset_json,
         name='tardis.tardis_portal.views.dataset_json'),
     url(r'^experiment/(?P<experiment_id>\d+)/dataset/$',
         experiment_datasets_json,
