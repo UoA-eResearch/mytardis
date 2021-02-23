@@ -16,23 +16,23 @@ const getResultsFromResponse = (response) => {
 // add a type attribute to them.
     const hits = response.hits;
     const results = {};
-    if (hits.projects) {
-        results.project = hits.projects.map((hit) => {
+    if (hits.project) {
+        results.project = hits.project.map((hit) => {
             return getResultFromHit(hit, "project", "/project/view");
         });
     }
-    if (hits.experiments) {
-        results.experiment = hits.experiments.map((hit) => {
+    if (hits.experiment) {
+        results.experiment = hits.experiment.map((hit) => {
             return getResultFromHit(hit, "experiment", "/experiment/view");
         });
     }
-    if (hits.datasets) {
-        results.dataset = hits.datasets.map((hit) => {
+    if (hits.dataset) {
+        results.dataset = hits.dataset.map((hit) => {
             return getResultFromHit(hit, "dataset", "/dataset");
         });
     }
-    if (hits.datafiles) {
-        results.datafile = hits.datafiles.map((hit) => {
+    if (hits.datafile) {
+        results.datafile = hits.datafile.map((hit) => {
             return getResultFromHit(hit, "datafile", "/datafile/view");
         });
     }
@@ -47,17 +47,17 @@ const getResultsFromResponse = (response) => {
 function getHitTotalsFromResponse(response) {
     const hitTotals = response.total_hits;
     const results = {};
-    if (hitTotals.projects !== undefined) {
-        results.project = hitTotals.projects;
+    if (hitTotals.project !== undefined) {
+        results.project = hitTotals.project;
     }
-    if (hitTotals.experiments !== undefined) {
-        results.experiment = hitTotals.experiments;
+    if (hitTotals.experiment !== undefined) {
+        results.experiment = hitTotals.experiment;
     }
-    if (hitTotals.datasets !== undefined) {
-        results.dataset = hitTotals.datasets;
+    if (hitTotals.dataset !== undefined) {
+        results.dataset = hitTotals.dataset;
     }
-    if (hitTotals.datafiles !== undefined) {
-        results.datafile = hitTotals.datafiles;
+    if (hitTotals.datafile !== undefined) {
+        results.datafile = hitTotals.datafile;
     }
     return results;
 }
@@ -257,7 +257,7 @@ const search = createSlice({
         },
         getResultsFailure: (state, {payload: error}) => {
             state.isLoading = false;
-            state.error = error.toString();
+            state.error = error;
             state.results = null;
         },
         updateSelectedType: (state, {payload: selectedType}) => {
@@ -344,9 +344,11 @@ const fetchSearchResults = (queryBody) => {
         body: JSON.stringify(queryBody)
     }).then(response => {
         if (!response.ok) {
-            throw new Error("An error on the server occurred.");
+            throw response;
         }
         return response.json();
+    }, rejectedError => {
+        throw rejectedError.message;
     });
 };
 
@@ -435,8 +437,19 @@ const runSearchWithQuery = (queryBody) => {
         return fetchSearchResults(queryBody)
             .then((results) => {
                 dispatch(getResultsSuccess(results));
-            }).catch((e) => {
-                dispatch(getResultsFailure(e));
+            }).catch((error) => {
+                if (error &&
+                    !isNaN(error.status)) {
+                    // If error occurred on the endpoint, we check the status code first.
+                    if (error.status === 401) {
+                        // We made an Unauthorized request!
+                        // Redirect to log in first, and then do search.
+                        location.replace("/login/?next=/app/search");
+                    } else {
+                        error = error.statusText;
+                    }
+                }
+                dispatch(getResultsFailure(error));
             });
     };
 };

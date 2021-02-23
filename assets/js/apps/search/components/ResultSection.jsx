@@ -1,7 +1,6 @@
-import React, { useState, useContext, useCallback } from 'react'
-import Table from 'react-bootstrap/Table';
+import React, {  useCallback } from 'react'
 import PropTypes from 'prop-types';
-import { FiPieChart, FiLock } from 'react-icons/fi';
+import { FiPieChart, FiLock, FiRefreshCcw } from 'react-icons/fi';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
@@ -12,6 +11,7 @@ import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 import Pager from "./sort-paginate/Pager";
 import SortOptionsList from './sort-paginate/SortOptionsList';
 import { typeSelector } from './filters/filterSlice';
+import Button from "react-bootstrap/Button";
 
 export function PureResultTabs({ counts, selectedType, onChange }) {
     const handleNavClicked = (key) => {
@@ -160,6 +160,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
             // If there was an error during the search
             <div className="result-section--msg result-section--error-msg">
                 <p>An error occurred. Please try another query, or refresh the page and try searching again.</p>
+                <p><Button onClick={() => location.reload()}><FiRefreshCcw /> Reload</Button></p>
             </div>
         );
     }
