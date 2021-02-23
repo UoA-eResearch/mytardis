@@ -225,7 +225,7 @@ class ParametersTestCase(TestCase):
         dataset_link_param = DatasetParameter.objects.create(
             parameterset=dataset_parameterset,
             name=self.pnames[ParameterName.LINK])
-        dataset_url = self.dataset.get_absolute_url()  # /dataset/1/
+        dataset_url = self.dataset.get_absolute_url()  # /dataset/view/1/
         dataset_link_param.set_value(dataset_url)
         dataset_link_param.save()
         self.assertEqual(
@@ -240,7 +240,7 @@ class ParametersTestCase(TestCase):
         datafile_link_param = DatafileParameter.objects.create(
             parameterset=datafile_parameterset,
             name=self.pnames[ParameterName.LINK])
-        dataset_url = self.dataset.get_absolute_url()  # /dataset/1/
+        dataset_url = self.dataset.get_absolute_url()  # /dataset/view/1/
         datafile_link_param.set_value(dataset_url)
         datafile_link_param.save()
         self.assertEqual(

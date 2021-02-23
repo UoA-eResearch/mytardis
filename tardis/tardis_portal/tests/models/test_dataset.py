@@ -83,8 +83,8 @@ class DatasetTestCase(ModelTestCase):
         self.assertEqual(instrument, dataset.instrument)
         target_id = Dataset.objects.first().id
         self.assertEqual(
-            dataset.get_absolute_url(), '/dataset/%d' % target_id,
-            dataset.get_absolute_url() + ' != /dataset/%d' % target_id)
+            dataset.get_absolute_url(), '/dataset/view/%d' % target_id,
+            dataset.get_absolute_url() + ' != /dataset/view/%d' % target_id)
 
     def test_get_dir_tuples(self):
         dataset = Dataset.objects.create(description='test dataset1')
