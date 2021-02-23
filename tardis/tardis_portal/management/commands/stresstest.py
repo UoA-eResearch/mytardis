@@ -296,7 +296,7 @@ class Command(BaseCommand):
                     testset = Dataset(description=test_desc)
                     testset.save()
                     testset.experiments.add(testexp)
-                    testet.instrument = test_instrument
+                    testset.instrument = test_instrument
                     testset.save()
                     #Create ACL for "owner"
                     create_owner_acl(user, testset)
