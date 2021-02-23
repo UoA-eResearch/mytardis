@@ -98,7 +98,7 @@ export default function EntryPreviewCard(props) {
                     return (
                         <tr key={`preview-card__param-entry-${idx}`} className="parameter-table__row">
                             <td >{" " + param.pn_name}</td>
-                            <td ><FiLock aria-label="Sensitive parameter value"></FiLock><i> Hidden. Toggle to show.</i></td>
+                            <td ><FiLock aria-label="Sensitive parameter value"></FiLock><em role="button" onClick={toggleSensitiveData}> Click to show.</em></td>
                         </tr>
                     )
                 }
@@ -211,6 +211,16 @@ export default function EntryPreviewCard(props) {
     }
 
     /**
+     * Given a MyTardis object's parameters, checks if the sensitive values switch
+     * should be shown.
+     * @param {Array} parameters The array of object parameters.
+     */
+    const shouldShowSensitiveValuesSwitch = (parameters) => (
+        parameters.length > 0 &&
+        parameters.filter(param => param.hasOwnProperty("sensitive")).length > 0
+    );
+
+    /**
      * The parameter table component
      * @param {*} props
      */
@@ -266,7 +276,7 @@ export default function EntryPreviewCard(props) {
                     Added on the {getDateAdded(data, type)}
                 </div>
             }
-            { data.parameters.length < 1 ? null :
+            { shouldShowSensitiveValuesSwitch(data.parameters) &&
                 <label htmlFor="showSensitiveDataSwitch" aria-label="Toggle sensitive data label" className="switch__label">
                     <span className="sensitive__label-text"><b>Show sensitive values</b></span>
                     <Switch
