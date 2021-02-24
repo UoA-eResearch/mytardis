@@ -19,6 +19,8 @@ from django.template.defaultfilters import filesizeformat
 from tastypie import fields
 from tastypie.resources import Resource, Bundle
 from tastypie.serializers import Serializer
+from tastypie.exceptions import ImmediateHttpResponse
+from tastypie.http import HttpUnauthorized
 from django_elasticsearch_dsl.search import Search
 from elasticsearch_dsl import MultiSearch, Q
 
@@ -27,8 +29,6 @@ from tardis.tardis_portal.api import default_authentication
 from tardis.tardis_portal.models import (Project, Experiment, Dataset,
                                          DataFile, Schema, ParameterName)
 
-from tastypie.exceptions import ImmediateHttpResponse
-from tastypie.http import HttpUnauthorized
 
 LOCAL_TZ = pytz.timezone(settings.TIME_ZONE)
 RESULTS_PER_PAGE = settings.RESULTS_PER_PAGE
