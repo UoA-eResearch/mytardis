@@ -6,10 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     resetFilters,
     schemaParamFilterValueSelector,
-    schemaParamSelector,
     schemaSelector,
-    schemaTypeSelector,
-    typeAttrSelector,
     typeSelector,
     typeAttrFilterValueSelector,
     hasActiveFiltersSelector
@@ -83,11 +80,11 @@ FilterBadge.propTypes = {
 
 function SchemaParameterFilterBadge({ fieldInfo }) {
     const schemaId = fieldInfo.target[0], parameterId = fieldInfo.target[1];
-    const typeId = useSelector(state => schemaTypeSelector(state.filters, schemaId));
+    const typeId = useSelector(state => schemaSelector(state.filters, schemaId).type);
     const fullFieldName = useSelector(state => {
         const type = typeSelector(state.filters, typeId);
         const schema = schemaSelector(state.filters, schemaId);
-        const schemaParam = schemaParamSelector(state.filters, schemaId, parameterId);
+        const schemaParam = schema.parameters[parameterId];
         if (!type || !schema || !schemaParam) {
             return "";
         } else {
@@ -115,7 +112,7 @@ function TypeAttributeFilterBadge({ fieldInfo }) {
     const typeId = fieldInfo.target[0], attributeId = fieldInfo.target[1];
     const fullFieldName = useSelector(state => {
         const type = typeSelector(state.filters, typeId);
-        const attribute = typeAttrSelector(state.filters, typeId, attributeId);
+        const attribute = type.attributes.byId[attributeId];
         if (!type || !attribute) {
             return "";
         } else {

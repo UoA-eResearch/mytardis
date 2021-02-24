@@ -72,46 +72,10 @@ const removeFromActiveFilters = (state, fieldInfo, typeId) => {
     state.activeFilters[typeId].splice(activeIndex, 1);
 }
 
-// Selectors for different kinds of fields 
-export const typeAttrSelector = (filterSlice, typeId, attributeId) => {
-    return filterSlice.types
-        .byId[typeId]
-        .attributes
-        .byId[attributeId];
-};
-
-export const typeAttrFilterValueSelector = (filtersSlice, typeId, attributeId) => {
-    const value = typeAttrSelector(filtersSlice, typeId, attributeId).value;
-    return value;
-};
-
-/**
- * Selector for type metadata of a MyTardis object type
- * @param {*} filtersSlice Redux filters slice
- * @param {string} typeId The MyTardis object type ID
- */
 export const typeSelector = (filtersSlice, typeId) => filtersSlice.types.byId[typeId];
 
-export const allTypeAttrIdsSelector = (filterSlice, typeId) => {
-    return filterSlice.types
-        .byId[typeId]
-        .attributes
-        .allIds;
-};
-
-export const schemaParamSelector = (filterSlice, schemaId, paramId) => {
-    return schemaSelector(filterSlice,schemaId)
-        .parameters[paramId];
-};
-
-/**
- *  Selector for the filter value for a schema parameter.
- * @param {*} filtersSlice Redux filters slice
- * @param {string} schemaId schema ID
- * @param {string} paramId parameter ID
- */
-export const schemaParamFilterValueSelector = (filtersSlice, schemaId, paramId) => {
-    const value = schemaParamSelector(filtersSlice, schemaId, paramId).value;
+export const typeAttrFilterValueSelector = (filtersSlice, typeId, attributeId) => {
+    const value = typeSelector(filtersSlice, typeId).attributes.byId[attributeId].value;
     return value;
 };
 
@@ -121,19 +85,19 @@ export const schemaSelector = (filterSlice, schemaId) => {
 };
 
 /**
- * Selector for the type ID of each schema. Corrects the type
- * name from plural to singular if necessary.
+ *  Selector for the filter value for a schema parameter.
  * @param {*} filtersSlice Redux filters slice
  * @param {string} schemaId schema ID
+ * @param {string} paramId parameter ID
  */
-export const schemaTypeSelector = (filtersSlice, schemaId) => {
-    const schema = schemaSelector(filtersSlice, schemaId);
-    return schema.type;
-}
+export const schemaParamFilterValueSelector = (filtersSlice, schemaId, paramId) => {
+    const value = schemaSelector(filtersSlice, schemaId).parameters[paramId].value;
+    return value;
+};
 
 const updateTypeAttributeReducer = (state, {payload}) => {
     const { typeId, attributeId, value } = payload;
-    const attribute = typeAttrSelector(state, typeId, attributeId);
+    const attribute = typeSelector(state, typeId).attributes.byId[attributeId];
     let target = [typeId, attributeId];
     if (attribute.nested_target) {
         // If there is a nested target field on the attribute, we add that to the end.
@@ -155,8 +119,9 @@ const updateTypeAttributeReducer = (state, {payload}) => {
 
 const updateSchemaParameterReducer = (state, {payload}) => {
     const { schemaId, parameterId, value } = payload;
-    const typeId = schemaSelector(state,schemaId).type;
-    const parameter = schemaParamSelector(state, schemaId, parameterId);
+    const schema = schemaSelector(state, schemaId);
+    const typeId = schema.type;
+    const parameter = schema.parameters[parameterId];
     const fieldInfo = {
         kind: "schemaParameter",
         target: [schemaId, parameterId]
@@ -171,13 +136,14 @@ const updateSchemaParameterReducer = (state, {payload}) => {
 
 const updateActiveSchemasReducer = (state, {payload}) => {
     const { typeId, value } = payload;
-    const activeSchemas = typeAttrSelector(state, typeId, "schema");
+    
+    const activeSchemasVal = typeAttrFilterValueSelector(state, typeId, "schema");
     const fieldInfo = {
         kind: "typeAttribute",
-        target: [typeId,"schema"],
+        target: [typeId, "schema"],
     };
     // Get the current active schema value. If null, then all schemas apply.
-    const currActiveSchemas = activeSchemas.value ? activeSchemas.value.content : state.typeSchemas[typeId];
+    const currActiveSchemas = activeSchemasVal ? activeSchemasVal.content : state.typeSchemas[typeId];
     // Same for new active schema value.
     const newActiveSchemas = value ? value.content : state.typeSchemas[typeId];
     // Find the schemas that will no longer be active.
@@ -192,7 +158,7 @@ const updateActiveSchemasReducer = (state, {payload}) => {
     );
     
     // Now, update the active schemas field
-    activeSchemas.value = value;
+    typeSelector(state, typeId).attributes.byId.schema.value = value;
     if (value === null) {
         // If the new value is null, remove it from activeFilter list.
         removeFromActiveFilters(state,fieldInfo, typeId);
@@ -387,9 +353,9 @@ export const fieldSelector = (filtersSlice, fieldInfo) => {
     const { kind, target } = fieldInfo;
     switch (kind) {
     case "typeAttribute":
-        return typeAttrSelector(filtersSlice, target[0], target[1]);
+        return typeSelector(filtersSlice, target[0]).attributes.byId[target[1]];
     case "schemaParameter":
-        return schemaParamSelector(filtersSlice, target[0], target[1]);
+        return schemaSelector(filtersSlice, target[0]).parameters[target[1]];
     default:
         throw new Error("Field type not supported.");
     }

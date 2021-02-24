@@ -4,7 +4,7 @@ import Tab from "react-bootstrap/Tab";
 import { OBJECT_TYPE_STICKERS } from "../../TabStickers/TabSticker";
 import TypeSchemaList from "../type-schema-list/TypeSchemaList";
 import { runSearch } from "../../searchSlice";
-import { typeAttrSelector, allTypeAttrIdsSelector, updateTypeAttribute, typeAttrFilterValueSelector } from "../filterSlice";
+import { typeSelector, updateTypeAttribute, typeAttrFilterValueSelector } from "../filterSlice";
 import { useSelector, useDispatch, batch } from "react-redux";
 import PropTypes from "prop-types";
 import { mapTypeToFilter } from "../index";
@@ -12,7 +12,7 @@ import QuickSearchBox from "../../QuickSearchBox";
 
 
 function TypeAttributeFilter({ typeId, attributeId }) {
-    const attribute = useSelector(state => (typeAttrSelector(state.filters, typeId, attributeId)));
+    const attribute = useSelector(state => (typeSelector(state.filters, typeId).attributes.byId[attributeId]));
     const filterValue = useSelector(state => typeAttrFilterValueSelector(state.filters, typeId, attributeId));
     const dispatch = useDispatch();
     const setFilterValue = value => {
@@ -40,13 +40,14 @@ TypeAttributeFilter.propTypes = {
 };
 
 export function TypeAttributesList({ typeId }) {
-    const attributeIds = useSelector(state => (
-    // Get all type attributes IDs except for schema.
-        allTypeAttrIdsSelector(state.filters, typeId)
+    const attributeIds = useSelector(state => {
+        const typeAttributes = typeSelector(state.filters, typeId).attributes;
+        // Get all type attributes IDs except for schema.
+        return typeAttributes.allIds
             .filter(filterId => (filterId !== "schema"))
         // Then, filter out ones that are marked not filterable.
-            .filter(id => typeAttrSelector(state.filters, typeId, id).filterable)
-    ));
+            .filter(id => typeAttributes.byId[id].filterable)
+    });
 
     return (
     <>

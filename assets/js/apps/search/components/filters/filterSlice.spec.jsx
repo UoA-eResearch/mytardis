@@ -4,7 +4,7 @@
 import reducer, { 
     updateTypeAttribute,
     updateSchemaParameter,
-    schemaParamSelector,
+    schemaSelector,
     updateActiveSchemas,
     updateFiltersByQuery,
     buildFilterQuery
@@ -398,7 +398,7 @@ describe("Active schema reducer", () => {
 
 describe("Schema parameter selector", () => {
     it("can fetch a schema parameter", () => {
-        const parameter = schemaParamSelector(mockStoreState, "1", "2");
+        const parameter = schemaSelector(mockStoreState, "1").parameters["2"];
         expect(parameter.full_name).toEqual("Parameter 2");
         expect(parameter.data_type).toEqual("STRING");
     });

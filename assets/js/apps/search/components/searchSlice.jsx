@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { batch } from "react-redux";
-import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeAttrSelector, allTypeAttrIdsSelector } from "./filters/filterSlice";
+import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeSelector } from "./filters/filterSlice";
 
 const getResultFromHit = (hit, hitType, urlPrefix) => {
     // eslint-disable-next-line no-underscore-dangle
@@ -103,11 +103,12 @@ export const activeSortSelector = (searchSlice, typeId) => (
  * @param {*} filterSlice Redux state slice for filters
  * @param {string} typeId MyTardis object type.
  */
-export const sortableAttributesSelector = (filterSlice, typeId) => (
-    allTypeAttrIdsSelector(filterSlice, typeId).map(attributeId => (
-        typeAttrSelector(filterSlice, typeId, attributeId)
-    )).filter(attribute => attribute.sortable)
-);
+export const sortableAttributesSelector = (filterSlice, typeId) => {
+    const typeAttributes = typeSelector(filterSlice, typeId).attributes;
+    return typeAttributes.allIds.map(attributeId => (
+        typeAttributes.byId[attributeId]
+    )).filter(attribute => attribute.sortable);
+};
 
 /**
  * Selector for the sort order of an attribute.
@@ -388,7 +389,7 @@ const buildSortQuery = (state, typeToSearch) => {
         const sortOptions = activeSortSelector(state.search, typeId);
         const typeSortQuery = sortOptions.map(id => {
             const order = state.search.sort[typeId].order[id];
-            const attribute = typeAttrSelector(state.filters, typeId, id);
+            const attribute = typeSelector(state.filters, typeId).attributes.byId[id];
             const fullField = [id].concat(attribute.nested_target || []);
             return {
                 field: fullField,
