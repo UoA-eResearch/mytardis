@@ -1,10 +1,11 @@
-/* eslint-disable no-undef */
+/*eslint-env jest*/
+
 import reducer, {
     removeResultSort,
     SORT_ORDER,
     updateResultSort,
     parseQuery
-} from './searchSlice';
+} from "./searchSlice";
 import { createNextState } from "@reduxjs/toolkit";
 import { searchInfoData } from "./SearchPage.stories";
 

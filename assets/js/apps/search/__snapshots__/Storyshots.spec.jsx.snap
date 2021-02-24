@@ -80,112 +80,6 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
     >
       460.3 KB.
     </div>
-    <label
-      aria-label="Toggle sensitive data label"
-      className="switch__label"
-      htmlFor="showSensitiveDataSwitch"
-    >
-      <span
-        className="sensitive__label-text"
-      >
-        <b>
-          Show sensitive values
-        </b>
-      </span>
-      <div
-        style={
-          Object {
-            "MozTransition": "opacity 0.25s",
-            "MozUserSelect": "none",
-            "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
-            "WebkitTransition": "opacity 0.25s",
-            "WebkitUserSelect": "none",
-            "borderRadius": 10,
-            "direction": "ltr",
-            "display": "inline-block",
-            "msUserSelect": "none",
-            "opacity": 1,
-            "position": "relative",
-            "textAlign": "left",
-            "touchAction": "none",
-            "transition": "opacity 0.25s",
-            "userSelect": "none",
-          }
-        }
-      >
-        <div
-          className="react-switch-bg"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          style={
-            Object {
-              "MozTransition": "background 0.25s",
-              "WebkitTransition": "background 0.25s",
-              "background": "#888888",
-              "borderRadius": 10,
-              "cursor": "pointer",
-              "height": 20,
-              "margin": 2.5,
-              "position": "relative",
-              "transition": "background 0.25s",
-              "width": 40,
-            }
-          }
-        />
-        <div
-          className="react-switch-handle"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          onTouchCancel={[Function]}
-          onTouchEnd={[Function]}
-          onTouchMove={[Function]}
-          onTouchStart={[Function]}
-          style={
-            Object {
-              "MozTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "WebkitTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "background": "#ffffff",
-              "border": 0,
-              "borderRadius": "50%",
-              "boxShadow": "0 0 1px 1px #8a8a8a",
-              "cursor": "pointer",
-              "display": "inline-block",
-              "height": 25,
-              "outline": 0,
-              "position": "absolute",
-              "top": 0,
-              "transform": "translateX(0px)",
-              "transition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "width": 25,
-            }
-          }
-        />
-        <input
-          aria-label="Toggle sensitive data switch"
-          checked={false}
-          disabled={false}
-          id="showSensitiveDataSwitch"
-          onBlur={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyUp={[Function]}
-          role="switch"
-          style={
-            Object {
-              "border": 0,
-              "clip": "rect(0 0 0 0)",
-              "height": 1,
-              "margin": -1,
-              "overflow": "hidden",
-              "padding": 0,
-              "position": "absolute",
-              "width": 1,
-            }
-          }
-          type="checkbox"
-        />
-      </div>
-    </label>
     <table
       className="preview-card__parameter-table table table-sm table-striped table-bordered table-hover"
     >
@@ -204,41 +98,10 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
           className="parameter-table__row"
         >
           <td>
-             12
+            12
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            My name is
           </td>
         </tr>
       </tbody>
@@ -350,112 +213,6 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
       Added on the 
       7th May 2020.
     </div>
-    <label
-      aria-label="Toggle sensitive data label"
-      className="switch__label"
-      htmlFor="showSensitiveDataSwitch"
-    >
-      <span
-        className="sensitive__label-text"
-      >
-        <b>
-          Show sensitive values
-        </b>
-      </span>
-      <div
-        style={
-          Object {
-            "MozTransition": "opacity 0.25s",
-            "MozUserSelect": "none",
-            "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
-            "WebkitTransition": "opacity 0.25s",
-            "WebkitUserSelect": "none",
-            "borderRadius": 10,
-            "direction": "ltr",
-            "display": "inline-block",
-            "msUserSelect": "none",
-            "opacity": 1,
-            "position": "relative",
-            "textAlign": "left",
-            "touchAction": "none",
-            "transition": "opacity 0.25s",
-            "userSelect": "none",
-          }
-        }
-      >
-        <div
-          className="react-switch-bg"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          style={
-            Object {
-              "MozTransition": "background 0.25s",
-              "WebkitTransition": "background 0.25s",
-              "background": "#888888",
-              "borderRadius": 10,
-              "cursor": "pointer",
-              "height": 20,
-              "margin": 2.5,
-              "position": "relative",
-              "transition": "background 0.25s",
-              "width": 40,
-            }
-          }
-        />
-        <div
-          className="react-switch-handle"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          onTouchCancel={[Function]}
-          onTouchEnd={[Function]}
-          onTouchMove={[Function]}
-          onTouchStart={[Function]}
-          style={
-            Object {
-              "MozTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "WebkitTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "background": "#ffffff",
-              "border": 0,
-              "borderRadius": "50%",
-              "boxShadow": "0 0 1px 1px #8a8a8a",
-              "cursor": "pointer",
-              "display": "inline-block",
-              "height": 25,
-              "outline": 0,
-              "position": "absolute",
-              "top": 0,
-              "transform": "translateX(0px)",
-              "transition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "width": 25,
-            }
-          }
-        />
-        <input
-          aria-label="Toggle sensitive data switch"
-          checked={false}
-          disabled={false}
-          id="showSensitiveDataSwitch"
-          onBlur={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyUp={[Function]}
-          role="switch"
-          style={
-            Object {
-              "border": 0,
-              "clip": "rect(0 0 0 0)",
-              "height": 1,
-              "margin": -1,
-              "overflow": "hidden",
-              "padding": 0,
-              "position": "absolute",
-              "width": 1,
-            }
-          }
-          type="checkbox"
-        />
-      </div>
-    </label>
     <table
       className="preview-card__parameter-table table table-sm table-striped table-bordered table-hover"
     >
@@ -474,82 +231,20 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
           className="parameter-table__row"
         >
           <td>
-             4
+            4
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            My Name
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
           <td>
-             5
+            5
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            is
           </td>
         </tr>
       </tbody>
@@ -785,41 +480,10 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
           className="parameter-table__row"
         >
           <td>
-             1
+            1
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            kiwi
           </td>
         </tr>
         <tr
@@ -858,9 +522,12 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
                 d="M7 11V7a5 5 0 0 1 10 0v4"
               />
             </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            <em
+              onClick={[Function]}
+              role="button"
+            >
+               Click to show.
+            </em>
           </td>
         </tr>
       </tbody>
@@ -964,7 +631,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
     <div
       className="preview-card__count-detail"
     >
-      Contains 0 datafile from 0 dataset, across 0 experiment.
+      Contains 0 datafiles from 0 datasets, across 0 experiments.
     </div>
     <div
       className="preview-card__date-added"
@@ -972,112 +639,6 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
       Added on the 
       7th May 2020.
     </div>
-    <label
-      aria-label="Toggle sensitive data label"
-      className="switch__label"
-      htmlFor="showSensitiveDataSwitch"
-    >
-      <span
-        className="sensitive__label-text"
-      >
-        <b>
-          Show sensitive values
-        </b>
-      </span>
-      <div
-        style={
-          Object {
-            "MozTransition": "opacity 0.25s",
-            "MozUserSelect": "none",
-            "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
-            "WebkitTransition": "opacity 0.25s",
-            "WebkitUserSelect": "none",
-            "borderRadius": 10,
-            "direction": "ltr",
-            "display": "inline-block",
-            "msUserSelect": "none",
-            "opacity": 1,
-            "position": "relative",
-            "textAlign": "left",
-            "touchAction": "none",
-            "transition": "opacity 0.25s",
-            "userSelect": "none",
-          }
-        }
-      >
-        <div
-          className="react-switch-bg"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          style={
-            Object {
-              "MozTransition": "background 0.25s",
-              "WebkitTransition": "background 0.25s",
-              "background": "#888888",
-              "borderRadius": 10,
-              "cursor": "pointer",
-              "height": 20,
-              "margin": 2.5,
-              "position": "relative",
-              "transition": "background 0.25s",
-              "width": 40,
-            }
-          }
-        />
-        <div
-          className="react-switch-handle"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          onTouchCancel={[Function]}
-          onTouchEnd={[Function]}
-          onTouchMove={[Function]}
-          onTouchStart={[Function]}
-          style={
-            Object {
-              "MozTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "WebkitTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "background": "#ffffff",
-              "border": 0,
-              "borderRadius": "50%",
-              "boxShadow": "0 0 1px 1px #8a8a8a",
-              "cursor": "pointer",
-              "display": "inline-block",
-              "height": 25,
-              "outline": 0,
-              "position": "absolute",
-              "top": 0,
-              "transform": "translateX(0px)",
-              "transition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "width": 25,
-            }
-          }
-        />
-        <input
-          aria-label="Toggle sensitive data switch"
-          checked={false}
-          disabled={false}
-          id="showSensitiveDataSwitch"
-          onBlur={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyUp={[Function]}
-          role="switch"
-          style={
-            Object {
-              "border": 0,
-              "clip": "rect(0 0 0 0)",
-              "height": 1,
-              "margin": -1,
-              "overflow": "hidden",
-              "padding": 0,
-              "position": "absolute",
-              "width": 1,
-            }
-          }
-          type="checkbox"
-        />
-      </div>
-    </label>
     <table
       className="preview-card__parameter-table table table-sm table-striped table-bordered table-hover"
     >
@@ -1096,164 +657,40 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
           className="parameter-table__row"
         >
           <td>
-             18
+            18
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
           <td>
-             19
+            19
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            7.0
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
           <td>
-             15
+            15
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            Kiwi
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
           <td>
-             16
+            16
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            Orange
           </td>
         </tr>
       </tbody>
@@ -1359,112 +796,6 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
     >
       Contains 2 datafiles from 1 dataset, across 1 experiment.
     </div>
-    <label
-      aria-label="Toggle sensitive data label"
-      className="switch__label"
-      htmlFor="showSensitiveDataSwitch"
-    >
-      <span
-        className="sensitive__label-text"
-      >
-        <b>
-          Show sensitive values
-        </b>
-      </span>
-      <div
-        style={
-          Object {
-            "MozTransition": "opacity 0.25s",
-            "MozUserSelect": "none",
-            "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
-            "WebkitTransition": "opacity 0.25s",
-            "WebkitUserSelect": "none",
-            "borderRadius": 10,
-            "direction": "ltr",
-            "display": "inline-block",
-            "msUserSelect": "none",
-            "opacity": 1,
-            "position": "relative",
-            "textAlign": "left",
-            "touchAction": "none",
-            "transition": "opacity 0.25s",
-            "userSelect": "none",
-          }
-        }
-      >
-        <div
-          className="react-switch-bg"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          style={
-            Object {
-              "MozTransition": "background 0.25s",
-              "WebkitTransition": "background 0.25s",
-              "background": "#888888",
-              "borderRadius": 10,
-              "cursor": "pointer",
-              "height": 20,
-              "margin": 2.5,
-              "position": "relative",
-              "transition": "background 0.25s",
-              "width": 40,
-            }
-          }
-        />
-        <div
-          className="react-switch-handle"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          onTouchCancel={[Function]}
-          onTouchEnd={[Function]}
-          onTouchMove={[Function]}
-          onTouchStart={[Function]}
-          style={
-            Object {
-              "MozTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "WebkitTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "background": "#ffffff",
-              "border": 0,
-              "borderRadius": "50%",
-              "boxShadow": "0 0 1px 1px #8a8a8a",
-              "cursor": "pointer",
-              "display": "inline-block",
-              "height": 25,
-              "outline": 0,
-              "position": "absolute",
-              "top": 0,
-              "transform": "translateX(0px)",
-              "transition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "width": 25,
-            }
-          }
-        />
-        <input
-          aria-label="Toggle sensitive data switch"
-          checked={false}
-          disabled={false}
-          id="showSensitiveDataSwitch"
-          onBlur={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyUp={[Function]}
-          role="switch"
-          style={
-            Object {
-              "border": 0,
-              "clip": "rect(0 0 0 0)",
-              "height": 1,
-              "margin": -1,
-              "overflow": "hidden",
-              "padding": 0,
-              "position": "absolute",
-              "width": 1,
-            }
-          }
-          type="checkbox"
-        />
-      </div>
-    </label>
     <table
       className="preview-card__parameter-table table table-sm table-striped table-bordered table-hover"
     >
@@ -1483,164 +814,40 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
           className="parameter-table__row"
         >
           <td>
-             18
+            18
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
           <td>
-             19
+            19
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            7.0
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
           <td>
-             15
+            15
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            Kiwi
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
           <td>
-             16
+            16
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            Orange
           </td>
         </tr>
       </tbody>
@@ -1768,112 +975,6 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
       Added on the 
       7th May 2020.
     </div>
-    <label
-      aria-label="Toggle sensitive data label"
-      className="switch__label"
-      htmlFor="showSensitiveDataSwitch"
-    >
-      <span
-        className="sensitive__label-text"
-      >
-        <b>
-          Show sensitive values
-        </b>
-      </span>
-      <div
-        style={
-          Object {
-            "MozTransition": "opacity 0.25s",
-            "MozUserSelect": "none",
-            "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
-            "WebkitTransition": "opacity 0.25s",
-            "WebkitUserSelect": "none",
-            "borderRadius": 10,
-            "direction": "ltr",
-            "display": "inline-block",
-            "msUserSelect": "none",
-            "opacity": 1,
-            "position": "relative",
-            "textAlign": "left",
-            "touchAction": "none",
-            "transition": "opacity 0.25s",
-            "userSelect": "none",
-          }
-        }
-      >
-        <div
-          className="react-switch-bg"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          style={
-            Object {
-              "MozTransition": "background 0.25s",
-              "WebkitTransition": "background 0.25s",
-              "background": "#888888",
-              "borderRadius": 10,
-              "cursor": "pointer",
-              "height": 20,
-              "margin": 2.5,
-              "position": "relative",
-              "transition": "background 0.25s",
-              "width": 40,
-            }
-          }
-        />
-        <div
-          className="react-switch-handle"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          onTouchCancel={[Function]}
-          onTouchEnd={[Function]}
-          onTouchMove={[Function]}
-          onTouchStart={[Function]}
-          style={
-            Object {
-              "MozTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "WebkitTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "background": "#ffffff",
-              "border": 0,
-              "borderRadius": "50%",
-              "boxShadow": "0 0 1px 1px #8a8a8a",
-              "cursor": "pointer",
-              "display": "inline-block",
-              "height": 25,
-              "outline": 0,
-              "position": "absolute",
-              "top": 0,
-              "transform": "translateX(0px)",
-              "transition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
-              "width": 25,
-            }
-          }
-        />
-        <input
-          aria-label="Toggle sensitive data switch"
-          checked={false}
-          disabled={false}
-          id="showSensitiveDataSwitch"
-          onBlur={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyUp={[Function]}
-          role="switch"
-          style={
-            Object {
-              "border": 0,
-              "clip": "rect(0 0 0 0)",
-              "height": 1,
-              "margin": -1,
-              "overflow": "hidden",
-              "padding": 0,
-              "position": "absolute",
-              "width": 1,
-            }
-          }
-          type="checkbox"
-        />
-      </div>
-    </label>
     <table
       className="preview-card__parameter-table table table-sm table-striped table-bordered table-hover"
     >
@@ -1892,164 +993,40 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
           className="parameter-table__row"
         >
           <td>
-             18
+            18
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
           <td>
-             19
+            19
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            7.0
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
           <td>
-             15
+            15
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            Kiwi
           </td>
         </tr>
         <tr
           className="parameter-table__row"
         >
           <td>
-             16
+            16
           </td>
           <td>
-            <svg
-              aria-label="Sensitive parameter value"
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              style={
-                Object {
-                  "color": undefined,
-                }
-              }
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                height="11"
-                rx="2"
-                ry="2"
-                width="18"
-                x="3"
-                y="11"
-              />
-              <path
-                d="M7 11V7a5 5 0 0 1 10 0v4"
-              />
-            </svg>
-            <i>
-               Hidden. Toggle to show.
-            </i>
+            Orange
           </td>
         </tr>
       </tbody>
@@ -2259,12 +1236,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
         role="tablist"
       >
         <a
-          aria-controls="filters-section-tabpane-projects"
+          aria-controls="filters-section-tabpane-project"
           aria-selected={true}
           className="nav-item nav-link active"
-          data-rb-event-key="projects"
+          data-rb-event-key="project"
           href="#"
-          id="filters-section-tab-projects"
+          id="filters-section-tab-project"
           onClick={[Function]}
           onKeyDown={[Function]}
           role="tab"
@@ -2285,12 +1262,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           </div>
         </a>
         <a
-          aria-controls="filters-section-tabpane-experiments"
+          aria-controls="filters-section-tabpane-experiment"
           aria-selected={false}
           className="nav-item nav-link"
-          data-rb-event-key="experiments"
+          data-rb-event-key="experiment"
           href="#"
-          id="filters-section-tab-experiments"
+          id="filters-section-tab-experiment"
           onClick={[Function]}
           onKeyDown={[Function]}
           role="tab"
@@ -2312,12 +1289,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           </div>
         </a>
         <a
-          aria-controls="filters-section-tabpane-datasets"
+          aria-controls="filters-section-tabpane-dataset"
           aria-selected={false}
           className="nav-item nav-link"
-          data-rb-event-key="datasets"
+          data-rb-event-key="dataset"
           href="#"
-          id="filters-section-tab-datasets"
+          id="filters-section-tab-dataset"
           onClick={[Function]}
           onKeyDown={[Function]}
           role="tab"
@@ -2339,12 +1316,12 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           </div>
         </a>
         <a
-          aria-controls="filters-section-tabpane-datafiles"
+          aria-controls="filters-section-tabpane-datafile"
           aria-selected={false}
           className="nav-item nav-link"
-          data-rb-event-key="datafiles"
+          data-rb-event-key="datafile"
           href="#"
-          id="filters-section-tab-datafiles"
+          id="filters-section-tab-datafile"
           onClick={[Function]}
           onKeyDown={[Function]}
           role="tab"
@@ -2371,9 +1348,9 @@ exports[`Storyshots Filter sidebar Default 1`] = `
       >
         <div
           aria-hidden={false}
-          aria-labelledby="filters-section-tab-projects"
+          aria-labelledby="filters-section-tab-project"
           className="fade tab-pane active show"
-          id="filters-section-tabpane-projects"
+          id="filters-section-tabpane-project"
           role="tabpanel"
         >
           <form
@@ -2448,7 +1425,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <label
                   className="form-label"
-                  htmlFor="start-projects.createdDate"
+                  htmlFor="start-project.createdDate"
                 >
                   Start
                 </label>
@@ -2457,7 +1434,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                 >
                   <input
                     className="form-control"
-                    id="start-projects.createdDate"
+                    id="start-project.createdDate"
                     onChange={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
@@ -2940,7 +1917,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <label
                   className="form-label"
-                  htmlFor="end-projects.createdDate"
+                  htmlFor="end-project.createdDate"
                 >
                   End
                 </label>
@@ -2949,7 +1926,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                 >
                   <input
                     className="form-control"
-                    id="end-projects.createdDate"
+                    id="end-project.createdDate"
                     onChange={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
@@ -3669,9 +2646,9 @@ exports[`Storyshots Filter sidebar Default 1`] = `
         </div>
         <div
           aria-hidden={true}
-          aria-labelledby="filters-section-tab-experiments"
+          aria-labelledby="filters-section-tab-experiment"
           className="fade tab-pane"
-          id="filters-section-tabpane-experiments"
+          id="filters-section-tabpane-experiment"
           role="tabpanel"
         >
           <form
@@ -3746,7 +2723,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <label
                   className="form-label"
-                  htmlFor="start-experiments.createdDate"
+                  htmlFor="start-experiment.createdDate"
                 >
                   Start
                 </label>
@@ -3755,7 +2732,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                 >
                   <input
                     className="form-control"
-                    id="start-experiments.createdDate"
+                    id="start-experiment.createdDate"
                     onChange={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
@@ -4238,7 +3215,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <label
                   className="form-label"
-                  htmlFor="end-experiments.createdDate"
+                  htmlFor="end-experiment.createdDate"
                 >
                   End
                 </label>
@@ -4247,7 +3224,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                 >
                   <input
                     className="form-control"
-                    id="end-experiments.createdDate"
+                    id="end-experiment.createdDate"
                     onChange={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
@@ -4967,9 +3944,9 @@ exports[`Storyshots Filter sidebar Default 1`] = `
         </div>
         <div
           aria-hidden={true}
-          aria-labelledby="filters-section-tab-datasets"
+          aria-labelledby="filters-section-tab-dataset"
           className="fade tab-pane"
-          id="filters-section-tabpane-datasets"
+          id="filters-section-tabpane-dataset"
           role="tabpanel"
         >
           <form
@@ -5044,7 +4021,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <label
                   className="form-label"
-                  htmlFor="start-datasets.createdDate"
+                  htmlFor="start-dataset.createdDate"
                 >
                   Start
                 </label>
@@ -5053,7 +4030,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                 >
                   <input
                     className="form-control"
-                    id="start-datasets.createdDate"
+                    id="start-dataset.createdDate"
                     onChange={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
@@ -5536,7 +4513,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <label
                   className="form-label"
-                  htmlFor="end-datasets.createdDate"
+                  htmlFor="end-dataset.createdDate"
                 >
                   End
                 </label>
@@ -5545,7 +4522,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                 >
                   <input
                     className="form-control"
-                    id="end-datasets.createdDate"
+                    id="end-dataset.createdDate"
                     onChange={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
@@ -6265,9 +5242,9 @@ exports[`Storyshots Filter sidebar Default 1`] = `
         </div>
         <div
           aria-hidden={true}
-          aria-labelledby="filters-section-tab-datafiles"
+          aria-labelledby="filters-section-tab-datafile"
           className="fade tab-pane"
-          id="filters-section-tabpane-datafiles"
+          id="filters-section-tabpane-datafile"
           role="tabpanel"
         >
           <form
@@ -6342,7 +5319,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <label
                   className="form-label"
-                  htmlFor="start-datafiles.createdDate"
+                  htmlFor="start-datafile.createdDate"
                 >
                   Start
                 </label>
@@ -6351,7 +5328,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                 >
                   <input
                     className="form-control"
-                    id="start-datafiles.createdDate"
+                    id="start-datafile.createdDate"
                     onChange={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
@@ -6834,7 +5811,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
               >
                 <label
                   className="form-label"
-                  htmlFor="end-datafiles.createdDate"
+                  htmlFor="end-datafile.createdDate"
                 >
                   End
                 </label>
@@ -6843,7 +5820,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
                 >
                   <input
                     className="form-control"
-                    id="end-datafiles.createdDate"
+                    id="end-datafile.createdDate"
                     onChange={[Function]}
                     onClick={[Function]}
                     onFocus={[Function]}
@@ -12133,12 +11110,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
       role="tablist"
     >
       <a
-        aria-controls="filters-section-tabpane-projects"
+        aria-controls="filters-section-tabpane-project"
         aria-selected={true}
         className="nav-item nav-link active"
-        data-rb-event-key="projects"
+        data-rb-event-key="project"
         href="#"
-        id="filters-section-tab-projects"
+        id="filters-section-tab-project"
         onClick={[Function]}
         onKeyDown={[Function]}
         role="tab"
@@ -12159,12 +11136,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         </div>
       </a>
       <a
-        aria-controls="filters-section-tabpane-experiments"
+        aria-controls="filters-section-tabpane-experiment"
         aria-selected={false}
         className="nav-item nav-link"
-        data-rb-event-key="experiments"
+        data-rb-event-key="experiment"
         href="#"
-        id="filters-section-tab-experiments"
+        id="filters-section-tab-experiment"
         onClick={[Function]}
         onKeyDown={[Function]}
         role="tab"
@@ -12186,12 +11163,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         </div>
       </a>
       <a
-        aria-controls="filters-section-tabpane-datasets"
+        aria-controls="filters-section-tabpane-dataset"
         aria-selected={false}
         className="nav-item nav-link"
-        data-rb-event-key="datasets"
+        data-rb-event-key="dataset"
         href="#"
-        id="filters-section-tab-datasets"
+        id="filters-section-tab-dataset"
         onClick={[Function]}
         onKeyDown={[Function]}
         role="tab"
@@ -12213,12 +11190,12 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         </div>
       </a>
       <a
-        aria-controls="filters-section-tabpane-datafiles"
+        aria-controls="filters-section-tabpane-datafile"
         aria-selected={false}
         className="nav-item nav-link"
-        data-rb-event-key="datafiles"
+        data-rb-event-key="datafile"
         href="#"
-        id="filters-section-tab-datafiles"
+        id="filters-section-tab-datafile"
         onClick={[Function]}
         onKeyDown={[Function]}
         role="tab"
@@ -12245,9 +11222,9 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
     >
       <div
         aria-hidden={false}
-        aria-labelledby="filters-section-tab-projects"
+        aria-labelledby="filters-section-tab-project"
         className="fade tab-pane active show"
-        id="filters-section-tabpane-projects"
+        id="filters-section-tabpane-project"
         role="tabpanel"
       >
         <form
@@ -12322,7 +11299,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <label
                 className="form-label"
-                htmlFor="start-projects.createdDate"
+                htmlFor="start-project.createdDate"
               >
                 Start
               </label>
@@ -12331,7 +11308,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
               >
                 <input
                   className="form-control"
-                  id="start-projects.createdDate"
+                  id="start-project.createdDate"
                   onChange={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -12814,7 +11791,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <label
                 className="form-label"
-                htmlFor="end-projects.createdDate"
+                htmlFor="end-project.createdDate"
               >
                 End
               </label>
@@ -12823,7 +11800,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
               >
                 <input
                   className="form-control"
-                  id="end-projects.createdDate"
+                  id="end-project.createdDate"
                   onChange={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -13543,9 +12520,9 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
       </div>
       <div
         aria-hidden={true}
-        aria-labelledby="filters-section-tab-experiments"
+        aria-labelledby="filters-section-tab-experiment"
         className="fade tab-pane"
-        id="filters-section-tabpane-experiments"
+        id="filters-section-tabpane-experiment"
         role="tabpanel"
       >
         <form
@@ -13620,7 +12597,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <label
                 className="form-label"
-                htmlFor="start-experiments.createdDate"
+                htmlFor="start-experiment.createdDate"
               >
                 Start
               </label>
@@ -13629,7 +12606,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
               >
                 <input
                   className="form-control"
-                  id="start-experiments.createdDate"
+                  id="start-experiment.createdDate"
                   onChange={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -14112,7 +13089,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <label
                 className="form-label"
-                htmlFor="end-experiments.createdDate"
+                htmlFor="end-experiment.createdDate"
               >
                 End
               </label>
@@ -14121,7 +13098,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
               >
                 <input
                   className="form-control"
-                  id="end-experiments.createdDate"
+                  id="end-experiment.createdDate"
                   onChange={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -14841,9 +13818,9 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
       </div>
       <div
         aria-hidden={true}
-        aria-labelledby="filters-section-tab-datasets"
+        aria-labelledby="filters-section-tab-dataset"
         className="fade tab-pane"
-        id="filters-section-tabpane-datasets"
+        id="filters-section-tabpane-dataset"
         role="tabpanel"
       >
         <form
@@ -14918,7 +13895,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <label
                 className="form-label"
-                htmlFor="start-datasets.createdDate"
+                htmlFor="start-dataset.createdDate"
               >
                 Start
               </label>
@@ -14927,7 +13904,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
               >
                 <input
                   className="form-control"
-                  id="start-datasets.createdDate"
+                  id="start-dataset.createdDate"
                   onChange={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -15410,7 +14387,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <label
                 className="form-label"
-                htmlFor="end-datasets.createdDate"
+                htmlFor="end-dataset.createdDate"
               >
                 End
               </label>
@@ -15419,7 +14396,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
               >
                 <input
                   className="form-control"
-                  id="end-datasets.createdDate"
+                  id="end-dataset.createdDate"
                   onChange={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -16139,9 +15116,9 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
       </div>
       <div
         aria-hidden={true}
-        aria-labelledby="filters-section-tab-datafiles"
+        aria-labelledby="filters-section-tab-datafile"
         className="fade tab-pane"
-        id="filters-section-tabpane-datafiles"
+        id="filters-section-tabpane-datafile"
         role="tabpanel"
       >
         <form
@@ -16216,7 +15193,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <label
                 className="form-label"
-                htmlFor="start-datafiles.createdDate"
+                htmlFor="start-datafile.createdDate"
               >
                 Start
               </label>
@@ -16225,7 +15202,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
               >
                 <input
                   className="form-control"
-                  id="start-datafiles.createdDate"
+                  id="start-datafile.createdDate"
                   onChange={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -16708,7 +15685,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
             >
               <label
                 className="form-label"
-                htmlFor="end-datafiles.createdDate"
+                htmlFor="end-datafile.createdDate"
               >
                 End
               </label>
@@ -16717,7 +15694,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
               >
                 <input
                   className="form-control"
-                  id="end-datafiles.createdDate"
+                  id="end-datafile.createdDate"
                   onChange={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -18732,7 +17709,7 @@ exports[`Storyshots Pager Default 1`] = `
       className="pagesize"
     >
       <label
-        htmlFor="undefined-pagesize-dropdown"
+        htmlFor="experiment-pagesize-dropdown"
       >
         Items per page
       </label>
@@ -18745,7 +17722,7 @@ exports[`Storyshots Pager Default 1`] = `
           aria-haspopup={true}
           className="dropdown-toggle btn btn-outline-primary"
           disabled={false}
-          id="undefined-pagesize--dropdown"
+          id="experiment-pagesize--dropdown"
           onClick={[Function]}
           type="button"
         >
@@ -18756,7 +17733,7 @@ exports[`Storyshots Pager Default 1`] = `
     <ul
       aria-live="polite"
       className="pagination"
-      id="undefined-pager"
+      id="experiment-pager"
     >
       <span
         className="sr-only"
@@ -18985,7 +17962,7 @@ exports[`Storyshots Pager Default 1`] = `
     </ul>
     <label
       className="sr-only"
-      for="undefined-pager"
+      htmlFor="experiment-pager"
     >
       Result page number
     </label>
@@ -19008,7 +17985,7 @@ exports[`Storyshots Pager Last Page 1`] = `
       className="pagesize"
     >
       <label
-        htmlFor="undefined-pagesize-dropdown"
+        htmlFor="experiment-pagesize-dropdown"
       >
         Items per page
       </label>
@@ -19021,7 +17998,7 @@ exports[`Storyshots Pager Last Page 1`] = `
           aria-haspopup={true}
           className="dropdown-toggle btn btn-outline-primary"
           disabled={false}
-          id="undefined-pagesize--dropdown"
+          id="experiment-pagesize--dropdown"
           onClick={[Function]}
           type="button"
         >
@@ -19032,7 +18009,7 @@ exports[`Storyshots Pager Last Page 1`] = `
     <ul
       aria-live="polite"
       className="pagination"
-      id="undefined-pager"
+      id="experiment-pager"
     >
       <span
         className="sr-only"
@@ -19220,7 +18197,7 @@ exports[`Storyshots Pager Last Page 1`] = `
     </ul>
     <label
       className="sr-only"
-      for="undefined-pager"
+      htmlFor="experiment-pager"
     >
       Result page number
     </label>
@@ -19243,7 +18220,7 @@ exports[`Storyshots Pager Less Than Five Pages 1`] = `
       className="pagesize"
     >
       <label
-        htmlFor="undefined-pagesize-dropdown"
+        htmlFor="experiment-pagesize-dropdown"
       >
         Items per page
       </label>
@@ -19256,7 +18233,7 @@ exports[`Storyshots Pager Less Than Five Pages 1`] = `
           aria-haspopup={true}
           className="dropdown-toggle btn btn-outline-primary"
           disabled={false}
-          id="undefined-pagesize--dropdown"
+          id="experiment-pagesize--dropdown"
           onClick={[Function]}
           type="button"
         >
@@ -19267,7 +18244,7 @@ exports[`Storyshots Pager Less Than Five Pages 1`] = `
     <ul
       aria-live="polite"
       className="pagination"
-      id="undefined-pager"
+      id="experiment-pager"
     >
       <span
         className="sr-only"
@@ -19420,7 +18397,7 @@ exports[`Storyshots Pager Less Than Five Pages 1`] = `
     </ul>
     <label
       className="sr-only"
-      for="undefined-pager"
+      htmlFor="experiment-pager"
     >
       Result page number
     </label>
@@ -19443,7 +18420,7 @@ exports[`Storyshots Pager No Pages 1`] = `
       className="pagesize"
     >
       <label
-        htmlFor="undefined-pagesize-dropdown"
+        htmlFor="experiment-pagesize-dropdown"
       >
         Items per page
       </label>
@@ -19456,7 +18433,7 @@ exports[`Storyshots Pager No Pages 1`] = `
           aria-haspopup={true}
           className="dropdown-toggle btn btn-outline-primary"
           disabled={false}
-          id="undefined-pagesize--dropdown"
+          id="experiment-pagesize--dropdown"
           onClick={[Function]}
           type="button"
         >
@@ -19467,7 +18444,7 @@ exports[`Storyshots Pager No Pages 1`] = `
     <ul
       aria-live="polite"
       className="pagination"
-      id="undefined-pager"
+      id="experiment-pager"
     >
       <span
         className="sr-only"
@@ -19565,7 +18542,7 @@ exports[`Storyshots Pager No Pages 1`] = `
     </ul>
     <label
       className="sr-only"
-      for="undefined-pager"
+      htmlFor="experiment-pager"
     >
       Result page number
     </label>
@@ -19588,7 +18565,7 @@ exports[`Storyshots Pager One Page 1`] = `
       className="pagesize"
     >
       <label
-        htmlFor="undefined-pagesize-dropdown"
+        htmlFor="experiment-pagesize-dropdown"
       >
         Items per page
       </label>
@@ -19601,7 +18578,7 @@ exports[`Storyshots Pager One Page 1`] = `
           aria-haspopup={true}
           className="dropdown-toggle btn btn-outline-primary"
           disabled={false}
-          id="undefined-pagesize--dropdown"
+          id="experiment-pagesize--dropdown"
           onClick={[Function]}
           type="button"
         >
@@ -19612,7 +18589,7 @@ exports[`Storyshots Pager One Page 1`] = `
     <ul
       aria-live="polite"
       className="pagination"
-      id="undefined-pager"
+      id="experiment-pager"
     >
       <span
         className="sr-only"
@@ -19726,7 +18703,7 @@ exports[`Storyshots Pager One Page 1`] = `
     </ul>
     <label
       className="sr-only"
-      for="undefined-pager"
+      htmlFor="experiment-pager"
     >
       Result page number
     </label>
@@ -20088,7 +19065,43 @@ exports[`Storyshots Result list Error 1`] = `
     className="result-section--msg result-section--error-msg"
   >
     <p>
-      An error occurred. Please try another query, or refresh the page and try searching again.
+      An error occurred. Please try another query, or reload the page and try searching again.
+    </p>
+    <p>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <svg
+          fill="none"
+          height="1em"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          style={
+            Object {
+              "color": undefined,
+            }
+          }
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polyline
+            points="1 4 1 10 7 10"
+          />
+          <polyline
+            points="23 20 23 14 17 14"
+          />
+          <path
+            d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"
+          />
+        </svg>
+         Reload
+      </button>
     </p>
   </div>
 </div>
@@ -20336,7 +19349,11 @@ exports[`Storyshots Result tabs Default 1`] = `
         onKeyDown={[Function]}
         role="button"
       >
-        Projects
+        <span
+          className="text-capitalize"
+        >
+          projects
+        </span>
          
         <span>
           (
@@ -20362,7 +19379,11 @@ exports[`Storyshots Result tabs Default 1`] = `
         onKeyDown={[Function]}
         role="button"
       >
-        Experiments
+        <span
+          className="text-capitalize"
+        >
+          experiments
+        </span>
          
         <span>
           (
@@ -20388,7 +19409,11 @@ exports[`Storyshots Result tabs Default 1`] = `
         onKeyDown={[Function]}
         role="button"
       >
-        Datasets
+        <span
+          className="text-capitalize"
+        >
+          datasets
+        </span>
          
         <span>
           (
@@ -20414,7 +19439,11 @@ exports[`Storyshots Result tabs Default 1`] = `
         onKeyDown={[Function]}
         role="button"
       >
-        Datafiles
+        <span
+          className="text-capitalize"
+        >
+          datafiles
+        </span>
          
         <span>
           (
@@ -20456,8 +19485,21 @@ exports[`Storyshots Result tabs Empty Counts 1`] = `
         onKeyDown={[Function]}
         role="button"
       >
-        Projects
+        <span
+          className="text-capitalize"
+        >
+          projects
+        </span>
          
+        <span>
+          (
+          <span
+            className="sr-only"
+          >
+             result
+          </span>
+          )
+        </span>
       </a>
     </div>
     <div
@@ -20472,8 +19514,21 @@ exports[`Storyshots Result tabs Empty Counts 1`] = `
         onKeyDown={[Function]}
         role="button"
       >
-        Experiments
+        <span
+          className="text-capitalize"
+        >
+          experiments
+        </span>
          
+        <span>
+          (
+          <span
+            className="sr-only"
+          >
+             result
+          </span>
+          )
+        </span>
       </a>
     </div>
     <div
@@ -20488,8 +19543,21 @@ exports[`Storyshots Result tabs Empty Counts 1`] = `
         onKeyDown={[Function]}
         role="button"
       >
-        Datasets
+        <span
+          className="text-capitalize"
+        >
+          datasets
+        </span>
          
+        <span>
+          (
+          <span
+            className="sr-only"
+          >
+             result
+          </span>
+          )
+        </span>
       </a>
     </div>
     <div
@@ -20504,8 +19572,21 @@ exports[`Storyshots Result tabs Empty Counts 1`] = `
         onKeyDown={[Function]}
         role="button"
       >
-        Datafiles
+        <span
+          className="text-capitalize"
+        >
+          datafiles
+        </span>
          
+        <span>
+          (
+          <span
+            className="sr-only"
+          >
+             result
+          </span>
+          )
+        </span>
       </a>
     </div>
   </div>
@@ -20533,12 +19614,12 @@ exports[`Storyshots Search page Default 1`] = `
             role="tablist"
           >
             <a
-              aria-controls="filters-section-tabpane-projects"
+              aria-controls="filters-section-tabpane-project"
               aria-selected={true}
               className="nav-item nav-link active"
-              data-rb-event-key="projects"
+              data-rb-event-key="project"
               href="#"
-              id="filters-section-tab-projects"
+              id="filters-section-tab-project"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -20559,12 +19640,12 @@ exports[`Storyshots Search page Default 1`] = `
               </div>
             </a>
             <a
-              aria-controls="filters-section-tabpane-experiments"
+              aria-controls="filters-section-tabpane-experiment"
               aria-selected={false}
               className="nav-item nav-link"
-              data-rb-event-key="experiments"
+              data-rb-event-key="experiment"
               href="#"
-              id="filters-section-tab-experiments"
+              id="filters-section-tab-experiment"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -20586,12 +19667,12 @@ exports[`Storyshots Search page Default 1`] = `
               </div>
             </a>
             <a
-              aria-controls="filters-section-tabpane-datasets"
+              aria-controls="filters-section-tabpane-dataset"
               aria-selected={false}
               className="nav-item nav-link"
-              data-rb-event-key="datasets"
+              data-rb-event-key="dataset"
               href="#"
-              id="filters-section-tab-datasets"
+              id="filters-section-tab-dataset"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -20613,12 +19694,12 @@ exports[`Storyshots Search page Default 1`] = `
               </div>
             </a>
             <a
-              aria-controls="filters-section-tabpane-datafiles"
+              aria-controls="filters-section-tabpane-datafile"
               aria-selected={false}
               className="nav-item nav-link"
-              data-rb-event-key="datafiles"
+              data-rb-event-key="datafile"
               href="#"
-              id="filters-section-tab-datafiles"
+              id="filters-section-tab-datafile"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -20645,9 +19726,9 @@ exports[`Storyshots Search page Default 1`] = `
           >
             <div
               aria-hidden={false}
-              aria-labelledby="filters-section-tab-projects"
+              aria-labelledby="filters-section-tab-project"
               className="fade tab-pane active show"
-              id="filters-section-tabpane-projects"
+              id="filters-section-tabpane-project"
               role="tabpanel"
             >
               <form
@@ -20722,7 +19803,7 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-projects.createdDate"
+                      htmlFor="start-project.createdDate"
                     >
                       Start
                     </label>
@@ -20731,7 +19812,7 @@ exports[`Storyshots Search page Default 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-projects.createdDate"
+                        id="start-project.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -21214,7 +20295,7 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-projects.createdDate"
+                      htmlFor="end-project.createdDate"
                     >
                       End
                     </label>
@@ -21223,7 +20304,7 @@ exports[`Storyshots Search page Default 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-projects.createdDate"
+                        id="end-project.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -21943,9 +21024,9 @@ exports[`Storyshots Search page Default 1`] = `
             </div>
             <div
               aria-hidden={true}
-              aria-labelledby="filters-section-tab-experiments"
+              aria-labelledby="filters-section-tab-experiment"
               className="fade tab-pane"
-              id="filters-section-tabpane-experiments"
+              id="filters-section-tabpane-experiment"
               role="tabpanel"
             >
               <form
@@ -22020,7 +21101,7 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-experiments.createdDate"
+                      htmlFor="start-experiment.createdDate"
                     >
                       Start
                     </label>
@@ -22029,7 +21110,7 @@ exports[`Storyshots Search page Default 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-experiments.createdDate"
+                        id="start-experiment.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -22512,7 +21593,7 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-experiments.createdDate"
+                      htmlFor="end-experiment.createdDate"
                     >
                       End
                     </label>
@@ -22521,7 +21602,7 @@ exports[`Storyshots Search page Default 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-experiments.createdDate"
+                        id="end-experiment.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -23241,9 +22322,9 @@ exports[`Storyshots Search page Default 1`] = `
             </div>
             <div
               aria-hidden={true}
-              aria-labelledby="filters-section-tab-datasets"
+              aria-labelledby="filters-section-tab-dataset"
               className="fade tab-pane"
-              id="filters-section-tabpane-datasets"
+              id="filters-section-tabpane-dataset"
               role="tabpanel"
             >
               <form
@@ -23318,7 +22399,7 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-datasets.createdDate"
+                      htmlFor="start-dataset.createdDate"
                     >
                       Start
                     </label>
@@ -23327,7 +22408,7 @@ exports[`Storyshots Search page Default 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-datasets.createdDate"
+                        id="start-dataset.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -23810,7 +22891,7 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-datasets.createdDate"
+                      htmlFor="end-dataset.createdDate"
                     >
                       End
                     </label>
@@ -23819,7 +22900,7 @@ exports[`Storyshots Search page Default 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-datasets.createdDate"
+                        id="end-dataset.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -24539,9 +23620,9 @@ exports[`Storyshots Search page Default 1`] = `
             </div>
             <div
               aria-hidden={true}
-              aria-labelledby="filters-section-tab-datafiles"
+              aria-labelledby="filters-section-tab-datafile"
               className="fade tab-pane"
-              id="filters-section-tabpane-datafiles"
+              id="filters-section-tabpane-datafile"
               role="tabpanel"
             >
               <form
@@ -24616,7 +23697,7 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-datafiles.createdDate"
+                      htmlFor="start-datafile.createdDate"
                     >
                       Start
                     </label>
@@ -24625,7 +23706,7 @@ exports[`Storyshots Search page Default 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-datafiles.createdDate"
+                        id="start-datafile.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -25108,7 +24189,7 @@ exports[`Storyshots Search page Default 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-datafiles.createdDate"
+                      htmlFor="end-datafile.createdDate"
                     >
                       End
                     </label>
@@ -25117,7 +24198,7 @@ exports[`Storyshots Search page Default 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-datafiles.createdDate"
+                        id="end-datafile.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -26121,7 +25202,11 @@ exports[`Storyshots Search page Default 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Projects
+              <span
+                className="text-capitalize"
+              >
+                projects
+              </span>
                
               <span>
                 (
@@ -26147,7 +25232,11 @@ exports[`Storyshots Search page Default 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Experiments
+              <span
+                className="text-capitalize"
+              >
+                experiments
+              </span>
                
               <span>
                 (
@@ -26173,7 +25262,11 @@ exports[`Storyshots Search page Default 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Datasets
+              <span
+                className="text-capitalize"
+              >
+                datasets
+              </span>
                
               <span>
                 (
@@ -26199,7 +25292,11 @@ exports[`Storyshots Search page Default 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Datafiles
+              <span
+                className="text-capitalize"
+              >
+                datafiles
+              </span>
                
               <span>
                 (
@@ -26590,7 +25687,7 @@ exports[`Storyshots Search page Default 1`] = `
             </ul>
             <label
               className="sr-only"
-              for="experiment-pager"
+              htmlFor="experiment-pager"
             >
               Result page number
             </label>
@@ -26623,12 +25720,12 @@ exports[`Storyshots Search page Error 1`] = `
             role="tablist"
           >
             <a
-              aria-controls="filters-section-tabpane-projects"
+              aria-controls="filters-section-tabpane-project"
               aria-selected={true}
               className="nav-item nav-link active"
-              data-rb-event-key="projects"
+              data-rb-event-key="project"
               href="#"
-              id="filters-section-tab-projects"
+              id="filters-section-tab-project"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -26649,12 +25746,12 @@ exports[`Storyshots Search page Error 1`] = `
               </div>
             </a>
             <a
-              aria-controls="filters-section-tabpane-experiments"
+              aria-controls="filters-section-tabpane-experiment"
               aria-selected={false}
               className="nav-item nav-link"
-              data-rb-event-key="experiments"
+              data-rb-event-key="experiment"
               href="#"
-              id="filters-section-tab-experiments"
+              id="filters-section-tab-experiment"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -26676,12 +25773,12 @@ exports[`Storyshots Search page Error 1`] = `
               </div>
             </a>
             <a
-              aria-controls="filters-section-tabpane-datasets"
+              aria-controls="filters-section-tabpane-dataset"
               aria-selected={false}
               className="nav-item nav-link"
-              data-rb-event-key="datasets"
+              data-rb-event-key="dataset"
               href="#"
-              id="filters-section-tab-datasets"
+              id="filters-section-tab-dataset"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -26703,12 +25800,12 @@ exports[`Storyshots Search page Error 1`] = `
               </div>
             </a>
             <a
-              aria-controls="filters-section-tabpane-datafiles"
+              aria-controls="filters-section-tabpane-datafile"
               aria-selected={false}
               className="nav-item nav-link"
-              data-rb-event-key="datafiles"
+              data-rb-event-key="datafile"
               href="#"
-              id="filters-section-tab-datafiles"
+              id="filters-section-tab-datafile"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -26735,9 +25832,9 @@ exports[`Storyshots Search page Error 1`] = `
           >
             <div
               aria-hidden={false}
-              aria-labelledby="filters-section-tab-projects"
+              aria-labelledby="filters-section-tab-project"
               className="fade tab-pane active show"
-              id="filters-section-tabpane-projects"
+              id="filters-section-tabpane-project"
               role="tabpanel"
             >
               <form
@@ -26812,7 +25909,7 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-projects.createdDate"
+                      htmlFor="start-project.createdDate"
                     >
                       Start
                     </label>
@@ -26821,7 +25918,7 @@ exports[`Storyshots Search page Error 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-projects.createdDate"
+                        id="start-project.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -27304,7 +26401,7 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-projects.createdDate"
+                      htmlFor="end-project.createdDate"
                     >
                       End
                     </label>
@@ -27313,7 +26410,7 @@ exports[`Storyshots Search page Error 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-projects.createdDate"
+                        id="end-project.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -28033,9 +27130,9 @@ exports[`Storyshots Search page Error 1`] = `
             </div>
             <div
               aria-hidden={true}
-              aria-labelledby="filters-section-tab-experiments"
+              aria-labelledby="filters-section-tab-experiment"
               className="fade tab-pane"
-              id="filters-section-tabpane-experiments"
+              id="filters-section-tabpane-experiment"
               role="tabpanel"
             >
               <form
@@ -28110,7 +27207,7 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-experiments.createdDate"
+                      htmlFor="start-experiment.createdDate"
                     >
                       Start
                     </label>
@@ -28119,7 +27216,7 @@ exports[`Storyshots Search page Error 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-experiments.createdDate"
+                        id="start-experiment.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -28602,7 +27699,7 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-experiments.createdDate"
+                      htmlFor="end-experiment.createdDate"
                     >
                       End
                     </label>
@@ -28611,7 +27708,7 @@ exports[`Storyshots Search page Error 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-experiments.createdDate"
+                        id="end-experiment.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -29331,9 +28428,9 @@ exports[`Storyshots Search page Error 1`] = `
             </div>
             <div
               aria-hidden={true}
-              aria-labelledby="filters-section-tab-datasets"
+              aria-labelledby="filters-section-tab-dataset"
               className="fade tab-pane"
-              id="filters-section-tabpane-datasets"
+              id="filters-section-tabpane-dataset"
               role="tabpanel"
             >
               <form
@@ -29408,7 +28505,7 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-datasets.createdDate"
+                      htmlFor="start-dataset.createdDate"
                     >
                       Start
                     </label>
@@ -29417,7 +28514,7 @@ exports[`Storyshots Search page Error 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-datasets.createdDate"
+                        id="start-dataset.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -29900,7 +28997,7 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-datasets.createdDate"
+                      htmlFor="end-dataset.createdDate"
                     >
                       End
                     </label>
@@ -29909,7 +29006,7 @@ exports[`Storyshots Search page Error 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-datasets.createdDate"
+                        id="end-dataset.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -30629,9 +29726,9 @@ exports[`Storyshots Search page Error 1`] = `
             </div>
             <div
               aria-hidden={true}
-              aria-labelledby="filters-section-tab-datafiles"
+              aria-labelledby="filters-section-tab-datafile"
               className="fade tab-pane"
-              id="filters-section-tabpane-datafiles"
+              id="filters-section-tabpane-datafile"
               role="tabpanel"
             >
               <form
@@ -30706,7 +29803,7 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-datafiles.createdDate"
+                      htmlFor="start-datafile.createdDate"
                     >
                       Start
                     </label>
@@ -30715,7 +29812,7 @@ exports[`Storyshots Search page Error 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-datafiles.createdDate"
+                        id="start-datafile.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -31198,7 +30295,7 @@ exports[`Storyshots Search page Error 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-datafiles.createdDate"
+                      htmlFor="end-datafile.createdDate"
                     >
                       End
                     </label>
@@ -31207,7 +30304,7 @@ exports[`Storyshots Search page Error 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-datafiles.createdDate"
+                        id="end-datafile.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -32211,7 +31308,11 @@ exports[`Storyshots Search page Error 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Projects
+              <span
+                className="text-capitalize"
+              >
+                projects
+              </span>
                
             </a>
           </div>
@@ -32227,7 +31328,11 @@ exports[`Storyshots Search page Error 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Experiments
+              <span
+                className="text-capitalize"
+              >
+                experiments
+              </span>
                
             </a>
           </div>
@@ -32243,7 +31348,11 @@ exports[`Storyshots Search page Error 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Datasets
+              <span
+                className="text-capitalize"
+              >
+                datasets
+              </span>
                
             </a>
           </div>
@@ -32259,7 +31368,11 @@ exports[`Storyshots Search page Error 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Datafiles
+              <span
+                className="text-capitalize"
+              >
+                datafiles
+              </span>
                
             </a>
           </div>
@@ -32275,7 +31388,43 @@ exports[`Storyshots Search page Error 1`] = `
               className="result-section--msg result-section--error-msg"
             >
               <p>
-                An error occurred. Please try another query, or refresh the page and try searching again.
+                An error occurred. Please try another query, or reload the page and try searching again.
+              </p>
+              <p>
+                <button
+                  className="btn btn-primary"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    fill="none"
+                    height="1em"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    style={
+                      Object {
+                        "color": undefined,
+                      }
+                    }
+                    viewBox="0 0 24 24"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <polyline
+                      points="1 4 1 10 7 10"
+                    />
+                    <polyline
+                      points="23 20 23 14 17 14"
+                    />
+                    <path
+                      d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"
+                    />
+                  </svg>
+                   Reload
+                </button>
               </p>
             </div>
           </div>
@@ -32307,12 +31456,12 @@ exports[`Storyshots Search page Loading 1`] = `
             role="tablist"
           >
             <a
-              aria-controls="filters-section-tabpane-projects"
+              aria-controls="filters-section-tabpane-project"
               aria-selected={true}
               className="nav-item nav-link active"
-              data-rb-event-key="projects"
+              data-rb-event-key="project"
               href="#"
-              id="filters-section-tab-projects"
+              id="filters-section-tab-project"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -32333,12 +31482,12 @@ exports[`Storyshots Search page Loading 1`] = `
               </div>
             </a>
             <a
-              aria-controls="filters-section-tabpane-experiments"
+              aria-controls="filters-section-tabpane-experiment"
               aria-selected={false}
               className="nav-item nav-link"
-              data-rb-event-key="experiments"
+              data-rb-event-key="experiment"
               href="#"
-              id="filters-section-tab-experiments"
+              id="filters-section-tab-experiment"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -32360,12 +31509,12 @@ exports[`Storyshots Search page Loading 1`] = `
               </div>
             </a>
             <a
-              aria-controls="filters-section-tabpane-datasets"
+              aria-controls="filters-section-tabpane-dataset"
               aria-selected={false}
               className="nav-item nav-link"
-              data-rb-event-key="datasets"
+              data-rb-event-key="dataset"
               href="#"
-              id="filters-section-tab-datasets"
+              id="filters-section-tab-dataset"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -32387,12 +31536,12 @@ exports[`Storyshots Search page Loading 1`] = `
               </div>
             </a>
             <a
-              aria-controls="filters-section-tabpane-datafiles"
+              aria-controls="filters-section-tabpane-datafile"
               aria-selected={false}
               className="nav-item nav-link"
-              data-rb-event-key="datafiles"
+              data-rb-event-key="datafile"
               href="#"
-              id="filters-section-tab-datafiles"
+              id="filters-section-tab-datafile"
               onClick={[Function]}
               onKeyDown={[Function]}
               role="tab"
@@ -32419,9 +31568,9 @@ exports[`Storyshots Search page Loading 1`] = `
           >
             <div
               aria-hidden={false}
-              aria-labelledby="filters-section-tab-projects"
+              aria-labelledby="filters-section-tab-project"
               className="fade tab-pane active show"
-              id="filters-section-tabpane-projects"
+              id="filters-section-tabpane-project"
               role="tabpanel"
             >
               <form
@@ -32496,7 +31645,7 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-projects.createdDate"
+                      htmlFor="start-project.createdDate"
                     >
                       Start
                     </label>
@@ -32505,7 +31654,7 @@ exports[`Storyshots Search page Loading 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-projects.createdDate"
+                        id="start-project.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -32988,7 +32137,7 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-projects.createdDate"
+                      htmlFor="end-project.createdDate"
                     >
                       End
                     </label>
@@ -32997,7 +32146,7 @@ exports[`Storyshots Search page Loading 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-projects.createdDate"
+                        id="end-project.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -33717,9 +32866,9 @@ exports[`Storyshots Search page Loading 1`] = `
             </div>
             <div
               aria-hidden={true}
-              aria-labelledby="filters-section-tab-experiments"
+              aria-labelledby="filters-section-tab-experiment"
               className="fade tab-pane"
-              id="filters-section-tabpane-experiments"
+              id="filters-section-tabpane-experiment"
               role="tabpanel"
             >
               <form
@@ -33794,7 +32943,7 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-experiments.createdDate"
+                      htmlFor="start-experiment.createdDate"
                     >
                       Start
                     </label>
@@ -33803,7 +32952,7 @@ exports[`Storyshots Search page Loading 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-experiments.createdDate"
+                        id="start-experiment.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -34286,7 +33435,7 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-experiments.createdDate"
+                      htmlFor="end-experiment.createdDate"
                     >
                       End
                     </label>
@@ -34295,7 +33444,7 @@ exports[`Storyshots Search page Loading 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-experiments.createdDate"
+                        id="end-experiment.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -35015,9 +34164,9 @@ exports[`Storyshots Search page Loading 1`] = `
             </div>
             <div
               aria-hidden={true}
-              aria-labelledby="filters-section-tab-datasets"
+              aria-labelledby="filters-section-tab-dataset"
               className="fade tab-pane"
-              id="filters-section-tabpane-datasets"
+              id="filters-section-tabpane-dataset"
               role="tabpanel"
             >
               <form
@@ -35092,7 +34241,7 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-datasets.createdDate"
+                      htmlFor="start-dataset.createdDate"
                     >
                       Start
                     </label>
@@ -35101,7 +34250,7 @@ exports[`Storyshots Search page Loading 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-datasets.createdDate"
+                        id="start-dataset.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -35584,7 +34733,7 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-datasets.createdDate"
+                      htmlFor="end-dataset.createdDate"
                     >
                       End
                     </label>
@@ -35593,7 +34742,7 @@ exports[`Storyshots Search page Loading 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-datasets.createdDate"
+                        id="end-dataset.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -36313,9 +35462,9 @@ exports[`Storyshots Search page Loading 1`] = `
             </div>
             <div
               aria-hidden={true}
-              aria-labelledby="filters-section-tab-datafiles"
+              aria-labelledby="filters-section-tab-datafile"
               className="fade tab-pane"
-              id="filters-section-tabpane-datafiles"
+              id="filters-section-tabpane-datafile"
               role="tabpanel"
             >
               <form
@@ -36390,7 +35539,7 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="start-datafiles.createdDate"
+                      htmlFor="start-datafile.createdDate"
                     >
                       Start
                     </label>
@@ -36399,7 +35548,7 @@ exports[`Storyshots Search page Loading 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="start-datafiles.createdDate"
+                        id="start-datafile.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -36882,7 +36031,7 @@ exports[`Storyshots Search page Loading 1`] = `
                   >
                     <label
                       className="form-label"
-                      htmlFor="end-datafiles.createdDate"
+                      htmlFor="end-datafile.createdDate"
                     >
                       End
                     </label>
@@ -36891,7 +36040,7 @@ exports[`Storyshots Search page Loading 1`] = `
                     >
                       <input
                         className="form-control"
-                        id="end-datafiles.createdDate"
+                        id="end-datafile.createdDate"
                         onChange={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -37895,7 +37044,11 @@ exports[`Storyshots Search page Loading 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Projects
+              <span
+                className="text-capitalize"
+              >
+                projects
+              </span>
                
             </a>
           </div>
@@ -37911,7 +37064,11 @@ exports[`Storyshots Search page Loading 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Experiments
+              <span
+                className="text-capitalize"
+              >
+                experiments
+              </span>
                
             </a>
           </div>
@@ -37927,7 +37084,11 @@ exports[`Storyshots Search page Loading 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Datasets
+              <span
+                className="text-capitalize"
+              >
+                datasets
+              </span>
                
             </a>
           </div>
@@ -37943,7 +37104,11 @@ exports[`Storyshots Search page Loading 1`] = `
               onKeyDown={[Function]}
               role="button"
             >
-              Datafiles
+              <span
+                className="text-capitalize"
+              >
+                datafiles
+              </span>
                
             </a>
           </div>
@@ -38160,7 +37325,7 @@ exports[`Storyshots Search page Loading 1`] = `
             </ul>
             <label
               className="sr-only"
-              for="experiment-pager"
+              htmlFor="experiment-pager"
             >
               Result page number
             </label>

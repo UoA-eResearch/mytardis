@@ -1,8 +1,10 @@
-import { Default, Empty } from "./DateRangeFilter.stories";
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import React from 'react';
+/*eslint-env jest*/
 
-const getDateFields = (screen) => (
+import { Default, Empty } from "./DateRangeFilter.stories";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react";
+import React from "react";
+
+const getDateFields = (screenInstance) => (
     [
         screen.getByLabelText("Start"),
         screen.getByLabelText("End"),
@@ -10,14 +12,14 @@ const getDateFields = (screen) => (
     ]
 );
 
-it('should render start and end dates as specified', async () => {
+it("should render start and end dates as specified", async () => {
     render(<Default {...Default.args} onValueChange={() => {}} />);
     const [startDateEl, endDateEl] = getDateFields(screen);
     expect(startDateEl.value).toBe("2020-01-05");
     expect(endDateEl.value).toBe("2020-05-28");
 });
 
-it('should change start date when end date becomes a date before it', async () => {
+it("should change start date when end date becomes a date before it", async () => {
     render(<Default {...Default.args} onValueChange={() => {}} />);
     let [startDateEl, endDateEl] = getDateFields(screen);
     const anotherDate = "2019-12-30";
@@ -33,15 +35,15 @@ it('should change start date when end date becomes a date before it', async () =
     await waitFor(() => expect(startDateEl.value).toBe(anotherDate));
 });
 
-it('should callback with right value after submitting', async () => {
+it("should callback with right value after submitting", async () => {
     const mockHandleChangeFn = jest.fn();
     // Add mock handleChange function to monitor whether changes
     // are added.
     const props = Object.assign({}, Empty.args, {
         onValueChange: mockHandleChangeFn
-    })
+    });
     render(<Empty {...props} />);
-    const [startDateEl, endDateEl,filterButton] = getDateFields(screen);
+    const [startDateEl, endDateEl, filterButton] = getDateFields(screen);
     fireEvent.change(startDateEl, {target: {value: "2020-01-05"}});
     fireEvent.change(endDateEl, {target: {value: "2020-01-07"}});
     fireEvent.click(filterButton);
@@ -50,15 +52,15 @@ it('should callback with right value after submitting', async () => {
             expect(mockHandleChangeFn).toHaveBeenCalledTimes(1);
             expect(mockHandleChangeFn).toBeCalledWith(
                 [
-                    {op:">=",content:"2020-01-05"},
-                    {op:"<=",content: "2020-01-07"}
+                    {op: ">=", content: "2020-01-05"},
+                    {op: "<=", content: "2020-01-07"}
                 ]
             );
         }
     );
 });
 
-it('should callback with null after clearing a filter', async () => {
+it("should callback with null after clearing a filter", async () => {
     const mockHandleChangeFn = jest.fn();
     const props = Object.assign({}, Default.args, {
         onValueChange: mockHandleChangeFn

@@ -10,6 +10,7 @@ export default {
 };
 
 export const paginationData = {
+    typeId: "experiment",
     pageNum: 5,
     pageSize: 50,
     totalPages: 10,

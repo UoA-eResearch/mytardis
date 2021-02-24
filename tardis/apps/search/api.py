@@ -19,6 +19,8 @@ from django.template.defaultfilters import filesizeformat
 from tastypie import fields
 from tastypie.resources import Resource, Bundle
 from tastypie.serializers import Serializer
+from tastypie.exceptions import ImmediateHttpResponse
+from tastypie.http import HttpUnauthorized
 from django_elasticsearch_dsl.search import Search
 from elasticsearch_dsl import MultiSearch, Q
 
@@ -88,23 +90,23 @@ class SchemasAppResource(Resource):
         logging.warning("Testing search app: get schemas")
         if not request.user.is_authenticated:
             result_dict = {
-                           "projects" : None,
-                           "experiments" : None,
-                           "datasets" : None,
-                           "datafiles" : None
+                           "project" : None,
+                           "experiment" : None,
+                           "dataset" : None,
+                           "datafile" : None
                            }
             return [SchemasObject(id=1, schemas=result_dict)]
         result_dict = {
-                       "projects" : [*{*Project.safe.all(request.user
+                       "project" : [*{*Project.safe.all(request.user
                                     ).prefetch_related('projectparameterset'
                                     ).values_list("projectparameterset__schema__id", flat=True)}],
-                       "experiments" : [*{*Experiment.safe.all(request.user
+                       "experiment" : [*{*Experiment.safe.all(request.user
                                        ).prefetch_related('experimentparameterset'
                                        ).values_list("experimentparameterset__schema__id", flat=True)}],
-                       "datasets" : [*{*Dataset.safe.all(request.user
+                       "dataset" : [*{*Dataset.safe.all(request.user
                                        ).prefetch_related('datasetparameterset'
                                        ).values_list("datasetparameterset__schema__id", flat=True)}],
-                       "datafiles" : [*{*DataFile.safe.all(request.user
+                       "datafile" : [*{*DataFile.safe.all(request.user
                                        ).prefetch_related('datafileparameterset'
                                        ).values_list("datafileparameterset__schema__id", flat=True)}]
                        }
@@ -186,7 +188,8 @@ class SearchAppResource(Resource):
         logging.warning("Testing search app")
         user = bundle.request.user
         if not user.is_authenticated:
-            raise NotImplementedError("Search not yet available for public use; Please log in")
+            # Return a 401 error to ask users to log in.
+            raise ImmediateHttpResponse(response=HttpUnauthorized('Search not yet available for public use; Please log in.'))
             #result_dict = simple_search_public_data(query_text)
             #return [SearchObject(id=1, hits=result_dict)]
         groups = user.groups.all()
@@ -335,7 +338,7 @@ class SearchAppResource(Resource):
                     # (3.2) Apply intrinsic object filters to search
                     if filter["kind"] == "typeAttribute":
                         target_objtype, target_fieldtype = filter["target"][0], filter["target"][1]
-                        if target_objtype == obj+"s":
+                        if target_objtype == obj:
 
                             # Update the heirarchy level at which the
                             # "parent-in-results" criteria must be applied
@@ -577,7 +580,7 @@ class SearchAppResource(Resource):
 
 
         # Count the number of search results after elasticsearch + parent filtering
-        total_hits = {index_list[idx]+'s':len(type.hits.hits) for idx,type in enumerate(results)}
+        total_hits = {index_list[idx]:len(type.hits.hits) for idx,type in enumerate(results)}
 
 
         for item in results:
@@ -689,8 +692,8 @@ class SearchAppResource(Resource):
 
         # If individual object type requested, limit the returned values to that object type
         if request_type is not None:
-            result_dict = {request_type+'s' : result_dict.pop(request_type+'s')}
-            total_hits = {request_type+'s' : total_hits.pop(request_type+'s')}
+            result_dict = {request_type : result_dict.pop(request_type)}
+            total_hits = {request_type : total_hits.pop(request_type)}
 
         # add search results to bundle, and return bundle
         bundle.obj = SearchObject(id=1, hits=result_dict, total_hits=total_hits)
@@ -724,6 +727,6 @@ def simple_search_public_data(query_text):
         for hit in item.hits.hits:
             #safe_hit = hit.copy()
             hit["_source"].pop("objectacls")
-            result_dict[hit["_index"]+'s'].append(hit)
+            result_dict[hit["_index"]].append(hit)
 
     return result_dict

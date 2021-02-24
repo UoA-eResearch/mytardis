@@ -46,25 +46,21 @@ const project = {
     {
       "data_type": "STRING",
       "pn_name": "18",
-      "sensitive": "False",
       "value": ""
     },
     {
       "data_type": "NUMERIC",
       "pn_name": "19",
-      "sensitive": "False",
       "value": "7.0"
     },
     {
       "data_type": "STRING",
       "pn_name": "15",
-      "sensitive": "False",
       "value": "Kiwi"
     },
     {
       "data_type": "STRING",
       "pn_name": "16",
-      "sensitive": "False",
       "value": "Orange"
     }
   ],
@@ -90,7 +86,6 @@ const experiment = {
     {
       "data_type": "STRING",
       "pn_name": "1",
-      "sensitive": "False",
       "value": "kiwi"
     },
     {
@@ -137,13 +132,11 @@ const dataSet = {
     {
       "data_type": "STRING",
       "pn_name": "4",
-      "sensitive": "False",
       "value": "My Name"
     },
     {
       "data_type": "STRING",
       "pn_name": "5",
-      "sensitive": "False",
       "value": "is"
     }
   ],
@@ -175,7 +168,6 @@ const dataFile = {
     {
       "data_type": "STRING",
       "pn_name": "12",
-      "sensitive": "False",
       "value": "My name is"
     }
   ],

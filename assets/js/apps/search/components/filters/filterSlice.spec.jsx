@@ -1,7 +1,10 @@
+/* eslint-disable camelcase */
+/*eslint-env jest*/
+
 import reducer, { 
     updateTypeAttribute,
     updateSchemaParameter,
-    schemaParamSelector,
+    schemaSelector,
     updateActiveSchemas,
     updateFiltersByQuery,
     buildFilterQuery
@@ -11,7 +14,7 @@ import { createNextState } from "@reduxjs/toolkit";
 const mockStoreState = {
     types: {
         byId: {
-            projects: {
+            project: {
                 attributes: {
                     byId: {
                         schema: {
@@ -23,7 +26,7 @@ const mockStoreState = {
                     allIds: ["schema"]
                 }
             },
-            experiments: {
+            experiment: {
                 attributes: {
                     byId: {
                         schema: {
@@ -42,10 +45,10 @@ const mockStoreState = {
                             value: null
                         }
                     },
-                    allIds: ["schema","createdDate"]
+                    allIds: ["schema", "createdDate"]
                 }
             },
-            datasets: {
+            dataset: {
                 attributes: {
                     byId: {
                         schema: {
@@ -61,10 +64,10 @@ const mockStoreState = {
                             value: { op: ">=", content: "2020-01-01" }
                         }
                     },
-                    allIds: ["schema","createdDate"]
+                    allIds: ["schema", "createdDate"]
                 }
             },
-            datafiles: {
+            datafile: {
                 attributes: {
                     byId: {
                         schema: {
@@ -78,159 +81,159 @@ const mockStoreState = {
             }
         },
         allIds: [
-            'projects',
-            'experiments',
-            'datasets',
-            'datafiles'
+            "project",
+            "experiment",
+            "dataset",
+            "datafile"
         ]
     },
     typeSchemas: {
 
-        datasets: [
-            '2',
-            '14'
+        dataset: [
+            "2",
+            "14"
         ],
-        experiments: [
-            '1',
-            '4'
+        experiment: [
+            "1",
+            "4"
         ],
     },
     schemas: {
         byId: {
-            '1': {
-                id: '1',
+            "1": {
+                id: "1",
                 parameters: {
-                    '1': {
-                        data_type: 'STRING',
-                        full_name: 'Parameter 1',
-                        id: '1'
+                    "1": {
+                        data_type: "STRING",
+                        full_name: "Parameter 1",
+                        id: "1"
                     },
-                    '2': {
-                        data_type: 'STRING',
-                        full_name: 'Parameter 2',
-                        id: '2'
+                    "2": {
+                        data_type: "STRING",
+                        full_name: "Parameter 2",
+                        id: "2"
                     },
-                    '3': {
-                        data_type: 'STRING',
-                        full_name: 'Sensitive Parameter',
-                        id: '3'
+                    "3": {
+                        data_type: "STRING",
+                        full_name: "Sensitive Parameter",
+                        id: "3"
                     },
-                    '10': {
-                        data_type: 'DATETIME',
-                        full_name: 'Datetime Parameter',
-                        id: '10'
+                    "10": {
+                        data_type: "DATETIME",
+                        full_name: "Datetime Parameter",
+                        id: "10"
                     },
-                    '11': {
-                        data_type: 'NUMERIC',
-                        full_name: 'Numeric Parameter',
-                        id: '11'
+                    "11": {
+                        data_type: "NUMERIC",
+                        full_name: "Numeric Parameter",
+                        id: "11"
                     }
                 },
-                schema_name: 'Schema_ACL_experiment',
-                type: 'experiments'
+                schema_name: "Schema_ACL_experiment",
+                type: "experiment"
             },
-            '2': {
-                id: '2',
+            "2": {
+                id: "2",
                 parameters: {
-                    '4': {
-                        data_type: 'STRING',
-                        full_name: 'Parameter 1',
-                        id: '4',
+                    "4": {
+                        data_type: "STRING",
+                        full_name: "Parameter 1",
+                        id: "4",
                         value: {
                             op: "contains",
                             content: "RNSeq"
                         }
                     },
-                    '5': {
-                        data_type: 'STRING',
-                        full_name: 'Parameter 2',
-                        id: '5'
+                    "5": {
+                        data_type: "STRING",
+                        full_name: "Parameter 2",
+                        id: "5"
                     },
-                    '6': {
-                        data_type: 'STRING',
-                        full_name: 'Sensitive Parameter',
-                        id: '6'
+                    "6": {
+                        data_type: "STRING",
+                        full_name: "Sensitive Parameter",
+                        id: "6"
                     }
                 },
-                schema_name: 'Schema_ACL_dataset',
-                type: 'datasets'
+                schema_name: "Schema_ACL_dataset",
+                type: "dataset"
             },
-            '4': {
-                id: '4',
+            "4": {
+                id: "4",
                 parameters: {
-                    '12': {
-                        data_type: 'STRING',
-                        full_name: 'Parameter 1',
-                        id: '12'
+                    "12": {
+                        data_type: "STRING",
+                        full_name: "Parameter 1",
+                        id: "12"
                     },
-                    '13': {
-                        data_type: 'NUMERIC',
-                        full_name: 'Numerical Parameter',
-                        id: '13'
+                    "13": {
+                        data_type: "NUMERIC",
+                        full_name: "Numerical Parameter",
+                        id: "13"
                     }
                 },
-                schema_name: 'Schema_ACL_datafile2',
-                type: 'datafiles'
+                schema_name: "Schema_ACL_datafile2",
+                type: "datafile"
             },
-            '14': {
-                id: '14',
+            "14": {
+                id: "14",
                 parameters: {
-                    '20': {
-                        data_type: 'STRING',
-                        full_name: 'project_purpose',
-                        id: '20'
+                    "20": {
+                        data_type: "STRING",
+                        full_name: "project_purpose",
+                        id: "20"
                     },
-                    '37': {
-                        data_type: 'STRING',
-                        full_name: 'project_purpose',
-                        id: '37'
+                    "37": {
+                        data_type: "STRING",
+                        full_name: "project_purpose",
+                        id: "37"
                     }
                 },
-                schema_name: 'Default Project',
-                type: 'projects'
+                schema_name: "Default Project",
+                type: "project"
             }
         },
         allIds: [
-            '2',
-            '1',
-            '4',
-            '14'
+            "2",
+            "1",
+            "4",
+            "14"
         ]
     },
     activeFilters: {
-        projects: [], 
-        experiments: [{
-            kind: 'typeAttribute',
-            target: ['experiments','schema'],
+        project: [], 
+        experiment: [{
+            kind: "typeAttribute",
+            target: ["experiment", "schema"],
         }],
-        datasets: [
+        dataset: [
             {
-                kind: 'typeAttribute',
-                target: ['datasets', 'createdDate'],
+                kind: "typeAttribute",
+                target: ["dataset", "createdDate"],
             }, 
             {
-            kind: 'schemaParameter',
-            target: ['2', '4'],
+                kind: "schemaParameter",
+                target: ["2", "4"]
             }
         ],
-        datafiles: []
+        datafile: []
     },
     isLoading: false,
     error: null
 };
 
-describe('Type attribute reducer', () => {
+describe("Type attribute reducer", () => {
 
-    it('can add filter for type attributes', () => {
-        const type = "experiments",
+    it("can add filter for type attributes", () => {
+        const type = "experiment",
             attribute = "createdDate",
             newValue = { op: ">=", content: "2020-01-23" },
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.activeFilters[type].push({
-                    kind: 'typeAttribute',
+                    kind: "typeAttribute",
                     target: [type, attribute]
                 });
-                draft.types.byId[type].attributes.byId.createdDate.value = newValue
+                draft.types.byId[type].attributes.byId.createdDate.value = newValue;
             });
         expect(reducer(mockStoreState, updateTypeAttribute({
             typeId: type,
@@ -239,14 +242,14 @@ describe('Type attribute reducer', () => {
         }))).toEqual(expectedNewState);
     });
 
-    it('can remove filter for type attributes', () => {
-        const type = "datasets",
+    it("can remove filter for type attributes", () => {
+        const type = "dataset",
             attribute = "createdDate",
             newValue = null,
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.activeFilters[type] = draft.activeFilters[type].filter(
                     f => (
-                        f.target[0] != "datasets" && f.target[1] != "createdDate"
+                        f.target[0] !== "dataset" && f.target[1] !== "createdDate"
                     )
                 );
                 draft.types.byId[type].attributes.byId.createdDate.value = newValue;
@@ -258,8 +261,8 @@ describe('Type attribute reducer', () => {
         }))).toEqual(expectedNewState);
     });
 
-    it('can update filter value for type attributes', () => {
-        const type = "datasets",
+    it("can update filter value for type attributes", () => {
+        const type = "dataset",
             attribute = "createdDate",
             newValue = { op: ">=", content: "2020-03-03" },
             expectedNewState = createNextState(mockStoreState, draft => {
@@ -273,13 +276,13 @@ describe('Type attribute reducer', () => {
     });
 });
 
-describe('Schema parameter reducer', () => {
-    it('can add filter value for schema parameters', () => {
+describe("Schema parameter reducer", () => {
+    it("can add filter value for schema parameters", () => {
         const schema = "1",
             parameter = "2",
-            newValue = { op: 'contains', content: 'Blue' },
+            newValue = { op: "contains", content: "Blue" },
             expectedNewState = createNextState(mockStoreState, draft => {
-                draft.activeFilters["experiments"].push({
+                draft.activeFilters.experiment.push({
                     kind: "schemaParameter",
                     target: [schema, parameter]
                 });
@@ -292,14 +295,14 @@ describe('Schema parameter reducer', () => {
         }))).toEqual(expectedNewState);
     });
 
-    it('can remove filter value for schema parameters', () => {
+    it("can remove filter value for schema parameters", () => {
         const schema = "2",
             parameter = "4",
             newValue = null,
             expectedNewState = createNextState(mockStoreState, draft => {
-                draft.activeFilters["datasets"] = draft.activeFilters["datasets"].filter(
+                draft.activeFilters.dataset = draft.activeFilters.dataset.filter(
                     f => (
-                        f.target[0] != "2" && f.target[1] != "4"
+                        f.target[0] !== "2" && f.target[1] !== "4"
                     )
                 );
                 draft.schemas.byId[schema].parameters[parameter].value = newValue;
@@ -311,10 +314,10 @@ describe('Schema parameter reducer', () => {
         }))).toEqual(expectedNewState);
     });
 
-    it('can update filter value for schema parameters', () => {
+    it("can update filter value for schema parameters", () => {
         const schema = "2",
             parameter = "4",
-            newValue = { op: 'contains', content: 'RNSeq' },
+            newValue = { op: "contains", content: "RNSeq" },
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.schemas.byId[schema].parameters[parameter].value = newValue;
             });
@@ -327,25 +330,25 @@ describe('Schema parameter reducer', () => {
 
 });
 
-describe('Active schema reducer', () => {
-    it('can add active schema', () => {
-        const typeId = "datasets",
-            value = {op: "is",content:["2"]},
+describe("Active schema reducer", () => {
+    it("can add active schema", () => {
+        const typeId = "dataset",
+            value = {op: "is", content: ["2"]},
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.types.byId[typeId].attributes.byId.schema.value = value;
                 draft.activeFilters[typeId].push({
                     kind: "typeAttribute",
                     target: [typeId, "schema"]
                 });
-        });
+            });
         expect(reducer(mockStoreState, updateActiveSchemas({
             typeId,
             value
         }))).toEqual(expectedNewState);
     });
 
-    it('can remove active schema', () => {
-        const typeId = "experiments",
+    it("can remove active schema", () => {
+        const typeId = "experiment",
             value = null,
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.types.byId[typeId].attributes.byId.schema.value = value;
@@ -357,15 +360,15 @@ describe('Active schema reducer', () => {
                     )
                 ));
             });
-            expect(reducer(mockStoreState, updateActiveSchemas({
-                typeId,
-                value
-            }))).toEqual(expectedNewState);    
+        expect(reducer(mockStoreState, updateActiveSchemas({
+            typeId,
+            value
+        }))).toEqual(expectedNewState);    
     });
 
-    it('can update active schema along with associated parameters', () => {
-        const typeId = "datasets",
-            value = {op: "is",content:["14"]},
+    it("can update active schema along with associated parameters", () => {
+        const typeId = "dataset",
+            value = {op: "is", content: ["14"]},
             expectedNewState = createNextState(mockStoreState, draft => {
                 draft.types.byId[typeId].attributes.byId.schema.value = value;
                 draft.activeFilters[typeId].push({
@@ -384,67 +387,67 @@ describe('Active schema reducer', () => {
                     ))
                 );
                 draft.schemas.byId["2"].parameters["4"].value = null;
-        });
+            });
         expect(reducer(mockStoreState, updateActiveSchemas({
             typeId,
             value
         }))).toEqual(expectedNewState);
     });
 
-})
+});
 
-describe('Schema parameter selector', () => {
-    it('can fetch a schema parameter', () => {
-        const parameter = schemaParamSelector(mockStoreState, "1", "2");
-        expect(parameter.full_name).toEqual('Parameter 2');
-        expect(parameter.data_type).toEqual('STRING');
-    })
-})
+describe("Schema parameter selector", () => {
+    it("can fetch a schema parameter", () => {
+        const parameter = schemaSelector(mockStoreState, "1").parameters["2"];
+        expect(parameter.full_name).toEqual("Parameter 2");
+        expect(parameter.data_type).toEqual("STRING");
+    });
+});
 
-describe('Reset and update filter state by query body', () => {
+describe("Reset and update filter state by query body", () => {
     const twoValueQuery = {
         content: [
             {
-                kind: 'schemaParameter',
+                kind: "schemaParameter",
                 target: [
-                    '1',
-                    '11'
+                    "1",
+                    "11"
                 ],
-                type: 'NUMERIC',
-                op: '>=',
-                content: '5'
+                type: "NUMERIC",
+                op: ">=",
+                content: "5"
             },
             {
-                kind: 'schemaParameter',
+                kind: "schemaParameter",
                 target: [
-                    '1',
-                    '11'
+                    "1",
+                    "11"
                 ],
-                type: 'NUMERIC',
-                op: '<=',
-                content: '15'
+                type: "NUMERIC",
+                op: "<=",
+                content: "15"
             }
         ],
-        op: 'and'
+        op: "and"
     };
-    it('can reset and update filters with two values', () => {
+    it("can reset and update filters with two values", () => {
         const expectedNewState = createNextState(mockStoreState, draft => {
             // The current values should be now null.
-            draft.types.byId['datasets'].attributes.byId['createdDate'].value = null;
-            draft.types.byId['experiments'].attributes.byId['schema'].value = null;
-            draft.schemas.byId['2'].parameters['4'].value = null;
-            draft.schemas.byId['1'].parameters['11'].value = [
+            draft.types.byId.dataset.attributes.byId.createdDate.value = null;
+            draft.types.byId.experiment.attributes.byId.schema.value = null;
+            draft.schemas.byId["2"].parameters["4"].value = null;
+            draft.schemas.byId["1"].parameters["11"].value = [
                 {
-                    op: '>=', content: '5'
-                },{
-                    op: '<=', content: '15'
+                    op: ">=", content: "5"
+                }, {
+                    op: "<=", content: "15"
                 }
             ];
-            draft.activeFilters = {projects: [], datasets: [], datafiles: [], experiments: [{kind: 'schemaParameter', target: ['1','11']}]};
+            draft.activeFilters = {project: [], dataset: [], datafile: [], experiment: [{kind: "schemaParameter", target: ["1", "11"]}]};
         });
-        expect(reducer(mockStoreState,updateFiltersByQuery(twoValueQuery))).toEqual(expectedNewState);
-    })
-})
+        expect(reducer(mockStoreState, updateFiltersByQuery(twoValueQuery))).toEqual(expectedNewState);
+    });
+});
 
 describe("Filter query builder", ()=> {
     it("should only include relevant filters in single type queries", () => {
@@ -452,8 +455,8 @@ describe("Filter query builder", ()=> {
             op: "and",
             content: [
                 {
-                    kind: 'typeAttribute',
-                    target: ['experiments','schema'],
+                    kind: "typeAttribute",
+                    target: ["experiment", "schema"],
                     type: "STRING",
                     op: "is",
                     content: ["1"]
@@ -468,23 +471,23 @@ describe("Filter query builder", ()=> {
             op: "and",
             content: [
                 {
-                    kind: 'typeAttribute',
-                    target: ['experiments','schema'],
+                    kind: "typeAttribute",
+                    target: ["experiment", "schema"],
                     type: "STRING",
                     op: "is",
                     content: ["1"]
                 },
                 {
-                    kind: 'typeAttribute',
-                    target: ['datasets', 'createdDate'],
+                    kind: "typeAttribute",
+                    target: ["dataset", "createdDate"],
                     type: "DATETIME",
                     op: ">=",
                     content: "2020-01-01"
                 }, 
                 {
-                    kind: 'schemaParameter',
-                    target: ['2', '4'],
-                    type: 'STRING',
+                    kind: "schemaParameter",
+                    target: ["2", "4"],
+                    type: "STRING",
                     op: "contains",
                     content: "RNSeq"
                 }

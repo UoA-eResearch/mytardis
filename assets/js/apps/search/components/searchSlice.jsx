@@ -1,39 +1,63 @@
-import { createSlice } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie';
-import { batch } from 'react-redux';
-import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeAttrSelector, allTypeAttrIdsSelector } from "./filters/filterSlice";
+import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
+import { batch } from "react-redux";
+import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeSelector } from "./filters/filterSlice";
 
-const getResultFromHit = (hit,hitType,urlPrefix) => {
+const getResultFromHit = (hit, hitType, urlPrefix) => {
+    // eslint-disable-next-line no-underscore-dangle
     const source = hit._source;
     source.type = hitType;
     source.url = `${urlPrefix}/${source.id}`;
     return source;
-}
+};
 
 const getResultsFromResponse = (response) => {
 // Grab the "_source" object out of each hit and also
 // add a type attribute to them.
-const hits = response.hits,
-    results = {};
-    if (hits.projects) {
-        results.projects = hits.projects.map((hit) => {
-            return getResultFromHit(hit,"project","/project/view")
+    const hits = response.hits;
+    const results = {};
+    if (hits.project) {
+        results.project = hits.project.map((hit) => {
+            return getResultFromHit(hit, "project", "/project/view");
         });
     }
-    if (hits.experiments) {
-        results.experiments = hits.experiments.map((hit) => {
-            return getResultFromHit(hit,"experiment","/experiment/view")
+    if (hits.experiment) {
+        results.experiment = hits.experiment.map((hit) => {
+            return getResultFromHit(hit, "experiment", "/experiment/view");
         });
     }
-    if (hits.datasets) {
-        results.datasets = hits.datasets.map((hit) => {
-            return getResultFromHit(hit,"dataset","/dataset")
+    if (hits.dataset) {
+        results.dataset = hits.dataset.map((hit) => {
+            return getResultFromHit(hit, "dataset", "/dataset");
         });
     }
-    if (hits.datafiles) {
-        results.datafiles = hits["datafiles"].map((hit) => {
-            return getResultFromHit(hit,"datafile","/datafile/view")
+    if (hits.datafile) {
+        results.datafile = hits.datafile.map((hit) => {
+            return getResultFromHit(hit, "datafile", "/datafile/view");
         });
+    }
+    return results;
+};
+
+/**
+ * Process JSON results from search API and return the results.
+ * @private
+ * @param {object} response JSON result from search API endpoint. 
+ */
+function getHitTotalsFromResponse(response) {
+    const hitTotals = response.total_hits;
+    const results = {};
+    if (hitTotals.project !== undefined) {
+        results.project = hitTotals.project;
+    }
+    if (hitTotals.experiment !== undefined) {
+        results.experiment = hitTotals.experiment;
+    }
+    if (hitTotals.dataset !== undefined) {
+        results.dataset = hitTotals.dataset;
+    }
+    if (hitTotals.datafile !== undefined) {
+        results.datafile = hitTotals.datafile;
     }
     return results;
 }
@@ -57,7 +81,7 @@ export const pageNumberSelector = (searchSlice, type) => {
 };
 
 export const totalHitsSelector = (searchSlice, typeId) => (
-    searchSlice.results ? searchSlice.results.totalHits[typeId + "s"] : 0
+    searchSlice.results ? searchSlice.results.totalHits[typeId] : 0
 );
 
 export const SORT_ORDER = {
@@ -79,11 +103,12 @@ export const activeSortSelector = (searchSlice, typeId) => (
  * @param {*} filterSlice Redux state slice for filters
  * @param {string} typeId MyTardis object type.
  */
-export const sortableAttributesSelector = (filterSlice, typeId) => (
-    allTypeAttrIdsSelector(filterSlice, typeId + "s").map(attributeId => (
-        typeAttrSelector(filterSlice, typeId + "s", attributeId)
-    )).filter(attribute => attribute.sortable)
-);
+export const sortableAttributesSelector = (filterSlice, typeId) => {
+    const typeAttributes = typeSelector(filterSlice, typeId).attributes;
+    return typeAttributes.allIds.map(attributeId => (
+        typeAttributes.byId[attributeId]
+    )).filter(attribute => attribute.sortable);
+};
 
 /**
  * Selector for the sort order of an attribute.
@@ -108,7 +133,7 @@ export const pageFirstItemIndexSelector = (searchSlice, typeId) => {
     } else {
         return pageSizeSelector(searchSlice, typeId) * (pageNumberSelector(searchSlice, typeId) - 1) + 1;
     }
-}
+};
 
 /**
  * Selector for the total number of pages of results for a particular type.
@@ -137,8 +162,8 @@ export const searchTermSelector = (searchSlice, typeId) => (
 const initialState = {
     searchTerm: {},
     isLoading: false,
-    error:null,
-    results:null,
+    error: null,
+    results: null,
     selectedType: "experiment",
     selectedResult: null,
     pageSize: {
@@ -177,11 +202,11 @@ const initialState = {
 
 
 const search = createSlice({
-    name: 'search',
+    name: "search",
     initialState,
     reducers: {
         getResultsSuccess: {
-            reducer: function (state, { payload }) {
+            reducer: function(state, { payload }) {
                 if (state.results && state.results.hits) {
                     // If there are already results, do a merge in case
                     // this was a single type query.
@@ -198,9 +223,9 @@ const search = createSlice({
                 return {
                     payload: {
                         hits: getResultsFromResponse(rawResult),
-                        totalHits: rawResult.total_hits
+                        totalHits: getHitTotalsFromResponse(rawResult)
                     }
-                }
+                };
             }
         },
         updateSearchTerm: (state, {payload}) => {
@@ -231,12 +256,12 @@ const search = createSlice({
             state.error = null;
             state.selectedResult = null;
         },
-        getResultsFailure: (state, {payload:error}) => {
+        getResultsFailure: (state, {payload: error}) => {
             state.isLoading = false;
-            state.error = error.toString();
+            state.error = error;
             state.results = null;
         },
-        updateSelectedType: (state,{payload: selectedType}) => {
+        updateSelectedType: (state, {payload: selectedType}) => {
             state.selectedType = selectedType;
             state.selectedResult = null;
         },
@@ -296,21 +321,36 @@ const search = createSlice({
     }
 });
 
+export const {
+    getResultsStart,
+    getResultsSuccess,
+    getResultsFailure,
+    updateSearchTerm,
+    updateSelectedType,
+    updateSelectedResult,
+    toggleShowSensitiveData,
+    updateResultSort,
+    removeResultSort
+} = search.actions;
+
+
 const fetchSearchResults = (queryBody) => {
-    return fetch(`/api/v1/search_simple-search/`,{
-        method: 'post',
+    return fetch(`/api/v1/search_simple-search/`, {
+        method: "post",
         headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRFToken': Cookies.get('csrftoken'),
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "X-CSRFToken": Cookies.get("csrftoken"),
         },
         body: JSON.stringify(queryBody)
     }).then(response => {
         if (!response.ok) {
-            throw new Error("An error on the server occurred.")
+            throw response;
         }
-        return response.json()
-    })
+        return response.json();
+    }, rejectedError => {
+        throw rejectedError.message;
+    });
 };
 
 
@@ -349,7 +389,7 @@ const buildSortQuery = (state, typeToSearch) => {
         const sortOptions = activeSortSelector(state.search, typeId);
         const typeSortQuery = sortOptions.map(id => {
             const order = state.search.sort[typeId].order[id];
-            const attribute = typeAttrSelector(state.filters, typeId + "s", id);
+            const attribute = typeSelector(state.filters, typeId).attributes.byId[id];
             const fullField = [id].concat(attribute.nested_target || []);
             return {
                 field: fullField,
@@ -398,8 +438,19 @@ const runSearchWithQuery = (queryBody) => {
         return fetchSearchResults(queryBody)
             .then((results) => {
                 dispatch(getResultsSuccess(results));
-            }).catch((e) => {
-                dispatch(getResultsFailure(e));
+            }).catch((error) => {
+                if (error &&
+                    !isNaN(error.status)) {
+                    // If error occurred on the endpoint, we check the status code first.
+                    if (error.status === 401) {
+                        // We made an Unauthorized request!
+                        // Redirect to log in first, and then do search.
+                        location.replace("/login/?next=/app/search");
+                    } else {
+                        error = error.statusText;
+                    }
+                }
+                dispatch(getResultsFailure(error));
             });
     };
 };
@@ -468,10 +519,10 @@ export const parseQuery = (searchString) => {
         searchString = searchString.substring(1);
     }
     searchString = decodeURIComponent(searchString);
-    const parts = searchString.split('&');
+    const parts = searchString.split("&");
     let queryPart = null;
     for (const partIdx in parts) {
-        if (parts[partIdx].indexOf('q=') === 0) {
+        if (parts[partIdx].indexOf("q=") === 0) {
             queryPart = parts[partIdx].substring(2);
             break;
         }
@@ -492,8 +543,8 @@ const updateWithQuery = (queryBody) => {
             }));
             dispatch(updateFiltersByQuery(queryBody.filters));    
         });
-    }
-}
+    };
+};
 
 
 export const runSearch = () => {
@@ -503,8 +554,8 @@ export const runSearch = () => {
         dispatch(runSearchWithQuery(queryBody));
         dispatch(search.actions.resetPageNumber());
         window.history.pushState(queryBody, "", getDisplayQueryString(queryBody));
-    }
-}
+    };
+};
 
 /**
  * An async reducer for running a single type search. This is usually
@@ -516,15 +567,15 @@ export const runSingleTypeSearch = (typeToSearch) => {
         const state = getState();
         const queryBody = buildQueryBody(state, typeToSearch);
         dispatch(runSearchWithQuery(queryBody));
-    }
-}
+    };
+};
 
 export const restoreSearchFromHistory = (restoredState) => {
     return (dispatch) => {
         dispatch(runSearchWithQuery(restoredState));
         dispatch(updateWithQuery(restoredState));
-    }
-}
+    };
+};
 
 export const initialiseSearch = () => {
     return (dispatch, getState) => {
@@ -536,8 +587,8 @@ export const initialiseSearch = () => {
                 dispatch(updateWithQuery(queryBody));
             }
         });
-    }
-}
+    };
+};
 
 export const updatePageNumberAndRefetch = (typeId, number) => {
     return (dispatch, getState) => {
@@ -562,17 +613,5 @@ export const updatePageSizeAndRefetch = (typeId, size) => {
         return dispatch(runSingleTypeSearch(typeId));
     };
 };
-
-export const {
-    getResultsStart,
-    getResultsSuccess,
-    getResultsFailure,
-    updateSearchTerm,
-    updateSelectedType,
-    updateSelectedResult,
-    toggleShowSensitiveData,
-    updateResultSort,
-    removeResultSort
-} = search.actions;
 
 export default search.reducer;
