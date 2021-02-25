@@ -33,7 +33,8 @@ module.exports = {
         lib: glob.sync("./assets/js/lib/**/*.js"),
         search_app : "./assets/js/apps/search/index.jsx",
         tree_view : "./assets/js/apps/tree_view/index.jsx",
-        project_app : "./assets/js/apps/project_detail_view/index.jsx"
+        project_app : "./assets/js/apps/project_detail_view/index.jsx",
+        cart_app: "./assets/js/apps/cart/index.jsx"
     },
     output: {
         path: path.resolve("./assets/bundles/"),
