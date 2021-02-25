@@ -26,8 +26,8 @@ const getResultsFromResponse = (response) => {
             return getResultFromHit(hit, "experiment", "/experiment/view");
         });
     }
-    if (hits.datasets) {
-        results.datasets = hits.datasets.map((hit) => {
+    if (hits.dataset) {
+        results.dataset = hits.dataset.map((hit) => {
             return getResultFromHit(hit,"dataset","/dataset/view")
         });
     }
