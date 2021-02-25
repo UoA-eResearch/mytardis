@@ -160,7 +160,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
             // If there was an error during the search
             <div className="result-section--msg result-section--error-msg">
                 <p>An error occurred. Please try another query, or reload the page and try searching again.</p>
-                <p><Button onClick={() => location.assign("/apps/search")}><FiRefreshCcw /> Reload</Button></p>
+                <p><Button onClick={() => location.assign("/search")}><FiRefreshCcw /> Reload</Button></p>
             </div>
         );
     }
@@ -190,7 +190,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
     }
 
     return (
-        <div className={listClassName}> 
+        <div className={listClassName}>
             <table className="table">
                 <thead>
                     <tr>
@@ -260,9 +260,9 @@ export function PureResultSection({ resultSets, selectedType,
 
 /**
  * Returns the data of the selected row. Returns null if it cannot get find the selected result.
- * @param {*} resultSets 
- * @param {*} selectedResult 
- * @param {*} selectedType 
+ * @param {*} resultSets
+ * @param {*} selectedResult
+ * @param {*} selectedType
  */
 function getSelectedEntry(resultSets, selectedResult, selectedType) {
     let selectedEntry = null;
