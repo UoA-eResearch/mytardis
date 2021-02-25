@@ -26,9 +26,9 @@ const getResultsFromResponse = (response) => {
             return getResultFromHit(hit, "experiment", "/experiment/view");
         });
     }
-    if (hits.dataset) {
-        results.dataset = hits.dataset.map((hit) => {
-            return getResultFromHit(hit, "dataset", "/dataset");
+    if (hits.datasets) {
+        results.datasets = hits.datasets.map((hit) => {
+            return getResultFromHit(hit,"dataset","/dataset/view")
         });
     }
     if (hits.datafile) {
@@ -151,11 +151,11 @@ export const totalPagesSelector = (searchSlice, typeId) => (
 export const searchTermSelector = (searchSlice, typeId) => (
     // Check search term exists and is an object before returning
     // search term.
-    (searchSlice && 
+    (searchSlice &&
         searchSlice.searchTerm &&
-        typeof searchSlice.searchTerm === "object" && 
+        typeof searchSlice.searchTerm === "object" &&
         !Array.isArray(searchSlice.searchTerm))
-        ? 
+        ?
         searchSlice.searchTerm[typeId] : ""
 );
 
@@ -246,7 +246,7 @@ const search = createSlice({
                 }
             });
             // Finally, if there are no search terms, delete
-            // the empty object. 
+            // the empty object.
             if (Object.keys(state.searchTerm).length === 0) {
                 state.searchTerm = undefined;
             }
@@ -355,7 +355,7 @@ const fetchSearchResults = (queryBody) => {
 
 
 /**
- * Returns search API pagination query. 
+ * Returns search API pagination query.
  * @param {*} searchSlice - Redux search slice
  * @param {string} type If null, returns pagination for all types. If a MyTardis
  * type is specified, returns only pagination for that type.
@@ -394,7 +394,7 @@ const buildSortQuery = (state, typeToSearch) => {
             return {
                 field: fullField,
                 order
-            };            
+            };
         });
         if (typeSortQuery.length !== 0) {
             acc[typeId] = typeSortQuery;
@@ -483,7 +483,7 @@ export const hasActiveSearchTermSelector = searchSlice => {
  */
 export const parseQuery = (searchString) => {
     const convertLegacySearchTermQuery = (searchTerm) => {
-        // Convert text string search term queries 
+        // Convert text string search term queries
         // to new format if so.
         if (!searchTerm) {
             return {};
@@ -513,7 +513,7 @@ export const parseQuery = (searchString) => {
         }
     };
 
-    
+
     // Find and return the query string or JSON body.
     if (searchString[0] === "?") {
         searchString = searchString.substring(1);
@@ -541,7 +541,7 @@ const updateWithQuery = (queryBody) => {
                 searchTerm: queryBody.query,
                 replaceState: true
             }));
-            dispatch(updateFiltersByQuery(queryBody.filters));    
+            dispatch(updateFiltersByQuery(queryBody.filters));
         });
     };
 };
