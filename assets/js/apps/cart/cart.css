@@ -1,0 +1,32 @@
+/*
+Make the search page take up the whole viewport, but also to make sure
+search results show up as scrollable.
+*/
+body {
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(244, 246, 250);
+}
+
+#content-container, #content-row, #content, #cart-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+}
+
+.cart-page-content {
+    padding: 2rem 1rem;
+    background-color: white;
+}
+
+.cart__actions > *:first-child {
+    margin-left: 0;
+}
+
+.cart__actions > * {
+    margin-left: 0.25rem;
+}
