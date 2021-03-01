@@ -526,7 +526,7 @@ class DataFile(models.Model):
                     "created_time":self.created_time,
                     "modification_time":self.modification_time,
                     "dataset":self.dataset,
-                    "objectacls":self.objectacls,
+                    "acls":self.getACLsforIndexing(),
                     "parameters":self.getParametersforIndexing()
                     }
         return DatafileDoc(meta=metadata)

@@ -56,7 +56,7 @@ class ProjectDocument(Document):
         'fullname': fields.TextField(
             fields={'raw': fields.KeywordField()})
     })
-    objectacls = fields.NestedField(attr='getACLsforIndexing', properties={
+    acls = fields.NestedField(attr='getACLsforIndexing', properties={
         'pluginId': fields.KeywordField(),
         'entityId': fields.KeywordField()
     })
@@ -84,7 +84,7 @@ class ProjectDocument(Document):
         })
     })
 
-    def prepare_objectacls(self, instance):
+    def prepare_acls(self, instance):
         return list(instance.getACLsforIndexing())
 
     def prepare_parameters(self, instance):
@@ -147,7 +147,7 @@ class ExperimentDocument(Document):
         'name': fields.TextField(fields={'raw': fields.KeywordField()},
                                  analyzer=analyzer)
     })
-    objectacls = fields.NestedField(attr='getACLsforIndexing', properties={
+    acls = fields.NestedField(attr='getACLsforIndexing', properties={
         'pluginId': fields.KeywordField(),
         'entityId': fields.KeywordField()
     })
@@ -175,7 +175,7 @@ class ExperimentDocument(Document):
         })
     })
 
-    def prepare_objectacls(self, instance):
+    def prepare_acls(self, instance):
         return list(instance.getACLsforIndexing())
 
     def prepare_parameters(self, instance):
@@ -224,7 +224,7 @@ class DatasetDocument(Document):
             'id': fields.KeywordField()
         })
     })
-    objectacls = fields.NestedField(attr='getACLsforIndexing', properties={
+    acls = fields.NestedField(attr='getACLsforIndexing', properties={
         'pluginId': fields.KeywordField(),
         'entityId': fields.KeywordField()
     })
@@ -262,7 +262,7 @@ class DatasetDocument(Document):
         })
     })
 
-    def prepare_objectacls(self, instance):
+    def prepare_acls(self, instance):
         return list(instance.getACLsforIndexing())
 
     def prepare_parameters(self, instance):
@@ -320,7 +320,7 @@ class DataFileDocument(Document):
             }),
         }),
     })
-    objectacls = fields.NestedField(attr='getACLsforIndexing', properties={
+    acls = fields.NestedField(attr='getACLsforIndexing', properties={
         'pluginId': fields.KeywordField(),
         'entityId': fields.KeywordField()
     })
@@ -364,7 +364,7 @@ class DataFileDocument(Document):
             extension = ''
         return extension
 
-    def prepare_objectacls(self, instance):
+    def prepare_acls(self, instance):
         return list(instance.getACLsforIndexing())
 
     def prepare_parameters(self, instance):

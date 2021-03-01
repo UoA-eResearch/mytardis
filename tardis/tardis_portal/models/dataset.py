@@ -481,7 +481,7 @@ class Dataset(models.Model):
                     "description":self.description,
                     "created_time":self.created_time,
                     "experiments":self.experiments,
-                    "objectacls":self.objectacls,
+                    "acls":self.getACLsforIndexing(),
                     "instrument":self.instrument,
                     "modified_time":self.modified_time,
                     "tags":self.tags_for_indexing,

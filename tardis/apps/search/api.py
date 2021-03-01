@@ -235,19 +235,19 @@ class SearchAppResource(Resource):
 
             # (1) add user/group criteria to searchers
             query_obj =  Q({"nested" : {
-                "path":"objectacls", "query": Q(
+                "path":"acls", "query": Q(
                     {"bool": {"must":[
-                        Q({"match": {"objectacls.entityId":user.id}}),
-                        Q({"term": {"objectacls.pluginId":"django_user"}})
+                        Q({"match": {"acls.entityId":user.id}}),
+                        Q({"term": {"acls.pluginId":"django_user"}})
                     ]}}
                 )
             }})
             for group in groups:
                 query_obj_group =  Q({"nested" : {
-                    "path":"objectacls", "query": Q(
+                    "path":"acls", "query": Q(
                         {"bool": {"must":[
-                            Q({"match": {"objectacls.entityId":group.id}}),
-                            Q({"term": {"objectacls.pluginId":"django_group"}})
+                            Q({"match": {"acls.entityId":group.id}}),
+                            Q({"term": {"acls.pluginId":"django_group"}})
                         ]}}
                     )
                 }})
@@ -446,7 +446,7 @@ class SearchAppResource(Resource):
                                     "end_time", "update_time", "instrument", "file_extension",
                                     "modification_time", "parameters.string.pn_id",
                                     "parameters.numerical.pn_id", "parameters.datetime.pn_id",
-                                    'objectacls']
+                                    'acls']
             if obj != 'dataset':
                 excluded_fields_list.append('description')
 
@@ -808,7 +808,7 @@ def simple_search_public_data(query_text):
     for item in results:
         for hit in item.hits.hits:
             #safe_hit = hit.copy()
-            hit["_source"].pop("objectacls")
+            hit["_source"].pop("acls")
             result_dict[hit["_index"]].append(hit)
 
     return result_dict

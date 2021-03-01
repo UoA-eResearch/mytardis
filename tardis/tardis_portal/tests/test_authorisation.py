@@ -15,7 +15,7 @@ from ..models import ExperimentACL, Experiment
 logger = logging.getLogger(__name__)
 
 
-class ObjectACLTestCase(TestCase):
+class ACLTestCase(TestCase):
     urls = 'tardis.urls'
 
     def setUp(self):
@@ -32,7 +32,10 @@ class ObjectACLTestCase(TestCase):
             user.user_permissions.add(Permission.objects.get(codename='change_experiment'))
             user.user_permissions.add(Permission.objects.get(codename='change_group'))
             user.user_permissions.add(Permission.objects.get(codename='change_userauthentication'))
-            user.user_permissions.add(Permission.objects.get(codename='change_objectacl'))
+            user.user_permissions.add(Permission.objects.get(codename='change_projectacl'))
+            user.user_permissions.add(Permission.objects.get(codename='change_experimentacl'))
+            user.user_permissions.add(Permission.objects.get(codename='change_datasetacl'))
+            user.user_permissions.add(Permission.objects.get(codename='change_datafileacl'))
 
         self.userProfile1 = self.user1.userprofile
         self.userProfile2 = self.user2.userprofile
@@ -101,16 +104,6 @@ class ObjectACLTestCase(TestCase):
             aclOwnershipType=ExperimentACL.OWNER_OWNED,
             )
         acl.save()
-
-        # experiment4 is accessible via location
-        #acl = ObjectACL(
-        #    pluginId='ip_address',
-        #    entityId='127.0.0.1',
-        #    content_object=self.experiment4,
-        #    canRead=True,
-        #    aclOwnershipType=ObjectACL.SYSTEM_OWNED,
-        #)
-        #acl.save()
 
     def tearDown(self):
 

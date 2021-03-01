@@ -101,10 +101,6 @@ class DatafileParameterSetAdmin(admin.ModelAdmin):
     inlines = [DatafileParameterInline]
 
 
-class ObjectACLInline(GenericTabularInline):
-    model = models.ObjectACL
-    extra = 0
-
 class ProjectACLInline(admin.TabularInline):
     model = models.ProjectACL
     extra = 0
@@ -124,17 +120,17 @@ class DatafileACLInline(admin.TabularInline):
 
 class ExperimentAdmin(admin.ModelAdmin):
     search_fields = ['title', 'id']
-    inlines = [ObjectACLInline, ExperimentACLInline]
+    inlines = [ExperimentACLInline]
 
 
 class DatasetAdmin(admin.ModelAdmin):
     search_fields = ['description', 'id']
-    inlines = [ObjectACLInline, DatasetACLInline]
+    inlines = [DatasetACLInline]
 
 
 class ProjectAdmin(admin.ModelAdmin):
     search_fields = ['name', 'id']
-    inlines = [ObjectACLInline, ProjectACLInline]
+    inlines = [ProjectACLInline]
 
 
 class StorageBoxAttributeInlineForm(forms.ModelForm):
@@ -219,7 +215,7 @@ class DatafileAdminForm(forms.ModelForm):
 class DatafileAdmin(admin.ModelAdmin):
     search_fields = ['filename', 'id']
     form = DatafileAdminForm
-    inlines = [DataFileObjectInline, ObjectACLInline, DatafileACLInline]
+    inlines = [DataFileObjectInline, DatafileACLInline]
 
 
 class ParameterNameInline(admin.TabularInline):
@@ -235,13 +231,6 @@ class SchemaAdmin(admin.ModelAdmin):
 class ParameterNameAdmin(admin.ModelAdmin):
     search_fields = ['name', 'schema__id']
 
-
-class ObjectACLAdmin(admin.ModelAdmin):
-    search_fields = ['content_type', 'object_id']
-    list_display = [
-        '__str__', 'pluginId', 'entityId', 'canRead',
-        'canDownload', 'canWrite', 'canDelete', 'canSensitive', 'isOwner'
-    ]
 
 class ProjectACLAdmin(admin.ModelAdmin):
     list_display = [
@@ -315,7 +304,6 @@ admin.site.register(models.Token)
 admin.site.register(models.ExperimentParameterSet, ExperimentParameterSetAdmin)
 admin.site.register(models.GroupAdmin)
 admin.site.register(models.UserAuthentication, UserAuthenticationAdmin)
-admin.site.register(models.ObjectACL, ObjectACLAdmin)
 admin.site.register(models.ProjectACL, ProjectACLAdmin)
 admin.site.register(models.ExperimentACL, ExperimentACLAdmin)
 admin.site.register(models.DatasetACL, DatasetACLAdmin)

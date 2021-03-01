@@ -380,7 +380,7 @@ class Experiment(models.Model):
                     "update_time":self.update_time,
                     "created_by":self.created_by,
                     "project":self.project,
-                    "objectacls":self.objectacls,
+                    "acls":self.getACLsforIndexing(),
                     "parameters":self.getParametersforIndexing()
                     }
         return ExpDoc(meta=metadata)

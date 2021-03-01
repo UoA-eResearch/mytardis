@@ -52,7 +52,7 @@ from .auth.decorators import (
     bulk_replace_existing_acls
 )
 from .auth.localdb_auth import django_user, django_group
-from .models.access_control import (ObjectACL, ProjectACL, ExperimentACL, DatasetACL,
+from .models.access_control import (ProjectACL, ExperimentACL, DatasetACL,
                                     DatafileACL, UserProfile, GroupAdmin,
                                     UserAuthentication)
 from .models.datafile import DataFile, DataFileObject, compute_checksums
@@ -1046,13 +1046,13 @@ class ACLAuthorization(Authorization):
             ])
 
         if isinstance(bundle.obj, ProjectACL):
-            return bundle.request.user.has_perm('tardis_portal.add_objectacl')
+            return bundle.request.user.has_perm('tardis_portal.add_projectacl')
         if isinstance(bundle.obj, ExperimentACL):
-            return bundle.request.user.has_perm('tardis_portal.add_objectacl')
+            return bundle.request.user.has_perm('tardis_portal.add_experimentacl')
         if isinstance(bundle.obj, DatasetACL):
-            return bundle.request.user.has_perm('tardis_portal.add_objectacl')
+            return bundle.request.user.has_perm('tardis_portal.add_datasetacl')
         if isinstance(bundle.obj, DatafileACL):
-            return bundle.request.user.has_perm('tardis_portal.add_objectacl')
+            return bundle.request.user.has_perm('tardis_portal.add_datafileacl')
         if isinstance(bundle.obj, Group):
             return bundle.request.user.has_perm('tardis_portal.add_group')
         if isinstance(bundle.obj, Facility):
@@ -2126,47 +2126,6 @@ class ReplicaResource(MyTardisModelResource):
     def dehydrate(self, bundle):
         dfo = bundle.obj
         bundle.data['location'] = dfo.storage_box.name
-        return bundle
-
-
-class ObjectACLResource(MyTardisModelResource):
-    content_object = GenericForeignKeyField({
-        Experiment: ExperimentResource,
-        Dataset: DatasetResource,
-        DataFile: DataFileResource,
-        Project: ProjectResource
-        # ...
-    }, 'content_object')
-
-    class Meta:
-        object_class = ObjectACL
-        authentication = default_authentication
-        authorization = ACLAuthorization()
-        queryset = ObjectACL.objects.all()
-        filtering = {
-            'pluginId': ('exact', ),
-            'entityId': ('exact', ),
-        }
-        ordering = [
-            'id'
-        ]
-
-    def hydrate(self, bundle):
-        # Fill in the content type.
-        if bundle.data['content_type'] == 'project':
-            project = Project.objects.get(pk=bundle.data['object_id'])
-            bundle.obj.content_type = project.get_ct()
-        if bundle.data['content_type'] == 'experiment':
-            experiment = Experiment.objects.get(pk=bundle.data['object_id'])
-            bundle.obj.content_type = experiment.get_ct()
-        elif bundle.data['content_type'] == 'dataset':
-            dataset = Dataset.objects.get(pk=bundle.data['object_id'])
-            bundle.obj.content_type = dataset.get_ct()
-        elif bundle.data['content_type'] == 'datafile':
-            datafile = DataFile.objects.get(pk=bundle.data['object_id'])
-            bundle.obj.content_type = datafile.get_ct()
-        else:
-            raise NotImplementedError(str(bundle.obj))
         return bundle
 
 

@@ -276,7 +276,7 @@ class Project(models.Model):
                     "end_time":self.end_time,
                     "institution":self.institution,
                     "lead_researcher":self.lead_researcher,
-                    "objectacls":self.objectacls,
+                    "acls":self.getACLsforIndexing(),
                     "parameters":self.getParametersforIndexing()
                     }
         return ProjectDoc(meta=metadata)

@@ -76,7 +76,9 @@ def create_user_profile(sender, instance, created, **kwargs):
         user = instance
         DEFAULT_PERMISSIONS = ['add_experiment', 'change_experiment',
                                'add_dataset', 'change_dataset', 'add_datafile',
-                               'change_objectacl', 'change_group']
+                               'change_projectacl', 'change_experimentacl',
+                               'change_datasetacl', 'change_datafileacl',
+                               'change_group']
         for permissions in DEFAULT_PERMISSIONS:
             user.user_permissions.add(
                 Permission.objects.get(codename=permissions))
@@ -171,7 +173,13 @@ class UserAuthentication(models.Model):
                 user.user_permissions.add(Permission.objects.get(
                     codename='add_openidusermigration'))
             user.user_permissions.add(
-                Permission.objects.get(codename='change_objectacl'))
+                Permission.objects.get(codename='change_projectacl'))
+            user.user_permissions.add(
+                Permission.objects.get(codename='change_experimentacl'))
+            user.user_permissions.add(
+                Permission.objects.get(codename='change_datasetacl'))
+            user.user_permissions.add(
+                Permission.objects.get(codename='change_datafileacl'))
             user.user_permissions.add(
                 Permission.objects.get(codename='add_datafile'))
             user.user_permissions.add(
@@ -204,108 +212,6 @@ class UserAuthentication(models.Model):
 #     content_type = models.ForeignKey(ContentType)
 #     object_id = models.PositiveIntegerField()
 #     content_object = GenericForeignKey('content_type', 'object_id')
-
-
-@python_2_unicode_compatible
-class ObjectACL(models.Model):
-    """The ObjectACL (formerly ExperimentACL) table is the core of the `Tardis
-    Authorisation framework
-    <http://code.google.com/p/mytardis/wiki/AuthorisationEngineAlt>`_
-
-    :attribute pluginId: the the name of the auth plugin being used
-    :attribute entityId: a foreign key to auth plugins
-    :attribute object_type: a foreign key to ContentType
-    :attribute object_id: the primary key/id of the object_type
-    :attribute canRead: gives the user read access
-    :attribute canDownload: gives the user download access
-    :attribute canWrite: gives the user write access
-    :attribute canDelete: gives the user delete permission
-    :attribute canSensitive: gives the user view Sensitive permission
-    :attribute isOwner: the experiment owner flag.
-    :attribute effectiveDate: the date when access takes into effect
-    :attribute expiryDate: the date when access ceases
-    :attribute aclOwnershipType: system-owned or user-owned.
-
-    System-owned ACLs will prevent users from removing or
-    editing ACL entries to a particular experiment they
-    own. User-owned ACLs will allow experiment owners to
-    remove/add/edit ACL entries to the experiments they own.
-
-    """
-
-    OWNER_OWNED = 1
-    SYSTEM_OWNED = 2
-    __COMPARISON_CHOICES = (
-        (OWNER_OWNED, 'Owner-owned'),
-        (SYSTEM_OWNED, 'System-owned'),
-    )
-
-    pluginId = models.CharField(null=False, blank=False, max_length=30)
-    entityId = models.CharField(null=False, blank=False, max_length=320)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='objectacls')
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True, related_name='objectacls')
-#    experiment = models.ForeignKey('Experiment')
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
-    canRead = models.BooleanField(default=False)
-    canDownload = models.BooleanField(default=False)
-    canWrite = models.BooleanField(default=False)
-    canDelete = models.BooleanField(default=False)
-    canSensitive = models.BooleanField(default=False)
-    isOwner = models.BooleanField(default=False)
-    effectiveDate = models.DateField(null=True, blank=True)
-    expiryDate = models.DateField(null=True, blank=True)
-    aclOwnershipType = models.IntegerField(
-        choices=__COMPARISON_CHOICES, default=OWNER_OWNED)
-
-    def save(self, *args, **kwargs):
-        """
-        Only save ACL if only has at least one None for User/Group key
-        Note: both may be blank for external users/hyperlink sharing
-        """
-        if self.user is not None:
-            if self.group is not None:
-                raise AssertionError("An ACL cannot have both a User and a Group")
-        super().save(*args, **kwargs)
-
-
-    def get_related_object(self):
-        """
-        If possible, resolve the pluginId/entityId combination to a user or
-        group object.
-        """
-        if self.user is not None:
-            return self.user
-        if self.group is not None:
-            return self.group
-        return None
-
-    def get_related_object_group(self):
-        """
-        If possible, resolve the pluginId/entityId combination to a user or
-        group object.
-        """
-        if self.group is not None:
-            return self.group
-        return None
-
-    def __str__(self):
-        return '%s | %i' % (self.content_type.name, self.object_id)
-
-    class Meta:
-        app_label = 'tardis_portal'
-        ordering = ['content_type', 'object_id']
-        verbose_name = "Object ACL"
-
-    @classmethod
-    def get_effective_query(cls):
-        acl_effective_query = (Q(effectiveDate__lte=datetime.today()) |
-                               Q(effectiveDate__isnull=True)) &\
-            (Q(expiryDate__gte=datetime.today()) |
-             Q(expiryDate__isnull=True))
-        return acl_effective_query
-
 
 
 @python_2_unicode_compatible
