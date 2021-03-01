@@ -9,9 +9,8 @@ from django.contrib.auth.models import User, Group, Permission, AnonymousUser
 
 from mock import patch
 
-from ..auth.localdb_auth import django_user
 from ..auth.localdb_auth import auth_key as localdb_auth_key
-from ..models import ObjectACL, Experiment
+from ..models import ExperimentACL, Experiment
 
 logger = logging.getLogger(__name__)
 
@@ -84,43 +83,41 @@ class ObjectACLTestCase(TestCase):
         self.experiment4.save()
 
         # user1 owns experiment1
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user1.id),
-            content_object=self.experiment1,
+        acl = ExperimentACL(
+            user=self.user1,
+            experiment=self.experiment1,
             canRead=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=ExperimentACL.OWNER_OWNED,
             )
         acl.save()
 
         # user2 owns experiment2
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user2.id),
-            content_object=self.experiment2,
+        acl = ExperimentACL(
+            user=self.user2,
+            experiment=self.experiment2,
             canRead=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=ExperimentACL.OWNER_OWNED,
             )
         acl.save()
 
         # experiment4 is accessible via location
-        acl = ObjectACL(
-            pluginId='ip_address',
-            entityId='127.0.0.1',
-            content_object=self.experiment4,
-            canRead=True,
-            aclOwnershipType=ObjectACL.SYSTEM_OWNED,
-        )
-        acl.save()
+        #acl = ObjectACL(
+        #    pluginId='ip_address',
+        #    entityId='127.0.0.1',
+        #    content_object=self.experiment4,
+        #    canRead=True,
+        #    aclOwnershipType=ObjectACL.SYSTEM_OWNED,
+        #)
+        #acl.save()
 
     def tearDown(self):
 
         self.experiment1.delete()
         self.experiment2.delete()
         self.experiment3.delete()
-        self.experiment4.delete()
+        #self.experiment4.delete()
 
         self.user1.delete()
         self.user2.delete()
@@ -592,13 +589,12 @@ class ObjectACLTestCase(TestCase):
         self.assertTrue(login)
 
         # user3 has acl to write to experiment3
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user3.id),
-            content_object=self.experiment3,
+        acl = ExperimentACL(
+            user=self.user3,
+            experiment=self.experiment3,
             canRead=True,
             canWrite=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=ExperimentACL.OWNER_OWNED,
         )
         acl.save()
 

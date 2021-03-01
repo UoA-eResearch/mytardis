@@ -12,6 +12,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
+from .token import Token
 #from ..tests import suspendingreceiver
 
 
@@ -241,6 +242,8 @@ class ObjectACL(models.Model):
 
     pluginId = models.CharField(null=False, blank=False, max_length=30)
     entityId = models.CharField(null=False, blank=False, max_length=320)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='objectacls')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True, related_name='objectacls')
 #    experiment = models.ForeignKey('Experiment')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -256,15 +259,26 @@ class ObjectACL(models.Model):
     aclOwnershipType = models.IntegerField(
         choices=__COMPARISON_CHOICES, default=OWNER_OWNED)
 
+    def save(self, *args, **kwargs):
+        """
+        Only save ACL if only has at least one None for User/Group key
+        Note: both may be blank for external users/hyperlink sharing
+        """
+        if self.user is not None:
+            if self.group is not None:
+                raise AssertionError("An ACL cannot have both a User and a Group")
+        super().save(*args, **kwargs)
+
+
     def get_related_object(self):
         """
         If possible, resolve the pluginId/entityId combination to a user or
         group object.
         """
-        if self.pluginId == 'django_user':
-            return User.objects.get(pk=self.entityId)
-        if self.pluginId == 'django_group':
-            return Group.objects.get(pk=self.entityId)
+        if self.user is not None:
+            return self.user
+        if self.group is not None:
+            return self.group
         return None
 
     def get_related_object_group(self):
@@ -272,8 +286,8 @@ class ObjectACL(models.Model):
         If possible, resolve the pluginId/entityId combination to a user or
         group object.
         """
-        if self.pluginId == 'django_group':
-            return Group.objects.get(pk=self.entityId)
+        if self.group is not None:
+            return self.group
         return None
 
     def __str__(self):
@@ -293,6 +307,137 @@ class ObjectACL(models.Model):
         return acl_effective_query
 
 
+
+@python_2_unicode_compatible
+class ACL(models.Model):
+    """The ACL (formerly ObjectACL, formerly ExperimentACL)
+    table is the core of the `Tardis Authorisation framework
+    <http://code.google.com/p/mytardis/wiki/AuthorisationEngineAlt>`_
+
+    :attribute pluginId: the the name of the auth plugin being used
+    :attribute entityId: a foreign key to auth plugins
+    :attribute object_type: a foreign key to ContentType
+    :attribute object_id: the primary key/id of the object_type
+    :attribute canRead: gives the user read access
+    :attribute canDownload: gives the user download access
+    :attribute canWrite: gives the user write access
+    :attribute canDelete: gives the user delete permission
+    :attribute canSensitive: gives the user view Sensitive permission
+    :attribute isOwner: the experiment owner flag.
+    :attribute effectiveDate: the date when access takes into effect
+    :attribute expiryDate: the date when access ceases
+    :attribute aclOwnershipType: system-owned or user-owned.
+
+    System-owned ACLs will prevent users from removing or
+    editing ACL entries to a particular experiment they
+    own. User-owned ACLs will allow experiment owners to
+    remove/add/edit ACL entries to the experiments they own.
+
+    """
+
+    OWNER_OWNED = 1
+    SYSTEM_OWNED = 2
+    __COMPARISON_CHOICES = (
+        (OWNER_OWNED, 'Owner-owned'),
+        (SYSTEM_OWNED, 'System-owned'),
+    )
+
+    #pluginId = models.CharField(null=False, blank=False, max_length=30)
+    #entityId = models.CharField(null=False, blank=False, max_length=320)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='%(class)ss')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True, related_name='%(class)ss')
+    token = models.ForeignKey(Token, on_delete=models.CASCADE, null=True, blank=True, related_name='%(class)ss')
+    #experiment = models.ForeignKey('Experiment')
+    #content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    #object_id = models.PositiveIntegerField()
+    #content_object = GenericForeignKey('content_type', 'object_id')
+    canRead = models.BooleanField(default=False)
+    canDownload = models.BooleanField(default=False)
+    canWrite = models.BooleanField(default=False)
+    canDelete = models.BooleanField(default=False)
+    canSensitive = models.BooleanField(default=False)
+    isOwner = models.BooleanField(default=False)
+    effectiveDate = models.DateField(null=True, blank=True)
+    expiryDate = models.DateField(null=True, blank=True)
+    aclOwnershipType = models.IntegerField(
+        choices=__COMPARISON_CHOICES, default=OWNER_OWNED)
+
+    class Meta:
+        abstract = True
+        app_label = 'tardis_portal'
+        ordering = ['id']
+
+    def save(self, *args, **kwargs):
+        """
+        Only save ACL if only has one entry for User/Group/Token Foreign key
+        """
+        if sum(x is not None for x in [self.user, self.group, self.token]) > 1:
+            raise AssertionError("An ACL must only have one of the following fields: User, Group, or Token")
+        if sum(x is not None for x in [self.user, self.group, self.token]) < 1:
+            raise AssertionError("An ACL must have one of the following fields: User, Group, or Token")
+        super().save(*args, **kwargs)
+
+
+    def get_related_object(self):
+        """
+        If possible, resolve the pluginId/entityId combination to a user or
+        group object.
+        """
+        if self.user is not None:
+            return self.user
+        if self.group is not None:
+            return self.group
+        return None
+
+    def get_related_object_group(self):
+        """
+        If possible, resolve the pluginId/entityId combination to a user or
+        group object.
+        """
+        if self.group is not None:
+            return self.group
+        return None
+
+    def __str__(self):
+        return str(self.id)
+
+    @classmethod
+    def get_effective_query(cls):
+        acl_effective_query = (Q(effectiveDate__lte=datetime.today()) |
+                               Q(effectiveDate__isnull=True)) &\
+            (Q(expiryDate__gte=datetime.today()) |
+             Q(expiryDate__isnull=True))
+        return acl_effective_query
+
+@python_2_unicode_compatible
+class ProjectACL(ACL):
+    project = models.ForeignKey("Project", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
+
+@python_2_unicode_compatible
+class ExperimentACL(ACL):
+    experiment = models.ForeignKey("Experiment", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
+
+@python_2_unicode_compatible
+class DatasetACL(ACL):
+    dataset = models.ForeignKey("Dataset", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
+
+@python_2_unicode_compatible
+class DatafileACL(ACL):
+    datafile = models.ForeignKey("DataFile", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
+
+
 def create_user_api_key(sender, **kwargs):
     """
     Auto-create ApiKey objects using Tastypie's create_api_key
@@ -301,14 +446,16 @@ def create_user_api_key(sender, **kwargs):
     create_api_key(User, **kwargs)
 
 
-# @suspendingreceiver(post_save, sender=ObjectACL)
 def delete_if_all_false(instance, **kwargs):
     if not any([instance.canRead, instance.canDownload, instance.canWrite,
                 instance.canDelete, instance.canSensitive, instance.isOwner]):
         instance.delete()
 
 
-post_save.connect(delete_if_all_false, sender=ObjectACL)
+post_save.connect(delete_if_all_false, sender=ProjectACL)
+post_save.connect(delete_if_all_false, sender=ExperimentACL)
+post_save.connect(delete_if_all_false, sender=DatasetACL)
+post_save.connect(delete_if_all_false, sender=DatafileACL)
 
 
 if getattr(settings, 'AUTOGENERATE_API_KEY', False):

@@ -105,20 +105,36 @@ class ObjectACLInline(GenericTabularInline):
     model = models.ObjectACL
     extra = 0
 
+class ProjectACLInline(admin.TabularInline):
+    model = models.ProjectACL
+    extra = 0
+
+class ExperimentACLInline(admin.TabularInline):
+    model = models.ExperimentACL
+    extra = 0
+
+class DatasetACLInline(admin.TabularInline):
+    model = models.DatasetACL
+    extra = 0
+
+class DatafileACLInline(admin.TabularInline):
+    model = models.DatafileACL
+    extra = 0
+
 
 class ExperimentAdmin(admin.ModelAdmin):
     search_fields = ['title', 'id']
-    inlines = [ObjectACLInline]
+    inlines = [ObjectACLInline, ExperimentACLInline]
 
 
 class DatasetAdmin(admin.ModelAdmin):
     search_fields = ['description', 'id']
-    inlines = [ObjectACLInline]
+    inlines = [ObjectACLInline, DatasetACLInline]
 
 
 class ProjectAdmin(admin.ModelAdmin):
     search_fields = ['name', 'id']
-    inlines = [ObjectACLInline]
+    inlines = [ObjectACLInline, ProjectACLInline]
 
 
 class StorageBoxAttributeInlineForm(forms.ModelForm):
@@ -203,7 +219,7 @@ class DatafileAdminForm(forms.ModelForm):
 class DatafileAdmin(admin.ModelAdmin):
     search_fields = ['filename', 'id']
     form = DatafileAdminForm
-    inlines = [DataFileObjectInline, ObjectACLInline]
+    inlines = [DataFileObjectInline, ObjectACLInline, DatafileACLInline]
 
 
 class ParameterNameInline(admin.TabularInline):
@@ -227,6 +243,29 @@ class ObjectACLAdmin(admin.ModelAdmin):
         'canDownload', 'canWrite', 'canDelete', 'canSensitive', 'isOwner'
     ]
 
+class ProjectACLAdmin(admin.ModelAdmin):
+    list_display = [
+        '__str__', 'canRead',
+        'canDownload', 'canWrite', 'canDelete', 'canSensitive', 'isOwner'
+    ]
+
+class ExperimentACLAdmin(admin.ModelAdmin):
+    list_display = [
+        '__str__', 'canRead',
+        'canDownload', 'canWrite', 'canDelete', 'canSensitive', 'isOwner'
+    ]
+
+class DatasetACLAdmin(admin.ModelAdmin):
+    list_display = [
+        '__str__', 'canRead',
+        'canDownload', 'canWrite', 'canDelete', 'canSensitive', 'isOwner'
+    ]
+
+class DatafileACLAdmin(admin.ModelAdmin):
+    list_display = [
+        '__str__', 'canRead',
+        'canDownload', 'canWrite', 'canDelete', 'canSensitive', 'isOwner'
+    ]
 
 class FreeTextSearchFieldAdmin(admin.ModelAdmin):
     pass
@@ -277,6 +316,10 @@ admin.site.register(models.ExperimentParameterSet, ExperimentParameterSetAdmin)
 admin.site.register(models.GroupAdmin)
 admin.site.register(models.UserAuthentication, UserAuthenticationAdmin)
 admin.site.register(models.ObjectACL, ObjectACLAdmin)
+admin.site.register(models.ProjectACL, ProjectACLAdmin)
+admin.site.register(models.ExperimentACL, ExperimentACLAdmin)
+admin.site.register(models.DatasetACL, DatasetACLAdmin)
+admin.site.register(models.DatafileACL, DatafileACLAdmin)
 admin.site.register(models.FreeTextSearchField, FreeTextSearchFieldAdmin)
 # admin.site.register(MigrationHistory)
 admin.site.register(models.StorageBox, StorageBoxAdmin)

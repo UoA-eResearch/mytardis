@@ -52,7 +52,9 @@ from .auth.decorators import (
     bulk_replace_existing_acls
 )
 from .auth.localdb_auth import django_user, django_group
-from .models.access_control import ObjectACL, UserProfile, UserAuthentication, GroupAdmin
+from .models.access_control import (ObjectACL, ProjectACL, ExperimentACL, DatasetACL,
+                                    DatafileACL, UserProfile, GroupAdmin,
+                                    UserAuthentication)
 from .models.datafile import DataFile, DataFileObject, compute_checksums
 from .models.dataset import Dataset
 from .models.experiment import Experiment, ExperimentAuthor
@@ -164,35 +166,6 @@ def get_user_from_upi(upi):
         return details
 
 
-def create_acl(content_type,
-               object_id,
-               plugin_id,
-               entity_id,
-               write=False,
-               download=False,
-               sensitive=False,
-               owner=False,
-               admin=False):
-    if admin:
-        download = True
-        sensitive = True
-        owner = True
-        write = True
-    acl = ObjectACL(content_type=content_type,
-                    object_id=object_id,
-                    pluginId=plugin_id,
-                    entityId=str(entity_id),
-                    canRead=True,
-                    canDownload=download,
-                    canWrite=write,
-                    canDelete=False,
-                    canSensitive=sensitive,
-                    isOwner=owner,
-                    aclOwnershipType=ObjectACL.OWNER_OWNED)
-    acl.save()
-    return True
-
-
 def check_and_create_user(username,
                           is_admin=False):
     if not User.objects.filter(username=username).exists():
@@ -234,48 +207,90 @@ def create_traverse_perms(plugin_id,
                           dataset=None):
     if plugin_id == django_user:
         if entity not in Project.safe.users(project.id):
-            create_acl(project.get_ct(),
-                       project.id,
-                       plugin_id,
-                       entity.id)
+            acl = ProjectACL(project=project,
+                             user=entity.id,
+                             canRead=True,
+                             canDownload=False,
+                             canWrite=False,
+                             canDelete=False,
+                             canSensitive=False,
+                             isOwner=False,
+                             aclOwnershipType=ProjectACL.OWNER_OWNED)
+            acl.save()
+            return True
         if experiment:
             if entity not in Experiment.safe.users(experiment.id):
-                create_acl(experiment.get_ct(),
-                           experiment.id,
-                           plugin_id,
-                           entity.id)
+                acl = ExperimentACL(experiment=experiment,
+                                 user=entity.id,
+                                 canRead=True,
+                                 canDownload=False,
+                                 canWrite=False,
+                                 canDelete=False,
+                                 canSensitive=False,
+                                 isOwner=False,
+                                 aclOwnershipType=ExperimentACL.OWNER_OWNED)
+                acl.save()
+                return True
             # Wrapping the dataset into the experiment
             # if to minimise errors since if a dataset
             # traverse is needed then an experiment one
             # is also necessary
             if dataset:
                 if entity not in Dataset.safe.users(dataset.id):
-                    create_acl(dataset.get_ct(),
-                               dataset.id,
-                               plugin_id,
-                               entity.id)
+                    acl = DatasetACL(dataset=dataset,
+                                     user=entity.id,
+                                     canRead=True,
+                                     canDownload=False,
+                                     canWrite=False,
+                                     canDelete=False,
+                                     canSensitive=False,
+                                     isOwner=False,
+                                     aclOwnershipType=DatasetACL.OWNER_OWNED)
+                    acl.save()
+                    return True
     elif plugin_id == django_group:
         if entity not in Project.safe.groups(project.id):
-            create_acl(project.get_ct(),
-                       project.id,
-                       plugin_id,
-                       entity.id)
+            acl = ProjectACL(project=project,
+                             group=entity.id,
+                             canRead=True,
+                             canDownload=False,
+                             canWrite=False,
+                             canDelete=False,
+                             canSensitive=False,
+                             isOwner=False,
+                             aclOwnershipType=ProjectACL.OWNER_OWNED)
+            acl.save()
+            return True
         if experiment:
             if entity not in Experiment.safe.groups(experiment.id):
-                create_acl(experiment.get_ct(),
-                           experiment.id,
-                           plugin_id,
-                           entity.id)
+                acl = ExperimentACL(experiment=experiment,
+                                 group=entity.id,
+                                 canRead=True,
+                                 canDownload=False,
+                                 canWrite=False,
+                                 canDelete=False,
+                                 canSensitive=False,
+                                 isOwner=False,
+                                 aclOwnershipType=ExperimentACL.OWNER_OWNED)
+                acl.save()
+                return True
             # Wrapping the dataset into the experiment
             # if to minimise errors since if a dataset
             # traverse is needed then an experiment one
             # is also necessary
             if dataset:
                 if entity not in Dataset.safe.groups(dataset.id):
-                    create_acl(dataset.get_ct(),
-                               dataset.id,
-                               plugin_id,
-                               entity.id)
+                    acl = DatasetACL(dataset=dataset,
+                                     group=entity.id,
+                                     canRead=True,
+                                     canDownload=False,
+                                     canWrite=False,
+                                     canDelete=False,
+                                     canSensitive=False,
+                                     isOwner=False,
+                                     aclOwnershipType=DatasetACL.OWNER_OWNED)
+                    acl.save()
+                    return True
     return True
 
 
@@ -371,8 +386,9 @@ def process_acls(bundle):
                 logger.debug('Bad Stuff')
                 raise ValueError  # should never get here
         user = check_and_create_user(project_lead)
-        users.append(package_perms(user.id,
-                                   is_admin=True))
+        if bundle.request.user != project_lead:
+            users.append(package_perms(user.id,
+                                       is_admin=True))
         admin_users.append(user)
         if 'admins' in bundle.data.keys():
             logger.debug('Admins found')
@@ -396,14 +412,14 @@ def process_acls(bundle):
                 member_flg = False
                 for admin in parent_admins:
                     # If admin is lead_researcher don't downgrade perms
-                    if admin.username != project_lead:
+                    if admin != project_lead:
                         # Check if user is explicitly defined as a member
                         # in which case they lose admin status
                         if 'members' in bundle.data.keys():
                             for member in bundle.data['members']:
-                                if member[0] == admin.username:
+                                if member[0] == admin:
                                     member_flg = True
-                    if not member_flg and admin.username != project_lead:
+                    if not member_flg and admin != project_lead:
                         if str(user.id) not in [d['id'] for d in users]:
                             users.append(package_perms(admin.id,
                                                        is_admin=True))
@@ -470,8 +486,11 @@ def process_acls(bundle):
             logger.debug('Member groups not found')
             if ct != 'project':
                 logger.debug('Cascading from parent')
+                logger.debug(parent)
                 member_groups = parent.get_groups_and_perms()
+                logger.debug("member_groups found")
         if member_groups and member_groups != []:
+            logger.debug("member_groups not empty")
             for member_group in member_groups:
                 logger.debug(member_group)
                 group_name = member_group[0]
@@ -484,22 +503,30 @@ def process_acls(bundle):
                                             write=True,
                                             download=download,
                                             sensitive=sensitive))
+        logger.debug("makes it this far")
         if ct != 'project':
             # Build traverse ACLs and add GroupAdmins
+            logger.debug("iter over users")
+            logger.debug(users)
             for user_dict in users:
+                logger.debug(user_dict)
                 user_id = int(user_dict['id'])
                 try:
+                    logger.debug("attempt to find it")
                     user = User.objects.get(id=user_id)
+                    logger.debug(user)
                 except Exception as error:
                     logger.warning(
                         'Unable to find user with id: {}'.format(user_id))
                     logger.warning('Error: {}'.format(error))
                     continue
+                logger.debug("creating transverse perms")
                 create_traverse_perms(django_user,
                                       user,
                                       project,
                                       experiment=experiment,
                                       dataset=dataset)
+                logger.debug("transverse created")
             for group_dict in groups:
                 group_id = int(group_dict['id'])
                 try:
@@ -522,12 +549,14 @@ def process_acls(bundle):
                 for admin in admin_users:
                     group_admin.admin_users.add(admin.id)
                 logger.debug(group_admin)
-        acl_dict = {'content_type': ct,
+        acl_dict = {'content_type': ct.model,
                     'id': obj_id,
                     'users': users,
                     'groups': groups}
         if ct == 'datafile':
             acl_dict['content_type'] = 'data file'
+        logger.debug(acl_dict)
+
         return [acl_dict]
     return False
 
@@ -720,12 +749,32 @@ class ACLAuthorization(Authorization):
             return object_list
         if isinstance(bundle.obj, ParameterName):
             return object_list
-        if isinstance(bundle.obj, ObjectACL):
+        if isinstance(bundle.obj, ExperimentACL):
             experiment_ids = Experiment.safe.all(
                 bundle.request.user).values_list('id', flat=True)
-            return ObjectACL.objects.filter(
-                content_type__model='experiment',
-                object_id__in=experiment_ids,
+            return ExperimentACL.objects.filter(
+                experiment__id__in=experiment_ids,
+                id__in=obj_ids
+            )
+        if isinstance(bundle.obj, DatasetACL):
+            dataset_ids = Dataset.safe.all(
+                bundle.request.user).values_list('id', flat=True)
+            return DatasetACL.objects.filter(
+                dataset__id__in=dataset_ids,
+                id__in=obj_ids
+            )
+        if isinstance(bundle.obj, DatafileACL):
+            datafile_ids = DataFile.safe.all(
+                bundle.request.user).values_list('id', flat=True)
+            return DatafileACL.objects.filter(
+                datafile__id__in=datafile_ids,
+                id__in=obj_ids
+            )
+        if isinstance(bundle.obj, ProjectACL):
+            project_ids = Project.safe.all(
+                bundle.request.user).values_list('id', flat=True)
+            return ProjectACL.objects.filter(
+                experiment__id__in=project_ids,
                 id__in=obj_ids
             )
         if bundle.request.user.is_authenticated and \
@@ -996,7 +1045,13 @@ class ACLAuthorization(Authorization):
                           bundle.obj.datafile.id, "datafile"),
             ])
 
-        if isinstance(bundle.obj, ObjectACL):
+        if isinstance(bundle.obj, ProjectACL):
+            return bundle.request.user.has_perm('tardis_portal.add_objectacl')
+        if isinstance(bundle.obj, ExperimentACL):
+            return bundle.request.user.has_perm('tardis_portal.add_objectacl')
+        if isinstance(bundle.obj, DatasetACL):
+            return bundle.request.user.has_perm('tardis_portal.add_objectacl')
+        if isinstance(bundle.obj, DatafileACL):
             return bundle.request.user.has_perm('tardis_portal.add_objectacl')
         if isinstance(bundle.obj, Group):
             return bundle.request.user.has_perm('tardis_portal.add_group')
@@ -1313,7 +1368,8 @@ class ProjectResource(MyTardisModelResource):
 
     def hydrate_m2m(self, bundle):
         acls = process_acls(bundle)
-        bulk_replace_existing_acls(acls)
+        if acls:
+            bulk_replace_existing_acls(acls)
         if 'admins' in bundle.data.keys():
             bundle.data.pop('admins')
         if 'admin_groups' in bundle.data.keys():
@@ -1440,7 +1496,8 @@ class ExperimentResource(MyTardisModelResource):
         ACL permissions for those objects.
         '''
         acls = process_acls(bundle)
-        bulk_replace_existing_acls(acls)
+        if acls:
+            bulk_replace_existing_acls(acls)
         if 'admins' in bundle.data.keys():
             bundle.data.pop('admins')
         if 'admin_groups' in bundle.data.keys():
@@ -1580,7 +1637,8 @@ class DatasetResource(MyTardisModelResource):
                 except NotFound:
                     pass  # This probably should raise an error
         acls = process_acls(bundle)
-        bulk_replace_existing_acls(acls)
+        if acls:
+            bulk_replace_existing_acls(acls)
         if 'admins' in bundle.data.keys():
             bundle.data.pop('admins')
         if 'admin_groups' in bundle.data.keys():
@@ -1870,7 +1928,8 @@ class DataFileResource(MyTardisModelResource):
             self.temp_url = dfo.get_full_path()
         datafile = new_bundle.obj
         acls = process_acls(new_bundle)
-        bulk_replace_existing_acls(acls)
+        if acls:
+            bulk_replace_existing_acls(acls)
         if 'admin_groups' in new_bundle.data.keys():
             admin_groups = new_bundle.data.pop('admin_groups')
         if 'member_groups' in new_bundle.data.keys():

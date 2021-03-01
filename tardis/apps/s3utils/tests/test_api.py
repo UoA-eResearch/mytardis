@@ -12,8 +12,7 @@ from tardis.tardis_portal.tests.api import MyTardisResourceTestCase
 from tardis.tardis_portal.models.datafile import DataFile, DataFileObject
 from tardis.tardis_portal.models.dataset import Dataset
 from tardis.tardis_portal.models.storage import StorageBox, StorageBoxOption
-from tardis.tardis_portal.models.access_control import ObjectACL
-from tardis.tardis_portal.auth.localdb_auth import django_user
+from tardis.tardis_portal.models.access_control import (DatasetACL, DatafileACL)
 
 
 class S3UtilsAppApiTestCase(MyTardisResourceTestCase):
@@ -22,32 +21,30 @@ class S3UtilsAppApiTestCase(MyTardisResourceTestCase):
         self.dataset = Dataset.objects.create(description='Test Dataset')
         # self.testexp is defined in MyTardisResourceTestCase
         # and is accessible using self.get_credentials()
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.dataset,
+        acl = DatasetACL(
+            user=self.user,
+            dataset=self.dataset,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
         self.dataset.experiments.add(self.testexp)
         self.datafile = DataFile.objects.create(
             dataset=self.dataset, filename='test.txt',
             size=8, md5sum="930e419034038dfad994f0d2e602146c")
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.datafile,
+        acl = DatafileACL(
+            user=self.user,
+            datafile=self.datafile,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
         self.s3_storage_box = StorageBox.objects.create(

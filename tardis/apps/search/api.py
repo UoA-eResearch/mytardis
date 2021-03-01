@@ -10,6 +10,7 @@ Implemented with Tastypie.
 
 import json
 import logging
+from datetime import datetime
 
 import pytz
 
@@ -493,12 +494,49 @@ class SearchAppResource(Resource):
         # --------------------
 
         # load in object IDs for all objects a user has sensitive access to
-        projects_sens = {*Project.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
-        experiments_sens = {*Experiment.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
-        datasets_sens = {*Dataset.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
-        datafiles_sens = {*DataFile.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        #projects_sens = {*Project.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        projects_sens_query = user.projectacls.select_related("project").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("project__id", flat=True)
+        for group in groups:
+            projects_sens_query |= group.projectacls.select_related("project").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("project__id", flat=True)
+        projects_sens = [*projects_sens_query.distinct()]
+
+        #experiments_sens = {*Experiment.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        experiments_sens_query = user.experimentacls.select_related("experiment").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("experiment__id", flat=True)
+        for group in groups:
+            experiments_sens_query |= group.experimentacls.select_related("experiment").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("experiment__id", flat=True)
+        experiments_sens = [*experiments_sens_query.distinct()]
+
+        #datasets_sens = {*Dataset.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        datasets_sens_query = user.datasetacls.select_related("dataset").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("dataset__id", flat=True)
+        for group in groups:
+            datasets_sens_query |= group.datasetacls.select_related("dataset").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("dataset__id", flat=True)
+        datasets_sens = [*datasets_sens_query.distinct()]
+
+        #datafiles_sens = {*DataFile.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        datafiles_sens_query = user.datafileacls.select_related("datafile").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
+        for group in groups:
+            datafiles_sens_query |= group.datafileacls.select_related("datafile").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
+        datafiles_sens = [*datafiles_sens_query.distinct()]
+
         # load in datafile IDs for all datafiles a user has download access to
-        datafiles_dl = {*DataFile.safe.all(user, downloadable=True).values_list("id", flat=True)}
+        #datafiles_dl = {*DataFile.safe.all(user, downloadable=True).values_list("id", flat=True)}
+
+        datafiles_dl_query = user.datafileacls.select_related("datafile").filter(canDownload=True).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
+        for group in groups:
+            datafiles_dl_query |= group.datafileacls.select_related("datafile").filter(canDownload=True).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
+        datafiles_dl = [*datafiles_dl_query.distinct()]
+
+
         # re-structure into convenient dictionary
         preloaded = {
                      "project": {"sens_list" : projects_sens,
@@ -513,13 +551,57 @@ class SearchAppResource(Resource):
         # load in object IDs for all objects a user has read access to,
         # and IDs for all of the object's nested-children - regardless of user
         # access to these child objects (the access check come later)
-        projects_values = ["id", "experiment__id", "experiment__datasets__id",
-                                                 "experiment__datasets__datafile__id"]
-        projects = [*Project.safe.all(user).values_list(*projects_values)]
-        experiments_values = ["id", "datasets__id", "datasets__datafile__id"]
-        experiments = [*Experiment.safe.all(user).values_list(*experiments_values)]
-        datasets = [*Dataset.safe.all(user).prefetch_related("datafile").values_list("id", "datafile__id")]
-        datafiles = [*DataFile.safe.all(user).values_list("id", "size")]
+        #projects_values = ["id", "experiment__id", "experiment__datasets__id",
+        #                                         "experiment__datasets__datafile__id"]
+        #projects = [*Project.safe.all(user).values_list(*projects_values)]
+
+        projects_query = user.projectacls.select_related("project").prefetch_related("project__experiment",
+                                                                                     "project__experiment__datasets",
+                                                                                     "project__experiment__datasets__datafile"
+                                                                                              ).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("project__id", "project__experiment__id",
+                                                                                              "project__experiment__datasets__id",
+                                                                                              "project__experiment__datasets__datafile__id")
+        for group in groups:
+            projects_query |= group.projectacls.select_related("project").prefetch_related("project__experiment",
+                                                                                         "project__experiment__datasets",
+                                                                                         "project__experiment__datasets__datafile"
+                                                                                                  ).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("project__id", "project__experiment__id",
+                                                                                                  "project__experiment__datasets__id",
+                                                                                                  "project__experiment__datasets__datafile__id")
+        projects = [*projects_query.distinct()]
+
+        #experiments_values = ["id", "datasets__id", "datasets__datafile__id"]
+        #experiments = [*Experiment.safe.all(user).values_list(*experiments_values)]
+
+        experiments_query = user.experimentacls.select_related("experiment").prefetch_related("experiment__datasets", "experiment__datasets__datafile"
+                                                                                              ).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("experiment__id", "experiment__datasets__id",
+                                                                                              "experiment__datasets__datafile__id")
+        for group in groups:
+            experiments_query |= group.experimentacls.select_related("experiment").prefetch_related("experiment__datasets", "experiment__datasets__datafile"
+                                                                                                  ).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("experiment__id", "experiment__datasets__id",
+                                                                                                  "experiment__datasets__datafile__id")
+        experiments = [*experiments_query.distinct()]
+
+        #datasets = [*Dataset.safe.all(user).prefetch_related("datafile").values_list("id", "datafile__id")]
+        datasets_query = user.datasetacls.select_related("dataset").prefetch_related("dataset__datafile").exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("dataset__id","dataset__datafile__id")
+        for group in groups:
+            datasets_query |= group.datasetacls.select_related("dataset").exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("dataset__id","dataset__datafile__id")
+        datasets = [*datasets_query.distinct()]
+
+        #datafiles = [*DataFile.safe.all(user).values_list("id", "size")]
+        datafiles_query = user.datafileacls.select_related("datafile").exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("datafile__id","datafile__size")
+        for group in groups:
+            datafiles_query |= group.datafileacls.select_related("datafile").exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("datafile__id","datafile__size")
+        datafiles = [*datafiles_query.distinct()]
+
         # add data to preloaded["objects"] dictionary with ID as key and nested items as value - key/values.
         # Probably a cleaner/simpler way to do this, but hey ho!
         for key, value in {"project": projects, "experiment": experiments,

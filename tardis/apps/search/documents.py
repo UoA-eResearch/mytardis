@@ -7,11 +7,12 @@ from elasticsearch_dsl import analysis, analyzer
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
 
-from tardis.tardis_portal.models import Project, Dataset, Experiment, \
-    DataFile, Instrument, ObjectACL, ParameterName, Schema, ProjectParameter, \
-    ExperimentParameter, DatasetParameter, DatafileParameter, \
-    ProjectParameterSet, ExperimentParameterSet, DatasetParameterSet, \
-    DatafileParameterSet, DataFileObject
+from tardis.tardis_portal.models import (Project, Dataset, Experiment,
+    DataFile, Instrument, ParameterName, Schema, ProjectParameter,
+    ExperimentParameter, DatasetParameter, DatafileParameter,
+    ProjectParameterSet, ExperimentParameterSet, DatasetParameterSet,
+    DatafileParameterSet, DataFileObject, ProjectACL, ExperimentACL,
+    DatasetACL, DatafileACL)
 
 # from tardis.tardis_portal.tests import suspendingreceiver
 
@@ -55,7 +56,7 @@ class ProjectDocument(Document):
         'fullname': fields.TextField(
             fields={'raw': fields.KeywordField()})
     })
-    objectacls = fields.NestedField(properties={
+    objectacls = fields.NestedField(attr='getACLsforIndexing', properties={
         'pluginId': fields.KeywordField(),
         'entityId': fields.KeywordField()
     })
@@ -83,6 +84,9 @@ class ProjectDocument(Document):
         })
     })
 
+    def prepare_objectacls(self, instance):
+        return list(instance.getACLsforIndexing())
+
     def prepare_parameters(self, instance):
         return dict(instance.getParametersforIndexing())
 
@@ -94,15 +98,14 @@ class ProjectDocument(Document):
 
     class Django:
         model = Project
-        related_models = [User, ObjectACL, Schema, ParameterName,
+        related_models = [User, ProjectACL, Schema, ParameterName,
                           ProjectParameter, ProjectParameterSet]
 
     def get_instances_from_related(self, related_instance):
         if isinstance(related_instance, User):
             return related_instance.project_set.all()
-        if isinstance(related_instance, ObjectACL):
-            if related_instance.content_object.get_ct().model == "project":
-                return related_instance.content_object
+        if isinstance(related_instance, ProjectACL):
+            return related_instance.project
         if isinstance(related_instance, ProjectParameterSet):
             return related_instance.project
         if isinstance(related_instance, ProjectParameter):
@@ -144,7 +147,7 @@ class ExperimentDocument(Document):
         'name': fields.TextField(fields={'raw': fields.KeywordField()},
                                  analyzer=analyzer)
     })
-    objectacls = fields.NestedField(properties={
+    objectacls = fields.NestedField(attr='getACLsforIndexing', properties={
         'pluginId': fields.KeywordField(),
         'entityId': fields.KeywordField()
     })
@@ -172,12 +175,15 @@ class ExperimentDocument(Document):
         })
     })
 
+    def prepare_objectacls(self, instance):
+        return list(instance.getACLsforIndexing())
+
     def prepare_parameters(self, instance):
         return dict(instance.getParametersforIndexing())
 
     class Django:
         model = Experiment
-        related_models = [Project, User, ObjectACL, Schema, ParameterName,
+        related_models = [Project, User, ExperimentACL, Schema, ParameterName,
                           ExperimentParameter, ExperimentParameterSet]
 
     def get_instances_from_related(self, related_instance):
@@ -185,9 +191,8 @@ class ExperimentDocument(Document):
             return related_instance.experiment_set.all()
         if isinstance(related_instance, User):
             return related_instance.experiment_set.all()
-        if isinstance(related_instance, ObjectACL):
-            if related_instance.content_object.get_ct().model == "experiment":
-                return related_instance.content_object
+        if isinstance(related_instance, ExperimentACL):
+            return related_instance.experiment
         if isinstance(related_instance, ExperimentParameterSet):
             return related_instance.experiment
         if isinstance(related_instance, ExperimentParameter):
@@ -219,7 +224,7 @@ class DatasetDocument(Document):
             'id': fields.KeywordField()
         })
     })
-    objectacls = fields.NestedField(properties={
+    objectacls = fields.NestedField(attr='getACLsforIndexing', properties={
         'pluginId': fields.KeywordField(),
         'entityId': fields.KeywordField()
     })
@@ -257,12 +262,15 @@ class DatasetDocument(Document):
         })
     })
 
+    def prepare_objectacls(self, instance):
+        return list(instance.getACLsforIndexing())
+
     def prepare_parameters(self, instance):
         return dict(instance.getParametersforIndexing())
 
     class Django:
         model = Dataset
-        related_models = [Project, Experiment, Instrument, ObjectACL,
+        related_models = [Project, Experiment, Instrument, DatasetACL,
                           Schema, ParameterName, DatasetParameter,
                           DatasetParameterSet]
 
@@ -273,9 +281,8 @@ class DatasetDocument(Document):
             return related_instance.datasets.all()
         if isinstance(related_instance, Instrument):
             return related_instance.dataset_set.all()
-        if isinstance(related_instance, ObjectACL):
-            if related_instance.content_object.get_ct().model == "dataset":
-                return related_instance.content_object
+        if isinstance(related_instance, DatasetACL):
+            return related_instance.dataset
         if isinstance(related_instance, DatasetParameterSet):
             return related_instance.dataset
         if isinstance(related_instance, DatasetParameter):
@@ -313,7 +320,7 @@ class DataFileDocument(Document):
             }),
         }),
     })
-    objectacls = fields.NestedField(properties={
+    objectacls = fields.NestedField(attr='getACLsforIndexing', properties={
         'pluginId': fields.KeywordField(),
         'entityId': fields.KeywordField()
     })
@@ -357,12 +364,15 @@ class DataFileDocument(Document):
             extension = ''
         return extension
 
+    def prepare_objectacls(self, instance):
+        return list(instance.getACLsforIndexing())
+
     def prepare_parameters(self, instance):
         return dict(instance.getParametersforIndexing())
 
     class Django:
         model = DataFile
-        related_models = [Dataset, Experiment, Project, ObjectACL,
+        related_models = [Dataset, Experiment, Project, DatafileACL,
                           Schema, ParameterName, DatafileParameter,
                           DatafileParameterSet, DataFileObject]
         queryset_pagination = 100000
@@ -374,9 +384,8 @@ class DataFileDocument(Document):
             return DataFile.objects.filter(dataset__experiments=related_instance)
         if isinstance(related_instance, Project):
             return DataFile.objects.filter(dataset__experiments__project=related_instance)
-        if isinstance(related_instance, ObjectACL):
-            if related_instance.content_object.get_ct().model == 'data file':
-                return related_instance.content_object
+        if isinstance(related_instance, DatafileACL):
+            return related_instance.datafile
         if isinstance(related_instance, DatafileParameterSet):
             return related_instance.datafile
         if isinstance(related_instance, DatafileParameter):
