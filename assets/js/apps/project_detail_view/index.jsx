@@ -13,12 +13,9 @@ const { href } = window.location;
 const projectId = href.substring(href.lastIndexOf("/", href.lastIndexOf("/") - 1 ) + 1, href.lastIndexOf("/"));
 
 ReactDOM.render(
-  <div>
-  <ProjectPage projectId={projectId} />
-  </div>,
-  mountPoint
-);
-
+    React.createElement(ProjectPage, window.props),    // gets the props that are passed in the template
+    window.react_mount,                                // a reference to the #react div that we render to
+)
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA

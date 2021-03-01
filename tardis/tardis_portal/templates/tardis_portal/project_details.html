@@ -4,5 +4,11 @@
 
 {% block content %}
     <div id="project-app"></div>
+
+{{ propdata|json_script:"propdata" }}
+<script>
+    window.props = JSON.parse(document.getElementById('propdata').textContent); // make sure to escape your props to prevent XSS!
+</script>
+
 {% render_bundle 'project_app' %}
 {% endblock content%}

@@ -385,13 +385,16 @@ class ProjectView(TemplateView):
 
         # This might need to be more complex to account for users
         c = super().get_context_data(**kwargs)
-        c['subtitle'] = project.name
-        c['project'] = project
-        c.update(
-            {'project': project,
-             'subtitle': project.name,
-             }
-        )
+        related_experiments = Experiment.safe.all(
+                request.user).select_related("project").filter(project__id = project.id)
+        exp_list = []
+        for exp in related_experiments:
+            exp_list.append({"id":exp.id, "title":exp.title})
+        c["propdata"] = {
+                        "name": project.name,
+                        "description": project.description,
+                        "experiments": exp_list
+                        }
         #_add_protocols_and_organizations(request, project, c)
         return c
 
@@ -421,7 +424,7 @@ class ProjectView(TemplateView):
         view_override = self.find_custom_view_override(request, project)
         if view_override is not None:
             return view_override
-        c = self.get_context_data(request, Project, **kwargs)
+        c = self.get_context_data(request, project, **kwargs)
         template_name = kwargs.get('template_name', None)
         if template_name is None:
             template_name = self.template_name
