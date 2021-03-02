@@ -111,7 +111,6 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
 
     const [localValue, setLocalValue] = useState(toLocalValue(value));
     const [isValidValue, setIsValidValue] = useState(true);
-
     useEffect(() => {
         // Update the filter when there is a new value,
         // for when the filter value is externally updated
@@ -179,11 +178,15 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                 <Form.Group className="date-range-filter__field">
                     <Form.Label htmlFor={startFieldId} srOnly={options.hideLabels}>Start</Form.Label>
                     <DatePicker
+                        clearAriaLabel={'Clear Start'}
+                        dayAriaLabel={'Start Day'}
+                        monthAriaLabel={'Start Month'}
+                        yearAriaLabel={'Start Year'}
                         value={localValue.start}
                         name={startFieldId}
                         onChange={handleStartValueChange}
                         format={"y-M-d"}
-                        nativeInputAriaLabel={"Start"}
+                        nativeInputAriaLabel={"Start Date"}
                     />
                 </Form.Group>
             }
@@ -191,12 +194,16 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
                 <Form.Group className="date-range-filter__field">
                     <Form.Label htmlFor={endFieldId} srOnly={options.hideLabels}>End</Form.Label>
                     <DatePicker
+                        clearAriaLabel={'Clear End'}
+                        dayAriaLabel={'End Day'}
+                        monthAriaLabel={'End Month'}
+                        yearAriaLabel={'End Year'}
                         onChange={handleEndValueChange}
                         name={endFieldId}
                         value={localValue.end}
                         key={startFieldId + localValue.start}
                         format={"y-M-d"}
-                        nativeInputAriaLabel={"End"}
+                        nativeInputAriaLabel={"End Date"}
                     />
                 </Form.Group>
             }

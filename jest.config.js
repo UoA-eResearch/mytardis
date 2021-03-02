@@ -8,4 +8,5 @@ module.exports ={
     // nor the tests.
     "\/assets\/js\/index$": "identity-obj-proxy"
   },
+  verbose: false
 };

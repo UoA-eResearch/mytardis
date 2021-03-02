@@ -9,4 +9,5 @@ Date.now = jest.fn(() => 1606693372520);
 // as rendered in the storybook stay consistent unless we want
 // to change them.
 // Read more in https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-core
+
 initStoryshots();

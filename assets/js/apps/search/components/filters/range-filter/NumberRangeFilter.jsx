@@ -104,7 +104,6 @@ const NumberRangeFilter = ({ value, options, onValueChange }) => {
     }
 
     const handleBlur = () => {
-        console.log('last changed',lastInputChanged);
         validateNumRange(lastInputChanged);
     }
 
