@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('tardis_portal', '0012_userauthentication_approved'),
+        ('tardis_portal', '0045_auto_20210128_1536'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
