@@ -181,7 +181,7 @@ def acl_migration(userIdToBeReplaced, replacementUserId, user_migration_record):
             experimentACL.user = replacementUser
             experimentACL.save()
             # record acl migration event
-            logger.info("acl migrated %s", experimentACL.object_id)
+            logger.info("acl migrated %s", experimentACL.experiment.id)
             acl_migration_record = OpenidACLMigration(user_migration=user_migration_record,
                                                       acl_id=experimentACL)
             acl_migration_record.save()
