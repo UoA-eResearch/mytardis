@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./cart.css";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import Form from "react-bootstrap/Form";
 import { BsTrash, BsDownload } from "react-icons/bs";
 import CartTreeview from "./CartTreeview";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import store from "./store";
+import { initialiseSlice } from "./cartSlice";
 
-ReactDOM.render(
-    <div className="cart-page container">
-
+const CartScreen = (props) => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(initialiseSlice());
+    }, [dispatch]);
+    return <div className="cart-page container">
         <h1 className="h3 my-3">Cart</h1>
         <main className="cart-page-content shadow-sm">
             <section className="mb-">
@@ -36,6 +41,12 @@ ReactDOM.render(
             </section>
 
         </main>
-    </div>,
+    </div>;
+};
+
+ReactDOM.render(
+    <Provider store={store}>
+        <CartScreen />
+    </Provider>,
     document.getElementById("cart-app"),
 );

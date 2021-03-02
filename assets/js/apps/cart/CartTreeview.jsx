@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Treebeard } from "react-treebeard";
-import { flatten } from "underscore";
+import PropTypes from "prop-types";
+import { Treebeard, decorators } from "react-treebeard";
 
 const exampleData = [{
     name: "siNET",
@@ -64,7 +64,7 @@ const exampleData = [{
 }
 ];
 
-const CartTreeview = () => {
+const CartTreeview = (onExpandItem) => {
     const [data, setData] = useState(exampleData);
     const [cursor, setCursor] = useState(false);
 
@@ -86,16 +86,23 @@ const CartTreeview = () => {
         <Treebeard data={data} onToggle={onToggle}
             decorators={
                 {
-                    Container: (props) => {
+                    Loading: (props) => {
                         return (
-                            <div onClick={props.onClick}>
-                                    // Hide Toggle When Terminal Here
-                                <props.decorators.Toggle />
-                                <props.decorators.Header />
+                            <div style={props.style}>
+                                loading...
+                            </div>
+                        );
+                    },
+                    Container: ({style, node, onSelect, onClick, terminal, customStyles}) => {
+                        return (
+                            <div onClick={onClick} style={node.active ? {...style.container} : {...style.link}}>
+                                {!terminal ? <decorators.Toggle style={style.toggle} onClick={onClick} /> : null }
+                                <decorators.Header node={node} style={style.header} customStyles={customStyles} onSelect={onSelect} />
                             </div>
                         );
                     }
-                }}
+                }
+            }
             style={{
                 tree: {
                     base: {
@@ -115,5 +122,10 @@ const CartTreeview = () => {
             }} />
     );
 };
+
+CartTreeview.propTypes = {
+    objects: PropTypes.object,
+    onExpandItem: PropTypes.func.isRequired
+}
 
 export default CartTreeview;

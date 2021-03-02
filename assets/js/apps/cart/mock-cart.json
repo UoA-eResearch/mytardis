@@ -1,0 +1,86 @@
+{
+    "itemsInCart": {
+        "project": [
+            "199"
+        ],
+        "experiment": [
+            "19"
+        ],
+        "datafile": [
+            "3"
+        ]
+    },
+    "objects": {
+        "project": {
+                "ids": [
+                    "199"
+                ],
+                "entities": {
+                    "1": {
+                        "name": "Project 199",
+                        "size": 4400000000,
+                        "experiments": [
+                            "4"
+                        ]
+                    }
+                }
+            },
+        "experiment": {
+            "ids": [
+                "4",
+                "19"
+            ],
+            "entities": {
+                "4": {
+                    "name": "Experiment 4",
+                    "size": 140000000,
+                    "datasets": [
+                        "1"
+                    ]
+                },
+                "19": {
+                    "name": "Experiment 19",
+                    "size": 70000000,
+                    "datasets": []
+                }
+            }
+        },
+        "dataset": {
+            "ids": ["1", "2"],
+            "entities": {
+                "1": {
+                    "name": "Dataset 1",
+                    "size": 140000000,
+                    "datafiles": [
+                        "1"
+                    ]
+                },
+                "2": {
+                    "name": "Dataset 2",
+                    "size": 70000000,
+                    "datafiles": [
+                        "2"
+                    ]
+                }
+            }
+        },
+        "datafile": {
+            "ids": ["1", "2", "3"],
+            "entities": {
+                "1": {
+                    "name": "Datafile 1",
+                    "size": 140000000
+
+                },
+                "2": {
+                    "name": "Datafile 2",
+                    "size": 70000000
+                },
+                "3": {
+                    "name": "Datafile 3",
+                    "size": 70000000
+                }
+            }
+        }
+    }
+}
