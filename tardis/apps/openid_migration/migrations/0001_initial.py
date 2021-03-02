@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('tardis_portal', '0012_userauthentication_approved'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('tardis_portal', '__latest__'),
+        ('tardis_portal', '0044_datafileacl_datasetacl_experimentacl_projectacl'),
     ]
 
     operations = [
