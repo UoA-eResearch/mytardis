@@ -35,7 +35,6 @@ from tastypie.http import HttpUnauthorized
 from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
-from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 
 from uritemplate import URITemplate
 

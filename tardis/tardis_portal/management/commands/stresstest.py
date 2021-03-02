@@ -44,7 +44,7 @@ hundred_words = ['absurd', 'act', 'addicted', 'advert', 'angry', 'apathetic',
 def create_acl(entity, entity_type, object, download=False, write=False,
                sensitive=False, delete=False, isowner=False):
 
-    if entity_type = "django_user":
+    if entity_type == "django_user":
         if object.get_ct().model == "project":
             testacl = ProjectACL(project=object,
                                 user=entity,
@@ -90,7 +90,7 @@ def create_acl(entity, entity_type, object, download=False, write=False,
                                 aclOwnershipType=ProjectACL.OWNER_OWNED)
             testacl.save()
 
-    if entity_type = "django_group":
+    if entity_type == "django_group":
         if object.get_ct().model == "project":
             testacl = ProjectACL(project=object,
                                 group=entity,
