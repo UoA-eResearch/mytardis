@@ -48,14 +48,13 @@ from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 import pytz
 
-from ..auth.localdb_auth import django_user
 from ..models.experiment import Experiment
 from ..models.dataset import Dataset
 from ..models.datafile import DataFile, DataFileObject
 from ..models.parameters import (Schema, ParameterName, DatafileParameterSet,
                                  DatafileParameter, DatasetParameterSet,
                                  ExperimentParameterSet, ExperimentParameter)
-from ..models.access_control import ObjectACL
+from ..models.access_control import ExperimentACL, DatasetACL, DatafileACL
 from ..ParameterSetManager import ParameterSetManager
 from ..views.parameters import edit_datafile_par
 from ..views.parameters import edit_dataset_par
@@ -81,16 +80,15 @@ class ParameterSetManagerTestCase(TestCase):
                               created_by=self.user)
         self.exp.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.exp,
+        acl = ExperimentACL(
+            user=self.user,
+            experiment=self.exp,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=ExperimentACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -99,16 +97,15 @@ class ParameterSetManagerTestCase(TestCase):
         self.dataset.experiments.add(self.exp)
         self.dataset.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.dataset,
+        acl = DatasetACL(
+            user=self.user,
+            dataset=self.dataset,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -117,16 +114,15 @@ class ParameterSetManagerTestCase(TestCase):
                                  size="42", md5sum='bogus')
         self.datafile.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.datafile,
+        acl = DatafileACL(
+            user=self.user,
+            datafile=self.datafile,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatafileACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -432,16 +428,15 @@ class EditParameterSetTestCase(TestCase):
             title='test exp1', created_by=self.user)
         self.experiment.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.experiment,
+        acl = ExperimentACL(
+            user=self.user,
+            experiment=self.experiment,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=ExperimentACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -450,16 +445,15 @@ class EditParameterSetTestCase(TestCase):
         self.dataset.experiments.add(self.experiment)
         self.dataset.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.dataset,
+        acl = DatasetACL(
+            user=self.user,
+            dataset=self.dataset,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -488,16 +482,15 @@ class EditParameterSetTestCase(TestCase):
                                  size="42", md5sum='bogus')
         self.datafile.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.datafile,
+        acl = DatafileACL(
+            user=self.user,
+            datafile=self.datafile,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatafileACL.OWNER_OWNED,
         )
         acl.save()
 

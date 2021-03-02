@@ -13,7 +13,7 @@ from django.contrib.auth.models import User, Group
 #from numpy.random import default_rng
 
 from ...auth.localdb_auth import django_user, django_group
-from ...models.access_control import ObjectACL
+from ...models.access_control import ProjectACL, ExperimentACL, DatasetACL, DatafileACL
 from ...models import (Project, Experiment, Dataset, DataFile, Schema,
                        ParameterName, DatafileParameterSet, DatafileParameter,
                        DatasetParameterSet, DatasetParameter,
@@ -43,18 +43,100 @@ hundred_words = ['absurd', 'act', 'addicted', 'advert', 'angry', 'apathetic',
 
 def create_acl(entity, entity_type, object, download=False, write=False,
                sensitive=False, delete=False, isowner=False):
-    testacl = ObjectACL(content_type=object.get_ct(),
-                        object_id=object.id,
-                        pluginId=entity_type,
-                        entityId=str(entity.id),
-                        canRead=True,
-                        canDownload = download,
-                        canWrite=write,
-                        canSensitive=sensitive,
-                        canDelete=delete,
-                        isOwner=isowner,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
-    testacl.save()
+
+    if entity_type == "django_user":
+        if object.get_ct().model == "project":
+            testacl = ProjectACL(project=object,
+                                user=entity,
+                                canRead=True,
+                                canDownload = download,
+                                canWrite=write,
+                                canSensitive=sensitive,
+                                canDelete=delete,
+                                isOwner=isowner,
+                                aclOwnershipType=ProjectACL.OWNER_OWNED)
+            testacl.save()
+        if object.get_ct().model == "experiment":
+            testacl = ExperimentACL(experiment=object,
+                                user=entity,
+                                canRead=True,
+                                canDownload = download,
+                                canWrite=write,
+                                canSensitive=sensitive,
+                                canDelete=delete,
+                                isOwner=isowner,
+                                aclOwnershipType=ProjectACL.OWNER_OWNED)
+            testacl.save()
+        if object.get_ct().model == "dataset":
+            testacl = DatasetACL(dataset=object,
+                                user=entity,
+                                canRead=True,
+                                canDownload = download,
+                                canWrite=write,
+                                canSensitive=sensitive,
+                                canDelete=delete,
+                                isOwner=isowner,
+                                aclOwnershipType=ProjectACL.OWNER_OWNED)
+            testacl.save()
+        if object.get_ct().model.replace(" ","") == "datafile":
+            testacl = DatafileACL(datafile=object,
+                                user=entity,
+                                canRead=True,
+                                canDownload = download,
+                                canWrite=write,
+                                canSensitive=sensitive,
+                                canDelete=delete,
+                                isOwner=isowner,
+                                aclOwnershipType=ProjectACL.OWNER_OWNED)
+            testacl.save()
+
+    if entity_type == "django_group":
+        if object.get_ct().model == "project":
+            testacl = ProjectACL(project=object,
+                                group=entity,
+                                canRead=True,
+                                canDownload = download,
+                                canWrite=write,
+                                canSensitive=sensitive,
+                                canDelete=delete,
+                                isOwner=isowner,
+                                aclOwnershipType=ProjectACL.OWNER_OWNED)
+            testacl.save()
+        if object.get_ct().model == "experiment":
+            testacl = ExperimentACL(experiment=object,
+                                group=entity,
+                                canRead=True,
+                                canDownload = download,
+                                canWrite=write,
+                                canSensitive=sensitive,
+                                canDelete=delete,
+                                isOwner=isowner,
+                                aclOwnershipType=ProjectACL.OWNER_OWNED)
+            testacl.save()
+        if object.get_ct().model == "dataset":
+            testacl = DatasetACL(dataset=object,
+                                group=entity,
+                                canRead=True,
+                                canDownload = download,
+                                canWrite=write,
+                                canSensitive=sensitive,
+                                canDelete=delete,
+                                isOwner=isowner,
+                                aclOwnershipType=ProjectACL.OWNER_OWNED)
+            testacl.save()
+        if object.get_ct().model.replace(" ","") == "datafile":
+            testacl = DatafileACL(datafile=object,
+                                group=entity,
+                                canRead=True,
+                                canDownload = download,
+                                canWrite=write,
+                                canSensitive=sensitive,
+                                canDelete=delete,
+                                isOwner=isowner,
+                                aclOwnershipType=ProjectACL.OWNER_OWNED)
+            testacl.save()
+
+
 
 def create_owner_acl(owner, object):
     create_acl(owner, django_user, object, download=True, write=True,

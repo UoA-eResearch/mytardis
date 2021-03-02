@@ -78,7 +78,8 @@ def add_user_permissions(**kwargs):
     user = kwargs.get('user')
     if user:
         for perm in ['add_experiment', 'change_experiment', 'change_group',
-                     'change_objectacl',
+                     'change_projectacl', 'change_experimentacl',
+                     'change_datasetacl', 'change_datafileacl',
                      'add_datafile', 'change_dataset']:
             user.user_permissions.add(Permission.objects.get(codename=perm))
 
