@@ -20,11 +20,10 @@ from django.test.client import Client
 from django.conf import settings
 from django.contrib.auth.models import User
 
-from ..auth.localdb_auth import django_user
 from ..models.experiment import Experiment
 from ..models.dataset import Dataset
 from ..models.datafile import DataFile, DataFileObject
-from ..models.access_control import ObjectACL
+from ..models.access_control import ExperimentACL, DatasetACL, DatafileACL
 
 try:
     from wand.image import Image  # pylint: disable=C0411
@@ -67,16 +66,15 @@ class DownloadTestCase(TestCase):
             public_access=Experiment.PUBLIC_ACCESS_FULL)
         self.experiment1.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.experiment1,
+        acl = ExperimentACL(
+            user=self.user,
+            experiment=self.experiment1,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=ExperimentACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -87,16 +85,15 @@ class DownloadTestCase(TestCase):
             public_access=Experiment.PUBLIC_ACCESS_NONE)
         self.experiment2.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.experiment2,
+        acl = ExperimentACL(
+            user=self.user,
+            experiment=self.experiment2,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=ExperimentACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -106,16 +103,15 @@ class DownloadTestCase(TestCase):
         self.dataset1.experiments.add(self.experiment1)
         self.dataset1.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.dataset1,
+        acl = DatasetACL(
+            user=self.user,
+            dataset=self.dataset1,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -125,16 +121,15 @@ class DownloadTestCase(TestCase):
         self.dataset2.experiments.add(self.experiment2)
         self.dataset2.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.dataset2,
+        acl = DatasetACL(
+            user=self.user,
+            dataset=self.dataset2,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -164,16 +159,15 @@ class DownloadTestCase(TestCase):
         self.datafile1 = self._build_datafile(testfile1, filename1,
                                               self.dataset1)
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.datafile1,
+        acl = DatafileACL(
+            user=self.user,
+            datafile=self.datafile1,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatafileACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -228,16 +222,15 @@ class DownloadTestCase(TestCase):
         self.experiment2.save()
 
         # simulate public access
-        self.acl_datafile2 = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.datafile2,
+        self.acl_datafile2 = DatafileACL(
+            user=self.user,
+            datafile=self.datafile2,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatafileACL.OWNER_OWNED,
         )
         self.acl_datafile2.save()
 
@@ -343,16 +336,15 @@ class DownloadTestCase(TestCase):
         self.assertEqual(response_content, b'Hello World!\n')
 
         # disable "simulated" public access
-        self.acl_datafile2 = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.datafile2,
+        self.acl_datafile2 = DatafileACL(
+            user=self.user,
+            datafile=self.datafile2,
             canRead=False,
             canDownload=False,
             canWrite=False,
             canSensitive=False,
             isOwner=False,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatafileACL.OWNER_OWNED,
         )
         self.acl_datafile2.save()
 
@@ -407,16 +399,15 @@ class DownloadTestCase(TestCase):
         self.experiment2.save()
 
         # simulate public access
-        self.acl_datafile2 = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.datafile2,
+        self.acl_datafile2 = DatafileACL(
+            user=self.user,
+            datafile=self.datafile2,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatafileACL.OWNER_OWNED,
         )
         self.acl_datafile2.save()
 

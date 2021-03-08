@@ -12,8 +12,7 @@ from urllib.parse import quote
 from ...models.dataset import Dataset
 from ...models.experiment import Experiment
 from ...models.instrument import Instrument
-from ...models.access_control import ObjectACL
-from ...auth.localdb_auth import django_user
+from ...models.access_control import DatasetACL
 from . import MyTardisResourceTestCase
 
 
@@ -27,16 +26,15 @@ class DatasetResourceTest(MyTardisResourceTestCase):
         self.ds_no_instrument = Dataset()
         self.ds_no_instrument.description = "Dataset no instrument"
         self.ds_no_instrument.save()
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.ds_no_instrument,
+        acl = DatasetACL(
+            user=self.user,
+            dataset=self.ds_no_instrument,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
         self.ds_no_instrument.experiments.add(self.testexp)
@@ -44,16 +42,15 @@ class DatasetResourceTest(MyTardisResourceTestCase):
         self.ds_with_instrument.description = "Dataset with instrument"
         self.ds_with_instrument.instrument = self.testinstrument
         self.ds_with_instrument.save()
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.ds_with_instrument,
+        acl = DatasetACL(
+            user=self.user,
+            dataset=self.ds_with_instrument,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
         self.ds_with_instrument.experiments.add(self.testexp)
@@ -61,16 +58,15 @@ class DatasetResourceTest(MyTardisResourceTestCase):
         self.ds_with_instrument2.description = "Dataset with a different instrument"
         self.ds_with_instrument2.instrument = self.extra_instrument
         self.ds_with_instrument2.save()
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.ds_with_instrument2,
+        acl = DatasetACL(
+            user=self.user,
+            dataset=self.ds_with_instrument2,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
         self.ds_with_instrument2.experiments.add(self.testexp)

@@ -13,7 +13,7 @@ from wand.image import Image
 from lxml import etree
 
 from ..models.experiment import Experiment
-from ..models.access_control import ObjectACL
+from ..models.access_control import ExperimentACL, DatasetACL, DatafileACL
 from ..models.dataset import Dataset
 from ..models.datafile import DataFile, compute_checksums
 
@@ -34,28 +34,26 @@ def _create_datafile():
                                            created_by=user,
                                            public_access=full_access)
     experiment.save()
-    ObjectACL(content_object=experiment,
-              pluginId='django_user',
-              entityId=str(user.id),
+    ExperimentACL(experiment=experiment,
+              user=user,
               isOwner=True,
               canRead=True,
               canWrite=True,
               canDownload=True,
               canDelete=True,
-              aclOwnershipType=ObjectACL.OWNER_OWNED).save()
+              aclOwnershipType=ExperimentACL.OWNER_OWNED).save()
     dataset = Dataset()
     dataset.save()
     dataset.experiments.add(experiment)
     dataset.save()
-    ObjectACL(content_object=dataset,
-              pluginId='django_user',
-              entityId=str(user.id),
+    DatasetACL(dataset=dataset,
+              user=user,
               isOwner=True,
               canRead=True,
               canWrite=True,
               canDownload=True,
               canDelete=True,
-              aclOwnershipType=ObjectACL.OWNER_OWNED).save()
+              aclOwnershipType=DatasetACL.OWNER_OWNED).save()
     # Create new Datafile
     tempfile = TemporaryUploadedFile('iiif_stored_file', None, None, None)
     with Image(filename='magick:rose') as img:
@@ -77,15 +75,14 @@ def _create_datafile():
     if compute_sha512:
         datafile.sha512sum = checksums['sha512sum']
     datafile.save()
-    ObjectACL(content_object=datafile,
-              pluginId='django_user',
-              entityId=str(user.id),
+    DatafileACL(datafile=datafile,
+              user=user,
               isOwner=True,
               canRead=True,
               canWrite=True,
               canDownload=True,
               canDelete=True,
-              aclOwnershipType=ObjectACL.OWNER_OWNED).save()
+              aclOwnershipType=DatafileACL.OWNER_OWNED).save()
     datafile.file_object = tempfile
     return datafile
 

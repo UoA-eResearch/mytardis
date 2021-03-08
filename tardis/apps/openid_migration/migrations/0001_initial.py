@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('tardis_portal', '0012_userauthentication_approved'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('tardis_portal', '0044_datafileacl_datasetacl_experimentacl_projectacl'),
     ]
 
     operations = [
@@ -21,7 +22,7 @@ class Migration(migrations.Migration):
             name='OpenidACLMigration',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('acl_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tardis_portal.ObjectACL')),
+                ('acl_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tardis_portal.ExperimentACL')),
             ],
         ),
         migrations.CreateModel(

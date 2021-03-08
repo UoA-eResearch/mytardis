@@ -46,8 +46,7 @@ from django.contrib.auth.models import User
 
 from mock import patch
 
-from ..models import Experiment, ObjectACL, Dataset
-from ..auth.localdb_auth import django_user
+from ..models import Experiment, ExperimentACL, DatasetACL, Dataset
 
 
 # http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
@@ -86,22 +85,20 @@ class UserInterfaceTestCase(TestCase):
             created_by=user,
             public_access=Experiment.PUBLIC_ACCESS_FULL)
         experiment.save()
-        acl = ObjectACL(pluginId=django_user,
-                        entityId=str(user.id),
-                        content_object=experiment,
-                        canRead=True,
-                        canDownload=True,
-                        canWrite=True,
-                        canDelete=True,
-                        isOwner=True)
+        acl = ExperimentACL(user=user,
+                            experiment=experiment,
+                            canRead=True,
+                            canDownload=True,
+                            canWrite=True,
+                            canDelete=True,
+                            isOwner=True)
         acl.save()
         dataset = Dataset(description="test dataset")
         dataset.save()
         dataset.experiments.add(experiment)
         dataset.save()
-        acl = ObjectACL(pluginId=django_user,
-                        entityId=str(user.id),
-                        content_object=dataset,
+        acl = DatasetACL(user=user,
+                        dataset=dataset,
                         canRead=True,
                         canDownload=True,
                         canWrite=True,

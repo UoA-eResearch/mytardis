@@ -15,8 +15,7 @@ from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User, Permission
 
-from ...auth.localdb_auth import django_user
-from ...models import ObjectACL, Experiment, Dataset, DataFile
+from ...models import ExperimentACL, DatasetACL, Experiment, Dataset, DataFile
 
 
 class UploadTestCase(TestCase):
@@ -37,16 +36,15 @@ class UploadTestCase(TestCase):
         self.exp = Experiment(title='test exp1', created_by=self.user)
         self.exp.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.exp,
+        acl = ExperimentACL(
+            user=self.user,
+            experiment=self.exp,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=ExperimentACL.OWNER_OWNED,
         )
         acl.save()
 
@@ -56,16 +54,15 @@ class UploadTestCase(TestCase):
         self.dataset.experiments.add(self.exp)
         self.dataset.save()
 
-        acl = ObjectACL(
-            pluginId=django_user,
-            entityId=str(self.user.id),
-            content_object=self.dataset,
+        acl = DatasetACL(
+            user=self.user,
+            dataset=self.dataset,
             canRead=True,
             canDownload=True,
             canWrite=True,
             canSensitive=True,
             isOwner=True,
-            aclOwnershipType=ObjectACL.OWNER_OWNED,
+            aclOwnershipType=DatasetACL.OWNER_OWNED,
         )
         acl.save()
 
