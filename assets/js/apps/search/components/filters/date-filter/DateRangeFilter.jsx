@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
-import Datetime from "react-datetime";
 import moment from "moment";
 
 import "./DateRangeFilter.css";
-
-// React Datetime requires CSS to work.
-import "react-datetime/css/react-datetime.css";
 
 import DatePicker from 'react-date-picker';
 const DATE_FORMAT = "YYYY-MM-DD";
@@ -101,8 +97,8 @@ function mergeOptionsWithDefaults(options) {
     return newOptions;
 }
 
-const isValidDate = date => {
-    return date instanceof Date;
+const isValidDate = d => {
+    return d && d.getTime && !isNaN(d.getTime());
 };
 
 const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChange }) => {
