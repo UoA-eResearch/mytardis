@@ -12,4 +12,26 @@
     color: #495057;
     padding: 0.375rem 0.75rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    /* background-color: greenyellow; */
+    z-index: 5;
+
+}
+
+/* span > div.react-date-picker__calendar .react-date-picker__calendar--open {
+    z-index: 5 !important;
+} */
+
+/* div.react-date-picker__calendar .react-date-picker__calendar--open {
+    background-color: pink !important;
+    z-index: 5 !important;
+} */
+
+/* .react-date-picker__wrapper > .react-date-picker__calendar {
+    background-color: green;
+    z-index: 5;
+} */
+
+.react-date-picker__calendar {
+    z-index: 5 !important;
 }
