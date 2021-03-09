@@ -9,7 +9,6 @@ from os import path
 import mimetypes
 
 from django.conf import settings
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.core.files import File
 from django.urls import reverse
@@ -26,7 +25,6 @@ import magic
 
 from .. import tasks
 from ..managers import OracleSafeManager, SafeManager
-from .access_control import ObjectACL
 from .dataset import Dataset
 from .storage import StorageBox, StorageBoxOption, StorageBoxAttribute
 
@@ -61,7 +59,6 @@ class DataFile(models.Model):
     :attribute sha512sum: Digest of length 128, containing only hexadecimal
         digits
     """
-
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
     filename = models.CharField(max_length=400)
     directory = models.CharField(blank=True, null=True, max_length=255)
@@ -74,7 +71,6 @@ class DataFile(models.Model):
     deleted = models.BooleanField(default=False)
     deleted_time = models.DateTimeField(blank=True, null=True)
     version = models.IntegerField(default=1)
-    objectacls = GenericRelation(ObjectACL)
     objects = OracleSafeManager()
     safe = SafeManager()  # The acl-aware specific manager.
 
@@ -226,8 +222,8 @@ class DataFile(models.Model):
                                self.filename, self.mimetype)
 
     def getParametersforIndexing(self):
-        """Returns the experiment parameters associated with this
-        experiment, formatted for elasticsearch.
+        """Returns the datafile parameters associated with this
+        datafile, formatted for elasticsearch.
 
         """
         from .parameters import DatafileParameter, ParameterName
@@ -252,9 +248,7 @@ class DataFile(models.Model):
                             param_dict['sensitive'] = True
                         else:
                             param_dict['sensitive'] = False
-
                         type_idx = idx+1
-
                         if type_idx == 1:
                             param_dict['value'] = value
                         elif type_idx == 2:
@@ -263,6 +257,24 @@ class DataFile(models.Model):
                             param_dict['value'] = float(value)
                 parameter_groups[param_type[type_idx]].append(param_dict)
         return parameter_groups
+
+    def getACLsforIndexing(self):
+        """Returns the datafileACLs associated with this
+        datafile, formatted for elasticsearch.
+
+        """
+        return_list = []
+        for acl in self.datafileacl_set.all():
+            acl_dict = {}
+            if acl.user is not None:
+                acl_dict["pluginId"] = "django_user"
+                acl_dict["entityId"] = acl.user.id
+                return_list.append(acl_dict)
+            if acl.group is not None:
+                acl_dict["pluginId"] = "django_group"
+                acl_dict["entityId"] = acl.group.id
+                return_list.append(acl_dict)
+        return return_list
 
     def get_mimetype(self):
         if self.mimetype:
@@ -483,33 +495,25 @@ class DataFile(models.Model):
         return ContentType.objects.get_for_model(self)
 
     def get_owners(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        isOwner=True)
+        acls = self.datafileacl_set.select_related("user").filter(
+                                            user__isnull=False, isOwner=True)
         return [acl.get_related_object() for acl in acls]
 
     def get_users(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True)
+        acls = self.datafileacl_set.select_related("user").filter(
+                                            user__isnull=False)
         return [acl.get_related_object() for acl in acls]
 
     def get_groups(self):
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True)
+        acls = self.datafileacl_set.select_related("group").filter(
+                                            group__isnull=False)
         return [acl.get_related_object() for acl in acls]
 
     def get_admins(self):
         logger.error(self.id)
         logger.error(self.get_ct())
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        isOwner=True)
+        acls = self.datafileacl_set.select_related("group").filter(
+                                            group__isnull=False, isOwner=True)
         logger.error(acls)
         return [acl.get_related_object() for acl in acls]
 
@@ -522,7 +526,7 @@ class DataFile(models.Model):
                     "created_time":self.created_time,
                     "modification_time":self.modification_time,
                     "dataset":self.dataset,
-                    "objectacls":self.objectacls,
+                    "acls":self.getACLsforIndexing(),
                     "parameters":self.getParametersforIndexing()
                     }
         return DatafileDoc(meta=metadata)

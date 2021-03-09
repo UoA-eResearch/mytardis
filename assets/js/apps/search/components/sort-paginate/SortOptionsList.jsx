@@ -1,6 +1,6 @@
+/* eslint-disable camelcase */
 import React, { useCallback, useMemo } from "react";
-import { DropdownButton, Dropdown, Form, Row } from "react-bootstrap";
-import { typeAttrSelector, allTypeAttrIdsSelector } from "../filters/filterSlice";
+import { DropdownButton, Dropdown, Form } from "react-bootstrap";
 import { SORT_ORDER, updateResultSort, removeResultSort, activeSortSelector, runSingleTypeSearch, sortableAttributesSelector, sortOrderSelector } from "../searchSlice";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
@@ -189,3 +189,7 @@ export default function SortOptionsList({typeId}) {
         />
     );
 }
+
+SortOptionsList.propTypes = {
+    typeId: PropTypes.string.isRequired
+};

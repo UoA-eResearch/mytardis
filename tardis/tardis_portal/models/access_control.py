@@ -2,8 +2,6 @@ from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User, Group
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import Permission
 
 from django.db import models
@@ -12,6 +10,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
+from .token import Token
 #from ..tests import suspendingreceiver
 
 
@@ -75,7 +74,9 @@ def create_user_profile(sender, instance, created, **kwargs):
         user = instance
         DEFAULT_PERMISSIONS = ['add_experiment', 'change_experiment',
                                'add_dataset', 'change_dataset', 'add_datafile',
-                               'change_objectacl', 'change_group']
+                               'change_projectacl', 'change_experimentacl',
+                               'change_datasetacl', 'change_datafileacl',
+                               'change_group']
         for permissions in DEFAULT_PERMISSIONS:
             user.user_permissions.add(
                 Permission.objects.get(codename=permissions))
@@ -170,7 +171,13 @@ class UserAuthentication(models.Model):
                 user.user_permissions.add(Permission.objects.get(
                     codename='add_openidusermigration'))
             user.user_permissions.add(
-                Permission.objects.get(codename='change_objectacl'))
+                Permission.objects.get(codename='change_projectacl'))
+            user.user_permissions.add(
+                Permission.objects.get(codename='change_experimentacl'))
+            user.user_permissions.add(
+                Permission.objects.get(codename='change_datasetacl'))
+            user.user_permissions.add(
+                Permission.objects.get(codename='change_datafileacl'))
             user.user_permissions.add(
                 Permission.objects.get(codename='add_datafile'))
             user.user_permissions.add(
@@ -206,9 +213,9 @@ class UserAuthentication(models.Model):
 
 
 @python_2_unicode_compatible
-class ObjectACL(models.Model):
-    """The ObjectACL (formerly ExperimentACL) table is the core of the `Tardis
-    Authorisation framework
+class ACL(models.Model):
+    """The ACL (formerly ObjectACL, formerly ExperimentACL)
+    table is the core of the `Tardis Authorisation framework
     <http://code.google.com/p/mytardis/wiki/AuthorisationEngineAlt>`_
 
     :attribute pluginId: the the name of the auth plugin being used
@@ -239,12 +246,15 @@ class ObjectACL(models.Model):
         (SYSTEM_OWNED, 'System-owned'),
     )
 
-    pluginId = models.CharField(null=False, blank=False, max_length=30)
-    entityId = models.CharField(null=False, blank=False, max_length=320)
-#    experiment = models.ForeignKey('Experiment')
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
+    #pluginId = models.CharField(null=False, blank=False, max_length=30)
+    #entityId = models.CharField(null=False, blank=False, max_length=320)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='%(class)ss')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True, related_name='%(class)ss')
+    token = models.ForeignKey(Token, on_delete=models.CASCADE, null=True, blank=True, related_name='%(class)ss')
+    #experiment = models.ForeignKey('Experiment')
+    #content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    #object_id = models.PositiveIntegerField()
+    #content_object = GenericForeignKey('content_type', 'object_id')
     canRead = models.BooleanField(default=False)
     canDownload = models.BooleanField(default=False)
     canWrite = models.BooleanField(default=False)
@@ -256,15 +266,31 @@ class ObjectACL(models.Model):
     aclOwnershipType = models.IntegerField(
         choices=__COMPARISON_CHOICES, default=OWNER_OWNED)
 
+    class Meta:
+        abstract = True
+        app_label = 'tardis_portal'
+        ordering = ['id']
+
+    def save(self, *args, **kwargs):
+        """
+        Only save ACL if only has one entry for User/Group/Token Foreign key
+        """
+        if sum(x is not None for x in [self.user, self.group, self.token]) > 1:
+            raise AssertionError("An ACL must only have one of the following fields: User, Group, or Token")
+        if sum(x is not None for x in [self.user, self.group, self.token]) < 1:
+            raise AssertionError("An ACL must have one of the following fields: User, Group, or Token")
+        super().save(*args, **kwargs)
+
+
     def get_related_object(self):
         """
         If possible, resolve the pluginId/entityId combination to a user or
         group object.
         """
-        if self.pluginId == 'django_user':
-            return User.objects.get(pk=self.entityId)
-        if self.pluginId == 'django_group':
-            return Group.objects.get(pk=self.entityId)
+        if self.user is not None:
+            return self.user
+        if self.group is not None:
+            return self.group
         return None
 
     def get_related_object_group(self):
@@ -272,17 +298,12 @@ class ObjectACL(models.Model):
         If possible, resolve the pluginId/entityId combination to a user or
         group object.
         """
-        if self.pluginId == 'django_group':
-            return Group.objects.get(pk=self.entityId)
+        if self.group is not None:
+            return self.group
         return None
 
     def __str__(self):
-        return '%s | %i' % (self.content_type.name, self.object_id)
-
-    class Meta:
-        app_label = 'tardis_portal'
-        ordering = ['content_type', 'object_id']
-        verbose_name = "Object ACL"
+        return str(self.id)
 
     @classmethod
     def get_effective_query(cls):
@@ -291,6 +312,34 @@ class ObjectACL(models.Model):
             (Q(expiryDate__gte=datetime.today()) |
              Q(expiryDate__isnull=True))
         return acl_effective_query
+
+@python_2_unicode_compatible
+class ProjectACL(ACL):
+    project = models.ForeignKey("Project", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
+
+@python_2_unicode_compatible
+class ExperimentACL(ACL):
+    experiment = models.ForeignKey("Experiment", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
+
+@python_2_unicode_compatible
+class DatasetACL(ACL):
+    dataset = models.ForeignKey("Dataset", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
+
+@python_2_unicode_compatible
+class DatafileACL(ACL):
+    datafile = models.ForeignKey("DataFile", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
 
 
 def create_user_api_key(sender, **kwargs):
@@ -301,14 +350,16 @@ def create_user_api_key(sender, **kwargs):
     create_api_key(User, **kwargs)
 
 
-# @suspendingreceiver(post_save, sender=ObjectACL)
 def delete_if_all_false(instance, **kwargs):
     if not any([instance.canRead, instance.canDownload, instance.canWrite,
                 instance.canDelete, instance.canSensitive, instance.isOwner]):
         instance.delete()
 
 
-post_save.connect(delete_if_all_false, sender=ObjectACL)
+post_save.connect(delete_if_all_false, sender=ProjectACL)
+post_save.connect(delete_if_all_false, sender=ExperimentACL)
+post_save.connect(delete_if_all_false, sender=DatasetACL)
+post_save.connect(delete_if_all_false, sender=DatafileACL)
 
 
 if getattr(settings, 'AUTOGENERATE_API_KEY', False):

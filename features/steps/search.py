@@ -6,7 +6,7 @@ def they_open_the_search_url(context):
     """
     :type context: behave.runner.Context
     """
-    context.browser.get(context.base_url + "/apps/search/")
+    context.browser.get(context.base_url + "/search/")
 
 
 @then("they see the search page")

@@ -44,8 +44,7 @@ API accessible models
 +
 - Facility
 - Instrument
-+
-- ObjectACL
+
 
 
 Authentication

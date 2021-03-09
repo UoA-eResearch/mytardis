@@ -3,12 +3,14 @@ Object-level authorisation backend
 
 .. moduleauthor:: Grischa Meyer <grischa@gmail.com>
 '''
+from datetime import datetime
+
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 #from django.db.models.query import QuerySet
 
-from ..models.access_control import ObjectACL
+from ..models.access_control import (ProjectACL, ExperimentACL, DatasetACL, DatafileACL)
 from .token_auth import TokenGroupProvider
 
 
@@ -96,22 +98,89 @@ class ACLAwareBackend(object):
                 if user_obj.has_perm(new_perm, msp):
                     return True'''
 
-        # get_acls
-        obj_acls = ObjectACL.objects\
-            .filter(content_type=ct, object_id=obj.id)\
-            .filter(self.get_perm_bool(perm_action))\
-            .filter(ObjectACL.get_effective_query())
-
-        query = Q(pluginId='django_user',
-                  entityId=str(user_obj.id))
-
-        if user_obj.is_authenticated:
-            for name, group in user_obj.userprofile.ext_groups:
-                query |= Q(pluginId=name, entityId=str(group))
-        else:
+        if ct.model == 'project':
             # the only authorisation available for anonymous users is tokenauth
             tgp = TokenGroupProvider()
-            for group in tgp.getGroups(user_obj):
-                query |= Q(pluginId=tgp.name, entityId=str(group))
+            query = ProjectACL.objects.none()
+            for token in tgp.getGroups(user_obj):
+                query |= token.projectacls.select_related("project"
+                                         ).filter(project__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                         ).exclude(effectiveDate__gte=datetime.today(),
+                                                   expiryDate__lte=datetime.today())
+            if user_obj.is_authenticated:
+                query |= user_obj.projectacls.select_related("project"
+                                         ).filter(project__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                         ).exclude(effectiveDate__gte=datetime.today(),
+                                                   expiryDate__lte=datetime.today())
+                for group in user_obj.groups.all():
+                    query |= group.projectacls.select_related("project"
+                                             ).filter(project__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                             ).exclude(effectiveDate__gte=datetime.today(),
+                                                       expiryDate__lte=datetime.today())
+            return query.exists()
 
-        return obj_acls.filter(query).count() > 0
+        if ct.model == 'experiment':
+            # the only authorisation available for anonymous users is tokenauth
+            tgp = TokenGroupProvider()
+            query = ExperimentACL.objects.none()
+            for token in tgp.getGroups(user_obj):
+                query |= token.experimentacls.select_related("experiment"
+                                         ).filter(experiment__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                         ).exclude(effectiveDate__gte=datetime.today(),
+                                                   expiryDate__lte=datetime.today())
+            if user_obj.is_authenticated:
+                query |= user_obj.experimentacls.select_related("experiment"
+                                         ).filter(experiment__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                         ).exclude(effectiveDate__gte=datetime.today(),
+                                                   expiryDate__lte=datetime.today())
+                for group in user_obj.groups.all():
+                    query |= group.experimentacls.select_related("experiment"
+                                             ).filter(experiment__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                             ).exclude(effectiveDate__gte=datetime.today(),
+                                                       expiryDate__lte=datetime.today())
+            return query.exists()
+
+        if ct.model == 'dataset':
+            # the only authorisation available for anonymous users is tokenauth
+            tgp = TokenGroupProvider()
+            query = DatasetACL.objects.none()
+            for token in tgp.getGroups(user_obj):
+                query |= token.datasetacls.select_related("dataset"
+                                         ).filter(dataset__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                         ).exclude(effectiveDate__gte=datetime.today(),
+                                                   expiryDate__lte=datetime.today())
+            if user_obj.is_authenticated:
+                query |= user_obj.datasetacls.select_related("dataset"
+                                         ).filter(dataset__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                         ).exclude(effectiveDate__gte=datetime.today(),
+                                                   expiryDate__lte=datetime.today())
+                for group in user_obj.groups.all():
+                    query |= group.datasetacls.select_related("dataset"
+                                             ).filter(dataset__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                             ).exclude(effectiveDate__gte=datetime.today(),
+                                                       expiryDate__lte=datetime.today())
+            return query.exists()
+
+        if ct.model.replace(' ','') == 'datafile':
+            # the only authorisation available for anonymous users is tokenauth
+            tgp = TokenGroupProvider()
+            query = DatafileACL.objects.none()
+            for token in tgp.getGroups(user_obj):
+                query |= token.datafileacls.select_related("datafile"
+                                         ).filter(datafile__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                         ).exclude(effectiveDate__gte=datetime.today(),
+                                                   expiryDate__lte=datetime.today())
+            if user_obj.is_authenticated:
+                query |= user_obj.datafileacls.select_related("datafile"
+                                         ).filter(datafile__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                         ).exclude(effectiveDate__gte=datetime.today(),
+                                                   expiryDate__lte=datetime.today())
+                for group in user_obj.groups.all():
+                    query |= group.datafileacls.select_related("datafile"
+                                             ).filter(datafile__id=obj.id).filter(self.get_perm_bool(perm_action)
+                                             ).exclude(effectiveDate__gte=datetime.today(),
+                                                       expiryDate__lte=datetime.today())
+            return query.exists()
+
+
+        return False

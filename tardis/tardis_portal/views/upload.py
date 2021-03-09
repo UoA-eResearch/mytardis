@@ -6,10 +6,9 @@ import logging
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from ..auth.localdb_auth import django_user
 
 from ..auth import decorators as authz
-from ..models import Dataset, DataFile, ObjectACL
+from ..models import Dataset, DataFile, DatafileACL
 
 logger = logging.getLogger(__name__)
 
@@ -68,16 +67,15 @@ def upload(request, dataset_id):
             logger.debug('saved datafile')
 
             # add defaul ACL
-            acl = ObjectACL(content_object=datafile,
-                            pluginId=django_user,
-                            entityId=str(request.user.id),
+            acl = DatafileACL(datafile=datafile,
+                            user=request.user,
                             canRead=True,
                             canDownload=True,
                             canWrite=True,
                             canDelete=True,
                             canSensitive=True,
                             isOwner=True,
-                            aclOwnershipType=ObjectACL.OWNER_OWNED)
+                            aclOwnershipType=DatafileACL.OWNER_OWNED)
             acl.save()
 
     return HttpResponse('True')

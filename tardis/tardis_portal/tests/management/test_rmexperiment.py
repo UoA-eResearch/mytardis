@@ -2,10 +2,9 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.core.management import call_command
 
-from ...models import \
-    Experiment, Dataset, DataFile, ObjectACL, License, \
-    ExperimentParameterSet, ExperimentParameter, DatasetParameterSet, \
-    DatafileParameterSet
+from ...models import (Experiment, Dataset, DataFile, ExperimentACL,
+    DatasetACL, DatafileACL, License, ExperimentParameterSet,
+    ExperimentParameter, DatasetParameterSet, DatafileParameterSet)
 
 
 def _create_test_user():
@@ -42,14 +41,13 @@ def _create_test_experiment(user, license_):
         order=1,
         author="Michael Palin",
         url="http://nla.gov.au/nla.party-2")
-    acl = ObjectACL(content_object=experiment,
-                    pluginId='django_user',
-                    entityId=str(user.id),
+    acl = ExperimentACL(experiment=experiment,
+                    user=user,
                     isOwner=True,
                     canRead=True,
                     canWrite=True,
                     canDelete=True,
-                    aclOwnershipType=ObjectACL.OWNER_OWNED)
+                    aclOwnershipType=ExperimentACL.OWNER_OWNED)
     acl.save()
     return experiment
 
@@ -58,14 +56,13 @@ def _create_test_dataset(nosDatafiles, user_):
     ds_ = Dataset(description='happy snaps of plumage')
     ds_.save()
 
-    acl = ObjectACL(content_object=ds_,
-                    pluginId='django_user',
-                    entityId=str(user_.id),
+    acl = DatasetACL(dataset=ds_,
+                    user=user_,
                     isOwner=True,
                     canRead=True,
                     canWrite=True,
                     canDelete=True,
-                    aclOwnershipType=ObjectACL.OWNER_OWNED)
+                    aclOwnershipType=DatasetACL.OWNER_OWNED)
     acl.save()
 
     for i in range(0, nosDatafiles):
@@ -73,14 +70,13 @@ def _create_test_dataset(nosDatafiles, user_):
                        sha512sum='bogus')
         df_.save()
 
-        acl = ObjectACL(content_object=df_,
-                        pluginId='django_user',
-                        entityId=str(user_.id),
+        acl = DatafileACL(datafile=df_,
+                        user=user_,
                         isOwner=True,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=DatafileACL.OWNER_OWNED)
         acl.save()
 
     ds_.save()
@@ -149,7 +145,9 @@ class RmExperimentTestCase(TestCase):
         self.assertEqual(DataFile.objects.all().count(), 0)
 
         #Check that everything else has been removed too
-        self.assertEqual(ObjectACL.objects.all().count(), 0)
+        self.assertEqual(ExperimentACL.objects.all().count(), 0)
+        self.assertEqual(DatasetACL.objects.all().count(), 0)
+        self.assertEqual(DatafileACL.objects.all().count(), 0)
         self.assertEqual(ExperimentParameterSet.objects.all().count(), 0)
         self.assertEqual(ExperimentParameter.objects.all().count(), 0)
         self.assertEqual(DatasetParameterSet.objects.all().count(), 0)

@@ -8,7 +8,7 @@ test_dataset.py
 """
 from django.contrib.auth.models import Group
 
-from tardis.tardis_portal.models import (ObjectACL,
+from tardis.tardis_portal.models import (ExperimentACL, DatasetACL, DatafileACL,
     Dataset, DataFile, Experiment, Facility, Instrument, Institution)
 
 from . import ModelTestCase
@@ -21,26 +21,24 @@ class DatasetTestCase(ModelTestCase):
                          created_by=self.user)
 
         exp.save()
-        acl = ObjectACL(content_object=exp,
-                        pluginId='django_user',
-                        entityId=str(self.user.id),
+        acl = ExperimentACL(experiment=exp,
+                        user=self.user,
                         isOwner=True,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=ExperimentACL.OWNER_OWNED)
         acl.save()
         exp2 = Experiment(title='test exp2',
                           created_by=self.user)
         exp2.save()
-        acl = ObjectACL(content_object=exp2,
-                        pluginId='django_user',
-                        entityId=str(self.user.id),
+        acl = ExperimentACL(experiment=exp2,
+                        user=self.user,
                         isOwner=True,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=ExperimentACL.OWNER_OWNED)
         acl.save()
         group = Group(name="Test Manager Group")
         group.save()
@@ -60,14 +58,13 @@ class DatasetTestCase(ModelTestCase):
         dataset = Dataset(description='test dataset1')
         dataset.instrument = instrument
         dataset.save()
-        acl = ObjectACL(content_object=dataset,
-                        pluginId='django_user',
-                        entityId=str(self.user.id),
+        acl = DatasetACL(dataset=dataset,
+                        user=self.user,
                         isOwner=True,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=DatasetACL.OWNER_OWNED)
         acl.save()
         dataset.experiments.set([exp, exp2])
         dataset.save()
@@ -83,19 +80,18 @@ class DatasetTestCase(ModelTestCase):
         self.assertEqual(instrument, dataset.instrument)
         target_id = Dataset.objects.first().id
         self.assertEqual(
-            dataset.get_absolute_url(), '/dataset/%d' % target_id,
-            dataset.get_absolute_url() + ' != /dataset/%d' % target_id)
+            dataset.get_absolute_url(), '/dataset/view/%d/' % target_id,
+            dataset.get_absolute_url() + ' != /dataset/view/%d/' % target_id)
 
     def test_get_dir_tuples(self):
         dataset = Dataset.objects.create(description='test dataset1')
-        acl = ObjectACL(content_object=dataset,
-                        pluginId='django_user',
-                        entityId=str(self.user.id),
+        acl = DatasetACL(dataset=dataset,
+                        user=self.user,
                         isOwner=True,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=DatasetACL.OWNER_OWNED)
         acl.save()
         basedir = ''
         dir_tuples = dataset.get_dir_tuples(self.user, basedir)
@@ -105,14 +101,13 @@ class DatasetTestCase(ModelTestCase):
         datafile = DataFile.objects.create(
             dataset=dataset, filename='filename1', size=0, md5sum='bogus')
         basedir = ''
-        acl = ObjectACL(content_object=datafile,
-                        pluginId='django_user',
-                        entityId=str(self.user.id),
+        acl = DatafileACL(datafile=datafile,
+                        user=self.user,
                         isOwner=True,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=DatafileACL.OWNER_OWNED)
         acl.save()
         dir_tuples = dataset.get_dir_tuples(self.user, basedir)
         self.assertEqual(dir_tuples, [])
@@ -122,14 +117,13 @@ class DatasetTestCase(ModelTestCase):
             dataset=dataset, filename='filename2', size=0, md5sum='bogus',
             directory=None)
         basedir = ''
-        acl = ObjectACL(content_object=datafile,
-                        pluginId='django_user',
-                        entityId=str(self.user.id),
+        acl = DatafileACL(datafile=datafile,
+                        user=self.user,
                         isOwner=True,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=DatafileACL.OWNER_OWNED)
         acl.save()
         dir_tuples = dataset.get_dir_tuples(self.user, basedir)
         self.assertEqual(dir_tuples, [])
@@ -139,14 +133,13 @@ class DatasetTestCase(ModelTestCase):
             dataset=dataset, filename='filename3', size=0, md5sum='bogus',
             directory='')
         basedir = ''
-        acl = ObjectACL(content_object=datafile,
-                        pluginId='django_user',
-                        entityId=str(self.user.id),
+        acl = DatafileACL(datafile=datafile,
+                        user=self.user,
                         isOwner=True,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=DatafileACL.OWNER_OWNED)
         acl.save()
         dir_tuples = dataset.get_dir_tuples(self.user, basedir)
         self.assertEqual(dir_tuples, [])
@@ -156,14 +149,13 @@ class DatasetTestCase(ModelTestCase):
             dataset=dataset, filename='filename4', size=0, md5sum='bogus',
             directory='dir1')
         basedir = ''
-        acl = ObjectACL(content_object=datafile,
-                        pluginId='django_user',
-                        entityId=str(self.user.id),
+        acl = DatafileACL(datafile=datafile,
+                        user=self.user,
                         isOwner=True,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=DatafileACL.OWNER_OWNED)
         acl.save()
         dir_tuples = dataset.get_dir_tuples(self.user, basedir)
         self.assertEqual(dir_tuples, [('dir1', 'dir1')])
@@ -181,14 +173,13 @@ class DatasetTestCase(ModelTestCase):
             dataset=dataset, filename='filename5', size=0, md5sum='bogus',
             directory='dir1/subdir1')
         basedir = 'dir1'
-        acl = ObjectACL(content_object=datafile,
-                        pluginId='django_user',
-                        entityId=str(self.user.id),
+        acl = DatafileACL(datafile=datafile,
+                        user=self.user,
                         isOwner=True,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=DatafileACL.OWNER_OWNED)
         acl.save()
         dir_tuples = dataset.get_dir_tuples(self.user, basedir)
         self.assertEqual(
@@ -212,14 +203,13 @@ class DatasetTestCase(ModelTestCase):
             dataset=dataset, filename='filename6', size=0, md5sum='bogus',
             directory='dir2/subdir2')
         basedir = ''
-        acl = ObjectACL(content_object=datafile,
-                        pluginId='django_user',
-                        entityId=str(self.user.id),
+        acl = DatafileACL(datafile=datafile,
+                        user=self.user,
                         isOwner=True,
                         canRead=True,
                         canWrite=True,
                         canDelete=True,
-                        aclOwnershipType=ObjectACL.OWNER_OWNED)
+                        aclOwnershipType=DatafileACL.OWNER_OWNED)
         acl.save()
         dir_tuples = dataset.get_dir_tuples(self.user, basedir)
         self.assertEqual(

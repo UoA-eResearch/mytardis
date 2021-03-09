@@ -10,6 +10,7 @@ Implemented with Tastypie.
 
 import json
 import logging
+from datetime import datetime
 
 import pytz
 
@@ -19,6 +20,8 @@ from django.template.defaultfilters import filesizeformat
 from tastypie import fields
 from tastypie.resources import Resource, Bundle
 from tastypie.serializers import Serializer
+from tastypie.exceptions import ImmediateHttpResponse
+from tastypie.http import HttpUnauthorized
 from django_elasticsearch_dsl.search import Search
 from elasticsearch_dsl import MultiSearch, Q
 
@@ -88,23 +91,23 @@ class SchemasAppResource(Resource):
         logging.warning("Testing search app: get schemas")
         if not request.user.is_authenticated:
             result_dict = {
-                           "projects" : None,
-                           "experiments" : None,
-                           "datasets" : None,
-                           "datafiles" : None
+                           "project" : None,
+                           "experiment" : None,
+                           "dataset" : None,
+                           "datafile" : None
                            }
             return [SchemasObject(id=1, schemas=result_dict)]
         result_dict = {
-                       "projects" : [*{*Project.safe.all(request.user
+                       "project" : [*{*Project.safe.all(request.user
                                     ).prefetch_related('projectparameterset'
                                     ).values_list("projectparameterset__schema__id", flat=True)}],
-                       "experiments" : [*{*Experiment.safe.all(request.user
+                       "experiment" : [*{*Experiment.safe.all(request.user
                                        ).prefetch_related('experimentparameterset'
                                        ).values_list("experimentparameterset__schema__id", flat=True)}],
-                       "datasets" : [*{*Dataset.safe.all(request.user
+                       "dataset" : [*{*Dataset.safe.all(request.user
                                        ).prefetch_related('datasetparameterset'
                                        ).values_list("datasetparameterset__schema__id", flat=True)}],
-                       "datafiles" : [*{*DataFile.safe.all(request.user
+                       "datafile" : [*{*DataFile.safe.all(request.user
                                        ).prefetch_related('datafileparameterset'
                                        ).values_list("datafileparameterset__schema__id", flat=True)}]
                        }
@@ -186,7 +189,8 @@ class SearchAppResource(Resource):
         logging.warning("Testing search app")
         user = bundle.request.user
         if not user.is_authenticated:
-            raise NotImplementedError("Search not yet available for public use; Please log in")
+            # Return a 401 error to ask users to log in.
+            raise ImmediateHttpResponse(response=HttpUnauthorized('Search not yet available for public use; Please log in.'))
             #result_dict = simple_search_public_data(query_text)
             #return [SearchObject(id=1, hits=result_dict)]
         groups = user.groups.all()
@@ -231,19 +235,19 @@ class SearchAppResource(Resource):
 
             # (1) add user/group criteria to searchers
             query_obj =  Q({"nested" : {
-                "path":"objectacls", "query": Q(
+                "path":"acls", "query": Q(
                     {"bool": {"must":[
-                        Q({"match": {"objectacls.entityId":user.id}}),
-                        Q({"term": {"objectacls.pluginId":"django_user"}})
+                        Q({"match": {"acls.entityId":user.id}}),
+                        Q({"term": {"acls.pluginId":"django_user"}})
                     ]}}
                 )
             }})
             for group in groups:
                 query_obj_group =  Q({"nested" : {
-                    "path":"objectacls", "query": Q(
+                    "path":"acls", "query": Q(
                         {"bool": {"must":[
-                            Q({"match": {"objectacls.entityId":group.id}}),
-                            Q({"term": {"objectacls.pluginId":"django_group"}})
+                            Q({"match": {"acls.entityId":group.id}}),
+                            Q({"term": {"acls.pluginId":"django_group"}})
                         ]}}
                     )
                 }})
@@ -335,7 +339,7 @@ class SearchAppResource(Resource):
                     # (3.2) Apply intrinsic object filters to search
                     if filter["kind"] == "typeAttribute":
                         target_objtype, target_fieldtype = filter["target"][0], filter["target"][1]
-                        if target_objtype == obj+"s":
+                        if target_objtype == obj:
 
                             # Update the heirarchy level at which the
                             # "parent-in-results" criteria must be applied
@@ -442,7 +446,7 @@ class SearchAppResource(Resource):
                                     "end_time", "update_time", "instrument", "file_extension",
                                     "modification_time", "parameters.string.pn_id",
                                     "parameters.numerical.pn_id", "parameters.datetime.pn_id",
-                                    'objectacls']
+                                    'acls']
             if obj != 'dataset':
                 excluded_fields_list.append('description')
 
@@ -490,12 +494,49 @@ class SearchAppResource(Resource):
         # --------------------
 
         # load in object IDs for all objects a user has sensitive access to
-        projects_sens = {*Project.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
-        experiments_sens = {*Experiment.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
-        datasets_sens = {*Dataset.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
-        datafiles_sens = {*DataFile.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        #projects_sens = {*Project.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        projects_sens_query = user.projectacls.select_related("project").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("project__id", flat=True)
+        for group in groups:
+            projects_sens_query |= group.projectacls.select_related("project").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("project__id", flat=True)
+        projects_sens = [*projects_sens_query.distinct()]
+
+        #experiments_sens = {*Experiment.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        experiments_sens_query = user.experimentacls.select_related("experiment").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("experiment__id", flat=True)
+        for group in groups:
+            experiments_sens_query |= group.experimentacls.select_related("experiment").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("experiment__id", flat=True)
+        experiments_sens = [*experiments_sens_query.distinct()]
+
+        #datasets_sens = {*Dataset.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        datasets_sens_query = user.datasetacls.select_related("dataset").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("dataset__id", flat=True)
+        for group in groups:
+            datasets_sens_query |= group.datasetacls.select_related("dataset").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("dataset__id", flat=True)
+        datasets_sens = [*datasets_sens_query.distinct()]
+
+        #datafiles_sens = {*DataFile.safe.all(user, viewsensitive=True).values_list("id", flat=True)}
+        datafiles_sens_query = user.datafileacls.select_related("datafile").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
+        for group in groups:
+            datafiles_sens_query |= group.datafileacls.select_related("datafile").filter(canSensitive=True).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
+        datafiles_sens = [*datafiles_sens_query.distinct()]
+
         # load in datafile IDs for all datafiles a user has download access to
-        datafiles_dl = {*DataFile.safe.all(user, downloadable=True).values_list("id", flat=True)}
+        #datafiles_dl = {*DataFile.safe.all(user, downloadable=True).values_list("id", flat=True)}
+
+        datafiles_dl_query = user.datafileacls.select_related("datafile").filter(canDownload=True).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
+        for group in groups:
+            datafiles_dl_query |= group.datafileacls.select_related("datafile").filter(canDownload=True).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("datafile__id", flat=True)
+        datafiles_dl = [*datafiles_dl_query.distinct()]
+
+
         # re-structure into convenient dictionary
         preloaded = {
                      "project": {"sens_list" : projects_sens,
@@ -510,13 +551,57 @@ class SearchAppResource(Resource):
         # load in object IDs for all objects a user has read access to,
         # and IDs for all of the object's nested-children - regardless of user
         # access to these child objects (the access check come later)
-        projects_values = ["id", "experiment__id", "experiment__datasets__id",
-                                                 "experiment__datasets__datafile__id"]
-        projects = [*Project.safe.all(user).values_list(*projects_values)]
-        experiments_values = ["id", "datasets__id", "datasets__datafile__id"]
-        experiments = [*Experiment.safe.all(user).values_list(*experiments_values)]
-        datasets = [*Dataset.safe.all(user).prefetch_related("datafile").values_list("id", "datafile__id")]
-        datafiles = [*DataFile.safe.all(user).values_list("id", "size")]
+        #projects_values = ["id", "experiment__id", "experiment__datasets__id",
+        #                                         "experiment__datasets__datafile__id"]
+        #projects = [*Project.safe.all(user).values_list(*projects_values)]
+
+        projects_query = user.projectacls.select_related("project").prefetch_related("project__experiment",
+                                                                                     "project__experiment__datasets",
+                                                                                     "project__experiment__datasets__datafile"
+                                                                                              ).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("project__id", "project__experiment__id",
+                                                                                              "project__experiment__datasets__id",
+                                                                                              "project__experiment__datasets__datafile__id")
+        for group in groups:
+            projects_query |= group.projectacls.select_related("project").prefetch_related("project__experiment",
+                                                                                         "project__experiment__datasets",
+                                                                                         "project__experiment__datasets__datafile"
+                                                                                                  ).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("project__id", "project__experiment__id",
+                                                                                                  "project__experiment__datasets__id",
+                                                                                                  "project__experiment__datasets__datafile__id")
+        projects = [*projects_query.distinct()]
+
+        #experiments_values = ["id", "datasets__id", "datasets__datafile__id"]
+        #experiments = [*Experiment.safe.all(user).values_list(*experiments_values)]
+
+        experiments_query = user.experimentacls.select_related("experiment").prefetch_related("experiment__datasets", "experiment__datasets__datafile"
+                                                                                              ).exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("experiment__id", "experiment__datasets__id",
+                                                                                              "experiment__datasets__datafile__id")
+        for group in groups:
+            experiments_query |= group.experimentacls.select_related("experiment").prefetch_related("experiment__datasets", "experiment__datasets__datafile"
+                                                                                                  ).exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("experiment__id", "experiment__datasets__id",
+                                                                                                  "experiment__datasets__datafile__id")
+        experiments = [*experiments_query.distinct()]
+
+        #datasets = [*Dataset.safe.all(user).prefetch_related("datafile").values_list("id", "datafile__id")]
+        datasets_query = user.datasetacls.select_related("dataset").prefetch_related("dataset__datafile").exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("dataset__id","dataset__datafile__id")
+        for group in groups:
+            datasets_query |= group.datasetacls.select_related("dataset").exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("dataset__id","dataset__datafile__id")
+        datasets = [*datasets_query.distinct()]
+
+        #datafiles = [*DataFile.safe.all(user).values_list("id", "size")]
+        datafiles_query = user.datafileacls.select_related("datafile").exclude(effectiveDate__gte=datetime.today(),
+                                                expiryDate__lte=datetime.today()).values_list("datafile__id","datafile__size")
+        for group in groups:
+            datafiles_query |= group.datafileacls.select_related("datafile").exclude(effectiveDate__gte=datetime.today(),
+                                                    expiryDate__lte=datetime.today()).values_list("datafile__id","datafile__size")
+        datafiles = [*datafiles_query.distinct()]
+
         # add data to preloaded["objects"] dictionary with ID as key and nested items as value - key/values.
         # Probably a cleaner/simpler way to do this, but hey ho!
         for key, value in {"project": projects, "experiment": experiments,
@@ -577,7 +662,7 @@ class SearchAppResource(Resource):
 
 
         # Count the number of search results after elasticsearch + parent filtering
-        total_hits = {index_list[idx]+'s':len(type.hits.hits) for idx,type in enumerate(results)}
+        total_hits = {index_list[idx]:len(type.hits.hits) for idx,type in enumerate(results)}
 
 
         for item in results:
@@ -689,8 +774,8 @@ class SearchAppResource(Resource):
 
         # If individual object type requested, limit the returned values to that object type
         if request_type is not None:
-            result_dict = {request_type+'s' : result_dict.pop(request_type+'s')}
-            total_hits = {request_type+'s' : total_hits.pop(request_type+'s')}
+            result_dict = {request_type : result_dict.pop(request_type)}
+            total_hits = {request_type : total_hits.pop(request_type)}
 
         # add search results to bundle, and return bundle
         bundle.obj = SearchObject(id=1, hits=result_dict, total_hits=total_hits)
@@ -723,7 +808,7 @@ def simple_search_public_data(query_text):
     for item in results:
         for hit in item.hits.hits:
             #safe_hit = hit.copy()
-            hit["_source"].pop("objectacls")
-            result_dict[hit["_index"]+'s'].append(hit)
+            hit["_source"].pop("acls")
+            result_dict[hit["_index"]].append(hit)
 
     return result_dict

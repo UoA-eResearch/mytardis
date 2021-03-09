@@ -3,7 +3,6 @@ from os import path
 
 from datetime import datetime
 from django.conf import settings
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.db import models
@@ -14,7 +13,6 @@ from taggit.managers import TaggableManager
 from ..managers import OracleSafeManager, SafeManager
 from .storage import StorageBox
 
-from .access_control import ObjectACL
 from .experiment import Experiment
 from .instrument import Instrument
 
@@ -34,7 +32,7 @@ class Dataset(models.Model):
     record.  A dataset can appear in one or more
     :class:`~tardis.tardis_portal.models.experiment.Experiment` records.
     Access controls are configured at the ``Experiment`` level by creating
-    :class:`~tardis.tardis_portal.models.access_control.ObjectACL` records.
+    :class:`~tardis.tardis_portal.models.access_control.DatasetACL` records.
     Each dataset can be associated with an
     :class:`~tardis.tardis_portal.models.instrument.Instrument` record, but it is
     possible to create a dataset without specifying an instrument.
@@ -74,7 +72,6 @@ class Dataset(models.Model):
     instrument = models.ForeignKey(Instrument, null=True, blank=True,
                                    on_delete=models.CASCADE)
     embargo_until = models.DateTimeField(null=True, blank=True)
-    objectacls = GenericRelation(ObjectACL)
     objects = OracleSafeManager()
     safe = SafeManager()  # The acl-aware specific manager.
     tags = TaggableManager(blank=True)
@@ -120,8 +117,8 @@ class Dataset(models.Model):
             schema__schema_type=Schema.DATASET)
 
     def getParametersforIndexing(self):
-        """Returns the experiment parameters associated with this
-        experiment, formatted for elasticsearch.
+        """Returns the dataset parameters associated with this
+        dataset, formatted for elasticsearch.
 
         """
         from .parameters import DatasetParameter, ParameterName
@@ -157,6 +154,25 @@ class Dataset(models.Model):
                             param_dict['value'] = float(value)
                 parameter_groups[param_type[type_idx]].append(param_dict)
         return parameter_groups
+
+    def getACLsforIndexing(self):
+        """Returns the datasetACLs associated with this
+        dataset, formatted for elasticsearch.
+
+        """
+
+        return_list = []
+        for acl in self.datasetacl_set.all():
+            acl_dict = {}
+            if acl.user is not None:
+                acl_dict["pluginId"] = "django_user"
+                acl_dict["entityId"] = acl.user.id
+                return_list.append(acl_dict)
+            if acl.group is not None:
+                acl_dict["pluginId"] = "django_group"
+                acl_dict["entityId"] = acl.group.id
+                return_list.append(acl_dict)
+        return return_list
 
     def __str__(self):
         return self.description
@@ -263,64 +279,52 @@ class Dataset(models.Model):
         return ContentType.objects.get_for_model(self)
 
     def get_owners(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        isOwner=True)
+        acls = self.datasetacl_set.select_related("user").filter(
+                                            user__isnull=False, isOwner=True)
         return [acl.get_related_object() for acl in acls]
 
     def get_users(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True,
-                                        isOwner=False)
+        acls = self.datasetacl_set.select_related("user").filter(
+                                            user__isnull=False, isOwner=False)
         return [acl.get_related_object() for acl in acls]
 
     def get_users_and_perms(self):
-        acls = ObjectACL.objects.filter(pluginId='django_user',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True,
-                                        isOwner=False)
+        acls = self.datasetacl_set.select_related("user").filter(
+                                            user__isnull=False, isOwner=False)
         ret_list = []
-        for acl in acls:
-            user = acl.get_related_object()
-            sensitive_flg = acl.canSensitive
-            download_flg = acl.canDownload
-            ret_list.append([user,
-                             sensitive_flg,
-                             download_flg])
-        return ret_list
-
-    def get_groups(self):
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True)
-        return [acl.get_related_object() for acl in acls]
-
-    def get_groups_and_perms(self):
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        canRead=True)
-        ret_list = []
-        for acl in acls:
-            if not acl.isOwner:
-                group = acl.get_related_object()
+        if acls.exists():
+            for acl in acls:
+                user = acl.get_related_object()
                 sensitive_flg = acl.canSensitive
                 download_flg = acl.canDownload
-                ret_list.append([group,
+                ret_list.append([user,
                                  sensitive_flg,
                                  download_flg])
         return ret_list
 
+    def get_groups(self):
+        acls = self.datasetacl_set.select_related("group").filter(
+                                            group__isnull=False)
+        return [acl.get_related_object() for acl in acls]
+
+    def get_groups_and_perms(self):
+        acls = self.datasetacl_set.select_related("group").filter(
+                                            group__isnull=False)
+        ret_list = []
+        if acls.exists():
+            for acl in acls:
+                if not acl.isOwner:
+                    group = acl.get_related_object()
+                    sensitive_flg = acl.canSensitive
+                    download_flg = acl.canDownload
+                    ret_list.append([group,
+                                     sensitive_flg,
+                                     download_flg])
+        return ret_list
+
     def get_admins(self):
-        acls = ObjectACL.objects.filter(pluginId='django_group',
-                                        content_type=self.get_ct(),
-                                        object_id=self.id,
-                                        isOwner=True)
+        acls = self.datasetacl_set.select_related("group").filter(
+                                            group__isnull=False, isOwner=True)
         return [acl.get_related_object() for acl in acls]
 
     def get_dir_tuples(self, user, basedir=""):
@@ -477,7 +481,7 @@ class Dataset(models.Model):
                     "description":self.description,
                     "created_time":self.created_time,
                     "experiments":self.experiments,
-                    "objectacls":self.objectacls,
+                    "acls":self.getACLsforIndexing(),
                     "instrument":self.instrument,
                     "modified_time":self.modified_time,
                     "tags":self.tags_for_indexing,

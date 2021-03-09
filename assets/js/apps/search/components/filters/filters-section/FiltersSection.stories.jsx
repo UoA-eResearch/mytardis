@@ -15,8 +15,9 @@ export default {
 export const filtersData = {
   types: {
     byId: {
-      projects: {
-        "full_name": "Project",
+      project: {
+        full_name: "Project",
+        collection_name: "projects",
         attributes: {
           byId: {
             name: {
@@ -47,8 +48,9 @@ export const filtersData = {
           }, allIds: ["name", "createdDate", "institution", "schema"]
         }
       },
-      experiments: {
+      experiment: {
         full_name: "Experiment",
+        collection_name: "experiments",
         attributes: {
           byId: {
             name: {
@@ -80,8 +82,9 @@ export const filtersData = {
           }, allIds: ["name", "createdDate", "institution", "schema"]
         }
       },
-      datasets: {
+      dataset: {
         full_name: "Dataset",
+        collection_name: "datasets",
         attributes: {
           byId: {
             name: {
@@ -113,8 +116,9 @@ export const filtersData = {
           }, allIds: ["name", "createdDate", "institution", "schema"]
         }
       },
-      datafiles: {
+      datafile: {
         full_name: "Datafile",
+        collection_name: "datafiles",
         attributes: {
           byId: {
             name: {
@@ -146,34 +150,34 @@ export const filtersData = {
         }
       }
     },
-    allIds: ["projects", "experiments", "datasets", "datafiles"]
+    allIds: ["project", "experiment", "dataset", "datafile"]
   },
   schemas: {
     byId: schemaData,
     allIds: allSchemaIdsData
   },
   typeSchemas: {
-    projects: allSchemaIdsData,
-    experiments: allSchemaIdsData,
-    datasets: allSchemaIdsData,
-    datafiles: allSchemaIdsData
+    project: allSchemaIdsData,
+    experiment: allSchemaIdsData,
+    dataset: allSchemaIdsData,
+    datafile: allSchemaIdsData
   },
   activeFilters: {
     project: [{
       kind: "typeAttribute",
-      target: ["projects", "schema"]
+      target: ["project", "schema"]
     }],
     experiment: [{
       kind: "typeAttribute",
-      target: ["experiments", "schema"]
+      target: ["experiment", "schema"]
     }],
     dataset: [{
       kind: "typeAttribute",
-      target: ["datasets", "schema"]
+      target: ["dataset", "schema"]
     }],
     datafile: [{
       kind: "typeAttribute",
-      target: ["datafiles", "schema"]
+      target: ["datafile", "schema"]
     }]
   },
   isLoading: false,

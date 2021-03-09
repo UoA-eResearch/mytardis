@@ -19,7 +19,7 @@
     </strong>
 
     <div class="btn-group pull-right">
-      {% if has_df_download_permissions and datafile.is_online %}
+      {% if has_df_download_permissions and datafile.is_online and datafile.verified %}
       <a  class="btn btn-outline-secondary"
           href="{{ datafile.get_download_url }}"
           title="Download">

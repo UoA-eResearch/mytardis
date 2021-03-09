@@ -1,7 +1,6 @@
-import React, { useState, useContext, useCallback } from 'react'
-import Table from 'react-bootstrap/Table';
+import React, {  useCallback } from 'react'
 import PropTypes from 'prop-types';
-import { FiPieChart, FiLock } from 'react-icons/fi';
+import { FiPieChart, FiLock, FiRefreshCcw } from 'react-icons/fi';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
@@ -11,67 +10,49 @@ import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 import Pager from "./sort-paginate/Pager";
 import SortOptionsList from './sort-paginate/SortOptionsList';
+import { typeSelector } from './filters/filterSlice';
+import Button from "react-bootstrap/Button";
 
 export function PureResultTabs({ counts, selectedType, onChange }) {
-
-    if (!counts) {
-        counts = {
-            experiments: null,
-            datasets: null,
-            datafiles: null,
-            projects: null
-        }
-    }
-
     const handleNavClicked = (key) => {
         if (key !== selectedType) {
             onChange(key);
         }
-    }
-
-    const renderTab = (key, label) => {
-        const typeCollectionName = key + "s";
-        return (
-            <Nav.Item role="tab">
-                <Nav.Link onSelect={handleNavClicked.bind(this, key)} eventKey={key}>
-                    {label} {counts[typeCollectionName] !== null &&
-                        <span>
-                        (
-                            {counts[typeCollectionName]}
-                            <span className="sr-only">{counts[typeCollectionName] > 1 ? " results" : " result"}</span>
-                        )
-                        </span>
-                    }
-                </Nav.Link>
-            </Nav.Item>
-        );
-    }
+    };
 
     return (
         <Nav variant="tabs" activeKey={selectedType}>
-            {renderTab("project", "Projects")}
-            {renderTab("experiment", "Experiments")}
-            {renderTab("dataset", "Datasets")}
-            {renderTab("datafile", "Datafiles")}
+            {counts.map(({ id, name, hitTotal }) => (
+                <Nav.Item role="tab" key={id}>
+                    <Nav.Link onSelect={handleNavClicked.bind(this, id)} eventKey={id}>
+                        <span className="text-capitalize">{name}</span> {hitTotal !== null &&
+                            <span>
+                                (
+                                {hitTotal}
+                                <span className="sr-only">
+                                    {hitTotal > 1 ? " results" : " result"}
+                                </span>
+                                )
+                            </span>
+                        }
+                    </Nav.Link>
+                </Nav.Item>
+            ))}
         </Nav>
-    )
+    );
 }
 
 PureResultTabs.propTypes = {
-    counts: PropTypes.shape({
-        projects: PropTypes.number,
-        experiments: PropTypes.number,
-        datasets: PropTypes.number,
-        datafiles: PropTypes.number
-    }),
+    counts: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        id: PropTypes.string.isRequired,
+        hitTotal: PropTypes.number
+    })).isRequired,
     selectedType: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
 };
 
 export const ResultTabs = () => {
-    const hitTotals = useSelector(
-        state => state.search.results ? state.search.results.totalHits : null
-    );
     const selectedType = useSelector(state => state.search.selectedType);
     const dispatch = useDispatch();
     const onSelectType = useCallback(
@@ -79,7 +60,22 @@ export const ResultTabs = () => {
             dispatch(updateSelectedType(type));
         },
         [dispatch]);
-    return (<PureResultTabs counts={hitTotals} selectedType={selectedType} onChange={onSelectType} />);
+    const hitTotalsByType = useSelector(state => {
+        // Returns a list of object types, along with the number of hits they have.
+        // If there aren't any results, then we return a null (which is different from a search being done with zero results)
+        const hitTotals = state.search.results ? state.search.results.totalHits : null;
+        return state.filters.types.allIds.map(
+            typeId => {
+                const typeCollectionName = typeSelector(state.filters, typeId).collection_name;
+                return {
+                    name: typeCollectionName,
+                    id: typeId,
+                    hitTotal: hitTotals ? hitTotals[typeId] : null
+                };
+            }
+        );
+    });
+    return (<PureResultTabs counts={hitTotalsByType} selectedType={selectedType} onChange={onSelectType} />);
 };
 
 
@@ -163,7 +159,8 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
         return (
             // If there was an error during the search
             <div className="result-section--msg result-section--error-msg">
-                <p>An error occurred. Please try another query, or refresh the page and try searching again.</p>
+                <p>An error occurred. Please try another query, or reload the page and try searching again.</p>
+                <p><Button onClick={() => location.assign("/search")}><FiRefreshCcw /> Reload</Button></p>
             </div>
         );
     }
@@ -193,7 +190,7 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
     }
 
     return (
-        <div className={listClassName}> 
+        <div className={listClassName}>
             <table className="table">
                 <thead>
                     <tr>
@@ -233,7 +230,7 @@ const ResultSummary = ({typeId}) => {
 export function PureResultSection({ resultSets, selectedType,
     selectedResult, onSelectResult, isLoading, error }) {
     let selectedEntry = getSelectedEntry(resultSets, selectedResult, selectedType);
-    const currentResultSet = resultSets ? resultSets[selectedType + "s"] : null;
+    const currentResultSet = resultSets ? resultSets[selectedType] : null;
     return (
         <section className="d-flex flex-column flex-grow-1 overflow-hidden">
             <ResultTabs />
@@ -263,14 +260,14 @@ export function PureResultSection({ resultSets, selectedType,
 
 /**
  * Returns the data of the selected row. Returns null if it cannot get find the selected result.
- * @param {*} resultSets 
- * @param {*} selectedResult 
- * @param {*} selectedType 
+ * @param {*} resultSets
+ * @param {*} selectedResult
+ * @param {*} selectedType
  */
 function getSelectedEntry(resultSets, selectedResult, selectedType) {
     let selectedEntry = null;
     if (resultSets && selectedResult) {
-        selectedEntry = resultSets[selectedType + "s"].filter(result => result.id === selectedResult)[0];
+        selectedEntry = resultSets[selectedType].filter(result => result.id === selectedResult)[0];
     }
     return selectedEntry;
 }

@@ -1,7 +1,8 @@
 {
     "byId": {
-        "projects": {
+        "project": {
             "full_name": "Project",
+            "collection_name": "projects",
             "attributes": {
                 "byId": {
                     "name": {
@@ -73,8 +74,9 @@
                 ]
             }
         },
-        "experiments": {
+        "experiment": {
             "full_name": "Experiment",
+            "collection_name": "experiments",
             "attributes": {
                 "byId": {
                     "title": {
@@ -137,8 +139,9 @@
                 ]
             }
         },
-        "datasets": {
+        "dataset": {
             "full_name": "Dataset",
+            "collection_name": "datasets",
             "attributes": {
                 "byId": {
                     "description": {
@@ -195,8 +198,9 @@
                 ]
             }
         },
-        "datafiles": {
+        "datafile": {
             "full_name": "Datafile",
+            "collection_name": "datafiles",
             "attributes": {
                 "byId": {
                     "filename": {
@@ -259,9 +263,9 @@
         }
     },
     "allIds": [
-        "projects",
-        "experiments",
-        "datasets",
-        "datafiles"
+        "project",
+        "experiment",
+        "dataset",
+        "datafile"
     ]
 }

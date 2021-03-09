@@ -55,8 +55,8 @@ export const DatafileTabSticker = () => {
 };
 
 export const OBJECT_TYPE_STICKERS = {
-    "projects": ProjectTabSticker,
-    "experiments": ExperimentTabSticker,
-    "datasets": DatasetTabSticker,
-    "datafiles": DatafileTabSticker
+    "project": ProjectTabSticker,
+    "experiment": ExperimentTabSticker,
+    "dataset": DatasetTabSticker,
+    "datafile": DatafileTabSticker
 }

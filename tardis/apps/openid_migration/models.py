@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
 
-from tardis.tardis_portal.models.access_control import ObjectACL
+from tardis.tardis_portal.models.access_control import ExperimentACL
 
 from .apps import OpenidMigrationConfig
 
@@ -30,7 +30,7 @@ class OpenidUserMigration(models.Model):
 @python_2_unicode_compatible
 class OpenidACLMigration(models.Model):
     user_migration = models.ForeignKey(OpenidUserMigration, on_delete=models.CASCADE)
-    acl_id = models.ForeignKey(ObjectACL, on_delete=models.CASCADE)
+    acl_id = models.ForeignKey(ExperimentACL, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'openid_migration'

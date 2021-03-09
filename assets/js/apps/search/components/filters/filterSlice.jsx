@@ -9,10 +9,10 @@ const initialState = {
         byId: {},
         allIds: []
     },
-    activeFilters: { projects: [], experiments: [], datasets: [], datafiles: [] },
+    activeFilters: { project: [], experiment: [], dataset: [], datafile: [] },
     isLoading: true,
     error: null
-}
+};
 
 const mapSchemasById = (schemasByType) => {
     // Generate a hashmap of schemas by their id, so we can look up
@@ -72,40 +72,16 @@ const removeFromActiveFilters = (state, fieldInfo, typeId) => {
     state.activeFilters[typeId].splice(activeIndex, 1);
 }
 
-// Selectors for different kinds of fields 
-export const typeAttrSelector = (filterSlice, typeId, attributeId) => {
-    return filterSlice.types
-        .byId[typeId]
-        .attributes
-        .byId[attributeId];
-};
+export const typeSelector = (filtersSlice, typeId) => filtersSlice.types.byId[typeId];
 
 export const typeAttrFilterValueSelector = (filtersSlice, typeId, attributeId) => {
-    const value = typeAttrSelector(filtersSlice, typeId, attributeId).value;
-    if (!Array.isArray(value)) {
-        return [value];
-    } else {
-        return value;
-    }
-}
+    const value = typeSelector(filtersSlice, typeId).attributes.byId[attributeId].value;
+    return value;
+};
 
-/**
- * Selector for type metadata of a MyTardis object type
- * @param {*} filtersSlice Redux filters slice
- * @param {string} typeId The MyTardis object type ID
- */
-export const typeSelector = (filtersSlice, typeId) => filtersSlice.types.byId[typeId + "s"];
-
-export const allTypeAttrIdsSelector = (filterSlice, typeId) => {
-    return filterSlice.types
-        .byId[typeId]
-        .attributes
-        .allIds;
-}
-
-export const schemaParamSelector = (filterSlice, schemaId, paramId) => {
-    return schemaSelector(filterSlice,schemaId)
-        .parameters[paramId];
+export const schemaSelector = (filterSlice, schemaId) => {
+    return filterSlice.schemas
+        .byId[schemaId];
 };
 
 /**
@@ -115,37 +91,13 @@ export const schemaParamSelector = (filterSlice, schemaId, paramId) => {
  * @param {string} paramId parameter ID
  */
 export const schemaParamFilterValueSelector = (filtersSlice, schemaId, paramId) => {
-    const value = schemaParamSelector(filtersSlice, schemaId, paramId).value;
-    if (!Array.isArray(value)) {
-        return [value];
-    } else {
-        return value;
-    }
+    const value = schemaSelector(filtersSlice, schemaId).parameters[paramId].value;
+    return value;
 };
-
-export const schemaSelector = (filterSlice, schemaId) => {
-    return filterSlice.schemas
-        .byId[schemaId];
-};
-
-/**
- * Selector for the type ID of each schema. Corrects the type
- * name from plural to singular if necessary.
- * @param {*} filtersSlice Redux filters slice
- * @param {string} schemaId schema ID
- */
-export const schemaTypeSelector = (filtersSlice, schemaId) => {
-    const schema = schemaSelector(filtersSlice, schemaId);
-    if (schema.type.endsWith("s")) {
-        return schema.type.substring(0, schema.type.length - 1);
-    } else {
-        return schema.type;
-    }
-}
 
 const updateTypeAttributeReducer = (state, {payload}) => {
     const { typeId, attributeId, value } = payload;
-    const attribute = typeAttrSelector(state, typeId, attributeId);
+    const attribute = typeSelector(state, typeId).attributes.byId[attributeId];
     let target = [typeId, attributeId];
     if (attribute.nested_target) {
         // If there is a nested target field on the attribute, we add that to the end.
@@ -167,8 +119,9 @@ const updateTypeAttributeReducer = (state, {payload}) => {
 
 const updateSchemaParameterReducer = (state, {payload}) => {
     const { schemaId, parameterId, value } = payload;
-    const typeId = schemaSelector(state,schemaId).type;
-    const parameter = schemaParamSelector(state, schemaId, parameterId);
+    const schema = schemaSelector(state, schemaId);
+    const typeId = schema.type;
+    const parameter = schema.parameters[parameterId];
     const fieldInfo = {
         kind: "schemaParameter",
         target: [schemaId, parameterId]
@@ -183,13 +136,14 @@ const updateSchemaParameterReducer = (state, {payload}) => {
 
 const updateActiveSchemasReducer = (state, {payload}) => {
     const { typeId, value } = payload;
-    const activeSchemas = typeAttrSelector(state, typeId, "schema");
+    
+    const activeSchemasVal = typeAttrFilterValueSelector(state, typeId, "schema");
     const fieldInfo = {
         kind: "typeAttribute",
-        target: [typeId,"schema"],
+        target: [typeId, "schema"],
     };
     // Get the current active schema value. If null, then all schemas apply.
-    const currActiveSchemas = activeSchemas.value ? activeSchemas.value.content : state.typeSchemas[typeId];
+    const currActiveSchemas = activeSchemasVal ? activeSchemasVal.content : state.typeSchemas[typeId];
     // Same for new active schema value.
     const newActiveSchemas = value ? value.content : state.typeSchemas[typeId];
     // Find the schemas that will no longer be active.
@@ -204,7 +158,7 @@ const updateActiveSchemasReducer = (state, {payload}) => {
     );
     
     // Now, update the active schemas field
-    activeSchemas.value = value;
+    typeSelector(state, typeId).attributes.byId.schema.value = value;
     if (value === null) {
         // If the new value is null, remove it from activeFilter list.
         removeFromActiveFilters(state,fieldInfo, typeId);
@@ -306,7 +260,7 @@ const filters = createSlice({
                     // by both typeAttribute and schemaParameter.
                     case "typeAttribute":
                         // We may have added value for this field earlier in the iteration.
-                        currValue = typeAttrSelector(state,target[0],target[1]).value;
+                        currValue = typeAttrFilterValueSelector(state,target[0],target[1]);
                         if (!currValue) {
                             newValue = value;
                         } else {
@@ -324,7 +278,7 @@ const filters = createSlice({
                         }
                         break;
                     case "schemaParameter":
-                        currValue = schemaParamSelector(state,target[0],target[1]).value;
+                        currValue = schemaParamFilterValueSelector(state,target[0],target[1]);
                         if (!currValue) {
                             newValue = value;
                         } else {
@@ -382,14 +336,14 @@ export const {
  */
 const getCrossFilteredTypes = (type) => {
     switch (type) {
-        case "projects":
-            return ["projects"];
-        case "experiments":
-            return ["projects", "experiments"];
-        case "datasets":
-            return ["projects", "experiments", "datasets"];
-        case "datafiles":
-            return ["projects", "experiments", "datasets", "datafiles"];
+        case "project":
+            return ["project"];
+        case "experiment":
+            return ["project", "experiment"];
+        case "dataset":
+            return ["project", "experiment", "dataset"];
+        case "datafile":
+            return ["project", "experiment", "dataset", "datafile"];
         default:
             return [];
     }
@@ -399,9 +353,9 @@ export const fieldSelector = (filtersSlice, fieldInfo) => {
     const { kind, target } = fieldInfo;
     switch (kind) {
     case "typeAttribute":
-        return typeAttrSelector(filtersSlice, target[0], target[1]);
+        return typeSelector(filtersSlice, target[0]).attributes.byId[target[1]];
     case "schemaParameter":
-        return schemaParamSelector(filtersSlice, target[0], target[1]);
+        return schemaSelector(filtersSlice, target[0]).parameters[target[1]];
     default:
         throw new Error("Field type not supported.");
     }
@@ -461,7 +415,7 @@ export function hasActiveFiltersSelector(filterSlice) {
 export const buildFilterQuery = (filtersSlice, matchesType) => {
     let typesToInclude = [];
     if (matchesType) {
-        typesToInclude = getCrossFilteredTypes(matchesType + "s");
+        typesToInclude = getCrossFilteredTypes(matchesType);
     } else {
         typesToInclude = filtersSlice.types.allIds;
     }
@@ -489,6 +443,6 @@ export const initialiseFilters = () => (dispatch) => {
     }).catch((e) => {
         dispatch(getFiltersFailure(e));
     });
-}
+};
 
 export default filters.reducer;

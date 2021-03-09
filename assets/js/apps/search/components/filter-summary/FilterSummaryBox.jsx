@@ -6,10 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     resetFilters,
     schemaParamFilterValueSelector,
-    schemaParamSelector,
     schemaSelector,
-    schemaTypeSelector,
-    typeAttrSelector,
     typeSelector,
     typeAttrFilterValueSelector,
     hasActiveFiltersSelector
@@ -57,6 +54,7 @@ SingleValueContentBadge.propTypes = {
 };
 
 function FilterBadge({ fieldName, value }) {
+    
     return <div className="filter-summary-box__badge-group">
         <Badge variant="secondary" className="filter-summary-box__badge">{fieldName}</Badge>
         {value.map(({ op, content }) =>
@@ -82,11 +80,11 @@ FilterBadge.propTypes = {
 
 function SchemaParameterFilterBadge({ fieldInfo }) {
     const schemaId = fieldInfo.target[0], parameterId = fieldInfo.target[1];
-    const typeId = useSelector(state => schemaTypeSelector(state.filters, schemaId));
+    const typeId = useSelector(state => schemaSelector(state.filters, schemaId).type);
     const fullFieldName = useSelector(state => {
         const type = typeSelector(state.filters, typeId);
         const schema = schemaSelector(state.filters, schemaId);
-        const schemaParam = schemaParamSelector(state.filters, schemaId, parameterId);
+        const schemaParam = schema.parameters[parameterId];
         if (!type || !schema || !schemaParam) {
             return "";
         } else {
@@ -97,8 +95,15 @@ function SchemaParameterFilterBadge({ fieldInfo }) {
         return <InvalidFilterBadge />;
     } else {
         const filterValue = useSelector(
-            state => schemaParamFilterValueSelector(state.filters, schemaId, parameterId)
+            state => {
+                let value = schemaParamFilterValueSelector(state.filters, schemaId, parameterId);
+                if (value && !Array.isArray(value)) {
+                    value = [value];
+                }
+                return value;
+            }
         );
+
         return <FilterBadge typeId={typeId} fieldName={fullFieldName} value={filterValue} />;
     }
 }
@@ -106,9 +111,8 @@ function SchemaParameterFilterBadge({ fieldInfo }) {
 function TypeAttributeFilterBadge({ fieldInfo }) {
     const typeId = fieldInfo.target[0], attributeId = fieldInfo.target[1];
     const fullFieldName = useSelector(state => {
-        // Remove the extra s
-        const type = typeSelector(state.filters, typeId.substring(0, typeId.length - 1));
-        const attribute = typeAttrSelector(state.filters, typeId, attributeId);
+        const type = typeSelector(state.filters, typeId);
+        const attribute = type.attributes.byId[attributeId];
         if (!type || !attribute) {
             return "";
         } else {
@@ -119,7 +123,13 @@ function TypeAttributeFilterBadge({ fieldInfo }) {
         return <InvalidFilterBadge />;
     } else {
         const filterValue = useSelector(
-            state => typeAttrFilterValueSelector(state.filters, typeId, attributeId)
+            state => {
+                let value = typeAttrFilterValueSelector(state.filters, typeId, attributeId);
+                if (value && !Array.isArray(value)) {
+                    value = [value];
+                }
+                return value;
+            }
         );
         return <FilterBadge typeId={typeId} fieldName={fullFieldName} value={filterValue} />;
     }
