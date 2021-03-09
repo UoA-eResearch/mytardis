@@ -1,36 +1,18 @@
-
-
 .date-range-filter__field {
     display: flex;
     flex-direction: column;
-    /* background-color: green; */
 }
 
 .react-date-picker__wrapper {
     border-radius: 0.25rem;
-    border: 1px solid #ced4da;
-    color: #495057;
+    border-color: rgb(206, 212, 218) !important;
     padding: 0.375rem 0.75rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-
-    /* background-color: greenyellow; */
-    z-index: 5;
-
 }
 
-/* span > div.react-date-picker__calendar .react-date-picker__calendar--open {
-    z-index: 5 !important;
-} */
-
-/* div.react-date-picker__calendar .react-date-picker__calendar--open {
-    background-color: pink !important;
-    z-index: 5 !important;
-} */
-
-/* .react-date-picker__wrapper > .react-date-picker__calendar {
-    background-color: green;
-    z-index: 5;
-} */
+.react-date-picker__wrapper > svg {
+    stroke: rgb(206, 212, 218) !important;
+}
 
 .react-date-picker__calendar {
     z-index: 5 !important;
