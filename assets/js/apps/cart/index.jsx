@@ -5,10 +5,10 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { BsTrash, BsDownload } from "react-icons/bs";
-import CartTreeview from "./CartTreeview";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "./store";
 import { initialiseSlice } from "./cartSlice";
+import CartItemList from "./CartItemList";
 
 const CartScreen = (props) => {
     const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const CartScreen = (props) => {
             </section>
             <section>
                 {/* <h2>Objects to be downloaded</h2> */}
-                <CartTreeview />
+                <CartItemList />
                 <hr />
                 <p className="summary">104 Datafiles from 4 Projects, 7 Experiments and 10 Datasets.</p>
                 <p><Button variant="outline-danger"><BsTrash /> Remove all</Button></p>
