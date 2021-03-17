@@ -761,7 +761,7 @@ class SearchAppResource(Resource):
                 # Due to non-identical scores in hits for non-sensitive vs sensitive search,
                 # we require a more complex comparison than just 'is in' as hits are not identical
                 #if hit["_source"]['id'] not in [objj["_source"]['id'] for objj in result_dict[hit["_index"]+"s"]]:
-                result_dict[hit["_index"]+"s"].append(hit)
+                result_dict[hit["_index"]].append(hit)
 
 
         # Removes parent IDs from hits once parent-filtering applied
