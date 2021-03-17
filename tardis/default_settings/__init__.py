@@ -27,6 +27,7 @@ from .storage import *
 from .templates import *
 from .uploads import *
 from .urls import *
+from .cart import *
 
 # Default enabled app settings
 from ..apps.sftp.default_settings import *

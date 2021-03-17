@@ -10,14 +10,18 @@ def single_search_processor(request):
 
     context = {}
     single_search_on = False
+    cart_on = False
     try:
         if settings.SINGLE_SEARCH_ENABLED:
             single_search_on = True
+        if settings.CART_ENABLED:
+            cart_on = True
     except AttributeError:
         pass
 
     context = {
         'search_form': single_search_on,
+        'cart_enabled': cart_on
     }
 
     return context

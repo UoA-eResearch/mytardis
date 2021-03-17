@@ -127,11 +127,15 @@
         </ul>
         <ul class="navbar-nav ml-auto">
           {% if search_form %}
-          
-          <a class="nav-link" href="{% url 'search' %}">
-            <span class="fa fa-search"></span>
-            Search
-          </a>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'search' %}">
+              <span class="fa fa-search"></span>
+              Search
+            </a>
+          </li>
+          {% endif %}
+          {% if cart_enabled %}
+            <li class="nav-item" id="cart-page-link"></li>
           {% endif %}
           {% if is_authenticated %}
             <li id="user-menu" class="nav-item dropdown">

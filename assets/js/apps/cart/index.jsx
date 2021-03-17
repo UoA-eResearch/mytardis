@@ -6,9 +6,10 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { BsTrash, BsDownload } from "react-icons/bs";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import store from "./store";
+import store from "@apps/shared/reduxAppStore";
 import { initialiseSlice } from "./cartSlice";
 import CartItemList from "./CartItemList";
+import "bootstrap/dist/css/bootstrap.css";
 
 const CartScreen = (props) => {
     const dispatch = useDispatch();
@@ -43,6 +44,7 @@ const CartScreen = (props) => {
         </main>
     </div>;
 };
+
 
 ReactDOM.render(
     <Provider store={store}>

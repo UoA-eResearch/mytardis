@@ -149,6 +149,7 @@ module.exports = {
             "jquery": __dirname + "/node_modules/jquery",
             "main": __dirname + "/assets/js/tardis_portal/main",
             "backbonemodels": __dirname + "/assets/js/tardis_portal/backbone-models",
+            "@apps": __dirname + "/assets/js/apps"
         },
     }
 };

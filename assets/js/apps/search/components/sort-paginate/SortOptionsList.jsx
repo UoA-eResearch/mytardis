@@ -63,7 +63,7 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
                     { getSortSummaryText(activeAttributes) }
                 </span>
             </>} 
-            variant={hasActiveSort ? "primary" : "outline-primary"}
+            variant={hasActiveSort ? "secondary" : "outline-secondary"}
             className="sortoptions"
             menuRole="menu"
         >

@@ -31,3 +31,4 @@ require("../css/facility-overview.css");
 require("blueimp-file-upload/css/jquery.fileupload.css");
 require("select2/dist/css/select2.css");
 require("select2/dist/js/select2.js");
+import "@apps/cart/initialiseCartLink";

@@ -12,6 +12,8 @@ import Pager from "./sort-paginate/Pager";
 import SortOptionsList from './sort-paginate/SortOptionsList';
 import { typeSelector } from './filters/filterSlice';
 import Button from "react-bootstrap/Button";
+import { ButtonGroup, ButtonToolbar, PopoverContent, PopoverTitle } from 'react-bootstrap';
+import { Popover } from 'bootstrap';
 
 export function PureResultTabs({ counts, selectedType, onChange }) {
     const handleNavClicked = (key) => {
@@ -88,6 +90,36 @@ const NameColumn = {
     "datafile": "filename"
 };
 
+export function DownloadRightsIndicator({accessRights}) {
+    if (accessRights === "none") {
+        return <OverlayTrigger overlay={
+            <Tooltip id="tooltip-no-download">
+                You can&apos;t download this item.
+            </Tooltip>
+        }>
+            <span><FiLock title="This item cannot be downloaded." /></span>
+        </OverlayTrigger>;
+
+    } else if (accessRights === "partial") {
+        return <OverlayTrigger overlay={
+            <Tooltip id="tooltip-partial-download">
+                You can&apos;t download some files in this item.
+            </Tooltip>
+        //     <Popover id="blahasdfsdf">
+        //     <PopoverTitle as="h3">Items added to download list.</PopoverTitle>
+        //     <PopoverContent>
+        //             Go to the Download tab to see what’s in your list and download them.
+        //         <Button>OK, Got It.</Button>
+        //     </PopoverContent>
+        // </Popover>
+        }>
+            <span><FiPieChart title="Some files cannot be downloaded." /></span>
+        </OverlayTrigger>;
+    } else {
+        return null;
+    }
+}
+
 export function ResultRow({ result, onSelect, isSelected }) {
     const type = result.type,
         resultName = result[NameColumn[type]],
@@ -101,26 +133,10 @@ export function ResultRow({ result, onSelect, isSelected }) {
     return (
         <tr className={isSelected ? "result-section--row row-active-primary" : "result-section--row row-primary"} onClick={onSelect} onKeyUp={onKeyboardSelect} tabIndex="0" role="button">
             <td className="result-row--download-col">
-                {result.userDownloadRights == "none" &&
-                    <OverlayTrigger overlay={
-                        <Tooltip id="tooltip-no-download">
-                            You can't download this item.
-                            </Tooltip>
-                    }>
-                        <span><FiLock title="This item cannot be downloaded." /></span>
-                    </OverlayTrigger>
-                }
-                {result.userDownloadRights == "partial" &&
-                    <OverlayTrigger overlay={
-                        <Tooltip id="tooltip-partial-download">
-                            You can't download some files in this item.
-                            </Tooltip>
-                    }>
-                        <span><FiPieChart title="Some files cannot be downloaded." /></span>
-                    </OverlayTrigger>
-                }
+                <input className="download-col--selected" disabled={result.userDownloadRights === "none"} type="checkbox" />
+                <DownloadRightsIndicator accessRights={result.userDownloadRights} />
             </td>
-            <td><a target="_blank" href={result.url}>{resultName}</a></td>
+            <td><a target="_blank" rel="noopener noreferrer" href={result.url}>{resultName}</a></td>
             <td>
                 {result.userDownloadRights != "none" &&
                     <span>{result.size}</span>
@@ -221,7 +237,7 @@ const ResultSummary = ({typeId}) => {
     const currentFirstItem = useSelector(state => pageFirstItemIndexSelector(state.search, typeId));
     const currentLastItem = Math.min(currentCount, currentFirstItem + currentPageSize - 1);
     return (
-        <p className="result-section--count-summary">
+        <p>
             <span>Showing {currentFirstItem} - {currentLastItem} of {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
         </p>
     );
@@ -237,8 +253,16 @@ export function PureResultSection({ resultSets, selectedType,
             <div role="tabpanel" className="result-section--tabpanel">
                 {!error &&
                     <>
-                    <ResultSummary typeId={selectedType} />
-                    <SortOptionsList typeId={selectedType} />
+                        <ResultSummary typeId={selectedType} />
+                        <div className="tabpanel__toolbar">
+                            <div className="tabpanel__toolbar-left">
+                                <Button variant="outline-primary" className="mr-2"><input type="checkbox" indeterminate className="mr-1 align-text-top" />41 selected</Button>
+                                <Button variant="primary">Add to Cart</Button>
+                            </div>
+                            <div>
+                                <SortOptionsList typeId={selectedType} />
+                            </div>
+                        </div>
                     </>
                 }
                 <div className="tabpanel__container--horizontal">

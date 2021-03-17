@@ -2,6 +2,10 @@
     width: 100px;
 }
 
+.download-col--selected {
+    margin-right: 1rem;
+}
+
 .result-section--msg {
     display: flex;
     flex-direction: column;
@@ -38,6 +42,11 @@
 
 .result-section--tabpanel > *:last-child {
     margin-bottom: 0;
+}
+
+.tabpanel__toolbar {
+    display: flex;    
+    justify-content: space-between;
 }
 
 .tabpanel__container--horizontal {
