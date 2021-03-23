@@ -165,7 +165,7 @@ const initialState = {
     error: null,
     results: null,
     selectedType: "experiment",
-    selectedResult: null,
+    highlightedResult: null,
     pageSize: {
         project: 20,
         experiment: 20,
@@ -254,7 +254,7 @@ const search = createSlice({
         getResultsStart: (state) => {
             state.isLoading = true;
             state.error = null;
-            state.selectedResult = null;
+            state.highlightedResult = null;
         },
         getResultsFailure: (state, {payload: error}) => {
             state.isLoading = false;
@@ -263,10 +263,10 @@ const search = createSlice({
         },
         updateSelectedType: (state, {payload: selectedType}) => {
             state.selectedType = selectedType;
-            state.selectedResult = null;
+            state.highlightedResult = null;
         },
-        updateSelectedResult: (state, {payload: selectedResult}) => {
-            state.selectedResult = selectedResult;
+        updateHighlightedResult: (state, {payload: highlightedResult}) => {
+            state.highlightedResult = highlightedResult;
         },
         updatePageSize: (state, {payload}) => {
             const { typeId, size } = payload;
@@ -327,7 +327,7 @@ export const {
     getResultsFailure,
     updateSearchTerm,
     updateSelectedType,
-    updateSelectedResult,
+    updateHighlightedResult,
     toggleShowSensitiveData,
     updateResultSort,
     removeResultSort

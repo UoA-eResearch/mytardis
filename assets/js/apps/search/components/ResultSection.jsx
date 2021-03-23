@@ -5,7 +5,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import { useSelector, useDispatch } from "react-redux";
-import { updateSelectedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector } from "./searchSlice";
+import { updateHighlightedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector } from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 import Pager from "./sort-paginate/Pager";
@@ -244,8 +244,8 @@ const ResultSummary = ({typeId}) => {
 };
 
 export function PureResultSection({ resultSets, selectedType,
-    selectedResult, onSelectResult, isLoading, error }) {
-    let selectedEntry = getSelectedEntry(resultSets, selectedResult, selectedType);
+    highlightedResult, onSelectResult, isLoading, error }) {
+    let selectedEntry = getSelectedEntry(resultSets, highlightedResult, selectedType);
     const currentResultSet = resultSets ? resultSets[selectedType] : null;
     return (
         <section className="d-flex flex-column flex-grow-1 overflow-hidden">
@@ -266,7 +266,7 @@ export function PureResultSection({ resultSets, selectedType,
                     </>
                 }
                 <div className="tabpanel__container--horizontal">
-                    <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
+                    <PureResultList results={currentResultSet} selectedItem={highlightedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
                     {!error &&
                         <EntryPreviewCard
                             data={selectedEntry}
@@ -285,23 +285,23 @@ export function PureResultSection({ resultSets, selectedType,
 /**
  * Returns the data of the selected row. Returns null if it cannot get find the selected result.
  * @param {*} resultSets
- * @param {*} selectedResult
+ * @param {*} highlightedResult
  * @param {*} selectedType
  */
-function getSelectedEntry(resultSets, selectedResult, selectedType) {
+function getSelectedEntry(resultSets, highlightedResult, selectedType) {
     let selectedEntry = null;
-    if (resultSets && selectedResult) {
-        selectedEntry = resultSets[selectedType].filter(result => result.id === selectedResult)[0];
+    if (resultSets && highlightedResult) {
+        selectedEntry = resultSets[selectedType].filter(result => result.id === highlightedResult)[0];
     }
     return selectedEntry;
 }
 
 export default function ResultSection() {
     const selectedType = useSelector(state => state.search.selectedType),
-        selectedResult = useSelector(state => state.search.selectedResult),
+        highlightedResult = useSelector(state => state.search.highlightedResult),
         dispatch = useDispatch(),
-        onSelectResult = (selectedResult) => {
-            dispatch(updateSelectedResult(selectedResult));
+        onSelectResult = (highlightedResult) => {
+            dispatch(updateHighlightedResult(highlightedResult));
         },
         resultSets = useSelector(
             (state) => state.search.results ? state.search.results.hits : null
@@ -319,7 +319,7 @@ export default function ResultSection() {
             error={error}
             isLoading={isLoading}
             selectedType={selectedType}
-            selectedResult={selectedResult}
+            highlightedResult={highlightedResult}
             onSelectResult={onSelectResult}
         />
     )
