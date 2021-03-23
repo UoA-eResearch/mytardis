@@ -635,7 +635,7 @@ class SearchAppResource(Resource):
 
 
         # Create the result object which will be returned to the front-end
-        result_dict = {k: [] for k in ["projects", "experiments", "datasets", "datafiles"]}
+        result_dict = {k: [] for k in ["project", "experiment", "dataset", "datafile"]}
 
 
         # If filters are active, enforce the "parent in results" criteria on relevant objects
@@ -761,14 +761,14 @@ class SearchAppResource(Resource):
                 # Due to non-identical scores in hits for non-sensitive vs sensitive search,
                 # we require a more complex comparison than just 'is in' as hits are not identical
                 #if hit["_source"]['id'] not in [objj["_source"]['id'] for objj in result_dict[hit["_index"]+"s"]]:
-                result_dict[hit["_index"]+"s"].append(hit)
+                result_dict[hit["_index"]].append(hit)
 
 
         # Removes parent IDs from hits once parent-filtering applied
         # Removed for tidiness in returned response to front-end
         # Define parent_type for experiment/datafile (N/A for project)
         parent_child = {"experiment":"project", "dataset":"experiments", "datafile":"dataset"}
-        for objs in ["experiments", "datasets", "datafiles"]:
+        for objs in ["experiment", "dataset", "datafile"]:
             for obj_idx, obj in reversed([*enumerate(result_dict[objs])]):
                 del result_dict[objs][obj_idx]["_source"][parent_child[obj["_index"]]]
 
@@ -784,7 +784,7 @@ class SearchAppResource(Resource):
 
 # WARNING: This is busted
 def simple_search_public_data(query_text):
-    result_dict = {k: [] for k in ["experiments", "datasets", "datafiles"]}
+    result_dict = {k: [] for k in ["experiment", "dataset", "datafile"]}
     index_list = ['experiment', 'dataset', 'datafile']
     ms = MultiSearch(index=index_list)
     query_exp = Q("match", title=query_text)
