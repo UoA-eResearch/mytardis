@@ -1,6 +1,6 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions';
-import EntryPreviewCard from './EntryPreviewCard';
+import { PureEntryPreviewCard } from './EntryPreviewCard';
 import makeMockStore from "../../util/makeMockStore";
 import { Provider } from 'react-redux';
 
@@ -11,7 +11,7 @@ const store = makeMockStore({
 });
 
 export default {
-  component: EntryPreviewCard,
+  component: PureEntryPreviewCard,
   title: 'EntryPreviewCard',
   decorators: [story =>
     <Provider store={store}>
@@ -188,29 +188,29 @@ const projectWithNoDate = Object.assign({}, project, {
 })
 
 export const Project = () => (
-  <EntryPreviewCard type="project" data={project} />
+  <PureEntryPreviewCard type="project" data={project} />
 );
 
 export const Experiment = () => (
-  <EntryPreviewCard type="experiment" data={experiment} />
+  <PureEntryPreviewCard type="experiment" data={experiment} />
 );
 
 export const DataSet = () => (
-  <EntryPreviewCard type="dataset" data={dataSet} />
+  <PureEntryPreviewCard type="dataset" data={dataSet} />
 );
 
 export const DataFile = () => (
-  <EntryPreviewCard type="datafile" data={dataFile} />
+  <PureEntryPreviewCard type="datafile" data={dataFile} />
 );
 
 export const NoPreviewData = () => (
-  <EntryPreviewCard type="datafile" data={null} />
+  <PureEntryPreviewCard type="datafile" data={null} />
 );
 
 export const NoChildren = () => (
-  <EntryPreviewCard type="project" data={projectWithNoChildren} />
+  <PureEntryPreviewCard type="project" data={projectWithNoChildren} />
 )
 
 export const NoDate = () => (
-  <EntryPreviewCard type="project" data={projectWithNoDate} />
+  <PureEntryPreviewCard type="project" data={projectWithNoDate} />
 )

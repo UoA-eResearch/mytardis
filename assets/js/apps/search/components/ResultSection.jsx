@@ -141,7 +141,7 @@ export function ResultRow({ result, onSelect, isSelected }) {
                 {result.userDownloadRights != "none" &&
                     <span>{result.size}</span>
                 }
-                {result.userDownloadRights == "none" &&
+                {result.userDownloadRights === "none" &&
                     <span aria-label="Not applicable">&mdash;</span>
                 }
             </td>
@@ -156,7 +156,6 @@ ResultRow.propTypes = {
 }
 
 export function PureResultList({ results, selectedItem, onItemSelect, error, isLoading }) {
-    results = results || [];
     let body, listClassName = "result-section__container";
     const handleItemSelected = (id) => {
         if (isLoading) {
@@ -243,16 +242,14 @@ const ResultSummary = ({typeId}) => {
     );
 };
 
-export function PureResultSection({ resultSets, selectedType,
+export function PureResultSection({ currentResultSet, selectedType,
     highlightedResult, onSelectResult, isLoading, error }) {
-    let selectedEntry = getSelectedEntry(resultSets, highlightedResult, selectedType);
-    const currentResultSet = resultSets ? resultSets[selectedType] : null;
     return (
         <section className="d-flex flex-column flex-grow-1 overflow-hidden">
             <ResultTabs />
             <div role="tabpanel" className="result-section--tabpanel">
-                {!error &&
-                    <>
+                {!error && (
+                <>
                         <ResultSummary typeId={selectedType} />
                         <div className="tabpanel__toolbar">
                             <div className="tabpanel__toolbar-left">
@@ -264,13 +261,11 @@ export function PureResultSection({ resultSets, selectedType,
                             </div>
                         </div>
                     </>
-                }
+                )}
                 <div className="tabpanel__container--horizontal">
                     <PureResultList results={currentResultSet} selectedItem={highlightedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
                     {!error &&
-                        <EntryPreviewCard
-                            data={selectedEntry}
-                        />
+                        <EntryPreviewCard />
                     }
                 </div>
                 {!error &&
@@ -278,7 +273,7 @@ export function PureResultSection({ resultSets, selectedType,
                 }
             </div>
         </section>
-    )
+    );
 }
 
 
@@ -291,7 +286,7 @@ export function PureResultSection({ resultSets, selectedType,
 function getSelectedEntry(resultSets, highlightedResult, selectedType) {
     let selectedEntry = null;
     if (resultSets && highlightedResult) {
-        selectedEntry = resultSets[selectedType].filter(result => result.id === highlightedResult)[0];
+        selectedEntry = resultSets[selectedType].byId[highlightedResult];
     }
     return selectedEntry;
 }
@@ -303,9 +298,18 @@ export default function ResultSection() {
         onSelectResult = (highlightedResult) => {
             dispatch(updateHighlightedResult(highlightedResult));
         },
-        resultSets = useSelector(
-            (state) => state.search.results ? state.search.results.hits : null
-        ),
+        currentResultSet = useSelector(
+            (state) => {
+                const hitsByType = state.search.results ? state.search.results.hits : null;
+                const currentType = state.search.selectedType;
+                if (!hitsByType) {
+                    return [];
+                }
+                // Return the currently selected type of results as an array of items.
+                return hitsByType[currentType].allIds.map(
+                    id => hitsByType[currentType].byId[id]
+                );
+            }),
         error = useSelector(
             (state) => state.search.error
         ),
@@ -315,12 +319,12 @@ export default function ResultSection() {
 
     return (
         <PureResultSection
-            resultSets={resultSets}
+            currentResultSet={currentResultSet}
             error={error}
             isLoading={isLoading}
             selectedType={selectedType}
             highlightedResult={highlightedResult}
             onSelectResult={onSelectResult}
         />
-    )
+    );
 }

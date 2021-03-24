@@ -3,38 +3,37 @@ import Cookies from "js-cookie";
 import { batch } from "react-redux";
 import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeSelector } from "./filters/filterSlice";
 
-const getResultFromHit = (hit, hitType, urlPrefix) => {
-    // eslint-disable-next-line no-underscore-dangle
-    const source = hit._source;
-    source.type = hitType;
-    source.url = `${urlPrefix}/${source.id}`;
-    return source;
-};
-
 const getResultsFromResponse = (response) => {
-// Grab the "_source" object out of each hit and also
-// add a type attribute to them.
+    const getTypeResultsFromResponse = (type, hitsForType) => {
+        // Grab the "_source" object out of each hit for this type and also
+        // add a type attribute to them.    
+        const resultsForType = {
+            byId: {},
+            allIds: []
+        };
+        hitsForType.forEach(hit => {
+            // eslint-disable-next-line no-underscore-dangle
+            const source = hit._source;
+            resultsForType.allIds.push(source.id);
+            source.type = type;
+            source.url = `/${type}/view/${source.id}`;    
+            resultsForType.byId[source.id] = source;
+        });
+        return resultsForType;
+    };
     const hits = response.hits;
     const results = {};
     if (hits.project) {
-        results.project = hits.project.map((hit) => {
-            return getResultFromHit(hit, "project", "/project/view");
-        });
+        results.project = getTypeResultsFromResponse("project", hits.project);
     }
     if (hits.experiment) {
-        results.experiment = hits.experiment.map((hit) => {
-            return getResultFromHit(hit, "experiment", "/experiment/view");
-        });
+        results.experiment = getTypeResultsFromResponse("experiment", hits.experiment);
     }
     if (hits.dataset) {
-        results.dataset = hits.dataset.map((hit) => {
-            return getResultFromHit(hit,"dataset","/dataset/view")
-        });
+        results.dataset = getTypeResultsFromResponse("dataset", hits.dataset);
     }
     if (hits.datafile) {
-        results.datafile = hits.datafile.map((hit) => {
-            return getResultFromHit(hit, "datafile", "/datafile/view");
-        });
+        results.datafile = getTypeResultsFromResponse("datafile", hits.datafile);
     }
     return results;
 };
@@ -166,6 +165,24 @@ const initialState = {
     results: null,
     selectedType: "experiment",
     highlightedResult: null,
+    selectedResults: {
+        project: {
+            byId: {},
+            allIds: []
+        },
+        experiment: {
+            byId: {},
+            allIds: []
+        },
+        dataset: {
+            byId: {},
+            allIds: []
+        },
+        datafile: {
+            byId: {},
+            allIds: []
+        }
+    },
     pageSize: {
         project: 20,
         experiment: 20,

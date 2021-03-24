@@ -148,7 +148,7 @@ FileCountSummary.propTypes = {
 };
 
 
-export default function EntryPreviewCard({ data }) {
+export function PureEntryPreviewCard({ data }) {
     let type;
     if (data) {
         type = data.type;
@@ -292,6 +292,17 @@ export default function EntryPreviewCard({ data }) {
     );
 }
 
-EntryPreviewCard.propTypes = {
+PureEntryPreviewCard.propTypes = {
     data: PropTypes.object
 };
+
+export default function EntryPreviewCard() {
+    const selectedEntry = useSelector(state => {
+        const results = state.search.results;
+        const typeId = state.search.selectedType;
+        const id = state.search.highlightedResult;
+        const hasSelectedEntry = results && results.hits && typeId && id; 
+        return hasSelectedEntry ? results.hits[typeId].byId[id] : null;
+    });
+    return (<PureEntryPreviewCard data={selectedEntry} />);
+}
