@@ -36,6 +36,18 @@ const cartSlice = createSlice({
         itemsIsLoading: (state) => {
             state.status = LOADING_STATE.LoadingFromCache;
         },
+        itemsAdded: (state, {payload: itemList}) => {
+            itemList.forEach(({typeId, id}) => {
+                // First, create the type object if it doesn't exist already
+                if (!state.itemsInCart.byId[typeId]) {
+                    state.itemsInCart.byId[typeId] = [];
+                    state.itemsInCart.allIds.push(typeId);
+                }
+                const typeItems = state.itemsInCart.byId[typeId];
+                typeItems.push(id);
+                state.activeNotification = NOTIFICATION_TYPE.ItemsAdded;
+            });
+        },
         itemRemoved: (state, {payload}) => {
             const { typeId, id } = payload;
             const itemsByType = state.itemsInCart;
@@ -83,7 +95,6 @@ const cartSlice = createSlice({
 
 export const {
     itemsIsLoading,
-    itemRemoved,
     cartLoaded,
     objectsValidating,
     objectsValidated,
@@ -311,24 +322,20 @@ export const initialiseSlice = (shouldValidateCache = true) => {
     };
 };
 
+export const addItems = (itemList) => {
+    return (dispatch, getState) => {
+        dispatch(cartSlice.actions.itemsAdded(itemList));
+        const itemsByType = getState().cart.itemsInCart;
+        return localforage.setItem("itemIdsByType", itemsByType);
+    }
+}
+
 export const removeItem = (typeId, id) => {
     return (dispatch, getState) => {
-        dispatch(itemRemoved({typeId, id}));
+        dispatch(cartSlice.actions.itemRemoved({typeId, id}));
         const itemsByType = getState().cart.itemsInCart;
         return localforage.setItem("itemIdsByType", itemsByType);
     };
 };
-
-
-const mockCartItems = {
-    allIds: ["project", "experiment", "dataset"],
-    byId: {
-        "project": [199],
-        "experiment": [61],
-        "dataset": [78]
-    }
-};
-
-localforage.setItem("itemIdsByType", mockCartItems); 
 
 export default cartSlice.reducer;

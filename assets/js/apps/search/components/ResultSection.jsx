@@ -5,15 +5,14 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import { useSelector, useDispatch } from "react-redux";
-import { updateHighlightedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector } from "./searchSlice";
+import { updateHighlightedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector, toggleItemSelected, getSelectedItems } from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 import Pager from "./sort-paginate/Pager";
 import SortOptionsList from './sort-paginate/SortOptionsList';
 import { typeSelector } from './filters/filterSlice';
 import Button from "react-bootstrap/Button";
-import { ButtonGroup, ButtonToolbar, PopoverContent, PopoverTitle } from 'react-bootstrap';
-import { Popover } from 'bootstrap';
+import { addItems } from "@apps/cart/cartSlice";
 
 export function PureResultTabs({ counts, selectedType, onChange }) {
     const handleNavClicked = (key) => {
@@ -120,20 +119,35 @@ export function DownloadRightsIndicator({accessRights}) {
     }
 }
 
-export function ResultRow({ result, onSelect, isSelected }) {
+export function ResultRow({ result, onHighlight, isHighlighted, isSelected, onSelect }) {
     const type = result.type,
         resultName = result[NameColumn[type]],
-        onKeyboardSelect = (e) => {
+        onKeyboardHighlight = (e) => {
             // Only respond to Enter key selects.
             if (e.key !== "Enter") {
                 return;
             }
-            onSelect(e);
+            onHighlight(result.id);
         };
+    const handleItemSelected = useCallback((e) => {
+        e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
+        onSelect(result.id);
+    }, [onSelect, result.id]);
+    console.log("Is it selected now?", isSelected);
     return (
-        <tr className={isSelected ? "result-section--row row-active-primary" : "result-section--row row-primary"} onClick={onSelect} onKeyUp={onKeyboardSelect} tabIndex="0" role="button">
+        <tr className={isHighlighted ? "result-section--row row-active-primary" : "result-section--row row-primary"} 
+            onClick={onHighlight.bind(this, result.id)} 
+            onKeyUp={onKeyboardHighlight} 
+            tabIndex="0" 
+            role="button">
             <td className="result-row--download-col">
-                <input className="download-col--selected" disabled={result.userDownloadRights === "none"} type="checkbox" />
+                <input checked={isSelected} 
+                    onChange={handleItemSelected}
+                    className="download-col--selected" 
+                    disabled={result.userDownloadRights === "none"} 
+                    type="checkbox" 
+                />
                 <DownloadRightsIndicator accessRights={result.userDownloadRights} />
             </td>
             <td><a target="_blank" rel="noopener noreferrer" href={result.url}>{resultName}</a></td>
@@ -146,25 +160,44 @@ export function ResultRow({ result, onSelect, isSelected }) {
                 }
             </td>
         </tr>
-    )
+    );
 }
 
 ResultRow.propTypes = {
     result: PropTypes.object.isRequired,
-    onSelect: PropTypes.func.isRequired,
-    isSelected: PropTypes.bool.isRequired
-}
+    onHighlight: PropTypes.func.isRequired,
+    isHighlighted: PropTypes.bool.isRequired,
+    isSelected: PropTypes.bool.isRequired,
+    onSelect: PropTypes.func.isRequired
+};
 
-export function PureResultList({ results, selectedItem, onItemSelect, error, isLoading }) {
-    let body, listClassName = "result-section__container";
-    const handleItemSelected = (id) => {
+export function PureResultList({ typeId }) {
+    const dispatch = useDispatch();
+    const isLoading = useSelector(state => state.search.isLoading);
+    const error = useSelector(state => state.search.error);
+    const results = useSelector(state => {
+        const hitsByType = state.search.results ? state.search.results.hits : null;
+        if (!hitsByType) {
+            return [];
+        }
+        // Return the currently selected type of results as an array of items.
+        return hitsByType[typeId].allIds.map(
+            id => hitsByType[typeId].byId[id]
+        );
+    });
+    const typeSelectedItems = useSelector(state => state.search.selected[typeId]);
+    const highlightedItem = useSelector(state => state.search.highlightedResult);
+    const onItemHighlight = useCallback(highlightedResult => {
         if (isLoading) {
             // During loading, we disable selecting for preview card.
             return;
         }
-        onItemSelect(id);
-    };
-
+        dispatch(updateHighlightedResult(highlightedResult));
+    }, [dispatch, updateHighlightedResult]);
+    const onToggleSelected = useCallback(id => {
+        dispatch(toggleItemSelected({typeId, id: id}));
+    }, [dispatch, typeId, toggleItemSelected]);
+    let body, listClassName = "result-section__container";
     if (isLoading) {
         // Add the loading class to show effect.
         listClassName += " loading";
@@ -190,16 +223,18 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
                     </div>
                 </td>
             </tr>
-        )
+        );
     }
 
     else {
         // Render the results in table.
         body = results.map((result) => (
             <ResultRow key={result.id}
-                onSelect={handleItemSelected.bind(this, result.id)}
+                onHighlight={onItemHighlight}
                 result={result}
-                isSelected={result.id === selectedItem}
+                isHighlighted={result.id === highlightedItem}
+                isSelected={!!typeSelectedItems[result.id]}
+                onSelect={onToggleSelected}
             />
         ));
     }
@@ -223,12 +258,8 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
 }
 
 PureResultList.propTypes = {
-    results: PropTypes.arrayOf(Object),
-    error: PropTypes.string,
-    isLoading: PropTypes.bool,
-    selectedItem: PropTypes.number,
-    onItemSelect: PropTypes.func
-}
+    typeId: PropTypes.number
+};
 
 const ResultSummary = ({typeId}) => {
     const currentCount = useSelector(state => totalHitsSelector(state.search, typeId));
@@ -242,8 +273,24 @@ const ResultSummary = ({typeId}) => {
     );
 };
 
-export function PureResultSection({ currentResultSet, selectedType,
-    highlightedResult, onSelectResult, isLoading, error }) {
+function SelectedItemToolbar({typeId}) {
+    const dispatch = useDispatch();
+    const selectedItems = useSelector(state => getSelectedItems(state.search, typeId));
+    const handleAddSelectedToCart = useCallback(() => {
+        dispatch(addItems(selectedItems));
+    }, [dispatch, selectedItems]);
+    const numSelectedItems = useSelector(state => getSelectedItems(state.search, typeId).length);
+    
+    return (
+        <div className="tabpanel__toolbar-left">
+            <Button variant="outline-primary" className="mr-2">
+                <input type="checkbox" className="mr-1 align-text-top" />{selectedItems.length} selected
+            </Button>
+            <Button variant="primary" onClick={handleAddSelectedToCart}>Add to Cart</Button>
+        </div>);
+}
+
+export function PureResultSection({ selectedType, error }) {
     return (
         <section className="d-flex flex-column flex-grow-1 overflow-hidden">
             <ResultTabs />
@@ -252,10 +299,7 @@ export function PureResultSection({ currentResultSet, selectedType,
                 <>
                         <ResultSummary typeId={selectedType} />
                         <div className="tabpanel__toolbar">
-                            <div className="tabpanel__toolbar-left">
-                                <Button variant="outline-primary" className="mr-2"><input type="checkbox" indeterminate className="mr-1 align-text-top" />41 selected</Button>
-                                <Button variant="primary">Add to Cart</Button>
-                            </div>
+                            <SelectedItemToolbar typeId={selectedType} />
                             <div>
                                 <SortOptionsList typeId={selectedType} />
                             </div>
@@ -263,7 +307,9 @@ export function PureResultSection({ currentResultSet, selectedType,
                     </>
                 )}
                 <div className="tabpanel__container--horizontal">
-                    <PureResultList results={currentResultSet} selectedItem={highlightedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
+                    <PureResultList 
+                        typeId={selectedType}
+                    />
                     {!error &&
                         <EntryPreviewCard />
                     }
@@ -276,55 +322,16 @@ export function PureResultSection({ currentResultSet, selectedType,
     );
 }
 
-
-/**
- * Returns the data of the selected row. Returns null if it cannot get find the selected result.
- * @param {*} resultSets
- * @param {*} highlightedResult
- * @param {*} selectedType
- */
-function getSelectedEntry(resultSets, highlightedResult, selectedType) {
-    let selectedEntry = null;
-    if (resultSets && highlightedResult) {
-        selectedEntry = resultSets[selectedType].byId[highlightedResult];
-    }
-    return selectedEntry;
-}
-
 export default function ResultSection() {
     const selectedType = useSelector(state => state.search.selectedType),
-        highlightedResult = useSelector(state => state.search.highlightedResult),
-        dispatch = useDispatch(),
-        onSelectResult = (highlightedResult) => {
-            dispatch(updateHighlightedResult(highlightedResult));
-        },
-        currentResultSet = useSelector(
-            (state) => {
-                const hitsByType = state.search.results ? state.search.results.hits : null;
-                const currentType = state.search.selectedType;
-                if (!hitsByType) {
-                    return [];
-                }
-                // Return the currently selected type of results as an array of items.
-                return hitsByType[currentType].allIds.map(
-                    id => hitsByType[currentType].byId[id]
-                );
-            }),
         error = useSelector(
             (state) => state.search.error
-        ),
-        isLoading = useSelector(
-            (state) => state.search.isLoading
         );
 
     return (
         <PureResultSection
-            currentResultSet={currentResultSet}
             error={error}
-            isLoading={isLoading}
             selectedType={selectedType}
-            highlightedResult={highlightedResult}
-            onSelectResult={onSelectResult}
         />
     );
 }

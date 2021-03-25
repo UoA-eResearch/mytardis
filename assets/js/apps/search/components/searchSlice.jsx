@@ -158,6 +158,21 @@ export const searchTermSelector = (searchSlice, typeId) => (
         searchSlice.searchTerm[typeId] : ""
 );
 
+/**
+ * Return a list of selected items.
+ * @param {Object} searchSlice Redux search slice object.
+ * @param {String} typeId ID for object type
+ */
+export const getSelectedItems = (searchSlice, typeId) => {
+    if (!searchSlice.results) {
+        return [];
+    }
+    // Grab all selected items
+    return Object
+        .keys(searchSlice.selected[typeId])
+        .map(id => ({typeId, id}));
+};
+
 const initialState = {
     searchTerm: {},
     isLoading: false,
@@ -165,23 +180,11 @@ const initialState = {
     results: null,
     selectedType: "experiment",
     highlightedResult: null,
-    selectedResults: {
-        project: {
-            byId: {},
-            allIds: []
-        },
-        experiment: {
-            byId: {},
-            allIds: []
-        },
-        dataset: {
-            byId: {},
-            allIds: []
-        },
-        datafile: {
-            byId: {},
-            allIds: []
-        }
+    selected: {
+        project: {},
+        experiment: {},
+        dataset: {},
+        datafile: {}
     },
     pageSize: {
         project: 20,
@@ -268,6 +271,15 @@ const search = createSlice({
                 state.searchTerm = undefined;
             }
         },
+        toggleItemSelected: (state, {payload}) => {
+            const {typeId, id} = payload;
+            const typeSelectedResults = state.selected[typeId];
+            if (!typeSelectedResults[id]) {
+                typeSelectedResults[id] = "selected";
+            } else {
+                delete typeSelectedResults[id];
+            }
+        },
         getResultsStart: (state) => {
             state.isLoading = true;
             state.error = null;
@@ -347,7 +359,8 @@ export const {
     updateHighlightedResult,
     toggleShowSensitiveData,
     updateResultSort,
-    removeResultSort
+    removeResultSort,
+    toggleItemSelected
 } = search.actions;
 
 
