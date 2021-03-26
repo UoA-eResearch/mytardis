@@ -443,7 +443,10 @@ class SafeManager(models.Manager):
 
 
     def _query_owned_and_shared(self, user, downloadable=False, viewsensitive=False):
-        return self._query_shared(user, downloadable, viewsensitive) | self._query_owned(user)
+        query = self._query_shared(user, downloadable, viewsensitive) | self._query_owned(user)
+        for group in user.groups.all():
+            query |= self._query_owned_by_group(group)
+        return query
 
 
     def owned_and_shared(self, user, downloadable=False, viewsensitive=False):
