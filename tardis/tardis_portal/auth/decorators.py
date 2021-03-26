@@ -375,11 +375,7 @@ def get_accessible_experiments_for_dataset(request, dataset_id):
 
 
 def get_shared_experiments(request):
-    experiments = Experiment.safe.owned_and_shared(request.user)
-    # exclude owned experiments
-    owned = get_owned_experiments(request)
-    experiments = experiments.exclude(id__in=[o.id for o in owned])
-    return experiments
+    return Experiment.safe.shared(request.user)
 
 
 def get_owned_experiments(request):
