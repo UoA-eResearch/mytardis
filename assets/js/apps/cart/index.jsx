@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./cart.css";
 import Button from "react-bootstrap/Button";
@@ -7,7 +7,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import { BsTrash, BsDownload } from "react-icons/bs";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "@apps/shared/reduxAppStore";
-import { initialiseSlice } from "./cartSlice";
+import { initialiseSlice, removeAllItems } from "./cartSlice";
 import CartItemList from "./CartItemList";
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -16,6 +16,11 @@ const CartScreen = (props) => {
     useEffect(() => {
         dispatch(initialiseSlice());
     }, [dispatch]);
+    const handleRemoveAll = useCallback(
+        () => {
+            dispatch(removeAllItems());
+        },
+        [dispatch, removeAllItems]);
     return <div className="cart-page container">
         <h1 className="h3 my-3">Cart</h1>
         <main className="cart-page-content shadow-sm">
@@ -37,7 +42,7 @@ const CartScreen = (props) => {
                 <CartItemList />
                 <hr />
                 <p className="summary">104 Datafiles from 4 Projects, 7 Experiments and 10 Datasets.</p>
-                <p><Button variant="outline-danger"><BsTrash /> Remove all</Button></p>
+                <p><Button onClick={handleRemoveAll} variant="outline-danger"><BsTrash /> Remove all</Button></p>
 
             </section>
 

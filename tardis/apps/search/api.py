@@ -198,7 +198,7 @@ class SearchAppResource(Resource):
         query_text = bundle.data.get('query', None)
         filters = bundle.data.get('filters', None)
         request_sorting = bundle.data.get('sort', None)
-        request_size = bundle.data.get('size', 20)
+        request_size = bundle.data.get('size', 10000)
         request_offset = bundle.data.get('offset', 0)
         request_type = bundle.data.get('type', None)
         #Mock input

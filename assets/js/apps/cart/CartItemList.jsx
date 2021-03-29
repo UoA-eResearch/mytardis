@@ -107,7 +107,7 @@ export default function CartItemList() {
                         cartItems.allIds.flatMap(typeId => (
                             cartItems.byId[typeId].map(item => {
                                 const CartItemComponent = CART_ITEM_BY_TYPE[typeId];
-                                return <div key={item.id}>
+                                return <div key={`${typeId}.${item.id}`}>
                                     <CartItemComponent item={item} />
                                     <Button onClick={() => {
                                         dispatch(removeItem(typeId, item.id));

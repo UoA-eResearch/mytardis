@@ -1,11 +1,11 @@
-import React, {  useCallback } from 'react'
+import React, {  useCallback, useState } from 'react'
 import PropTypes from 'prop-types';
 import { FiPieChart, FiLock, FiRefreshCcw } from 'react-icons/fi';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import { useSelector, useDispatch } from "react-redux";
-import { updateHighlightedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector, toggleItemSelected, getSelectedItems } from "./searchSlice";
+import { updateHighlightedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector, toggleItemSelected, getSelectedItems, deselectAllItems, selectAllTypeItems, LOADING_STATE, SELECTION_STATE } from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 import Pager from "./sort-paginate/Pager";
@@ -13,6 +13,8 @@ import SortOptionsList from './sort-paginate/SortOptionsList';
 import { typeSelector } from './filters/filterSlice';
 import Button from "react-bootstrap/Button";
 import { addItems } from "@apps/cart/cartSlice";
+import { AiOutlineLoading } from 'react-icons/ai';
+import { Alert, Spinner } from 'react-bootstrap';
 
 export function PureResultTabs({ counts, selectedType, onChange }) {
     const handleNavClicked = (key) => {
@@ -22,7 +24,7 @@ export function PureResultTabs({ counts, selectedType, onChange }) {
     };
 
     return (
-        <Nav variant="tabs" activeKey={selectedType}>
+        <Nav variant="tabs" role="tablist" activeKey={selectedType}>
             {counts.map(({ id, name, hitTotal }) => (
                 <Nav.Item role="tab" key={id}>
                     <Nav.Link onSelect={handleNavClicked.bind(this, id)} eventKey={id}>
@@ -244,7 +246,9 @@ export function PureResultList({ typeId }) {
             <table className="table">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>
+                            <SelectAllCheckBox typeId={typeId} />
+                        </th>
                         <th>Name</th>
                         <th>Size</th>
                     </tr>
@@ -273,51 +277,123 @@ const ResultSummary = ({typeId}) => {
     );
 };
 
-function SelectedItemToolbar({typeId}) {
+function SelectedItemToolbar({ typeId }) {
     const dispatch = useDispatch();
     const selectedItems = useSelector(state => getSelectedItems(state.search, typeId));
+    const numSelected = selectedItems.length;
     const handleAddSelectedToCart = useCallback(() => {
         dispatch(addItems(selectedItems));
     }, [dispatch, selectedItems]);
-    const numSelectedItems = useSelector(state => getSelectedItems(state.search, typeId).length);
-    
+    const handleCloseToolbar = useCallback(() => {
+        dispatch(deselectAllItems({typeId}));
+    }, [dispatch, typeId]);
+    const itemWord = numSelected === 1 ? "item" : "items";
     return (
-        <div className="tabpanel__toolbar-left">
-            <Button variant="outline-primary" className="mr-2">
-                <input type="checkbox" className="mr-1 align-text-top" />{selectedItems.length} selected
-            </Button>
-            <Button variant="primary" onClick={handleAddSelectedToCart}>Add to Cart</Button>
-        </div>);
+        <Alert variant="secondary" onClose={handleCloseToolbar} dismissible>
+            <span className="fw-bold">{numSelected} {itemWord} selected.</span>
+            {numSelected > 0 &&
+               <Button className="ml-2" variant="primary" onClick={handleAddSelectedToCart}>Add to Cart</Button>
+            }
+        </Alert>);
+}
+
+SelectedItemToolbar.propTypes = {
+    typeId: PropTypes.string.isRequired
+};
+
+function SelectAllCheckBox({ typeId }) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [allSelected, setAllSelected] = useState(false);
+
+    const dispatch = useDispatch();
+    const handleSelectButtonClicked = useCallback(() => {
+        if (allSelected) {
+            dispatch(deselectAllItems({typeId}));
+            setAllSelected(false);
+        } else {
+            setIsLoading(true);
+            setAllSelected(true);
+            dispatch(selectAllTypeItems(typeId))
+            // If query fails, reset the select all checkbox.
+                .catch(() => setAllSelected(false))
+            // In any case, set loading state to false.
+                .finally(() => setIsLoading(false));
+        }
+    }, [dispatch, allSelected, typeId]);
+    if (isLoading) {
+        return (<Spinner animation="border" size="sm" role="status"/>);
+    } else {
+        return (
+            <>
+            <label 
+                className="sr-only" 
+                htmlFor={"select-all-" + typeId}>
+                    Select all results
+            </label>
+                <input 
+                    id={"select-all-"+ typeId} 
+                    checked={allSelected} 
+                    onChange={handleSelectButtonClicked}
+                    className="download-col--selected" 
+                    type="checkbox" 
+                />
+            </>
+        );
+    }
+}
+
+export function ResultItemToolbar({typeId}) {
+    const numTypeSelectedItems = useSelector(
+        state => Object.keys(
+            state.search.selected[typeId]
+        ).length);
+    return (
+        <div className="tabpanel__toolbar">
+            {numTypeSelectedItems > 0 ?
+                <SelectedItemToolbar typeId={typeId} /> :
+                <SortOptionsList typeId={typeId} />
+            }
+        </div>
+    );
+}
+
+export function ResultTabPanes() {
+    const selectedType = useSelector(state => state.search.selectedType);
+    const types = useSelector(state => state.filters.types.allIds);
+    const error = useSelector(state => state.search.error);
+    // Create a tab pane to show each type's results.
+    return types.map(typeId => (
+        <div 
+            key={typeId} 
+            role="tabpanel" 
+            className={"result-section--tabpanel " + ((typeId !== selectedType) ? "d-none" : "")} 
+        >
+            {!error && (
+            <>
+                <ResultSummary typeId={typeId} />
+            </>
+            )}
+            <ResultItemToolbar typeId={typeId} />
+            <div className="tabpanel__container--horizontal">
+                <PureResultList 
+                    typeId={typeId}
+                />
+                {!error &&
+                <EntryPreviewCard />
+                }
+            </div>
+            {!error &&
+            <Pager objectType={typeId} />
+            }
+        </div>
+    ));
 }
 
 export function PureResultSection({ selectedType, error }) {
     return (
         <section className="d-flex flex-column flex-grow-1 overflow-hidden">
             <ResultTabs />
-            <div role="tabpanel" className="result-section--tabpanel">
-                {!error && (
-                <>
-                        <ResultSummary typeId={selectedType} />
-                        <div className="tabpanel__toolbar">
-                            <SelectedItemToolbar typeId={selectedType} />
-                            <div>
-                                <SortOptionsList typeId={selectedType} />
-                            </div>
-                        </div>
-                    </>
-                )}
-                <div className="tabpanel__container--horizontal">
-                    <PureResultList 
-                        typeId={selectedType}
-                    />
-                    {!error &&
-                        <EntryPreviewCard />
-                    }
-                </div>
-                {!error &&
-                    <Pager objectType={selectedType} />
-                }
-            </div>
+            <ResultTabPanes />
         </section>
     );
 }

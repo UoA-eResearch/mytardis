@@ -219,8 +219,6 @@ const initialState = {
     showSensitiveData: false
 };
 
-
-
 const search = createSlice({
     name: "search",
     initialState,
@@ -238,14 +236,14 @@ const search = createSlice({
                 state.error = null;
                 state.isLoading = false;
             },
-            prepare: (rawResult) => {
+            prepare: rawResult => {
                 // Process the results first to extract hits and fill in URLs.
                 return {
                     payload: {
                         hits: getResultsFromResponse(rawResult),
                         totalHits: getHitTotalsFromResponse(rawResult)
                     }
-                };
+                };   
             }
         },
         updateSearchTerm: (state, {payload}) => {
@@ -279,6 +277,17 @@ const search = createSlice({
             } else {
                 delete typeSelectedResults[id];
             }
+        },
+        deselectAllItems: (state, {payload}) => {
+            const {typeId} = payload;
+            state.selected[typeId] = initialState.selected[typeId];
+        },
+        selectMultipleItems: (state, {payload}) => {
+            // Select multiple items in results of the same type.
+            const {typeId, itemIds} = payload;
+            itemIds.forEach(id => {
+                state.selected[typeId][id] = "selected";
+            });
         },
         getResultsStart: (state) => {
             state.isLoading = true;
@@ -360,7 +369,9 @@ export const {
     toggleShowSensitiveData,
     updateResultSort,
     removeResultSort,
-    toggleItemSelected
+    toggleItemSelected,
+    deselectAllItems,
+    selectMultipleItems
 } = search.actions;
 
 
@@ -439,19 +450,22 @@ const buildSortQuery = (state, typeToSearch) => {
     };
 };
 
-const buildQueryBody = (state, typeToSearch) => {
+const buildQueryBody = (state, typeToSearch, shouldApplySortPagination = true) => {
     const term = state.search.searchTerm,
         filters = buildFilterQuery(state.filters, typeToSearch),
         queryBody = {};
 
     // Add sort query
-    Object.assign(queryBody, buildSortQuery(state, typeToSearch));
-
+    if (shouldApplySortPagination) {
+        Object.assign(queryBody, buildSortQuery(state, typeToSearch));
+    }
     if (typeToSearch) {
         // If doing a single type search, include type in query body.
         queryBody.type = typeToSearch;
         // Add pagination query
-        Object.assign(queryBody, buildPaginationQuery(state.search, typeToSearch));
+        if (shouldApplySortPagination) {
+            Object.assign(queryBody, buildPaginationQuery(state.search, typeToSearch));
+        }
     }
     if (term !== null) {
         queryBody.query = term;
@@ -642,6 +656,30 @@ export const updatePageSizeAndRefetch = (typeId, size) => {
         dispatch(search.actions.updatePageNumber({typeId, number: newPageNumber}));
         return dispatch(runSingleTypeSearch(typeId));
     };
+};
+
+/**
+ * Fetches a list of all MyTardis objects of type typeId
+ * that match the current query, then select them. This
+ * action is to support the "Select All" button in the 
+ * search UI.
+ * @param {String} typeId 
+ * @returns A Promise that is resolved when the list of item IDs is fetched
+ * and dispatched to the Redux store.
+ */
+export const selectAllTypeItems = typeId => {
+    return (dispatch, getState) => {
+        const state = getState();
+        const queryBody = buildQueryBody(state, typeId, false);
+        return fetchSearchResults(queryBody).then(response => {
+            const itemIds = getResultsFromResponse(response)[typeId].allIds;
+            return dispatch(selectMultipleItems({
+                typeId,
+                itemIds
+            }));
+        });
+        
+    }
 };
 
 export default search.reducer;

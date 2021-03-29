@@ -36,6 +36,10 @@ const cartSlice = createSlice({
         itemsIsLoading: (state) => {
             state.status = LOADING_STATE.LoadingFromCache;
         },
+        allItemsRemoved: state => {
+            state.itemsInCart = initialState.itemsInCart;
+            state.activeNotification = NOTIFICATION_TYPE.ItemsRemoved;
+        },
         itemsAdded: (state, {payload: itemList}) => {
             itemList.forEach(({typeId, id}) => {
                 // First, create the type object if it doesn't exist already
@@ -44,18 +48,22 @@ const cartSlice = createSlice({
                     state.itemsInCart.allIds.push(typeId);
                 }
                 const typeItems = state.itemsInCart.byId[typeId];
+                if (typeItems.some(existingId => existingId === id)) {
+                    return;    
+                }
                 typeItems.push(id);
-                state.activeNotification = NOTIFICATION_TYPE.ItemsAdded;
             });
+            state.activeNotification = NOTIFICATION_TYPE.ItemsAdded;
         },
         itemRemoved: (state, {payload}) => {
-            const { typeId, id } = payload;
+            const { typeId } = payload;
+            const id = String(payload.id);
             const itemsByType = state.itemsInCart;
             if (!itemsByType.byId || !itemsByType.byId[typeId] || itemsByType.byId[typeId][id]) {
                 return;
             }
             // Remove the deleted item ID. 
-            itemsByType.byId[typeId] = itemsByType.byId[typeId].filter(itemId => itemId !== id);
+            itemsByType.byId[typeId] = itemsByType.byId[typeId].filter(cartItemId => cartItemId !== id);
             if (itemsByType.byId[typeId].length === 0) {
                 delete itemsByType.byId[typeId];
                 itemsByType.allIds = itemsByType.allIds.filter(listTypeId => listTypeId !== typeId);
@@ -321,6 +329,14 @@ export const initialiseSlice = (shouldValidateCache = true) => {
         // });
     };
 };
+
+export const removeAllItems = () => {
+    return (dispatch, getState) => {
+        dispatch(cartSlice.actions.allItemsRemoved());
+        const itemsByType = getState().cart.itemsInCart;
+        return localforage.setItem("itemIdsByType", itemsByType);
+    }
+}
 
 export const addItems = (itemList) => {
     return (dispatch, getState) => {
