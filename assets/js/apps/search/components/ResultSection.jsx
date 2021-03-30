@@ -5,7 +5,19 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import { useSelector, useDispatch } from "react-redux";
-import { updateHighlightedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector, toggleItemSelected, getSelectedItems, deselectAllItems, selectAllTypeItems, LOADING_STATE, SELECTION_STATE } from "./searchSlice";
+import { 
+    updateHighlightedResult,
+    updateSelectedType,
+    totalHitsSelector,
+    pageSizeSelector,
+    pageFirstItemIndexSelector,
+    toggleItemSelected,
+    getSelectedItems,
+    selectPageItems,
+    deselectAllItems,
+    selectAllTypeItems,
+    SELECTION_STATE
+} from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 import Pager from "./sort-paginate/Pager";
@@ -136,7 +148,6 @@ export function ResultRow({ result, onHighlight, isHighlighted, isSelected, onSe
         e.nativeEvent.stopImmediatePropagation();
         onSelect(result.id);
     }, [onSelect, result.id]);
-    console.log("Is it selected now?", isSelected);
     return (
         <tr className={isHighlighted ? "result-section--row row-active-primary" : "result-section--row row-primary"} 
             onClick={onHighlight.bind(this, result.id)} 
@@ -187,7 +198,7 @@ export function PureResultList({ typeId }) {
             id => hitsByType[typeId].byId[id]
         );
     });
-    const typeSelectedItems = useSelector(state => state.search.selected[typeId]);
+    const typeSelectedItems = useSelector(state => state.search.selected[typeId].items);
     const highlightedItem = useSelector(state => state.search.highlightedResult);
     const onItemHighlight = useCallback(highlightedResult => {
         if (isLoading) {
@@ -278,9 +289,18 @@ const ResultSummary = ({typeId}) => {
 };
 
 function SelectedItemToolbar({ typeId }) {
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const selectedItems = useSelector(state => getSelectedItems(state.search, typeId));
+    const selectionState = useSelector(state => state.search.selected[typeId].selectionState);
     const numSelected = selectedItems.length;
+    const handleSelectAll = useCallback(e => {
+        e.preventDefault();
+        setIsLoading(true);
+        dispatch(selectAllTypeItems(typeId))
+            // In any case, set loading state to false.
+            .finally(() => setIsLoading(false));
+    }, [dispatch, selectAllTypeItems, typeId]);
     const handleAddSelectedToCart = useCallback(() => {
         dispatch(addItems(selectedItems));
     }, [dispatch, selectedItems]);
@@ -288,11 +308,29 @@ function SelectedItemToolbar({ typeId }) {
         dispatch(deselectAllItems({typeId}));
     }, [dispatch, typeId]);
     const itemWord = numSelected === 1 ? "item" : "items";
+    const renderSummary = () => {
+        switch (selectionState) {
+            case SELECTION_STATE.All:
+                return `All ${numSelected} result ${itemWord} selected.`;
+            case SELECTION_STATE.Page:
+                return `${numSelected} result ${itemWord} of this page selected.`;
+            default:
+                return `${numSelected} result ${itemWord} selected.`;
+        }
+    };
+
+    if (isLoading) {
+        return <Spinner animation="border" size="sm" role="status" />;
+    }
+    
     return (
         <Alert variant="secondary" onClose={handleCloseToolbar} dismissible>
-            <span className="fw-bold">{numSelected} {itemWord} selected.</span>
-            {numSelected > 0 &&
-               <Button className="ml-2" variant="primary" onClick={handleAddSelectedToCart}>Add to Cart</Button>
+            {renderSummary()}
+            <Button className="ml-2" variant="primary" onClick={handleAddSelectedToCart}>Add to Cart</Button>
+            {selectionState === SELECTION_STATE.Page &&
+                <strong>
+                    <Button variant="link" onClick={handleSelectAll}>Select all results</Button>
+                </strong>
             }
         </Alert>);
 }
@@ -302,50 +340,39 @@ SelectedItemToolbar.propTypes = {
 };
 
 function SelectAllCheckBox({ typeId }) {
-    const [isLoading, setIsLoading] = useState(false);
-    const [allSelected, setAllSelected] = useState(false);
-
+    const selectionState = useSelector(state => state.search.selected[typeId].selectionState);
     const dispatch = useDispatch();
+    const pageOrAllSelected = selectionState === SELECTION_STATE.All || selectionState === SELECTION_STATE.Page;
     const handleSelectButtonClicked = useCallback(() => {
-        if (allSelected) {
+        if (pageOrAllSelected) {
             dispatch(deselectAllItems({typeId}));
-            setAllSelected(false);
         } else {
-            setIsLoading(true);
-            setAllSelected(true);
-            dispatch(selectAllTypeItems(typeId))
-            // If query fails, reset the select all checkbox.
-                .catch(() => setAllSelected(false))
-            // In any case, set loading state to false.
-                .finally(() => setIsLoading(false));
+            dispatch(selectPageItems({typeId}));
         }
-    }, [dispatch, allSelected, typeId]);
-    if (isLoading) {
-        return (<Spinner animation="border" size="sm" role="status"/>);
-    } else {
-        return (
+    }, [dispatch, selectionState]);
+    const isSelecting = selectionState === SELECTION_STATE.None || selectionState === SELECTION_STATE.Some;
+    return (
             <>
             <label 
                 className="sr-only" 
                 htmlFor={"select-all-" + typeId}>
-                    Select all results
+                {isSelecting ? "Select all results on this page" : "Deselect all results"}
             </label>
                 <input 
-                    id={"select-all-"+ typeId} 
-                    checked={allSelected} 
+                    id={"select-all-" + typeId} 
+                    checked={pageOrAllSelected} 
                     onChange={handleSelectButtonClicked}
                     className="download-col--selected" 
                     type="checkbox" 
                 />
             </>
-        );
-    }
+    );
 }
 
 export function ResultItemToolbar({typeId}) {
     const numTypeSelectedItems = useSelector(
         state => Object.keys(
-            state.search.selected[typeId]
+            state.search.selected[typeId].items
         ).length);
     return (
         <div className="tabpanel__toolbar">

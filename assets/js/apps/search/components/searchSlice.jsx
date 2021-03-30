@@ -88,6 +88,13 @@ export const SORT_ORDER = {
     descending: "desc"
 };
 
+export const SELECTION_STATE = {
+    None: "NONE",
+    Some: "SOME",
+    Page: "PAGE",
+    All: "ALL"
+};
+
 /**
  * Selector for sorts that are active on a typeId.
  * @param {*} searchSlice The Redux state slice for search
@@ -169,7 +176,7 @@ export const getSelectedItems = (searchSlice, typeId) => {
     }
     // Grab all selected items
     return Object
-        .keys(searchSlice.selected[typeId])
+        .keys(searchSlice.selected[typeId].items)
         .map(id => ({typeId, id}));
 };
 
@@ -181,10 +188,22 @@ const initialState = {
     selectedType: "experiment",
     highlightedResult: null,
     selected: {
-        project: {},
-        experiment: {},
-        dataset: {},
-        datafile: {}
+        project: {
+            selectionState: SELECTION_STATE.None,
+            items: {}
+        },
+        experiment: {
+            selectionState: SELECTION_STATE.None,
+            items: {}
+        },
+        dataset: {
+            selectionState: SELECTION_STATE.None,
+            items: {}
+        },
+        datafile: {
+            selectionState: SELECTION_STATE.None,
+            items: {}
+        }
     },
     pageSize: {
         project: 20,
@@ -271,23 +290,39 @@ const search = createSlice({
         },
         toggleItemSelected: (state, {payload}) => {
             const {typeId, id} = payload;
-            const typeSelectedResults = state.selected[typeId];
+            const typeSelectedResults = state.selected[typeId].items;
             if (!typeSelectedResults[id]) {
                 typeSelectedResults[id] = "selected";
             } else {
                 delete typeSelectedResults[id];
             }
+            if (Object.keys(typeSelectedResults).length > 0) {
+                state.selected[typeId].selectionState = SELECTION_STATE.Some;
+            } else {
+                state.selected[typeId].selectionState = SELECTION_STATE.None;
+            }
         },
         deselectAllItems: (state, {payload}) => {
             const {typeId} = payload;
-            state.selected[typeId] = initialState.selected[typeId];
+            state.selected[typeId].items = initialState.selected[typeId].items;
+            state.selected[typeId].selectionState = SELECTION_STATE.None;
         },
-        selectMultipleItems: (state, {payload}) => {
+        selectAllItems: (state, {payload}) => {
             // Select multiple items in results of the same type.
             const {typeId, itemIds} = payload;
             itemIds.forEach(id => {
-                state.selected[typeId][id] = "selected";
+                state.selected[typeId].items[id] = "selected";
             });
+            state.selected[typeId].selectionState = SELECTION_STATE.All;
+        },
+        selectPageItems: (state, {payload}) => {
+            // Select multiple items in results of the same type.
+            const {typeId} = payload;
+            const itemIds = state.results.hits[typeId].allIds;
+            itemIds.forEach(id => {
+                state.selected[typeId].items[id] = "selected";
+            });
+            state.selected[typeId].selectionState = SELECTION_STATE.Page;
         },
         getResultsStart: (state) => {
             state.isLoading = true;
@@ -370,8 +405,8 @@ export const {
     updateResultSort,
     removeResultSort,
     toggleItemSelected,
+    selectPageItems,
     deselectAllItems,
-    selectMultipleItems
 } = search.actions;
 
 
@@ -673,13 +708,13 @@ export const selectAllTypeItems = typeId => {
         const queryBody = buildQueryBody(state, typeId, false);
         return fetchSearchResults(queryBody).then(response => {
             const itemIds = getResultsFromResponse(response)[typeId].allIds;
-            return dispatch(selectMultipleItems({
+            return dispatch(search.actions.selectAllItems({
                 typeId,
                 itemIds
             }));
         });
         
-    }
+    };
 };
 
 export default search.reducer;
