@@ -39,5 +39,5 @@ requests==2.22.0
 uritemplate==3.0.0
 django-taggit==1.1.0; python_version >= "3.5"
 logstash_formatter
-keystoneauth1==4.3.1
-python-barbicanclient==5.1.0
+keystoneauth1
+python-barbicanclient
