@@ -1,9 +1,15 @@
-from .default_settings import *
+# pylint: disable=wildcard-import,unused-wildcard-import,W0123
+import json
+from os import environ as env
+from datetime import timedelta
+
 from keystoneauth1.identity import v3
 from keystoneauth1 import session
 from barbicanclient import client
-import json
-from os import environ as env
+
+
+from .default_settings import *
+
 
 application_credential = v3.ApplicationCredentialMethod(application_credential_id=env.get('OS_APPLICATION_CREDENTIAL_ID'),
                                                         application_credential_secret=env.get('OS_APPLICATION_CREDENTIAL_SECRET'))
@@ -36,7 +42,6 @@ TIME_ZONE = 'Pacific/Auckland'
 EMAIL_HOST = email_host.payload
 SERVER_EMAIL = server_email.payload
 ADMINS = eval(admin_emails.payload.decode('UTF-8'))
-print(ADMINS)
 #Restricting Posts 'HOST:' variable to reference local hosts
 #Without this, cross site hacks can be injected into queries.
 ALLOWED_HOSTS = eval(allowed_hosts.payload.decode('UTF-8'))
@@ -119,7 +124,6 @@ CELERY_RESULT_BACKEND = 'rpc'
 # TODO UPDATE THIS
 BROKER_URL = 'amqp://mytardis:{0}@rabbitmq-1:5672/mytardisvhost;amqp:/mytardis:{0}@rabbitmq-2:5672/mytardisvhost;'.format(rabbit_secret)
 
-from datetime import timedelta
 CELERYBEAT_SCHEDULE = {
     "verify-files": {
         "task": "tardis_portal.verify_dfos",
@@ -156,4 +160,3 @@ LOGGING = {
     },
 },
 }
-
