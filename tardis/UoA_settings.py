@@ -1,9 +1,15 @@
-from .default_settings import *
+# pylint: disable=wildcard-import,unused-wildcard-import,W0123
+import json
+from os import environ as env
+from datetime import timedelta
+
 from keystoneauth1.identity import v3
 from keystoneauth1 import session
 from barbicanclient import client
-import json
-from os import environ as env
+
+
+from .default_settings import *
+
 
 BARBICAN_RABBIT_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/79036d1a-9aa9-437f-b9d5-21a5f215cd37'
 #BARBICAN_LDAP_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/a54d4510-f2b4-49a6-962e-b1d3eec65e5b'
@@ -131,10 +137,13 @@ FILE_UPLOAD_TEMP_DIR = path.abspath(path.join(path.dirname(__file__), '../var/s3
 CELERY_RESULT_BACKEND = 'rpc'
 # TODO UPDATE THIS
 
+<<<<<<< HEAD:tardis/settings.py
 #BROKER_URL = 'amqp://mytardis:{0}@rabbitmq-1:5672/mytardisvhost;amqp:/mytardis:{0}@rabbitmq-2:5672/mytardisvhost;'.format(rabbit_secret.payload)
 #print(BROKER_URL)
 BROKER_URL = rabbit_secret.payload.decode('UTF-8')
 from datetime import timedelta
+=======
+>>>>>>> 72f0b351020cbb69caaf2e456b932cde979be2a9:tardis/UoA_settings.py
 CELERYBEAT_SCHEDULE = {
     "verify-files": {
         "task": "tardis_portal.verify_dfos",
@@ -171,4 +180,3 @@ LOGGING = {
     },
 },
 }
-
