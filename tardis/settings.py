@@ -5,6 +5,20 @@ from barbicanclient import client
 import json
 from os import environ as env
 
+BARBICAN_RABBIT_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/79036d1a-9aa9-437f-b9d5-21a5f215cd37'
+#BARBICAN_LDAP_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/a54d4510-f2b4-49a6-962e-b1d3eec65e5b'
+BARBICAN_LDAP_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/bc87b109-a7f2-4926-a6db-64e6226ac141'
+BARBICAN_POSTGRES_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/e2391e45-9621-49d0-b0d1-a54c53a3c682'
+BARBICAN_AWS_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/e02df33f-24f3-4cc5-a21c-533b0f3433ab'
+BARBICAN_DJANGO_KEY='https://key-manager.rc.nectar.org.au:9311/v1/secrets/a0937194-496c-49fa-8be3-221437f93670'
+BARBICAN_EMAIL_HOST='https://key-manager.rc.nectar.org.au:9311/v1/secrets/f2fa31c4-9c72-45ce-8ae6-17c92cced1ac'
+BARBICAN_SERVER_EMAIL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/2c25295f-9945-47df-8a64-eb465de825ed'
+BARBICAN_ADMIN_EMAILS='https://key-manager.rc.nectar.org.au:9311/v1/secrets/486f2f61-ee60-4d68-a773-10a60ae64708'
+BARBICAN_ALLOWED_HOSTS='https://key-manager.rc.nectar.org.au:9311/v1/secrets/9dc90d2b-3619-4b90-8719-f03f64d0c8db'
+BARBICAN_ELASTICSEARCH_HOST='https://key-manager.rc.nectar.org.au:9311/v1/secrets/057e0cc7-5b81-47e2-9131-266d4fc062a7'
+BARBICAN_PGDB_HOST='https://key-manager.rc.nectar.org.au:9311/v1/secrets/ecd779d0-61b0-4120-9346-921c7ad1086a'
+BARBICAN_PGDB_PORT='https://key-manager.rc.nectar.org.au:9311/v1/secrets/ed75ff1a-4dc2-4f15-b6af-80fcf1f446f9'
+
 application_credential = v3.ApplicationCredentialMethod(application_credential_id=env.get('OS_APPLICATION_CREDENTIAL_ID'),
                                                         application_credential_secret=env.get('OS_APPLICATION_CREDENTIAL_SECRET'))
 
@@ -13,20 +27,20 @@ auth = v3.Auth(auth_url=env.get('OS_AUTH_URL'),
                auth_methods=[application_credential])
 sess = session.Session(auth=auth)
 barbican = client.Client(session=sess)
-django_secret = barbican.secrets.get(env.get('BARBICAN_DJANGO_KEY'))
-pgdb_secret = barbican.secrets.get(env.get('BARBICAN_POSTGRES_URL'))
-ldap_secret = barbican.secrets.get(env.get('BARBICAN_LDAP_URL'))
+django_secret = barbican.secrets.get(BARBICAN_DJANGO_KEY)
+pgdb_secret = barbican.secrets.get(BARBICAN_POSTGRES_URL)
+ldap_secret = barbican.secrets.get(BARBICAN_LDAP_URL)
 ldap_dict = json.loads(ldap_secret.payload)
-aws_secret = barbican.secrets.get(env.get('BARBICAN_AWS_URL'))
+aws_secret = barbican.secrets.get(BARBICAN_AWS_URL)
 aws_dict = json.loads(aws_secret.payload)
-rabbit_secret = barbican.secrets.get(env.get('BARBICAN_RABBIT_URL'))
-email_host = barbican.secrets.get(env.get('BARBICAN_EMAIL_HOST'))
-server_email = barbican.secrets.get(env.get('BARBICAN_SERVER_EMAIL'))
-admin_emails = barbican.secrets.get(env.get('BARBICAN_ADMIN_EMAILS'))
-allowed_hosts = barbican.secrets.get(env.get('BARBICAN_ALLOWED_HOSTS'))
-elasticsearch_host = barbican.secrets.get(env.get('BARBICAN_ELASTICSEARCH_HOST'))
-pgdb_host = barbican.secrets.get(env.get('BARBICAN_PGDB_HOST'))
-pgdb_port = barbican.secrets.get(env.get('BARBICAN_PGDB_PORT'))
+rabbit_secret = barbican.secrets.get(BARBICAN_RABBIT_URL)
+email_host = barbican.secrets.get(BARBICAN_EMAIL_HOST)
+server_email = barbican.secrets.get(BARBICAN_SERVER_EMAIL)
+admin_emails = barbican.secrets.get(BARBICAN_ADMIN_EMAILS)
+allowed_hosts = barbican.secrets.get(BARBICAN_ALLOWED_HOSTS)
+elasticsearch_host = barbican.secrets.get(BARBICAN_ELASTICSEARCH_HOST)
+pgdb_host = barbican.secrets.get(BARBICAN_PGDB_HOST)
+pgdb_port = barbican.secrets.get(BARBICAN_PGDB_PORT)
 
 SECRET_KEY = django_secret.payload
 DEBUG = True
@@ -36,7 +50,6 @@ TIME_ZONE = 'Pacific/Auckland'
 EMAIL_HOST = email_host.payload
 SERVER_EMAIL = server_email.payload
 ADMINS = eval(admin_emails.payload.decode('UTF-8'))
-print(ADMINS)
 #Restricting Posts 'HOST:' variable to reference local hosts
 #Without this, cross site hacks can be injected into queries.
 ALLOWED_HOSTS = eval(allowed_hosts.payload.decode('UTF-8'))
@@ -71,9 +84,9 @@ LDAP_GROUP_ID_ATTR = ldap_dict['LDAP_GROUP_ID_ATTR']
 LDAP_GROUP_ATTR_MAP = ldap_dict['LDAP_GROUP_ATTR_MAP']
 LDAP_ADMIN_USER = ldap_dict['LDAP_ADMIN_USER']
 LDAP_ADMIN_PASSWORD = ldap_dict['LDAP_ADMIN_PASSWORD']
-LDAP_BASE = ldap_dict['LDAP_BASE'].strip()
-LDAP_USER_BASE = ldap_dict['LDAP_USER_BASE'].strip()
-LDAP_GROUP_BASE = ldap_dict['LDAP_GROUP_BASE'].strip()
+LDAP_BASE = ldap_dict['LDAP_BASE']
+LDAP_USER_BASE = ldap_dict['LDAP_USER_BASE']
+LDAP_GROUP_BASE = ldap_dict['LDAP_GROUP_BASE']
 LDAP_METHOD = ldap_dict['LDAP_METHOD']
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -117,8 +130,10 @@ FILE_UPLOAD_TEMP_DIR = path.abspath(path.join(path.dirname(__file__), '../var/s3
 #CELERY_RESULT_BACKEND = 'amqp'
 CELERY_RESULT_BACKEND = 'rpc'
 # TODO UPDATE THIS
-BROKER_URL = 'amqp://mytardis:{0}@rabbitmq-1:5672/mytardisvhost;amqp:/mytardis:{0}@rabbitmq-2:5672/mytardisvhost;'.format(rabbit_secret)
 
+#BROKER_URL = 'amqp://mytardis:{0}@rabbitmq-1:5672/mytardisvhost;amqp:/mytardis:{0}@rabbitmq-2:5672/mytardisvhost;'.format(rabbit_secret.payload)
+#print(BROKER_URL)
+BROKER_URL = rabbit_secret.payload.decode('UTF-8')
 from datetime import timedelta
 CELERYBEAT_SCHEDULE = {
     "verify-files": {
