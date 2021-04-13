@@ -137,13 +137,7 @@ FILE_UPLOAD_TEMP_DIR = path.abspath(path.join(path.dirname(__file__), '../var/s3
 CELERY_RESULT_BACKEND = 'rpc'
 # TODO UPDATE THIS
 
-<<<<<<< HEAD:tardis/settings.py
-#BROKER_URL = 'amqp://mytardis:{0}@rabbitmq-1:5672/mytardisvhost;amqp:/mytardis:{0}@rabbitmq-2:5672/mytardisvhost;'.format(rabbit_secret.payload)
-#print(BROKER_URL)
 BROKER_URL = rabbit_secret.payload.decode('UTF-8')
-from datetime import timedelta
-=======
->>>>>>> 72f0b351020cbb69caaf2e456b932cde979be2a9:tardis/UoA_settings.py
 CELERYBEAT_SCHEDULE = {
     "verify-files": {
         "task": "tardis_portal.verify_dfos",
