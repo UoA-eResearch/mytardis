@@ -46,7 +46,7 @@ class TransferLog(models.Model):
     transfer_id = models.CharField('Name', max_length=50, blank=True)
     initiated_by = models.ForeignKey(User, related_name='initiated_by',
                                      on_delete=models.CASCADE)
-    remote_host = models.ForeignKey(RemoteHost)
+    remote_host = models.ForeignKey(RemoteHost, on_delete=models.PROTECT)
     datafiles = models.ManyToManyField(DataFile, related_name='transferlogs')
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES,
                                               null=False, default=STATUS_NEW)
