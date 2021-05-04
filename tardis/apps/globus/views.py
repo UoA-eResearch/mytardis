@@ -30,7 +30,7 @@ def get_accessible_hosts(request):
 
 
 @login_required
-@authz.dataset_download_required
+#@authz.dataset_download_required   <--- specific decorator requires specific "object_id" name
 def globus_initiate(request):
 
     object_type = request.GET.get('object_type')

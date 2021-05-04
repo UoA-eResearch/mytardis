@@ -47,6 +47,8 @@ def globus_transfers(**kwargs):
 @tardis_app.task(name="apps.globus.transfer_status", ignore_result=True)
 def transfer_status(transfer_id, *args, **kwargs):
 
+    # NEED TO CHECK THIS IS STILL PENDING, OR IF IT HAS BEEN DONE SINCE THIS JOB WAS SUBMITTED
+
     from tardis.apps.globus.models import TransferLog
     time.sleep(0.1)
     confidential_client = globus_sdk.ConfidentialAppAuthClient(
@@ -75,6 +77,9 @@ def transfer_status(transfer_id, *args, **kwargs):
 def transfer_submit(transfer_id, *args, **kwargs):
     from tardis.apps.globus.models import TransferLog, RemoteHost
     time.sleep(0.1)
+
+    # NEED TO CHECK THIS IS STILL PENDING, OR IF IT HAS BEEN DONE SINCE THIS JOB WAS SUBMITTED
+
     confidential_client = globus_sdk.ConfidentialAppAuthClient(
         client_id=settings.GLOBUS_CLIENT_ID, client_secret=settings.GLOBUS_CLIENT_SECRET)
     scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
