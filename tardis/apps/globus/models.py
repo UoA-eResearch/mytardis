@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, Group
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
+from tardis.tardis_portal.models.project import Project
 from tardis.tardis_portal.models.datafile import DataFile
 from .apps import GlobusConfig
 
