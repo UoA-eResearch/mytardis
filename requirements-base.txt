@@ -41,3 +41,4 @@ django-taggit==1.1.0; python_version >= "3.5"
 logstash_formatter
 keystoneauth1
 python-barbicanclient
+globus-sdk

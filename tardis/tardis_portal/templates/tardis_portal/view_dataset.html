@@ -347,6 +347,14 @@
                       <i class="fa fa-download"></i>
                       MD5
                     </a>
+                    {% if globus_enabled and is_authenticated %}
+                      <a target="_blank"
+                         href="{% url "tardis.apps.globus:index" %}?object_id={{ dataset.id }}&object_type=dataset"
+                         class="btn btn-outline-secondary btn-sm" title="Transfer via Globus">
+                         <i class="fa fa-download"></i>
+                         GLOBUS
+                      </a>
+                    {% endif %}
                 </p>
             {% endif %}
         {% endblock downloads %}
