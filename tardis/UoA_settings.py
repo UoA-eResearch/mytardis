@@ -24,6 +24,7 @@ BARBICAN_ALLOWED_HOSTS='https://key-manager.rc.nectar.org.au:9311/v1/secrets/9dc
 BARBICAN_ELASTICSEARCH_HOST='https://key-manager.rc.nectar.org.au:9311/v1/secrets/057e0cc7-5b81-47e2-9131-266d4fc062a7'
 BARBICAN_PGDB_HOST='https://key-manager.rc.nectar.org.au:9311/v1/secrets/ecd779d0-61b0-4120-9346-921c7ad1086a'
 BARBICAN_PGDB_PORT='https://key-manager.rc.nectar.org.au:9311/v1/secrets/ed75ff1a-4dc2-4f15-b6af-80fcf1f446f9'
+BARBICAN_GLOBUS_CLIENT_SECRET ='https://key-manager.rc.nectar.org.au:9311/v1/secrets/bb413357-33d5-4ce3-beae-f06f50f40e70'
 
 application_credential = v3.ApplicationCredentialMethod(application_credential_id=env.get('OS_APPLICATION_CREDENTIAL_ID'),
                                                         application_credential_secret=env.get('OS_APPLICATION_CREDENTIAL_SECRET'))
@@ -47,6 +48,7 @@ allowed_hosts = barbican.secrets.get(BARBICAN_ALLOWED_HOSTS)
 elasticsearch_host = barbican.secrets.get(BARBICAN_ELASTICSEARCH_HOST)
 pgdb_host = barbican.secrets.get(BARBICAN_PGDB_HOST)
 pgdb_port = barbican.secrets.get(BARBICAN_PGDB_PORT)
+globus_client_secret = barbican.secrets.get(BARBICAN_GLOBUS_CLIENT_SECRET)
 
 SECRET_KEY = django_secret.payload
 DEBUG = True
@@ -103,7 +105,13 @@ INSTALLED_APPS += (
 'storages',
 'django_elasticsearch_dsl',
 'tardis.apps.search',
+'tardis.apps.globus',
 )
+
+# Client ID doesn't need to be secret, in fact it needs to be known and permitted by external users
+# if we wish to transfer to them i.e. NeSI
+GLOBUS_CLIENT_ID = "8cc516a7-1137-4cf0-9e19-762179f4abf6"
+GLOBUS_CLIENT_SECRET = globus_client_secret.payload
 
 ELASTICSEARCH_DSL = {
 'default': {

@@ -24,7 +24,7 @@ def globus_transfers(**kwargs):
 
     # hit globus API for number of pending transfers
     confidential_client = globus_sdk.ConfidentialAppAuthClient(
-        client_id=settings.CLIENT_ID, client_secret=settings.CLIENT_SECRET)
+        client_id=settings.GLOBUS_CLIENT_ID, client_secret=settings.GLOBUS_CLIENT_SECRET)
     scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
     cc_authorizer = globus_sdk.ClientCredentialsAuthorizer(
         confidential_client, scopes)
@@ -50,7 +50,7 @@ def transfer_status(transfer_id, *args, **kwargs):
     from tardis.apps.globus.models import TransferLog
     time.sleep(0.1)
     confidential_client = globus_sdk.ConfidentialAppAuthClient(
-        client_id=settings.CLIENT_ID, client_secret=settings.CLIENT_SECRET)
+        client_id=settings.GLOBUS_CLIENT_ID, client_secret=settings.GLOBUS_CLIENT_SECRET)
     scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
     cc_authorizer = globus_sdk.ClientCredentialsAuthorizer(
         confidential_client, scopes)
@@ -76,7 +76,7 @@ def transfer_submit(transfer_id, *args, **kwargs):
     from tardis.apps.globus.models import TransferLog, RemoteHost
     time.sleep(0.1)
     confidential_client = globus_sdk.ConfidentialAppAuthClient(
-        client_id=settings.CLIENT_ID, client_secret=settings.CLIENT_SECRET)
+        client_id=settings.GLOBUS_CLIENT_ID, client_secret=settings.GLOBUS_CLIENT_SECRET)
     scopes = "urn:globus:auth:scope:transfer.api.globus.org:all"
     cc_authorizer = globus_sdk.ClientCredentialsAuthorizer(
         confidential_client, scopes)
