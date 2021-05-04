@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('auth', '0011_update_proxy_permissions'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('tardis_portal', '0047_delete_objectacl'),
+        ('tardis_portal', '0046_auto_20210215_1421'),
     ]
 
     operations = [
