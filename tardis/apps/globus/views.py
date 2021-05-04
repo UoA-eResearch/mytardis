@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.db import transaction
 
-from tardis.tardis_portal.auth import decorators as authz
+#from tardis.tardis_portal.auth import decorators as authz
 from tardis.tardis_portal.models import Dataset
 from .models import RemoteHost, TransferLog
 
