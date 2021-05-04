@@ -58,7 +58,7 @@ class TransferLog(models.Model):
 
 
 class RemoteHostAdmin(admin.ModelAdmin):
-    fields = ['name', 'ip_adress', 'endpoint', 'managed', 'users', 'groups', 'projects']
+    fields = ['name', 'ip_address', 'endpoint', 'managed', 'users', 'groups', 'projects']
 
 
 class TransferLogAdmin(admin.ModelAdmin):
