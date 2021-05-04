@@ -54,8 +54,7 @@ class TransferLog(models.Model):
     def __str__(self):
         if self.transfer_id:
             return self.transfer_id
-        else:
-            return "Pending: "+ str(self.id)
+        return "Pending: "+ str(self.id)
 
 
 class RemoteHostAdmin(admin.ModelAdmin):

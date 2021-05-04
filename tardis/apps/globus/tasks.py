@@ -47,7 +47,7 @@ def globus_transfers(**kwargs):
 @tardis_app.task(name="apps.globus.transfer_status", ignore_result=True)
 def transfer_status(transfer_id, *args, **kwargs):
 
-    from tardis.apps.globus import TransferLog
+    from tardis.apps.globus.models import TransferLog
     time.sleep(0.1)
     confidential_client = globus_sdk.ConfidentialAppAuthClient(
         client_id=settings.CLIENT_ID, client_secret=settings.CLIENT_SECRET)
@@ -67,13 +67,13 @@ def transfer_status(transfer_id, *args, **kwargs):
                 transferlog.status = transferlog.STATUS_SUCCEEDED
             if task_details == "FAILED":
                 transferlog.status = transferlog.STATUS_FAILED
-            transfermodel.save()
+            transferlog.save()
 
 
 
 @tardis_app.task(name="apps.globus.transfer_submit", ignore_result=True)
 def transfer_submit(transfer_id, *args, **kwargs):
-    from tardis.apps.globus import TransferLog, RemoteHost
+    from tardis.apps.globus.models import TransferLog, RemoteHost
     time.sleep(0.1)
     confidential_client = globus_sdk.ConfidentialAppAuthClient(
         client_id=settings.CLIENT_ID, client_secret=settings.CLIENT_SECRET)
@@ -99,6 +99,6 @@ def transfer_submit(transfer_id, *args, **kwargs):
                 tdata.add_item(filepath.get_absolute_filepath(), filepath.filename)
 
             new_transfer_id = tc.submit_transfer(tdata)
-            transfermodel.transfer_id = new_transfer_id
-            transfermodel.status = transfermodel.STATUS_SUBMITTED
-            transfermodel.save()
+            transferlog.transfer_id = new_transfer_id
+            transferlog.status = transferlog.STATUS_SUBMITTED
+            transferlog.save()
