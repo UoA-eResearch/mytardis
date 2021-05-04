@@ -44,7 +44,7 @@ def globus_initiate(request):
         dataset = Dataset.objects.get(id=object_id)
 
     # innefficient query
-    datafiles = dataset.get_datafiles()
+    datafiles = dataset.get_datafiles(request.user)
 
     with transaction.atomic():
         newtransferlog = TransferLog.objects.create(
