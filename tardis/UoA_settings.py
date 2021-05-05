@@ -12,7 +12,6 @@ from .default_settings import *
 
 
 BARBICAN_RABBIT_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/79036d1a-9aa9-437f-b9d5-21a5f215cd37'
-#BARBICAN_LDAP_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/a54d4510-f2b4-49a6-962e-b1d3eec65e5b'
 BARBICAN_LDAP_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/bc87b109-a7f2-4926-a6db-64e6226ac141'
 BARBICAN_POSTGRES_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/e2391e45-9621-49d0-b0d1-a54c53a3c682'
 BARBICAN_AWS_URL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/e02df33f-24f3-4cc5-a21c-533b0f3433ab'
@@ -20,7 +19,7 @@ BARBICAN_DJANGO_KEY='https://key-manager.rc.nectar.org.au:9311/v1/secrets/a09371
 BARBICAN_EMAIL_HOST='https://key-manager.rc.nectar.org.au:9311/v1/secrets/f2fa31c4-9c72-45ce-8ae6-17c92cced1ac'
 BARBICAN_SERVER_EMAIL='https://key-manager.rc.nectar.org.au:9311/v1/secrets/2c25295f-9945-47df-8a64-eb465de825ed'
 BARBICAN_ADMIN_EMAILS='https://key-manager.rc.nectar.org.au:9311/v1/secrets/486f2f61-ee60-4d68-a773-10a60ae64708'
-BARBICAN_ALLOWED_HOSTS='https://key-manager.rc.nectar.org.au:9311/v1/secrets/9dc90d2b-3619-4b90-8719-f03f64d0c8db'
+BARBICAN_ALLOWED_HOSTS='https://key-manager.rc.nectar.org.au:9311/v1/secrets/0af85a24-f662-43b3-a30d-c280d64e9c2c'
 BARBICAN_ELASTICSEARCH_HOST='https://key-manager.rc.nectar.org.au:9311/v1/secrets/057e0cc7-5b81-47e2-9131-266d4fc062a7'
 BARBICAN_PGDB_HOST='https://key-manager.rc.nectar.org.au:9311/v1/secrets/ecd779d0-61b0-4120-9346-921c7ad1086a'
 BARBICAN_PGDB_PORT='https://key-manager.rc.nectar.org.au:9311/v1/secrets/ed75ff1a-4dc2-4f15-b6af-80fcf1f446f9'
