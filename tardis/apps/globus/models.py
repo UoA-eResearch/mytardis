@@ -63,7 +63,8 @@ class RemoteHostAdmin(admin.ModelAdmin):
 
 class TransferLogAdmin(admin.ModelAdmin):
     fields = ['transfer_id', 'initiated_by', 'remote_host', 'datafiles', 'status']
-
+    list_display = [
+        'id', 'transfer_id', "status"]
 
 # Register the models with the admin
 if apps.is_installed(GlobusConfig.name):
