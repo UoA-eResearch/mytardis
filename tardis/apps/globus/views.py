@@ -8,8 +8,9 @@ from django.shortcuts import render
 from django.db import transaction
 
 #from tardis.tardis_portal.auth import decorators as authz
-from tardis.tardis_portal.models import Dataset
+from tardis.tardis_portal.models import Project, Experiment, Dataset, DataFile
 from .models import RemoteHost, TransferLog
+from tardis.tardis_portal.shortcuts import return_response_error
 
 @login_required
 def get_accessible_hosts(request):
@@ -30,21 +31,34 @@ def get_accessible_hosts(request):
 
 
 @login_required
-#@authz.dataset_download_required   <--- specific decorator requires specific "object_id" name
 def globus_initiate(request):
 
     object_type = request.GET.get('object_type')
     object_id = request.GET.get('object_id')
 
+    if not has_download_access(request, object_id, object_type):
+        return return_response_error(request)
+
     remote_vm = RemoteHost.objects.get(pk=2)
     # GET REMOTE HOST #2
     # need some nice checks for object validity + permissions
 
-    if object_type == 'dataset':
-        dataset = Dataset.objects.get(id=object_id)
+    if object_type == 'project':
+        project = Project.objects.get(id=object_id)
+        datafiles = project.get_datafiles(request.user)
 
-    # innefficient query
-    datafiles = dataset.get_datafiles(request.user)
+    elif object_type == 'experiment':
+        exp = Experiment.objects.get(id=object_id)
+        datafiles = exp.get_datafiles(request.user)
+
+    elif object_type == 'dataset':
+        dataset = Dataset.objects.get(id=object_id)
+        datafiles = dataset.get_datafiles(request.user)
+
+    elif object_type == 'datafile':
+        datafiles = DataFile.safe.get(id=object_id)
+    else:
+        raise NotImplementedError(object_type)
 
     with transaction.atomic():
         newtransferlog = TransferLog.objects.create(
