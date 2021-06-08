@@ -109,9 +109,7 @@ def transfer_submit(transfer_id):
         # create a new client
         tc = globus_sdk.TransferClient(authorizer=cc_authorizer)
 
-        # TODO remove this horrible hardcode
-        local_endpoint = RemoteHost.objects.get(pk=1)
-        # Get dfo locked for write (to prevent concurrent actions)
+        local_endpoint = RemoteHost.objects.get(pk=settings.LOCAL_ENDPOINT_ID)
 
         label =  str(transferlog.id) + " " + transferlog.initiated_by.username
         tdata = globus_sdk.TransferData(tc, local_endpoint.endpoint,
