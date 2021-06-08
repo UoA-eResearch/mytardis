@@ -7,10 +7,11 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.db import transaction
 
-#from tardis.tardis_portal.auth import decorators as authz
+from tardis.tardis_portal.auth import decorators as authz
 from tardis.tardis_portal.models import Project, Experiment, Dataset, DataFile
-from .models import RemoteHost, TransferLog
 from tardis.tardis_portal.shortcuts import return_response_error
+
+from .models import RemoteHost, TransferLog
 
 @login_required
 def get_accessible_hosts(request):
@@ -36,7 +37,7 @@ def globus_initiate(request):
     object_type = request.GET.get('object_type')
     object_id = request.GET.get('object_id')
 
-    if not has_download_access(request, object_id, object_type):
+    if not authz.has_download_access(request, object_id, object_type):
         return return_response_error(request)
 
     remote_vm = RemoteHost.objects.get(pk=2)
