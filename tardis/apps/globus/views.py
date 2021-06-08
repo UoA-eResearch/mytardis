@@ -57,7 +57,7 @@ def globus_initiate(request):
         datafiles = dataset.get_datafiles(request.user)
 
     elif object_type == 'datafile':
-        datafiles = DataFile.safe.get(id=object_id)
+        datafiles = DataFile.safe.get(request.user, object_id)
     else:
         raise NotImplementedError(object_type)
 
