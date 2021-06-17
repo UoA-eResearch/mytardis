@@ -47,8 +47,8 @@ class RemoteHostsObject(object):
 
 # API object to check selected objects and return invalid options
 class DownloadCartObject(object):
-    def __init__(self, projects=None, experiments=None, Datasets=None,
-                 Datafiles=None):
+    def __init__(self, projects=None, experiments=None, datasets=None,
+                 datafiles=None):
         self.projects = projects
         self.experiments = experiments
         self.datasets = datasets
@@ -84,7 +84,7 @@ class RemoteHostsAppResource(Resource):
         response = []
         for host in hosts.distinct():
             response.append(host)
-        return [RemoteHostsObject(id=1, hosts=response)]
+        return [RemoteHostsObject(hosts=response)]
 
     def obj_get_list(self, bundle, **kwargs):
         return self.get_object_list(bundle.request)
@@ -130,7 +130,7 @@ class ValidateCartAppResource(Resource):
         file_ids = bundle.data.get('datafiles', [])
         if not host_id:
             raise Exception(message="Please specify a remote host")
-        if not any([proj_ids, exp_id, set_ids, file_ids]):
+        if not any([proj_ids, exp_ids, set_ids, file_ids]):
             raise Exception(message="Please provide Projects/Experiments/Datasets/Datafiles for validation")
         # Query for related projects, and unpack into list here for efficiency
         related_projects = [*{*RemoteHost.objects.filter(id=host_id).prefetch_related('projects'
