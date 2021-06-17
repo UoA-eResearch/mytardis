@@ -1,0 +1,28 @@
+{
+    "categories": {
+        "project": {
+            "name_field": "name",
+            "details_uri": "/project/view/",
+            "collection_name": "projects",
+            "endpoint_name": "project"
+        },
+        "experiment": {
+            "name_field": "title",
+            "details_uri": "/experiment/view/",
+            "collection_name": "experiments",
+            "endpoint_name": "experiment"
+        },
+        "dataset": {
+            "name_field": "description",
+            "details_uri": "/dataset/view/",
+            "collection_name": "datasets",
+            "endpoint_name": "dataset"
+        },
+        "datafile": {
+            "name_field": "filename",
+            "details_uri": "/datafile/view/",
+            "collection_name": "datafiles",
+            "endpoint_name": "dataset_file"
+        }
+    }
+}

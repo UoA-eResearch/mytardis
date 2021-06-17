@@ -1,7 +1,7 @@
 import React from 'react'
 import { PureTypeSchemaList } from './TypeSchemaList';
 import { action } from '@storybook/addon-actions';
-import makeMockStore from "../../../util/makeMockStore";
+import makeMockStore from "@apps/shared/makeMockStore";
 import { Provider } from "react-redux";
 
 const mockStore = makeMockStore();

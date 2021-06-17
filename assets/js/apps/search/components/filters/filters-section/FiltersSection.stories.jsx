@@ -1,5 +1,5 @@
 import React from 'react'
-import makeMockStore from "../../../util/makeMockStore";
+import makeMockStore from "@apps/shared/makeMockStore";
 import { PureFiltersSection } from './FiltersSection';
 import { schemaData,allSchemaIdsData } from '../type-schema-list/TypeSchemaList.stories';
 import { Provider } from "react-redux";

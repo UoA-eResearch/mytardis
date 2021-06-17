@@ -1,59 +1,60 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import ReactDOM from "react-dom";
 import "./cart.css";
 import Button from "react-bootstrap/Button";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import { BsTrash, BsDownload } from "react-icons/bs";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { BsTrash } from "react-icons/bs";
+import { Provider, useDispatch } from "react-redux";
+import { BrowserRouter, HashRouter, Link, Route, Switch } from "react-router-dom";
 import store from "@apps/shared/reduxAppStore";
-import { initialiseSlice, removeAllItems } from "./cartSlice";
+import { removeAllItems } from "./cartSlice";
 import CartItemList from "./CartItemList";
 import "bootstrap/dist/css/bootstrap.css";
+import TransferScreen from "./TransferScreen";
 
-const CartScreen = (props) => {
+export const CartScreen = (props) => {
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(initialiseSlice());
-    }, [dispatch]);
     const handleRemoveAll = useCallback(
         () => {
             dispatch(removeAllItems());
         },
         [dispatch, removeAllItems]);
-    return <div className="cart-page container">
+    return <div>
         <h1 className="h3 my-3">Cart</h1>
-        <main className="cart-page-content shadow-sm">
-            <section className="mb-">
-                <h2>Download options</h2>
-                <p>Total download size: 41.5GB</p>
-                <div className="cart__actions">
-                    <Button variant="primary"><BsDownload /> Download</Button>
-                    <Button variant="secondary">Get Manifest</Button>
-                    <DropdownButton variant="secondary" title="Push to..." className="d-inline-block">
-                        <Dropdown.Item>NeSI</Dropdown.Item>
-                        <Dropdown.Item>Nectar</Dropdown.Item>
-                    </DropdownButton>
-                </div>
-                {/* <Form.Control type="text" placeholder="Filter by name"/> */}
-            </section>
-            <section>
-                {/* <h2>Objects to be downloaded</h2> */}
-                <CartItemList />
-                <hr />
-                <p className="summary">104 Datafiles from 4 Projects, 7 Experiments and 10 Datasets.</p>
-                <p><Button onClick={handleRemoveAll} variant="outline-danger"><BsTrash /> Remove all</Button></p>
+        <section className="cart-summary">
+            <p>Total size: 41.5GB</p>
+            <div className="cart-summary__actions">
+                <Link to="/transfer" className="btn btn-primary">Transfer to an endpoint</Link>
+                <Button variant="secondary">Download</Button>
+                <Button variant="secondary">Get manifest</Button>
+            </div>
+        </section>
+        <section>
+            <CartItemList />
+            <p><button className="btn btn-outline-secondary" onClick={handleRemoveAll} variant=""><BsTrash /> Remove all</button></p>
 
-            </section>
+        </section>
 
-        </main>
     </div>;
 };
 
 
+
 ReactDOM.render(
-    <Provider store={store}>
-        <CartScreen />
-    </Provider>,
+    <HashRouter>
+        <Provider store={store}>
+            <div className="container">
+                <main className="cart-content shadow-sm">
+                    <Switch>
+                        <Route path="/transfer">
+                            <TransferScreen />
+                        </Route>
+                        <Route path="/">
+                            <CartScreen />
+                        </Route>
+                    </Switch>
+                </main>
+            </div>      
+        </Provider>
+    </HashRouter>,
     document.getElementById("cart-app"),
 );

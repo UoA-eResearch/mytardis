@@ -1,7 +1,7 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions';
 import { PureEntryPreviewCard } from './EntryPreviewCard';
-import makeMockStore from "../../util/makeMockStore";
+import makeMockStore from "@apps/shared/makeMockStore";
 import { Provider } from 'react-redux';
 
 const store = makeMockStore({

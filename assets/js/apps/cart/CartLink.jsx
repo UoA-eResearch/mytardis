@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Badge, Button, Popover, OverlayTrigger, PopoverContent, PopoverTitle } from "react-bootstrap";
 import { FaShoppingCart } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { notificationDismissed, initialiseSlice, NOTIFICATION_TYPE } from "./cartSlice";
+import { notificationDismissed, NOTIFICATION_TYPE } from "./cartSlice";
 
 const itemAddedNotification = (onDismiss) => (
     <Popover id="cart-item-added">
@@ -27,9 +27,6 @@ const itemRemovedNotification = (onDismiss) => (
 
 export default function CartLink(props) {
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(initialiseSlice(false));
-    }, [dispatch]);
     const numberOfItems = useSelector(state => {
         const items = state.cart.itemsInCart;
         if (!items || !items.allIds) {

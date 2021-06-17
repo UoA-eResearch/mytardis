@@ -1,6 +1,6 @@
 import React from "react";
 import FilterSummaryBox from "./FilterSummaryBox";
-import makeMockStore from "../../util/makeMockStore";
+import makeMockStore from "@apps/shared/makeMockStore";
 import { filtersData } from "../filters/filters-section/FiltersSection.stories";
 import { Provider } from "react-redux";
 import { searchInfoData } from "../SearchPage.stories";

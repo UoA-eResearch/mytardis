@@ -3,7 +3,7 @@ import { SearchPage } from "./SearchPage";
 import { experimentListData } from "./ResultList.stories";
 import { Provider } from "react-redux";
 import { filtersData } from "./filters/filters-section/FiltersSection.stories";
-import makeMockStore from "../util/makeMockStore";
+import makeMockStore from "@apps/shared/makeMockStore";
 import { SORT_ORDER } from "./searchSlice";
 
 export default {
