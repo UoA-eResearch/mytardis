@@ -43,17 +43,19 @@ else:
 
 # API object to return accessible hosts
 class RemoteHostsObject(object):
-    def __init__(self, hosts=None):
+    def __init__(self, hosts=None, id=None):
         self.hosts = hosts
+        self.id = id
 
 # API object to check selected objects and return invalid options
 class DownloadCartObject(object):
     def __init__(self, projects=None, experiments=None, datasets=None,
-                 datafiles=None):
+                 datafiles=None, id=None):
         self.projects = projects
         self.experiments = experiments
         self.datasets = datasets
         self.datafiles = datafiles
+        self.id = id
 
 # API object to submit objects for globus transfer
 # Could just re-use the cart object? and for the size API?
@@ -75,6 +77,14 @@ class RemoteHostAppResource(Resource):
         authentication = default_authentication
         object_class = RemoteHostsObject
         always_return_data = True
+
+    def detail_uri_kwargs(self, bundle_or_obj):
+        kwargs = {}
+        if isinstance(bundle_or_obj, Bundle):
+            kwargs['pk'] = bundle_or_obj.obj.id
+        else:
+            kwargs['pk'] = bundle_or_obj['id']
+        return kwargs
 
     def get_object_list(self, request):
         if not request.user.is_authenticated:
@@ -129,6 +139,13 @@ class ValidateAppResource(Resource):
         object_class = DownloadCartObject
         always_return_data = True
 
+    def detail_uri_kwargs(self, bundle_or_obj):
+        kwargs = {}
+        if isinstance(bundle_or_obj, Bundle):
+            kwargs['pk'] = bundle_or_obj.obj.id
+        else:
+            kwargs['pk'] = bundle_or_obj['id']
+        return kwargs
 
     def get_object_list(self, request):
         return request
@@ -177,9 +194,16 @@ class TransferAppResource(Resource):
         list_allowed_methods = ['post']
         serializer = default_serializer
         authentication = default_authentication
-        #object_class = DownloadCartObject
+        object_class = DownloadCartObject
         always_return_data = True
 
+    def detail_uri_kwargs(self, bundle_or_obj):
+        kwargs = {}
+        if isinstance(bundle_or_obj, Bundle):
+            kwargs['pk'] = bundle_or_obj.obj.id
+        else:
+            kwargs['pk'] = bundle_or_obj['id']
+        return kwargs
 
     def get_object_list(self, request):
         return request
