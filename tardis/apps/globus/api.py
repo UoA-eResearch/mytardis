@@ -18,6 +18,7 @@ from tastypie.serializers import Serializer
 #from tastypie.exceptions import ImmediateHttpResponse
 #from tastypie.http import HttpUnauthorized
 
+from tardis.tardis_portal.models import Experiment, Dataset, DataFile
 from tardis.tardis_portal.api import default_authentication
 #from tardis.tardis_portal.auth import decorators as authz
 from .models import RemoteHost, TransferLog
@@ -63,12 +64,12 @@ class DownloadCartObject(object):
 #        self.id = id
 
 
-class RemoteHostsAppResource(Resource):
+class RemoteHostAppResource(Resource):
     """Tastypie resource for RemoteHosts"""
     hosts = fields.ApiField(attribute='hosts', null=True)
 
     class Meta:
-        resource_name = 'get-remotehosts'
+        resource_name = 'remotehost'
         list_allowed_methods = ['get']
         serializer = default_serializer
         authentication = default_authentication
@@ -83,14 +84,14 @@ class RemoteHostsAppResource(Resource):
             hosts |= RemoteHost.objects.filter(groups=group)
         response = []
         for host in hosts.distinct():
-            response.append(host)
+            response.append({"id":host.id, "name":host.name})
         return [RemoteHostsObject(hosts=response)]
 
     def obj_get_list(self, bundle, **kwargs):
         return self.get_object_list(bundle.request)
 
 
-class ValidateCartAppResource(Resource):
+class ValidateAppResource(Resource):
     """Tastypie resource to validate Download Cart contents"""
     projects = fields.ApiField(attribute='projects', null=True)
     experiments = fields.ApiField(attribute='experiments', null=True)
@@ -98,7 +99,7 @@ class ValidateCartAppResource(Resource):
     datafiles = fields.ApiField(attribute='datafiles', null=True)
 
     class Meta:
-        resource_name = 'validate-cart'
+        resource_name = 'transfer_validation'
         list_allowed_methods = ['post']
         serializer = default_serializer
         authentication = default_authentication
@@ -136,8 +137,24 @@ class ValidateCartAppResource(Resource):
         related_projects = [*{*RemoteHost.objects.filter(id=host_id).prefetch_related('projects'
                                 ).values_list("projects__id", flat=True)}]
 
-        proj_list, exp_list, set_list, file_list = [], [], [], []
+        #proj_list, exp_list, set_list, file_list = [], [], [], []
+        #proj_list = [id for id in proj_ids if id not in related_projects]
+
+        exp_projs = [*{*Experiment.objects.filter(pk__in=[exp_ids]).select_related(
+                                      'project').values_list("id", "project__id")}]
+
+        set_projs = [*{*Dataset.objects.filter(pk__in=[set_ids]).prefetch_related(
+                        "experiments", "experiments__project").values_list(
+                        "id", "experiments__project__id")}]
+
+        file_projs = [*{*DataFile.objects.filter(pk__in=[file_ids]).prefetch_related(
+                        "dataset", "dataset__experiments", "dataset__experiments__project").values_list(
+                        "id", "dataset__experiments__project__id")}]
+
         proj_list = [id for id in proj_ids if id not in related_projects]
+        exp_list = [id for (id, proj_id) in exp_projs if proj_id not in related_projects]
+        set_list = [id for (id, proj_id) in set_projs if proj_id not in related_projects]
+        file_list = [id for (id, proj_id) in file_projs if proj_id not in related_projects]
 
         bundle.obj = DownloadCartObject(projects=proj_list, experiments=exp_list,
                                         datasets=set_list, datafiles=file_list)
