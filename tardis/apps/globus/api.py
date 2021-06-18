@@ -13,7 +13,7 @@ from django.conf import settings
 #from django.template.defaultfilters import filesizeformat
 from django.db import transaction
 from tastypie import fields
-from tastypie.resources import Resource #, Bundle
+from tastypie.resources import Resource, Bundle
 from tastypie.serializers import Serializer
 #from tastypie.exceptions import ImmediateHttpResponse
 #from tastypie.http import HttpUnauthorized
