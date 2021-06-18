@@ -91,6 +91,29 @@ class RemoteHostAppResource(Resource):
         return self.get_object_list(bundle.request)
 
 
+def validate_objects(host, projects, experiments, datasets, datafiles):
+
+    related_projects = [*{*RemoteHost.objects.filter(id=host).prefetch_related('projects'
+                            ).values_list("projects__id", flat=True)}]
+    if projects:
+        projects = [id for id in projects if id not in related_projects]
+    if experiments:
+        exp_projs = [*{*Experiment.objects.filter(pk__in=[exp_ids]).select_related(
+                                  'project').values_list("id", "project__id")}]
+        experiments = [id for (id, proj_id) in exp_projs if proj_id not in related_projects]
+    if datasets:
+        set_projs = [*{*Dataset.objects.filter(pk__in=[set_ids]).prefetch_related(
+                        "experiments", "experiments__project").values_list(
+                        "id", "experiments__project__id")}]
+        datasets = [id for (id, proj_id) in set_projs if proj_id not in related_projects]
+    if datafiles:
+        file_projs = [*{*DataFile.objects.filter(pk__in=[file_ids]).prefetch_related(
+                        "dataset", "dataset__experiments", "dataset__experiments__project").values_list(
+                        "id", "dataset__experiments__project__id")}]
+        datafiles = [id for (id, proj_id) in file_projs if proj_id not in related_projects]
+    return projects, experiments, datasets, datafiles
+
+
 class ValidateAppResource(Resource):
     """Tastypie resource to validate Download Cart contents"""
     projects = fields.ApiField(attribute='projects', null=True)
@@ -134,27 +157,8 @@ class ValidateAppResource(Resource):
         if not any([proj_ids, exp_ids, set_ids, file_ids]):
             raise Exception(message="Please provide Projects/Experiments/Datasets/Datafiles for validation")
         # Query for related projects, and unpack into list here for efficiency
-        related_projects = [*{*RemoteHost.objects.filter(id=host_id).prefetch_related('projects'
-                                ).values_list("projects__id", flat=True)}]
 
-        #proj_list, exp_list, set_list, file_list = [], [], [], []
-        #proj_list = [id for id in proj_ids if id not in related_projects]
-
-        exp_projs = [*{*Experiment.objects.filter(pk__in=[exp_ids]).select_related(
-                                      'project').values_list("id", "project__id")}]
-
-        set_projs = [*{*Dataset.objects.filter(pk__in=[set_ids]).prefetch_related(
-                        "experiments", "experiments__project").values_list(
-                        "id", "experiments__project__id")}]
-
-        file_projs = [*{*DataFile.objects.filter(pk__in=[file_ids]).prefetch_related(
-                        "dataset", "dataset__experiments", "dataset__experiments__project").values_list(
-                        "id", "dataset__experiments__project__id")}]
-
-        proj_list = [id for id in proj_ids if id not in related_projects]
-        exp_list = [id for (id, proj_id) in exp_projs if proj_id not in related_projects]
-        set_list = [id for (id, proj_id) in set_projs if proj_id not in related_projects]
-        file_list = [id for (id, proj_id) in file_projs if proj_id not in related_projects]
+        proj_list, exp_list, set_list, file_list = validate_objects(host_id, proj_ids, exp_ids, set_ids, file_ids)
 
         bundle.obj = DownloadCartObject(projects=proj_list, experiments=exp_list,
                                         datasets=set_list, datafiles=file_list)
