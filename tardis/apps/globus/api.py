@@ -61,7 +61,7 @@ class RemoteHostAppResource(Resource):
     hosts = fields.ApiField(attribute='hosts', null=True)
 
     class Meta:
-        resource_name = 'remotehost'
+        resource_name = 'remotehosts'
         list_allowed_methods = ['get']
         serializer = default_serializer
         authentication = default_authentication
@@ -85,7 +85,7 @@ class RemoteHostAppResource(Resource):
         response = []
         for host in hosts.distinct():
             response.append({"id":host.id, "name":host.name})
-        return [RemoteHostsObject(hosts=response)]
+        return [RemoteHostsObject(hosts=response, id=1)]
 
     def obj_get_list(self, bundle, **kwargs):
         return self.get_object_list(bundle.request)
@@ -149,7 +149,7 @@ class ValidateAppResource(Resource):
     datafiles = fields.ApiField(attribute='datafiles', null=True)
 
     class Meta:
-        resource_name = 'transfer_validation'
+        resource_name = 'transfer_validate'
         list_allowed_methods = ['post']
         serializer = default_serializer
         authentication = default_authentication
@@ -190,7 +190,6 @@ class ValidateAppResource(Resource):
         if not any([proj_ids, exp_ids, set_ids, file_ids]):
             raise ImmediateHttpResponse(HttpBadRequest("Please provide Projects/Experiments/Datasets/Datafiles for validation"))
         # Query for related projects, and unpack into list here for efficiency
-
         proj_bad, exp_bad, set_bad, file_bad = validate_objects(user, host_id, proj_ids, exp_ids, set_ids, file_ids)
 
         bundle.obj = DownloadCartObject(projects=proj_bad, experiments=exp_bad,
@@ -271,7 +270,7 @@ class TransferAppResource(Resource):
                 raise ImmediateHttpResponse(HttpForbidden("You do not have download access for one or more datafiles"))
         query |= DataFile.safe.all(user).filter(pk__in=file_ids)
 
-        downloadable_dfs = query.distinct()
+        downloadable_dfs = query.distinct().values_list("id", flat=True)
 
         remote_vm = RemoteHost.objects.get(pk=host_id)
 
