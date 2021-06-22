@@ -7,20 +7,18 @@ Implemented with Tastypie.
 
 import json
 import logging
-#from datetime import datetime
 
 from django.conf import settings
-#from django.template.defaultfilters import filesizeformat
 from django.db import transaction
 from tastypie import fields
 from tastypie.resources import Resource, Bundle
 from tastypie.serializers import Serializer
-#from tastypie.exceptions import ImmediateHttpResponse
-#from tastypie.http import HttpUnauthorized
+from tastypie.exceptions import ImmediateHttpResponse
+from tastypie.http import HttpBadRequest, HttpUnauthorized, HttpForbidden, HttpNotFound
 
 from tardis.tardis_portal.api import default_authentication
 from tardis.tardis_portal.auth import decorators as authz
-from tardis.tardis_portal.models import Experiment, Dataset, DataFile
+from tardis.tardis_portal.models import Project, Experiment, Dataset, DataFile
 from .models import RemoteHost, TransferLog
 
 
@@ -57,14 +55,6 @@ class DownloadCartObject(object):
         self.datafiles = datafiles
         self.id = id
 
-# API object to submit objects for globus transfer
-# Could just re-use the cart object? and for the size API?
-
-#class GlobusSubmissionObject(object):
-#    def __init__(self, objects=None, id=None):
-#        self.objects = objects
-#        self.id = id
-
 
 class RemoteHostAppResource(Resource):
     """Tastypie resource for RemoteHosts"""
@@ -88,7 +78,7 @@ class RemoteHostAppResource(Resource):
 
     def get_object_list(self, request):
         if not request.user.is_authenticated:
-            raise Exception(message="User must be logged in to retrieve remote hosts")
+            raise ImmediateHttpResponse(HttpUnauthorized("User must be logged in to retrieve remote hosts"))
         hosts = RemoteHost.objects.filter(users=request.user)
         for group in request.user.groups.all():
             hosts |= RemoteHost.objects.filter(groups=group)
@@ -101,23 +91,50 @@ class RemoteHostAppResource(Resource):
         return self.get_object_list(bundle.request)
 
 
-def validate_objects(host, projects, experiments, datasets, datafiles):
+def validate_objects(user, host, projects, experiments, datasets, datafiles):
+
+    if not RemoteHost.objects.filter(pk=host).exists():
+        raise ImmediateHttpResponse(HttpNotFound("Remote host does not exist"))
+
+    host_query = RemoteHost.objects.select_related("users").filter(pk=host, users__id=user.id)
+    users_groups = [*user.groups.all().values_list("id",flat=True)]
+    host_query |= RemoteHost.objects.select_related("groups").filter(pk=host, groups__id__in=users_groups)
+
+    if not host_query.exists():
+        raise ImmediateHttpResponse(HttpForbidden("User does not have access to remote host"))
+
     # Query for related projects, and unpack into list here for efficiency
     related_projects = [*{*RemoteHost.objects.filter(id=host).prefetch_related('projects'
                             ).values_list("projects__id", flat=True)}]
     if projects:
+        if Project.objects.filter(pk__in=projects).count() != len(projects):
+            raise ImmediateHttpResponse(HttpNotFound("One or more Projects do not exist"))
+        if Project.safe.all(user).filter(pk__in=projects).count() != len(projects):
+            raise ImmediateHttpResponse(HttpForbidden("User does not have access to one or more Projects"))
         projects = [id for id in projects if id not in related_projects]
     if experiments:
-        exp_projs = [*{*Experiment.objects.filter(pk__in=[experiments]).select_related(
+        if Experiment.objects.filter(pk__in=experiments).count() != len(experiments):
+            raise ImmediateHttpResponse(HttpNotFound("One or more Experiments do not exist"))
+        if Experiment.safe.all(user).filter(pk__in=experiments).count() != len(experiments):
+            raise ImmediateHttpResponse(HttpForbidden("User does not have access to one or more Experiments"))
+        exp_projs = [*{*Experiment.objects.filter(pk__in=experiments).select_related(
                                   'project').values_list("id", "project__id")}]
         experiments = [id for (id, proj_id) in exp_projs if proj_id not in related_projects]
     if datasets:
-        set_projs = [*{*Dataset.objects.filter(pk__in=[datasets]).prefetch_related(
+        if Dataset.objects.filter(pk__in=datasets).count() != len(datasets):
+            raise ImmediateHttpResponse(HttpNotFound("One or more Datasets do not exist"))
+        if Dataset.safe.all(user).filter(pk__in=datasets).count() != len(datasets):
+            raise ImmediateHttpResponse(HttpForbidden("User does not have access to one or more Datasets"))
+        set_projs = [*{*Dataset.objects.filter(pk__in=datasets).prefetch_related(
                         "experiments", "experiments__project").values_list(
                         "id", "experiments__project__id")}]
         datasets = [id for (id, proj_id) in set_projs if proj_id not in related_projects]
     if datafiles:
-        file_projs = [*{*DataFile.objects.filter(pk__in=[datafiles]).prefetch_related(
+        if DataFile.objects.filter(pk__in=datafiles).count() != len(datafiles):
+            raise ImmediateHttpResponse(HttpNotFound("One or more Datafiles do not exist"))
+        if DataFile.safe.all(user).filter(pk__in=datafiles).count() != len(datafiles):
+            raise ImmediateHttpResponse(HttpForbidden("User does not have access to one or more Datafiles"))
+        file_projs = [*{*DataFile.objects.filter(pk__in=datafiles).prefetch_related(
                         "dataset", "dataset__experiments", "dataset__experiments__project").values_list(
                         "id", "dataset__experiments__project__id")}]
         datafiles = [id for (id, proj_id) in file_projs if proj_id not in related_projects]
@@ -161,8 +178,7 @@ class ValidateAppResource(Resource):
     def create_return_invalid(self, bundle):
         user = bundle.request.user
         if not user.is_authenticated:
-            raise Exception(message="User must be logged in to validate download cart")
-        groups = user.groups.all()
+            raise ImmediateHttpResponse(HttpUnauthorized("User must be logged in to validate download cart"))
 
         host_id = bundle.data.get('remote_host', None)
         proj_ids = bundle.data.get('projects', [])
@@ -170,24 +186,24 @@ class ValidateAppResource(Resource):
         set_ids = bundle.data.get('datasets', [])
         file_ids = bundle.data.get('datafiles', [])
         if not host_id:
-            raise Exception(message="Please specify a remote host")
+            raise ImmediateHttpResponse(HttpBadRequest("Please specify a remote host"))
         if not any([proj_ids, exp_ids, set_ids, file_ids]):
-            raise Exception(message="Please provide Projects/Experiments/Datasets/Datafiles for validation")
+            raise ImmediateHttpResponse(HttpBadRequest("Please provide Projects/Experiments/Datasets/Datafiles for validation"))
         # Query for related projects, and unpack into list here for efficiency
 
-        proj_list, exp_list, set_list, file_list = validate_objects(host_id, proj_ids, exp_ids, set_ids, file_ids)
+        proj_bad, exp_bad, set_bad, file_bad = validate_objects(user, host_id, proj_ids, exp_ids, set_ids, file_ids)
 
-        bundle.obj = DownloadCartObject(projects=proj_list, experiments=exp_list,
-                                        datasets=set_list, datafiles=file_list)
+        bundle.obj = DownloadCartObject(projects=proj_bad, experiments=exp_bad,
+                                        datasets=set_bad, datafiles=file_bad, id=1)
         return bundle
 
 
 class TransferAppResource(Resource):
     """Tastypie resource to submit transfer ready for Globus"""
-    #projects = fields.ApiField(attribute='projects', null=True)
-    #experiments = fields.ApiField(attribute='experiments', null=True)
-    #datasets = fields.ApiField(attribute='datasets', null=True)
-    #datafiles = fields.ApiField(attribute='datafiles', null=True)
+    projects = fields.ApiField(attribute='projects', null=True)
+    experiments = fields.ApiField(attribute='experiments', null=True)
+    datasets = fields.ApiField(attribute='datasets', null=True)
+    datafiles = fields.ApiField(attribute='datafiles', null=True)
 
     class Meta:
         resource_name = 'transfer'
@@ -219,8 +235,7 @@ class TransferAppResource(Resource):
     def create_transfer(self, bundle):
         user = bundle.request.user
         if not user.is_authenticated:
-            raise Exception(message="User must be logged in to submit transfer")
-        groups = user.groups.all()
+            raise ImmediateHttpResponse(HttpUnauthorized("User must be logged in to submit Globus transfer"))
 
         host_id = bundle.data.get('remote_host', None)
         proj_ids = bundle.data.get('projects', [])
@@ -228,48 +243,47 @@ class TransferAppResource(Resource):
         set_ids = bundle.data.get('datasets', [])
         file_ids = bundle.data.get('datafiles', [])
         if not host_id:
-            raise Exception(message="Please specify a remote host")
+            raise ImmediateHttpResponse(HttpBadRequest("Please specify a remote host"))
         if not any([proj_ids, exp_ids, set_ids, file_ids]):
-            raise Exception(message="Please provide Projects/Experiments/Datasets/Datafiles for transfer")
+            raise ImmediateHttpResponse(HttpBadRequest("Please provide Projects/Experiments/Datasets/Datafiles for validation"))
 
-        proj_list, exp_list, set_list, file_list = validate_objects(host_id, proj_ids, exp_ids, set_ids, file_ids)
+        proj_bad, exp_bad, set_bad, file_bad = validate_objects(user, host_id, proj_ids, exp_ids, set_ids, file_ids)
 
-        if any([proj_ids, exp_ids, set_ids, file_ids]):
-            raise Exception(message="One or more objects could not be transferred to specified remote host")
+        if any([proj_bad, exp_bad, set_bad, file_bad]):
+            raise ImmediateHttpResponse(HttpForbidden("One or more objects could not be transferred to specified remote host"))
 
         query = DataFile.objects.none()
 
-        for proj in proj_list:
-            if not has_download_access(bundle.request, proj, "project"):
-                raise Exception(message="You do not have download access for one or more projects")
-            query |= proj.get_datafiles(user, downloadable=True)
-        for exp in exp_list:
-            if not has_download_access(bundle.request, exp, "experiment"):
-                raise Exception(message="You do not have download access for one or more experiments")
-            query |= exp.get_datafiles(user, downloadable=True)
-        for set in set_list:
-            if not has_download_access(bundle.request, set, "dataset"):
-                raise Exception(message="You do not have download access for one or more datasets")
-            query |= set.get_datafiles(user, downloadable=True)
-        for file in file_list:
-            if not has_download_access(bundle.request, file, "datafile"):
-                raise Exception(message="You do not have download access for one or more datafiles")
-        query |= DataFile.safe.all(user).filter(pk__in=file_list)
+        for proj in proj_ids:
+            if not authz.has_download_access(bundle.request, proj, "project"):
+                raise ImmediateHttpResponse(HttpForbidden("You do not have download access for one or more projects"))
+            query |= Project.objects.get(pk=proj).get_datafiles(user, downloadable=True)
+        for exp in exp_ids:
+            if not authz.has_download_access(bundle.request, exp, "experiment"):
+                raise ImmediateHttpResponse(HttpForbidden("You do not have download access for one or more experiments"))
+            query |= Experiment.objects.get(pk=exp).get_datafiles(user, downloadable=True)
+        for set in set_ids:
+            if not authz.has_download_access(bundle.request, set, "dataset"):
+                raise ImmediateHttpResponse(HttpForbidden("You do not have download access for one or more datasets"))
+            query |= Dataset.objects.get(pk=set).get_datafiles(user)
+        for file in file_ids:
+            if not authz.has_download_access(bundle.request, file, "datafile"):
+                raise ImmediateHttpResponse(HttpForbidden("You do not have download access for one or more datafiles"))
+        query |= DataFile.safe.all(user).filter(pk__in=file_ids)
 
-        downloadable_dfs = query.values_list("id").distinct()
+        downloadable_dfs = query.distinct()
 
-        try:
-            with transaction.atomic():
-                newtransferlog = TransferLog.objects.create(
-                    initiated_by = user,
-                    remote_host = host_id,
-                    status = TransferLog.STATUS_NEW)
-                newtransferlog.save()
-                newtransferlog.datafiles.add(*downloadable_dfs)
-                newtransferlog.save()
-        except:
-            raise Exception(message="Failed to submit Transfer job")
+        remote_vm = RemoteHost.objects.get(pk=host_id)
 
-        #bundle.obj = DownloadCartObject(projects=proj_list, experiments=exp_list,
-        #                                datasets=set_list, datafiles=file_list)
+        with transaction.atomic():
+            newtransferlog = TransferLog.objects.create(
+                initiated_by = user,
+                remote_host = remote_vm,
+                status = TransferLog.STATUS_NEW)
+            newtransferlog.save()
+            newtransferlog.datafiles.add(*downloadable_dfs)
+            newtransferlog.save()
+
+        bundle.obj = DownloadCartObject(projects=proj_bad, experiments=exp_bad,
+                                        datasets=set_bad, datafiles=file_bad, id=1)
         return bundle
