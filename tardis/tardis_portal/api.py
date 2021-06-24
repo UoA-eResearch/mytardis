@@ -1363,6 +1363,8 @@ class ProjectResource(MyTardisModelResource):
         bundle.data['admin_groups'] = [acl.id for acl in admins]
         members = project.get_groups()
         bundle.data['member_groups'] = [acl.id for acl in members]
+        project_size = project.get_size(bundle.request.user, downloadable=True)
+        bundle.data['size'] = project_size
         return bundle
 
     def hydrate_m2m(self, bundle):
@@ -1487,6 +1489,8 @@ class ExperimentResource(MyTardisModelResource):
         bundle.data['admin_groups'] = [grp.id for grp in admins]
         members = exp.get_groups()
         bundle.data['member_groups'] = [grp.id for grp in members]
+        exp_size = exp.get_size(bundle.request.user, downloadable=True)
+        bundle.data['size'] = exp_size
         return bundle
 
     def hydrate_m2m(self, bundle):
@@ -1585,6 +1589,8 @@ class DatasetResource(MyTardisModelResource):
         bundle.data['admin_groups'] = [acl.id for acl in admins]
         members = dataset.get_groups()
         bundle.data['member_groups'] = [acl.id for acl in members]
+        set_size = set.get_size(bundle.request.user)
+        bundle.data['size'] = set_size
         return bundle
 
     def prepend_urls(self):
