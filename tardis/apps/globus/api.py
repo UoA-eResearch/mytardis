@@ -11,10 +11,13 @@ import logging
 from django.conf import settings
 from django.db import transaction
 from tastypie import fields
-from tastypie.resources import Resource, Bundle
+from tastypie.resources import Resource, Bundle, ModelResource
+
 from tastypie.serializers import Serializer
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.http import HttpBadRequest, HttpUnauthorized, HttpForbidden, HttpNotFound
+from tastypie.authorization import Authorization
+from tastypie.exceptions import Unauthorized
 
 from tardis.tardis_portal.api import default_authentication
 from tardis.tardis_portal.auth import decorators as authz
@@ -39,11 +42,51 @@ if settings.DEBUG:
 else:
     default_serializer = Serializer()
 
-# API object to return accessible hosts
-class RemoteHostsObject(object):
-    def __init__(self, hosts=None, id=None):
-        self.hosts = hosts
-        self.id = id
+
+class GlobusAuthorization(Authorization):
+
+    def read_list(self, object_list, bundle):
+        obj_ids = [obj.id for obj in object_list]
+        if not bundle.request.user.is_authenticated:
+            raise Unauthorized("User must be logged in to access remote hosts")
+        # This assumes a ``QuerySet`` from ``ModelResource``.
+        if isinstance(bundle.obj, RemoteHost):
+            query = RemoteHost.objects.filter(users=bundle.request.user)
+            for group in bundle.request.user.groups.all():
+                query |= RemoteHost.objects.filter(groups=group)
+            return query.filter(id__in=obj_ids).distinct()
+        return []
+
+    def read_detail(self, object_list, bundle):
+        if not bundle.request.user.is_authenticated:
+            raise Unauthorized("User must be logged in to access remote hosts")
+        # Is the requested object accessible by the user?
+        if isinstance(bundle.obj, RemoteHost):
+            query = RemoteHost.objects.filter(users=bundle.request.user)
+            for group in bundle.request.user.groups.all():
+                query |= RemoteHost.objects.filter(groups=group)
+            return query.filter(id=bundle.obj.id).exists()
+        return False #bundle.obj.user == bundle.request.user
+
+    def create_list(self, object_list, bundle):
+        raise Unauthorized("Sorry, no creates.")
+
+    def create_detail(self, object_list, bundle):
+        raise Unauthorized("Sorry, no creates.")
+
+    def update_list(self, object_list, bundle):
+        raise Unauthorized("Sorry, no updates.")
+
+    def update_detail(self, object_list, bundle):
+        raise Unauthorized("Sorry, no updates.")
+
+    def delete_list(self, object_list, bundle):
+        # Sorry user, no deletes for you!
+        raise Unauthorized("Sorry, no deletes.")
+
+    def delete_detail(self, object_list, bundle):
+        raise Unauthorized("Sorry, no deletes.")
+
 
 # API object to check selected objects and return invalid options
 class DownloadCartObject(object):
@@ -56,39 +99,29 @@ class DownloadCartObject(object):
         self.id = id
 
 
-class RemoteHostAppResource(Resource):
+class RemoteHostAppResource(ModelResource):
     """Tastypie resource for RemoteHosts"""
-    hosts = fields.ApiField(attribute='hosts', null=True)
+    #hosts = fields.ApiField(attribute='hosts', null=True)
 
     class Meta:
-        resource_name = 'remotehosts'
+        resource_name = 'remotehost'
         list_allowed_methods = ['get']
+        detail_allowed_methods = ['get']
         serializer = default_serializer
         authentication = default_authentication
-        object_class = RemoteHostsObject
+        authorization = GlobusAuthorization()
+        object_class = RemoteHost
         always_return_data = True
-
-    def detail_uri_kwargs(self, bundle_or_obj):
-        kwargs = {}
-        if isinstance(bundle_or_obj, Bundle):
-            kwargs['pk'] = bundle_or_obj.obj.id
-        else:
-            kwargs['pk'] = bundle_or_obj['id']
-        return kwargs
-
-    def get_object_list(self, request):
-        if not request.user.is_authenticated:
-            raise ImmediateHttpResponse(HttpUnauthorized("User must be logged in to retrieve remote hosts"))
-        hosts = RemoteHost.objects.filter(users=request.user)
-        for group in request.user.groups.all():
-            hosts |= RemoteHost.objects.filter(groups=group)
-        response = []
-        for host in hosts.distinct():
-            response.append({"id":host.id, "name":host.name})
-        return [RemoteHostsObject(hosts=response, id=1)]
-
-    def obj_get_list(self, bundle, **kwargs):
-        return self.get_object_list(bundle.request)
+        queryset = RemoteHost.objects.all()
+        excludes = ['ip_address', 'managed', 'endpoint', 'users', 'groups', 'projects']
+        filtering = {
+            'id': ('exact', ),
+            'name': ('exact', ),
+        }
+        ordering = [
+            'id',
+            'name'
+        ]
 
 
 def validate_objects(user, host, projects, experiments, datasets, datafiles):
@@ -151,6 +184,7 @@ class ValidateAppResource(Resource):
     class Meta:
         resource_name = 'transfer_validate'
         list_allowed_methods = ['post']
+        detail_allowed_methods = ['post']
         serializer = default_serializer
         authentication = default_authentication
         object_class = DownloadCartObject
@@ -207,6 +241,7 @@ class TransferAppResource(Resource):
     class Meta:
         resource_name = 'transfer'
         list_allowed_methods = ['post']
+        detail_allowed_methods = ['post']
         serializer = default_serializer
         authentication = default_authentication
         object_class = DownloadCartObject
