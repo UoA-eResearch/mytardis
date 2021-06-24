@@ -282,7 +282,6 @@ class DatasetView(TemplateView):
                  dataset_id),
              'upload_method': upload_method,
              'push_to_enabled': 'tardis.apps.push_to' in settings.INSTALLED_APPS,
-             'globus_enabled': 'tardis.apps.globus' in settings.INSTALLED_APPS,
              'carousel_slice': carousel_slice,
              }
         )
@@ -293,10 +292,6 @@ class DatasetView(TemplateView):
             }
             c['push_to_url'] = reverse('tardis.apps.push_to.views.initiate_push_dataset',
                                        kwargs=push_to_args)
-        if c['globus_enabled']:
-            globus_args = {
-                'dataset_id': dataset.pk
-            }
 
         _add_protocols_and_organizations(request, dataset, c)
         return c
