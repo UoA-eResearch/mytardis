@@ -1589,7 +1589,7 @@ class DatasetResource(MyTardisModelResource):
         bundle.data['admin_groups'] = [acl.id for acl in admins]
         members = dataset.get_groups()
         bundle.data['member_groups'] = [acl.id for acl in members]
-        set_size = set.get_size(bundle.request.user)
+        set_size = dataset.get_size(bundle.request.user)
         bundle.data['size'] = set_size
         return bundle
 
