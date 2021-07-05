@@ -52,6 +52,7 @@ tardis/apps/*
 !tardis/apps/sftp
 !tardis/apps/social_auth
 !tardis/apps/search
+!tardis/apps/globus
 !tardis/apps/cart
 
 

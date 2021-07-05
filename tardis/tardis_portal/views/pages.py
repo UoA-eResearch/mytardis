@@ -292,6 +292,7 @@ class DatasetView(TemplateView):
             }
             c['push_to_url'] = reverse('tardis.apps.push_to.views.initiate_push_dataset',
                                        kwargs=push_to_args)
+
         _add_protocols_and_organizations(request, dataset, c)
         return c
 
