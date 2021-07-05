@@ -177,7 +177,7 @@ export const getSelectedItems = (searchSlice, typeId) => {
     // Grab all selected items
     return Object
         .keys(searchSlice.selected[typeId].items)
-        .map(id => ({typeId, id}));
+        .map(id => ({typeId, id: parseInt(id)}));
 };
 
 const initialState = {

@@ -18,6 +18,7 @@ const localStorageUtils = {
 function getInitialState() {
     return {
         itemsInCart: localStorageUtils.getItem("itemIdsByType") || EMPTY_CART,
+        transferredItems: {},
         activeNotification: null    
     };
 }

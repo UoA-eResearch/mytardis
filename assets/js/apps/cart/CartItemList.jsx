@@ -83,7 +83,7 @@ CategoryItemList.propTypes = {
     typeId: PropTypes.string.isRequired
 };
 
-function CartCategoryTabs({selectedType, onChange}) {
+export function CartCategoryTabs({selectedType, onChange}) {
     const {data: site} = useGetSiteQuery({});
     const counts = useSelector(state => {
         if (!site) {

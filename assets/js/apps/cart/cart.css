@@ -61,3 +61,23 @@ body {
 .category-item-list--size {
     width: 7rem;
 }
+
+.transfer-screen--remotehost-list {
+    margin-bottom: 2rem;
+}
+
+.invalid-items-warning {
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #ffc107;
+    background-color: #fff7dd;
+    color: #574c29;
+}
+
+.cart-item--invalid {
+    border-left: 4px solid #ffc107;
+}
+
+#invalid-items-detail {
+    border-left: 4px solid #ffc107;
+    background-color: rgb(255, 251, 240);
+}
