@@ -1350,8 +1350,9 @@ class ProjectResource(MyTardisModelResource):
                                        last_name=new_user['last_name'],
                                        email=new_user['email'])
             user.set_password(gen_random_password())
-            for permission in member_perms:
-                user.user_permissions.add(permission)
+            for permission in settings.DEFAULT_PERMISSIONS:
+                user.user_permission.add(
+                    Permission.objects.get(codename=permission))
             user.save()
             authentication = UserAuthentication(userProfile=user.userprofile,
                                                 username=new_user['username'],

@@ -191,13 +191,13 @@ ADMIN_PERMISSIONS = ['add_group',
                      'change_datafile',
                      'delete_datafile']
 
-DEFAULT_PERMISSIONS = ['add_experiment', 
+DEFAULT_PERMISSIONS = ['add_experiment',
                        'change_experiment',
-                       'add_dataset', 
-                       'change_dataset', 
+                       'add_dataset',
+                       'change_dataset',
                        'add_datafile',
-                       'change_projectacl', 
+                       'change_projectacl',
                        'change_experimentacl',
-                       'change_datasetacl', 
+                       'change_datasetacl',
                        'change_datafileacl',
                        'change_group']
