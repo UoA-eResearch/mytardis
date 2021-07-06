@@ -77,53 +77,6 @@ from .models.institution import Institution
 
 logger = logging.getLogger('__name__')
 
-add_group_perm = Permission.objects.get(codename='add_group')
-change_group_perm = Permission.objects.get(codename='change_group')
-del_group_perm = Permission.objects.get(codename='delete_group')
-view_group_perm = Permission.objects.get(codename='view_group')
-add_project_perm = Permission.objects.get(codename='add_project')
-change_project_perm = Permission.objects.get(codename='change_project')
-del_project_perm = Permission.objects.get(codename='delete_project')
-view_project_perm = Permission.objects.get(codename='view_project')
-add_experiment_perm = Permission.objects.get(codename='add_experiment')
-change_experiment_perm = Permission.objects.get(codename='change_experiment')
-del_experiment_perm = Permission.objects.get(codename='delete_experiment')
-view_experiment_perm = Permission.objects.get(codename='view_experiment')
-add_dataset_perm = Permission.objects.get(codename='add_dataset')
-change_dataset_perm = Permission.objects.get(codename='change_dataset')
-del_dataset_perm = Permission.objects.get(codename='delete_dataset')
-view_dataset_perm = Permission.objects.get(codename='view_dataset')
-add_datafile_perm = Permission.objects.get(codename='add_datafile')
-change_datafile_perm = Permission.objects.get(codename='change_datafile')
-del_datafile_perm = Permission.objects.get(codename='delete_datafile')
-view_datafile_perm = Permission.objects.get(codename='view_datafile')
-
-admin_perms = [add_group_perm,
-               change_group_perm,
-               del_group_perm,
-               view_group_perm,
-               add_project_perm,
-               change_project_perm,
-               del_project_perm,
-               view_project_perm,
-               add_experiment_perm,
-               change_experiment_perm,
-               del_experiment_perm,
-               view_experiment_perm,
-               add_dataset_perm,
-               change_dataset_perm,
-               del_dataset_perm,
-               view_dataset_perm,
-               add_datafile_perm,
-               change_datafile_perm,
-               del_datafile_perm,
-               view_datafile_perm]
-
-member_perms = [view_project_perm,
-                view_experiment_perm,
-                view_dataset_perm,
-                view_datafile_perm]
-
 
 def get_user_from_upi(upi):
     server = ldap3.Server(settings.LDAP_URL)
@@ -175,11 +128,9 @@ def check_and_create_user(username,
                                    email=new_user['email'])
         user.set_password(gen_random_password())
         if is_admin:
-            for permission in admin_perms:
-                user.user_permission.add(permission)
-        else:
-            for permission in member_perms:
-                user.suser_permission.add(permission)
+            for permission in settings.ADMIN_PERMISSIONS:
+                user.user_permission.add(
+                    Permission.objects.get(codename=permission))
         user.save()
         authentication = UserAuthentication(userProfile=user.userprofile,
                                             username=new_user['username'],
@@ -189,7 +140,6 @@ def check_and_create_user(username,
         user = User.objects.get(username=username)
     return user
 
-
 def gen_random_password():
     import random
     random.seed()
@@ -197,7 +147,6 @@ def gen_random_password():
     passlen = 16
     password = "".join(random.sample(characters, passlen))
     return password
-
 
 def create_traverse_perms(plugin_id,
                           entity,
@@ -431,7 +380,10 @@ def process_acls(bundle):
                     group, created = Group.objects.get_or_create(
                         name=admin_group)
                     if created:
-                        group.permissions.set(admin_perms)
+                        for permission in settings.DEFAULT_PERMISSIONS:
+                            group.permissions.add(Permission.objects.get(codename=permission))
+                        for permission in settings.ADMIN_PERMISSION:
+                            group.permissions.add(Permission.objects.get(codename=permission))
                     groups.append(package_perms(group.id,
                                                 is_admin=True))
                     admin_groups.append(group)
@@ -441,7 +393,10 @@ def process_acls(bundle):
                 for admin in parent_admins:
                     group, created = Group.objects.get_or_create(name=admin)
                     if created:
-                        group.permissions.set(admin_perms)
+                        for permission in settings.DEFAULT_PERMISSIONS:
+                            group.permissions.add(Permission.objects.get(codename=permission))
+                        for permission in settings.ADMIN_PERMISSION:
+                            group.permissions.add(Permission.objects.get(codename=permission))
                     # Check if group is explicitly defined as a member group
                     # in which case they lose admin status
                     if 'member_groups' in bundle.data.keys():
@@ -497,7 +452,8 @@ def process_acls(bundle):
                 download = member_group[2]
                 group, created = Group.objects.get_or_create(name=group_name)
                 if created:
-                    group.permissions.set(member_perms)
+                    for permission in settings.DEFAULT_PERMISSIONS:
+                        group.permissions.add(Permission.objects.get(codename=permission))
                 groups.append(package_perms(group.id,
                                             write=True,
                                             download=download,
