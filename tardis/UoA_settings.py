@@ -152,7 +152,10 @@ DEFAULT_PERMISSIONS = ['add_experiment',
                   'add_dataset',
                   'change_dataset',
                   'add_datafile',
-                  'change_objectacl',
+                  'change_projectacl',
+                  'change_experimentacl',
+                  'change_datasetacl',
+                  'change_datafileacl',
                   'change_group']
 
 
