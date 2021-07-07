@@ -1,6 +1,9 @@
 #__author__ = 'manishkumr'
 #__author__ = 'mike-ivs'
 
+# pylint: disable=R1710
+# disabling complaint about return contents
+
 import functools
 
 from django.conf import settings
