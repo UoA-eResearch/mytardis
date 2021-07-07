@@ -60,7 +60,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
     """ assume some default structure
         [
             {
-            "content_type": "project",  "datafile"
+            "content_type": "project",  "data file"
             "id": 1,
             "users": [
                         {"id": str(1),
@@ -91,7 +91,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                            "dataset": ["experiments__created_by__id",
                                        "experiments__project__created_by__id",
                                        "experiments__project__lead_researcher__id"],
-                           "datafile": ["dataset__experiments__created_by__id",
+                           "data file": ["dataset__experiments__created_by__id",
                                          "dataset__experiments__project__created_by__id",
                                          "dataset__experiments__project__lead_researcher__id"]}
     for new_acls in some_request:
@@ -110,7 +110,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                 old_acls = DatasetACL.objects.filter(
                             dataset=new_acls["id"], isOwner = False,
                             aclOwnershipType=DatasetACL.OWNER_OWNED)
-            if new_acls["content_type"] == "datafile":
+            if new_acls["content_type"] == "data file":
                 old_acls = DatafileACL.objects.filter(
                             datafile=new_acls["id"], isOwner = False,
                             aclOwnershipType=DatafileACL.OWNER_OWNED)
@@ -127,7 +127,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                 old_acls = DatasetACL.objects.filter(
                             dataset=new_acls["id"], isOwner = True,
                             aclOwnershipType=DatasetACL.OWNER_OWNED)
-            if new_acls["content_type"] == "datafile":
+            if new_acls["content_type"] == "data file":
                 old_acls = DatafileACL.objects.filter(
                             datafile=new_acls["id"], isOwner = True,
                             aclOwnershipType=DatafileACL.OWNER_OWNED)
@@ -150,7 +150,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                     if new_acls["content_type"] == 'dataset':
                         protected_users = list(Dataset.objects.get(id=new_acls["id"]
                                                ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
-                    if new_acls["content_type"] == 'datafile':
+                    if new_acls["content_type"] == 'data file':
                         protected_users = list(DataFile.objects.get(id=new_acls["id"]
                                                ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
                     protected_users = [str(id) for id in user_id_dict.values() for user_id_dict in protected_users]
@@ -240,7 +240,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                 old_acls_user_ids = DatasetACL.objects.filter(
                     dataset=new_acls["id"], user__isnull = False,
                     aclOwnershipType=DatasetACL.OWNER_OWNED).values_list('user__id', flat=True)
-            if new_acls["content_type"] == "datafile":
+            if new_acls["content_type"] == "data file":
                 old_acls_user_ids = DatafileACL.objects.filter(
                     datafile=new_acls["id"], user__isnull = False,
                     aclOwnershipType=DatafileACL.OWNER_OWNED).values_list('user__id', flat=True)
@@ -282,7 +282,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                                              isOwner=new_acl["isOwner"],
                                              aclOwnershipType=DatasetACL.OWNER_OWNED)
                             acl.save()
-                        if new_acls["content_type"] == "datafile":
+                        if new_acls["content_type"] == "data file":
                             acl = DatafileACL(datafile_id=new_acls["id"],
                                               user_id=new_acl["id"],
                                               canRead=new_acl["canRead"],
@@ -310,7 +310,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                 old_acls_group_ids = DatasetACL.objects.filter(
                     dataset=new_acls["id"], group__isnull = False,
                     aclOwnershipType=DatasetACL.OWNER_OWNED).values_list('group__id', flat=True)
-            if new_acls["content_type"] == "datafile":
+            if new_acls["content_type"] == "data file":
                 old_acls_group_ids = DatafileACL.objects.filter(
                     datafile=new_acls["id"], group__isnull = False,
                     aclOwnershipType=DatafileACL.OWNER_OWNED).values_list('group__id', flat=True)
@@ -352,7 +352,7 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                                              isOwner=new_acl["isOwner"],
                                              aclOwnershipType=DatasetACL.OWNER_OWNED)
                             acl.save()
-                        if new_acls["content_type"] == "datafile":
+                        if new_acls["content_type"] == "data file":
                             acl = DatafileACL(datafile_id=new_acls["id"],
                                               group_id=new_acl["id"],
                                               canRead=new_acl["canRead"],
