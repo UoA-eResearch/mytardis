@@ -23,6 +23,9 @@ from tardis.tardis_portal.api import default_authentication
 from tardis.tardis_portal.auth import decorators as authz
 from tardis.tardis_portal.models import Project, Experiment, Dataset, DataFile
 from .models import RemoteHost, TransferLog
+from django.conf.urls import url
+from django.http import HttpResponse
+from tastypie.validation import Validation
 
 
 class PrettyJSONSerializer(Serializer):
@@ -41,7 +44,6 @@ if settings.DEBUG:
     default_serializer = PrettyJSONSerializer()
 else:
     default_serializer = Serializer()
-
 
 class GlobusAuthorization(Authorization):
 
@@ -174,12 +176,41 @@ def validate_objects(user, host, projects, experiments, datasets, datafiles):
     return projects, experiments, datasets, datafiles
 
 
+def validate_items_in_bundle(bundle):
+    user = bundle.request.user
+    if not user.is_authenticated:
+        raise ImmediateHttpResponse(HttpUnauthorized("User must be logged in to validate download cart"))
+
+    host_id = bundle.data.get('remote_host', None)
+    items = bundle.data.get('items', {})
+    proj_ids = items.get('project', [])
+    exp_ids = items.get('experiment', [])
+    set_ids = items.get('dataset', [])
+    file_ids = items.get('datafile', [])
+    if not host_id:
+        raise ImmediateHttpResponse(HttpBadRequest("Please specify a remote host"))
+    if not any([proj_ids, exp_ids, set_ids, file_ids]):
+        raise ImmediateHttpResponse(HttpBadRequest("Please provide Projects/Experiments/Datasets/Datafiles for validation"))
+    # Query for related projects, and unpack into list here for efficiency
+    proj_bad, exp_bad, set_bad, file_bad = validate_objects(user, host_id, proj_ids, exp_ids, set_ids, file_ids)
+    invalid_items = {}
+    invalid_items["project"] = proj_bad
+    invalid_items["experiment"] = exp_bad
+    invalid_items["dataset"] = set_bad
+    invalid_items["datafile"] = file_bad
+    # bundle.obj.
+    # bundle.obj = {'invalid_items': DownloadCartObject(projects=proj_bad, experiments=exp_bad,
+    #                                 datasets=set_bad, datafiles=file_bad, id=1)
+    # }
+    # bundle.data = {}
+    return invalid_items
+
+class TransferValidation(Validation):
+    def is_valid(self, bundle, request = None):
+        return validate_items_in_bundle(bundle)
 class ValidateAppResource(Resource):
     """Tastypie resource to validate Download Cart contents"""
-    projects = fields.ApiField(attribute='projects', null=True)
-    experiments = fields.ApiField(attribute='experiments', null=True)
-    datasets = fields.ApiField(attribute='datasets', null=True)
-    datafiles = fields.ApiField(attribute='datafiles', null=True)
+    invalid_items = fields.DictField(null=True)
 
     class Meta:
         resource_name = 'transfer_validate'
@@ -187,16 +218,12 @@ class ValidateAppResource(Resource):
         detail_allowed_methods = ['post']
         serializer = default_serializer
         authentication = default_authentication
-        object_class = DownloadCartObject
         always_return_data = True
 
     def detail_uri_kwargs(self, bundle_or_obj):
-        kwargs = {}
-        if isinstance(bundle_or_obj, Bundle):
-            kwargs['pk'] = bundle_or_obj.obj.id
-        else:
-            kwargs['pk'] = bundle_or_obj['id']
-        return kwargs
+        # Because we are not actually saving our validation results,
+        # this is a bit meaningless.
+        return {'pk':1}
 
     def get_object_list(self, request):
         return request
@@ -205,9 +232,18 @@ class ValidateAppResource(Resource):
         return self.get_object_list(bundle.request)
 
     def obj_create(self, bundle, **kwargs):
-        bundle = self.create_return_invalid(bundle)
+        bundle.obj = {}
+        bundle.obj["invalid_items"] = TransferValidation().is_valid(bundle)
+        # Clear out the submitted items, so it's not returned in the response
+        # too.
+        bundle.data = {}
         return bundle
-
+    
+    def dehydrate_invalid_items(self, bundle):
+        # Because the 'attribute' argument in ApiField expects a class instance
+        # and we don't have one, we manually unpack it from the dictionary bundle
+        # object.
+        return bundle.obj["invalid_items"]
 
     def create_return_invalid(self, bundle):
         user = bundle.request.user
@@ -215,10 +251,11 @@ class ValidateAppResource(Resource):
             raise ImmediateHttpResponse(HttpUnauthorized("User must be logged in to validate download cart"))
 
         host_id = bundle.data.get('remote_host', None)
-        proj_ids = bundle.data.get('projects', [])
-        exp_ids = bundle.data.get('experiments', [])
-        set_ids = bundle.data.get('datasets', [])
-        file_ids = bundle.data.get('datafiles', [])
+        items = bundle.data.get('items', {})
+        proj_ids = items.get('project', [])
+        exp_ids = items.get('experiment', [])
+        set_ids = items.get('dataset', [])
+        file_ids = items.get('datafile', [])
         if not host_id:
             raise ImmediateHttpResponse(HttpBadRequest("Please specify a remote host"))
         if not any([proj_ids, exp_ids, set_ids, file_ids]):
@@ -226,17 +263,19 @@ class ValidateAppResource(Resource):
         # Query for related projects, and unpack into list here for efficiency
         proj_bad, exp_bad, set_bad, file_bad = validate_objects(user, host_id, proj_ids, exp_ids, set_ids, file_ids)
 
-        bundle.obj = DownloadCartObject(projects=proj_bad, experiments=exp_bad,
+        bundle.obj = {'invalid_items': DownloadCartObject(projects=proj_bad, experiments=exp_bad,
                                         datasets=set_bad, datafiles=file_bad, id=1)
+        }
+        # bundle.data = {}
         return bundle
 
 
 class TransferAppResource(Resource):
     """Tastypie resource to submit transfer ready for Globus"""
-    projects = fields.ApiField(attribute='projects', null=True)
-    experiments = fields.ApiField(attribute='experiments', null=True)
-    datasets = fields.ApiField(attribute='datasets', null=True)
-    datafiles = fields.ApiField(attribute='datafiles', null=True)
+    project = fields.ApiField(attribute='project', null=True)
+    experiment = fields.ApiField(attribute='experiment', null=True)
+    dataset = fields.ApiField(attribute='dataset', null=True)
+    datafile = fields.ApiField(attribute='datafile', null=True)
 
     class Meta:
         resource_name = 'transfer'
@@ -265,6 +304,13 @@ class TransferAppResource(Resource):
         bundle = self.create_transfer(bundle)
         return bundle
 
+    def prepend_urls(self):
+        return [
+            #...
+            url(r"^(?P<resource_name>%s)/validate?$" % (self._meta.resource_name), self.wrap_view('validate_transfer')),
+            #...
+        ]
+    # ...other methods in your Resource...
 
     def create_transfer(self, bundle):
         user = bundle.request.user
@@ -272,10 +318,10 @@ class TransferAppResource(Resource):
             raise ImmediateHttpResponse(HttpUnauthorized("User must be logged in to submit Globus transfer"))
 
         host_id = bundle.data.get('remote_host', None)
-        proj_ids = bundle.data.get('projects', [])
-        exp_ids = bundle.data.get('experiments', [])
-        set_ids = bundle.data.get('datasets', [])
-        file_ids = bundle.data.get('datafiles', [])
+        proj_ids = bundle.data.get('project', [])
+        exp_ids = bundle.data.get('experiment', [])
+        set_ids = bundle.data.get('dataset', [])
+        file_ids = bundle.data.get('datafile', [])
         if not host_id:
             raise ImmediateHttpResponse(HttpBadRequest("Please specify a remote host"))
         if not any([proj_ids, exp_ids, set_ids, file_ids]):

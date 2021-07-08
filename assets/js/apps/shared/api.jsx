@@ -30,37 +30,39 @@ export const myTardisApi = createApi({
             }
         }),
         createTransfer: builder.mutation({
-            queryFn: ({remoteHostId, itemsToTransfer}) => {
-                console.log("Fired createTransfer with ", remoteHostId);
-                return { data: {id: 4}};
-            }
+            query: ({remoteHostId, items = {}}) => ({
+                url: "/globus_transfer/",
+                method: "POST",
+                body: Object.assign({
+                    "remote_host": remoteHostId
+                }, items)
+            })
         }),
         validateTransfer: builder.query({
-            queryFn: ({remoteHostId}, {getState}) => {
-                if (remoteHostId === 1) {
-                    return { data: validateTransferData.objects[0]};
-                } else {
-                    return {
-                        data: {
-                            invalidItems: {}
-                        }
-                    };
+            query: ({remoteHostId, items = {}}) => ({
+                url: "/globus_transfer_validate/",
+                method: "POST",
+                body: { 
+                    "remote_host": remoteHostId,
+                    items
                 }
-                // const hostById = 
-            }
+            }),
+            // queryFn: ({remoteHostId}, {getState}) => {
+            //     if (remoteHostId === 1) {
+            //         return { data: validateTransferData.objects[0]};
+            //     } else {
+            //         return {
+            //             data: {
+            //                 invalidItems: {}
+            //             }
+            //         };
+            //     }
+            //     // const hostById = 
+            // }
         }),
         getRemoteHosts: builder.query({
-            queryFn: () => {
-                const hostById = remoteHostData.objects.map(host => [host.id, host]);
-                return {
-                    data: Object.fromEntries(hostById)
-                };
-            },
-            transformResponse: data => {
-                // Map entries by id
-                // const hostById = data.objects.map(host => [host.id, host]);
-                // return Object.fromEntries(hostById);
-            }
+            query: () => "/globus_remotehost/",
+            transformResponse: res => res.objects
         })
     })
 });

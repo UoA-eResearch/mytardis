@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useCreateTransferMutation, useGetObjectByIdQuery, useGetRemoteHostsQuery, useGetSiteQuery, useValidateTransferQuery } from "../shared/api";
 import PropTypes from "prop-types";
-import { Accordion, Button, Card, Collapse, FormControl } from "react-bootstrap";
+import { Accordion, Button, Card, Collapse, FormControl, Modal } from "react-bootstrap";
 import { Link, Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getItemsByCategory, removeItem } from "./cartSlice";
@@ -60,9 +60,6 @@ CartItemRow.propTypes = {
 
 export function CartCategoryTabs({selectedRemoteHost, selectedType, onChange}) {
     const {data: site} = useGetSiteQuery({});
-    const { data: validationErrors, isLoading: isValidationLoading, error: validationQueryError } = useValidateTransferQuery({
-        remoteHostId: selectedRemoteHost
-    });
     const counts = useSelector(state => {
         if (!site) {
             return null;
@@ -104,8 +101,14 @@ function useSelectedCategoryState() {
     return [ selectedCategory, setSelectedCategory ];
 }
 
-function InvalidItemsWarning({ hostName }) {
+
+function InvalidItemsWarning({ hostId }) {
     const [open, setOpen] = useState(false);
+    const {data: remoteHosts, isLoading} = useGetRemoteHostsQuery();
+    const hostsById = Object.fromEntries(
+        remoteHosts.map(host => [host.id, host])
+    );
+    const remoteHostName = isLoading ? "" : hostsById[hostId].name;
     // 
     //     <div className="d-flex">
     //         <div style={{fontSize: "2rem"}}>
@@ -119,7 +122,7 @@ function InvalidItemsWarning({ hostName }) {
     // </div>
     return (
         <>
-            <div className="invalid-items-warning mt-2 py-2 px-3"
+            <div className="invalid-items-warning my-2 py-2 px-3"
                 role="button"
                 aria-live="assertive"
                 aria-controls="invalid-items-detail"
@@ -130,7 +133,7 @@ function InvalidItemsWarning({ hostName }) {
                 </span>
 
                 <span>
-                    <BsExclamationTriangle fontSize="1.25rem" /> Some cart items can&apos;t be transferred to {hostName}.
+                    <BsExclamationTriangle fontSize="1.25rem" /> Some cart items can&apos;t be transferred to {remoteHostName}.
                 </span>
             </div>
             <Collapse in={open}>
@@ -159,29 +162,28 @@ function InvalidItemsWarning({ hostName }) {
     // </div>
 }
 
-
 // eslint-disable-next-line complexity
 function RemoteHostDropdown({selectedId, onSelect}) {
-    const { data: remoteHosts, isLoading } = useGetRemoteHostsQuery();
-    const { data: validationErrors, isLoading: isValidationLoading, error: validationQueryError } = useValidateTransferQuery({
-        remoteHostId: selectedId
-    });
-
-    if (isLoading || isValidationLoading) {
+    const { data: remoteHosts, isLoading, error } = useGetRemoteHostsQuery();
+    if (isLoading) {
         return <p>Loading</p>;
     }
-    const selected = selectedId ? remoteHosts[selectedId].name : "";
-    const invalidCount = !validationErrors ? 0 : Object.keys(validationErrors.invalidItems)
-        .map(categoryId => validationErrors.invalidItems[categoryId].length)
-        .reduce((accumulator, value) => accumulator + value, 0);
-    let remoteHostOptions, remoteHostIds;
-    if (!remoteHosts || Object.keys(remoteHosts).length === 0) {
+    if (error) {
+        console.log(error);
+        return <p>Error occurred while fetching list of Globus endpoints.</p>
+    }
+    const remoteHostIds = remoteHosts.map(host => host.id);
+    const hostsById = Object.fromEntries(
+        remoteHosts.map(host => [host.id, host])
+    );
+    const selected = selectedId ? hostsById[selectedId].name : "";
+    let remoteHostOptions;
+    if (!remoteHosts || remoteHosts.length === 0) {
         remoteHostOptions = <option>No destinations available.</option>;
     } else {
-        remoteHostIds = Object.keys(remoteHosts);
-        remoteHostOptions = remoteHostIds.map(hostId => 
-            <option key={hostId}>
-                {remoteHosts[hostId].name}
+        remoteHostOptions = remoteHosts.map(host => 
+            <option key={host.id}>
+                {host.name}
             </option>);
         // Add a default, unselected option.
         remoteHostOptions.unshift(<option key="notselected">Select a destination</option>);
@@ -205,10 +207,6 @@ function RemoteHostDropdown({selectedId, onSelect}) {
         >
             {remoteHostOptions}
         </select>
-        {
-            invalidCount > 0 &&
-                <InvalidItemsWarning hostName={selected} />
-        }
     </div>;
 }
 
@@ -261,23 +259,35 @@ function getItemsByState(items = [], invalidItems = [], validState) {
     }
 }
 
+function getInvalidItemsCount(invalidItems) {
+    if (!invalidItems) {
+        return 0;
+    }
+    return Object.keys(invalidItems).reduce(
+        (acc, categoryId) => invalidItems[categoryId].length + acc, 0);
+
+}
+
 
 // eslint-disable-next-line complexity
 export function TransferrableItemList({selectedRemoteHost}) {
     const {data: site, isLoading, error } = useGetSiteQuery({});
     const [ selectedCategory, setSelectedCategory ] = useSelectedCategoryState();
     const [ validFilterState, setValidFilterState ] = useState(VALID_TRANSFER_FILTER_STATES.All);
+    const cartItems = useSelector(state => state.cart.itemsInCart.byId);
     const { data: validationErrors, isLoading: isValidationLoading, error: validationQueryError } = useValidateTransferQuery({
-        remoteHostId: selectedRemoteHost
+        remoteHostId: selectedRemoteHost,
+        items: cartItems
     });
     const items = useSelector(state => state.cart.itemsInCart || {});
     if (isLoading || isValidationLoading) {
         return <p>Loading...</p>;
     }
     if (error || validationQueryError) {
+        console.log(validationQueryError.message);
         return <p>Error loading cart.</p>;
     }
-    const invalidItems = validationErrors.invalidItems || {};
+    const invalidItems = validationErrors.invalid_items || {};
     const categories = Object.keys(site.categories);
     // Compute which items to display.
     const itemsToDisplay = Object.fromEntries(categories.map(categoryId => 
@@ -294,9 +304,7 @@ export function TransferrableItemList({selectedRemoteHost}) {
     const allCount = Object.keys(items.byId)
         .map(categoryId => items.byId[categoryId].length)
         .reduce((accumulator, value) => accumulator + value, 0);
-    const invalidCount = Object.keys(invalidItems)
-        .map(categoryId => invalidItems[categoryId].length)
-        .reduce((accumulator, value) => accumulator + value, 0);
+    const invalidCount = getInvalidItemsCount(invalidItems);
     const validStateFilterCounts = {
         [VALID_TRANSFER_FILTER_STATES.All]: allCount,
         [VALID_TRANSFER_FILTER_STATES.Invalid]: invalidCount,
@@ -343,38 +351,65 @@ const TRANSFER_STATE = {
     Transferred: "Transferred" // transferred
 };
 
+function useInvalidTransferItemsCount({remoteHostId}) {
+    const cartItems = useSelector(state => state.cart.itemsInCart.byId);
+    return useValidateTransferQuery({
+        remoteHostId,
+        items: cartItems
+    }, {skip: remoteHostId === undefined, selectFromResult: (res) => {
+        if (res.status === "fulfilled") {
+            const data = res.data;
+            let count = 0;
+            if (data) {
+                count = getInvalidItemsCount(data.invalid_items);
+            }
+            // Replace the list of invalid items with the count.
+            return Object.assign({}, res, {data: count});
+        }
+        return res;
+    }});
+}
+
+function getValidItems(cartItems, invalidItems) {
+    const validItems = {};
+    Object.keys(cartItems).forEach(
+        categoryId => {
+            const invalidSet = new Set(invalidItems[categoryId]);
+            validItems[categoryId] = cartItems[categoryId].filter(item => !invalidSet.has(item));
+        }
+    );
+    return validItems;
+}
+
 // eslint-disable-next-line complexity
 function CreateTransferDialog({remoteHostId, transferState, setTransferState}) {
+    const cartItems = useSelector(state => state.cart.itemsInCart.byId);
     const [triggerTransfer, {status: transferMutationStatus}] = useCreateTransferMutation();
-    const {data: validation, isLoading} = useValidateTransferQuery({
-        remoteHostId
+    const {data: invalidItems, isLoading: isValidationLoading, error: validationError } = useValidateTransferQuery({
+        remoteHostId,
+        items: cartItems
     });
+    const numInvalidItems = invalidItems ? getInvalidItemsCount(invalidItems.invalid_items) : 0;
+    // const {data: numInvalidItems, isLoading: isValidationLoading} = useInvalidTransferItemsCount({remoteHostId});
     useEffect(() => {
-        if (isLoading || transferState !== TRANSFER_STATE.TransferRequested) {
+        if (transferState !== TRANSFER_STATE.TransferRequested || isValidationLoading || validationError) {
             // If validation is still being loaded, wait until it's
             // loaded.
             return;
         }
-        const invalidItems = validation.invalidItems;
-        if (!invalidItems) {
-            // If there are no validation errors, we don't need
-            // to confirm with the user regarding proceeding with
-            // transfer.
+        
+        if (!numInvalidItems) {
             setTransferState(TRANSFER_STATE.Confirmed);
-        }
-        const numInvalidItems = Object.keys(invalidItems).reduce(
-            (acc, categoryId) => invalidItems[categoryId].length + acc, 0);
-
-        if (numInvalidItems > 0) {
-            setTransferState(TRANSFER_STATE.NeedConfirmation);
         } else {
-            setTransferState(TRANSFER_STATE.Confirmed);
+            setTransferState(TRANSFER_STATE.NeedConfirmation);
         }
-    }, [isLoading, validation, transferState]);
+
+    }, [transferState, invalidItems, numInvalidItems, validationError, isValidationLoading]);
 
     useEffect(() => {
         if (transferState === TRANSFER_STATE.Confirmed) {
-            triggerTransfer({remoteHostId});
+            const validItems = getValidItems(cartItems, invalidItems.invalid_items);
+            triggerTransfer({remoteHostId, items: validItems});
             setTransferState(TRANSFER_STATE.Transferring);
         }
     }, [transferState]);
@@ -384,10 +419,22 @@ function CreateTransferDialog({remoteHostId, transferState, setTransferState}) {
         }
     }, [transferMutationStatus]);
     if (transferState === TRANSFER_STATE.NeedConfirmation) {
-        return (<p>Are you sure you want to send this? 
-            <button className="btn" onClick={() => setTransferState(TRANSFER_STATE.Confirmed)}>Yes</button> 
-            <button className="btn" onClick={() => setTransferState(TRANSFER_STATE.Initial)}>No</button> 
-        </p>);
+        return (
+            <Modal show={true} onHide={() => setTransferState(TRANSFER_STATE.Initial)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Do you want to proceed with this transfer?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{numInvalidItems} {numInvalidItems === 1 ? "file" : "files" } will not be included in the transfer because of restrictions on locations where these files can be transferred.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setTransferState(TRANSFER_STATE.Initial)}>
+                            Cancel
+                    </Button>
+                    <Button variant="primary" onClick={() => setTransferState(TRANSFER_STATE.Confirmed)}>
+                            Yes, proceed
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        );
     }
     if (transferState === TRANSFER_STATE.Confirmed) {
         return <p>Sending...</p>;
@@ -402,13 +449,20 @@ function CreateTransferDialog({remoteHostId, transferState, setTransferState}) {
 
 function TransferScreen(props) {
     const [selectedRemoteHost, setSelectedRemoteHost] = useState();
-    const [transferState, setTransferState] = useState(TRANSFER_STATE.Initial);
+    const [transferState, setTransfer] = useState(TRANSFER_STATE.Initial);
+    const {data: invalidCount, isLoading: isValidationLoading} = useInvalidTransferItemsCount({remoteHostId: selectedRemoteHost});
+    function setTransferState(val) {
+        console.log({val});
+        setTransfer(val);
+    }
     return <div>
-        <h1 className="h3 my-3">Transfer to an endpoint</h1>
+        <h1 className="h3 my-3">Transfer to a Globus endpoint</h1>
         <p>Select a transfer destination.</p>
         <RemoteHostDropdown selectedId={selectedRemoteHost} onSelect={setSelectedRemoteHost} />
-        {selectedRemoteHost ? <TransferrableItemList selectedRemoteHost={selectedRemoteHost} /> : null}
-        <div className="d-flex justify-content-between">
+        {
+            !isValidationLoading && invalidCount > 0 ? <InvalidItemsWarning hostId={selectedRemoteHost} /> : null
+        }
+        <div className="d-flex justify-content-between mt-4">
             <Link to="/" className="btn btn-secondary">Cancel and go back to cart</Link>
             <button 
                 className="btn btn-primary"
@@ -419,6 +473,8 @@ function TransferScreen(props) {
                 Start transfer
             </button>
         </div>
+        {/* List of cart items along with whether they can be transferred, if the user has selected a remote host */}
+        {selectedRemoteHost ? <TransferrableItemList selectedRemoteHost={selectedRemoteHost} /> : null}
         <CreateTransferDialog 
             remoteHostId={selectedRemoteHost} 
             transferState={transferState} 
