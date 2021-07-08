@@ -412,3 +412,12 @@ def update_search(instance, **kwargs):
         instance.to_search().save()
     if isinstance(instance, DataFile):
         instance.to_search().save()
+
+    if isinstance(instance, ProjectACL):
+        pass
+    if isinstance(instance, ExperimentACL):
+        pass
+    if isinstance(instance, DatasetACL):
+        pass
+    if isinstance(instance, DatafileACL):
+        pass
