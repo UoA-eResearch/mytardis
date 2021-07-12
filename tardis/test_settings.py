@@ -176,3 +176,26 @@ CALCULATE_CHECKSUMS_METHODS = {
     'storages.backends.s3boto3.S3Boto3Storage':
         'tardis.apps.s3utils.utils.calculate_checksums'
 }
+
+ADMIN_PERMISSIONS = ['add_group',
+                     'delete_group',
+                     'view_group',
+                     'add_project',
+                     'change_project',
+                     'delete_project',
+                     'delete_experiment',
+                     'delete_dataset',
+                     'view_dataset',
+                     'change_datafile',
+                     'delete_datafile']
+
+DEFAULT_PERMISSIONS = ['add_experiment',
+                       'change_experiment',
+                       'add_dataset',
+                       'change_dataset',
+                       'add_datafile',
+                       'change_projectacl',
+                       'change_experimentacl',
+                       'change_datasetacl',
+                       'change_datafileacl',
+                       'change_group']
