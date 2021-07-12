@@ -11,7 +11,6 @@ from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
 from .token import Token
-#from ..tests import suspendingreceiver
 
 
 @python_2_unicode_compatible

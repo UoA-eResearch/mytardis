@@ -504,14 +504,11 @@ def process_acls(bundle):
                 for admin in admin_users:
                     group_admin.admin_users.add(admin.id)
                 logger.debug(group_admin)
-        acl_dict = {'content_type': ct.model,
+        acl_dict = {'content_type': ct.model.replace(' ',''),
                     'id': obj_id,
                     'users': users,
                     'groups': groups}
-        if ct == 'datafile':
-            acl_dict['content_type'] = 'data file'
         logger.debug(acl_dict)
-
         return [acl_dict]
     return False
 

@@ -14,7 +14,7 @@ from tardis.tardis_portal.models import (Project, Dataset, Experiment,
     DatafileParameterSet, DataFileObject, ProjectACL, ExperimentACL,
     DatasetACL, DatafileACL)
 
-# from tardis.tardis_portal.tests import suspendingreceiver
+#from .tests import suspendingreceiver
 
 logger = logging.getLogger(__name__)
 
@@ -399,12 +399,10 @@ class DataFileDocument(Document):
         return None
 
 
-# @suspendingreceiver(post_save, sender=Project)
-# @suspendingreceiver(post_save, sender=Experiment)
-# @suspendingreceiver(post_save, sender=Dataset)
-# @suspendingreceiver(post_save, sender=DataFile)
-
-
+#@suspendingreceiver(post_save, sender=Project)
+#@suspendingreceiver(post_save, sender=Experiment)
+#@suspendingreceiver(post_save, sender=Dataset)
+#@suspendingreceiver(post_save, sender=DataFile)
 def update_search(instance, **kwargs):
     if isinstance(instance, Project):
         instance.to_search().save()
