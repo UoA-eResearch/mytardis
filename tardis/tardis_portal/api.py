@@ -207,7 +207,7 @@ def create_traverse_perms(plugin_id,
     if plugin_id == django_user:
         if entity not in Project.safe.users(project.id):
             acl = ProjectACL(project=project,
-                             user=entity.id,
+                             user=entity,
                              canRead=True,
                              canDownload=False,
                              canWrite=False,
@@ -220,7 +220,7 @@ def create_traverse_perms(plugin_id,
         if experiment:
             if entity not in Experiment.safe.users(experiment.id):
                 acl = ExperimentACL(experiment=experiment,
-                                 user=entity.id,
+                                 user=entity,
                                  canRead=True,
                                  canDownload=False,
                                  canWrite=False,
@@ -237,7 +237,7 @@ def create_traverse_perms(plugin_id,
             if dataset:
                 if entity not in Dataset.safe.users(dataset.id):
                     acl = DatasetACL(dataset=dataset,
-                                     user=entity.id,
+                                     user=entity,
                                      canRead=True,
                                      canDownload=False,
                                      canWrite=False,
@@ -250,7 +250,7 @@ def create_traverse_perms(plugin_id,
     elif plugin_id == django_group:
         if entity not in Project.safe.groups(project.id):
             acl = ProjectACL(project=project,
-                             group=entity.id,
+                             group=entity,
                              canRead=True,
                              canDownload=False,
                              canWrite=False,
@@ -263,7 +263,7 @@ def create_traverse_perms(plugin_id,
         if experiment:
             if entity not in Experiment.safe.groups(experiment.id):
                 acl = ExperimentACL(experiment=experiment,
-                                 group=entity.id,
+                                 group=entity,
                                  canRead=True,
                                  canDownload=False,
                                  canWrite=False,
@@ -280,7 +280,7 @@ def create_traverse_perms(plugin_id,
             if dataset:
                 if entity not in Dataset.safe.groups(dataset.id):
                     acl = DatasetACL(dataset=dataset,
-                                     group=entity.id,
+                                     group=entity,
                                      canRead=True,
                                      canDownload=False,
                                      canWrite=False,
@@ -548,14 +548,11 @@ def process_acls(bundle):
                 for admin in admin_users:
                     group_admin.admin_users.add(admin.id)
                 logger.debug(group_admin)
-        acl_dict = {'content_type': ct.model,
+        acl_dict = {'content_type': ct.model.replace(' ',''),
                     'id': obj_id,
                     'users': users,
                     'groups': groups}
-        if ct == 'datafile':
-            acl_dict['content_type'] = 'data file'
         logger.debug(acl_dict)
-
         return [acl_dict]
     return False
 

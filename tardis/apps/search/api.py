@@ -680,6 +680,10 @@ class SearchAppResource(Resource):
             for hit_attrdict in item.hits.hits:
                 hit = hit_attrdict.to_dict()
 
+                # Check to see if indexed object actually exists in DB, if not then skip
+                if int(hit["_source"]["id"]) not in preloaded[hit["_index"]]["objects"]:
+                    continue
+
                 # Default sensitive permission and size of object
                 sensitive_bool = False
                 size = 0
