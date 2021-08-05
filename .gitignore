@@ -53,6 +53,7 @@ tardis/apps/*
 !tardis/apps/eventlog
 !tardis/apps/experimentpid
 !tardis/apps/datasetpid
+!tardis/apps/instrument_profile
 tardis/settings.py
 *.*~
 *.*#
