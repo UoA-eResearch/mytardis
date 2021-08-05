@@ -24,7 +24,7 @@ class InstrumentProfile(models.Model):
     :attribute pid: A CharField holding the chosen PID
     """
 
-    instrument = models.OneToOne(
+    instrument = models.OneToOneField(
         Instrument, on_delete=models.CASCADE, related_name="profile"
     )
     landing_page = models.URLField(null=True, blank=True)
