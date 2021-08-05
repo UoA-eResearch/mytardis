@@ -142,18 +142,18 @@ def bulk_replace_existing_acls(some_request, admin_flag=False):
                     # for any (parent) projects or experiments, then we do not wish to
                     # change their permissions in any way, so we skip this old ACL
                     if new_acls["content_type"] == 'project':
-                        protected_users = list(Project.objects.get(id=new_acls["id"]
+                        protected_users = list(Project.objects.filter(id=new_acls["id"]
                                                ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
                     if new_acls["content_type"] == 'experiment':
-                        protected_users = list(Experiment.objects.get(id=new_acls["id"]
+                        protected_users = list(Experiment.objects.filter(id=new_acls["id"]
                                                ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
                     if new_acls["content_type"] == 'dataset':
-                        protected_users = list(Dataset.objects.get(id=new_acls["id"]
+                        protected_users = list(Dataset.objects.filter(id=new_acls["id"]
                                                ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
                     if new_acls["content_type"] == 'datafile':
-                        protected_users = list(DataFile.objects.get(id=new_acls["id"]
+                        protected_users = list(DataFile.objects.filter(id=new_acls["id"]
                                                ).values(*createdby_lead_dict[new_acls["content_type"]]).distinct())
-                    protected_users = [str(id) for id in user_id_dict.values() for user_id_dict in protected_users]
+                    protected_users = [str(id) for user_id_dict in protected_users for id in user_id_dict.values()]
                     if old_acl.user.id in protected_users:
                         # if we've already dealt with this protected user before, delete any duplicates
                         if old_acl.user.id in [d.user.id for d in modified_user_acls]:
