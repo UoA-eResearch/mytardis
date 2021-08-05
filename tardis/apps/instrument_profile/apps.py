@@ -1,4 +1,4 @@
- from tardis.app_config import AbstractTardisAppConfig
+from tardis.app_config import AbstractTardisAppConfig
 
 
 class InstrumentProfileConfig(AbstractTardisAppConfig):
