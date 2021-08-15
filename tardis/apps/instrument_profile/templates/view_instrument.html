@@ -1,0 +1,58 @@
+{% extends "tardis_portal/portal_template.html" %}
+{% load render_bundle from webpack_loader %}
+{% load basiccomparisonfilters %}
+{% load capture %}
+{% load static %}
+{% load dynurl %}
+{% load jstemplate %}
+
+
+{% block content %}
+
+<div class="page-header">
+  <h4>Instrument</h4>
+  <h1><span property="dc:title">{{ instrument_name }}</span></h1>
+  <p><span property="dc:creator">Related facility: {{ from_facility }}</span></p>
+  <p><span property="dc:creator">{{ instrument_profile.pid }}</span></p>
+  {% if instrument_profile.landing_page %}
+  <p><span property="dc:creator"><a href="{{ instrument_profile.landing_page }}">Instrument Website</a></span></p>
+  {% endif %}
+  <p>
+    <span property="dc:creator"><b>Contact:</b> {{ instrument_profile.owner}}
+      {% if instrument_profile.owner_contact %}[{{ instrument_profile.owner_contact }}]{% endif %}
+    </span>
+  </p>
+</div>
+<div class="page">
+  <p>
+    {% if instrument_profile.description %}
+    <span property="dc:creator">    
+      {{ instrument_profile.description }}  
+    </span>  
+    {% else %}
+    <span>
+      No Instrument Description
+    </span>
+    {% endif %}
+  </p>
+  <p>
+    <span property="dc:creator"><b>Manufacturer:</b> {{instrument_profile.manufacturer}}</span>
+  </p>
+{% if instrument_profile.instrument_model %}
+  <p>
+    <span property="dc:creator"><b>Model:</b> {{instrument_profile.instrument_model}}</span>
+  </p>
+{% endif %}
+{% if instrument_profile.instrument_type %}
+  <p>
+    <span property="dc:creator"><b>Type:</b> {{instrument_profile.instrument_type}}</span>
+  </p>
+{% endif %}
+{% if instrument_profile.measured_variable %}
+  <p>
+    <span property="dc:creator"><b>Measured Variable:</b> {{instrument_profile.measured_variable}}</span>
+  </p>
+{% endif %}
+</div>
+
+{% endblock %}
