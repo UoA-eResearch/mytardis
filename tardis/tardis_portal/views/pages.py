@@ -246,6 +246,7 @@ class DatasetView(TemplateView):
         :param dataset: the Dataset model instance
         :type dataset: tardis.tardis_portal.models.dataset.Dataset
         :param dict kwargs:
+        :raises Exception: when a Exception occurs.
         :return: A dictionary of values for the view/template.
         :rtype: dict
         """
