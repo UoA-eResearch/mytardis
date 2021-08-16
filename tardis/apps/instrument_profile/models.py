@@ -47,6 +47,12 @@ class InstrumentProfile(models.Model):
     def __str__(self):
         return self.instrument.name
 
+    def get_absolute_url(self):
+        """Return the absolute URL to the current ``Instrument``"""
+        return reverse(
+            "view_instrument_profile", kwargs={"instrument_profile_id": self.id}
+        )
+
 
 @receiver(post_save, sender=Instrument, dispatch_uid="create_instrument_profile")
 def create_instrument_profile(sender, instance, created, **kwargs):

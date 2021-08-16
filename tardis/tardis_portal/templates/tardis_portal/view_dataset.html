@@ -129,9 +129,16 @@
         <span style="padding-top: 4px">
             <small>
               {% if from_instrument %}
+              {% if instrument_url %}
+	      <span style="margin-right: 2em;">
+                  Instrument: <a href="{{ instrument_url }}">{{ from_instrument }}</a>
+              </span>
+	      {% else %}
                 <span style="margin-right: 2em;">
                   Instrument: {{ from_instrument }}
                 </span>
+		{% endif %}
+              {% endif %}
               {% endif %}
               {% if from_facility %}
                 <span style="margin-right: 2em;">

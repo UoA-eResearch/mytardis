@@ -265,6 +265,9 @@ class DatasetView(TemplateView):
 
         dataset_id = dataset.id
         dataset_instrument = dataset.instrument
+        if "tardis.apps.instrument_profile" in settings.INSTALLED_APPS:
+            if dataset_instrument:
+                instrument_profile = dataset.instrument.profile
         if dataset_instrument:
             instrument_name = dataset_instrument.name
             dataset_facility = dataset_instrument.facility
@@ -303,6 +306,8 @@ class DatasetView(TemplateView):
                 "carousel_slice": carousel_slice,
                 "hsm_enabled": "tardis.apps.hsm" in settings.INSTALLED_APPS,
                 "pid": "tardis.apps.datasetpid" in settings.INSTALLED_APPS,
+                "instrument_profile": "tardis.apps.instrument_profile"
+                in settings.INSTALLED_APPS,
             }
         )
 
@@ -319,6 +324,11 @@ class DatasetView(TemplateView):
                 c["pid"] = dataset.pid.pid
             else:
                 c["pid"] = "No Identifier"
+
+        if c["instrument_profile"]:
+            if instrument_profile:
+                instrument_url = instrument_profile.get_absolute_url()
+                c["instrument_url"] = instrument_url
 
         _add_protocols_and_organizations(request, dataset, c)
 
