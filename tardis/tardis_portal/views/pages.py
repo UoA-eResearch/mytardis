@@ -266,7 +266,8 @@ class DatasetView(TemplateView):
         dataset_id = dataset.id
         dataset_instrument = dataset.instrument
         if "tardis.apps.instrument_profile" in settings.INSTALLED_APPS:
-            instrument_profile = dataset.instrument.profile
+            if dataset_instrument:
+                instrument_profile = dataset.instrument.profile
         if dataset_instrument:
             instrument_name = dataset_instrument.name
             dataset_facility = dataset_instrument.facility
@@ -317,8 +318,10 @@ class DatasetView(TemplateView):
                 "tardis.apps.push_to.views.initiate_push_dataset", kwargs=push_to_args
             )
         if c["instrument_profile"]:
-            instrument_url = instrument_profile.get_absolute_url()
-            c["instrument_url"] = instrument_url
+            if instrument_profile:
+                instrument_url = instrument_profile.get_absolute_url()
+                c["instrument_url"] = instrument_url
+
         _add_protocols_and_organizations(request, dataset, c)
         return c
 
