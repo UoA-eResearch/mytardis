@@ -22,3 +22,4 @@ class InstrumentProfileForm(forms.Form):
     instrument_type = forms.CharField(max_length=400, required=False)
     measured_variable = forms.CharField(max_length=400, required=False)
     pid = forms.CharField(max_length=400, required=False)
+    asset_tag = forms.CharField(max_length=200, required=False)

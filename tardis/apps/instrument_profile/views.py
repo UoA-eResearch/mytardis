@@ -116,6 +116,7 @@ def create_instrument_profile(request):
                 "measured_variable"
             ]
             instrument_profile.pid = form.cleaned_data["pid"]
+            instrument_profile.asset_tag = form.cleaned_data["asset_tag"]
             instrument_profile.save()
             return _redirect_303("view_instrument_profile", instrument_profile.id)
     else:
@@ -149,6 +150,7 @@ def edit_instrument_profile(request, instrument_profile_id):
                 "measured_variable"
             ]
             instrument_profile.pid = form.cleaned_data["pid"]
+            instrument_profile.asset_tag = form.cleaned_data["asset_tag"]
             instrument.save()
             instrument_profile.save()
             return _redirect_303("view_instrument_profile", instrument_profile.id)
@@ -166,6 +168,7 @@ def edit_instrument_profile(request, instrument_profile_id):
             "instrument_type": instrument_profile.instrument_type,
             "measured_variable": instrument_profile.measured_variable,
             "pid": instrument_profile.pid,
+            "asset_tag": instrument_profile.asset_tag,
         }
         form = InstrumentProfileForm(initial=initialisation_dict)
 

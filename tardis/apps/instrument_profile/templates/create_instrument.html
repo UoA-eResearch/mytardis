@@ -55,6 +55,12 @@
           </div>
         </div>
 	<div class="form-group row">
+          <label class="col-form-label col-md-2 " for="title">Asset Tag</label>
+          <div class=" col-md-9 ">
+            {{ form.asset_tag | add_class:"form-control" }}
+          </div>
+        </div>
+	<div class="form-group row">
           <label class="col-form-label col-md-2 " for="title">Instrument Manufacturer</label>
           <div class=" col-md-9 ">
             {{ form.manufacturer | add_class:"form-control" }}
