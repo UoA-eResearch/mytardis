@@ -3,7 +3,6 @@ import logging
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.urls import reverse
 
 from tardis.tardis_portal.models.instrument import Instrument
 
@@ -44,6 +43,7 @@ class InstrumentProfile(models.Model):
     instrument_type = models.CharField(max_length=400, null=True, blank=True)
     measured_variable = models.CharField(max_length=400, null=True, blank=True)
     pid = models.CharField(max_length=400, null=True, blank=True, unique=True)
+    asset_tag = models.CharField(max_length=200, null=True, blank=True, unique=True)
 
     def __str__(self):
         return self.instrument.name

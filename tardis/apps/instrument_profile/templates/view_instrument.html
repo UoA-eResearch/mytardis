@@ -13,7 +13,12 @@
   <h4>Instrument</h4>
   <h1><span property="dc:title">{{ instrument_name }}</span></h1>
   <p><span property="dc:creator">Related facility: {{ from_facility }}</span></p>
-  <p><span property="dc:creator">{{ instrument_profile.pid }}</span></p>
+  {% if instrument_profile.pid %}
+  <p><span property="dc:creator">Instrument Identifier: {{ instrument_profile.pid }}</span></p>
+  {% endif %}
+  {% if instrument_profile.asset_tag %}
+  <p><span property="dc:creator">Instrument Asset Tag: {{ instrument_profile.asset_tag }}</span></p>
+  {% endif %}
   {% if instrument_profile.landing_page %}
   <p><span property="dc:creator"><a href="{{ instrument_profile.landing_page }}">Instrument Website</a></span></p>
   {% endif %}
