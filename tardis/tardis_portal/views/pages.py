@@ -268,6 +268,8 @@ class DatasetView(TemplateView):
         if "tardis.apps.instrument_profile" in settings.INSTALLED_APPS:
             if dataset_instrument:
                 instrument_profile = dataset.instrument.profile
+            else:
+                instrument_profile = None
         if dataset_instrument:
             instrument_name = dataset_instrument.name
             dataset_facility = dataset_instrument.facility
