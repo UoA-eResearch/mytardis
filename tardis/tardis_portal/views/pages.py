@@ -12,7 +12,11 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.exceptions import PermissionDenied, ImproperlyConfigured
+from django.core.exceptions import (
+    PermissionDenied,
+    ImproperlyConfigured,
+    ObjectDoesNotExist,
+)
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.urls import reverse
 from django.db import connection
@@ -267,7 +271,12 @@ class DatasetView(TemplateView):
         dataset_instrument = dataset.instrument
         if "tardis.apps.instrument_profile" in settings.INSTALLED_APPS:
             if dataset_instrument:
-                instrument_profile = dataset.instrument.profile
+                try:
+                    instrument_profile = dataset.instrument.profile
+                except ObjectDoesNotExist:
+                    instrument_profile = None
+                except Exception as error:
+                    raise error
             else:
                 instrument_profile = None
         if dataset_instrument:
