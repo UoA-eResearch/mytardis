@@ -58,11 +58,13 @@ export default function ProjectPage(props) {
   }
 
   let projectName = projectData.objects[0].name;
-  let projectDescription = projectData.objects[0].description;
+    let projectDescription = projectData.objects[0].description;
+    let projectRAiD = projectData.objects[0].raid;
   return (
     <div className="project">
       <h2 className="project__label">Project</h2>
-      <h1 className="project__name">{projectName}</h1>
+	<h1 className="project__name">{projectName}</h1>
+	<div className="project__raid">RAiD: {projectRAiD}</div>
       <div className="project__description">{projectDescription}</div>
       <ExperimentList projectId={props.projectId} />
     </div>
