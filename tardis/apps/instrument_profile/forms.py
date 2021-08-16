@@ -2,7 +2,7 @@ import logging
 
 from django import forms
 
-from tardis.apps.instrument_profile.models import InstrumentProfile
+#from tardis.apps.instrument_profile.models import InstrumentProfile
 from tardis.tardis_portal.models import Facility
 
 logger = logging.getLogger(__name__)

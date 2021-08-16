@@ -1,3 +1,4 @@
+# pylint: disable=C0302
 """
 views that render full pages
 """
