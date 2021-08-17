@@ -23,9 +23,9 @@
     </div>
     <div class="col-md-6">
       <div class="float-right">
-	{% if instrument_profile %}
+	{% endverbatim %}{% if instrument_profile %}{% verbatim %}
 	<a href="/apps/instrument-profile/create" class="btn btn-primary my-1">New Instrument</a>
-	{% endif %}
+	{% endverbatim %}{% endif %}{% verbatim %}
 	<div class="dropdown show" style="display: inline-block" ng-show="facilityCtrl.showFacilitySelector()" ng-cloak>
           <button class="btn btn-outline-secondary dropdown-toggle"
 		  data-toggle="dropdown">Facility: {{facilityCtrl.selectedFacilityName}}
