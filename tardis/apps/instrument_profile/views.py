@@ -122,7 +122,11 @@ def create_instrument_profile(request):
     else:
         form = InstrumentProfileForm()
 
-    c = {"form": form}
+    c = {
+        "form": form,
+        "subtitle": "Create Instrument Profile",
+        "user_id": request.user.id,
+    }
     return render_response_index(request, "create_instrument.html", c)
 
 
@@ -172,5 +176,9 @@ def edit_instrument_profile(request, instrument_profile_id):
         }
         form = InstrumentProfileForm(initial=initialisation_dict)
 
-    c = {"form": form, "instrument_profile": instrument_profile}
+    c = {
+        "form": form,
+        "instrument_profile": instrument_profile,
+        "subtitle": "Edit Instrument Profile",
+    }
     return render_response_index(request, "create_instrument.html", c)
