@@ -138,3 +138,34 @@ def project_public_access_badge(project):
     Displays a badge the level of public access for this experiment
     """
     # return render_public_access_badge(project)
+
+
+@register.inclusion_tag('tardis_portal/project_tags/project_badges.html')
+def project_badges(project, user, **kwargs):
+    """
+    Displays badges for a Project for displaying in an Project list view
+    """
+    return {
+        'project': project,
+        'user': user
+    }
+
+
+@register.inclusion_tag('tardis_portal/project_tags/project_authors.html')
+def project_authors(project, **kwargs):
+    """
+    Displays an Project's lead researcher in a project list view
+    """
+    return {
+        'project': project
+    }
+
+
+@register.inclusion_tag('tardis_portal/project_tags/project_download_link.html')
+def project_download_link(experiment, **kwargs):
+    """
+    Displays a download link for a project in a list view
+    """
+    return {
+        'project': project
+    }

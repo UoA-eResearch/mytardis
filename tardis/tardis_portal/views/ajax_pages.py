@@ -14,7 +14,7 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from ..auth import decorators as authz
 from ..forms import RightsForm
-from ..models import Experiment, DataFile, Dataset, Schema, \
+from ..models import Project, Experiment, DataFile, Dataset, Schema, \
     DatafileParameterSet, UserProfile
 from ..shortcuts import return_response_error, \
     return_response_not_found, render_response_index
@@ -368,6 +368,32 @@ def retrieve_owned_exps_list(
 
     c = {
         'experiments': exps_page,
+        'paginator': paginator,
+        'page_num': page_num,
+        'query_string': query_string
+    }
+    return render_response_index(request, template_name, c)
+
+
+@never_cache
+@login_required
+def retrieve_owned_proj_list(
+        request, template_name='tardis_portal/ajax/proj_list.html'):
+
+    projects = Project.safe.owned_and_shared(request.user).order_by('-start_time')
+
+    try:
+        page_num = int(request.GET.get('page', '0'))
+    except ValueError:
+        page_num = 0
+
+    paginator = Paginator(projects, settings.OWNED_EXPS_PER_PAGE)
+    proj_page = paginator.page(page_num + 1)
+
+    query_string = '/ajax/owned_proj_list/?page={page}'
+
+    c = {
+        'projects': proj_page,
         'paginator': paginator,
         'page_num': page_num,
         'query_string': query_string
