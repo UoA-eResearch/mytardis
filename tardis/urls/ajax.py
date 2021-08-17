@@ -21,6 +21,7 @@ from tardis.tardis_portal.views import (
     experiment_description,
     experiment_datasets,
     retrieve_owned_exps_list,
+    retrieve_owned_proj_list,
     retrieve_shared_exps_list,
     edit_datafile_par,
     edit_dataset_par,
