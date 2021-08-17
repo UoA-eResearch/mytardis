@@ -24,7 +24,7 @@ module.exports = {
         tardis_portal_manage_group_members: glob.sync("./assets/js/tardis_portal/manage_group_members/**/*.js"),
         tardis_portal_index: glob.sync("./assets/js/tardis_portal/index/**/*.js"),
         tardis_portal_my_data: glob.sync("./assets/js/tardis_portal/my_data/**/*.js"),
-        tardis_portal_my_projects: glob.sync("./assets/js/tardis_portal/my_projects/**/*.js"),
+        tardis_portal_my_projects: glob.sync("./assets/js/tardis_portal/my_data/**/*.js"),
         tardis_portal_shared: glob.sync("./assets/js/tardis_portal/shared/**/*.js"),
         tardis_portal_public_data: glob.sync("./assets/js/tardis_portal/public_data/**/*.js"),
         tardis_portal_facility_view: "./assets/js/tardis_portal/facility_view/index.js",
