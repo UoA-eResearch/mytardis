@@ -495,6 +495,20 @@ def healthz(request):
 
 
 @login_required
+def my_project(request):
+    """
+    show owned_and_shared data with credential-based access
+    """
+    owned_projects = Project.safe.owned_and_shared(request.user).order_by("-start_time")
+    proj_expand_accordion = getattr(settings, "EXPS_EXPAND_ACCORDION", 5)
+    c = {
+        "owned_projects": owned_projects,
+        "proj_expand_accordion": proj_expand_accordion,
+    }
+    return render_response_index(request, "tardis_portal/my_projects.html", c)
+
+
+@login_required
 def my_data(request):
     """
     show owned data with credential-based access
