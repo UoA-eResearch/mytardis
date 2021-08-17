@@ -14,7 +14,6 @@
 </div>
 <div ng-app="facilityOverview">
   {% with request|check_if_facility_manager as facility_manager %}
-  {% with request|check_if_instrument_profile_active as instrument_profile %}
 <div id="content" class="container-fluid" ng-controller="FacilityController as facilityCtrl">
   {% verbatim %}
   <div class="row">
@@ -23,9 +22,11 @@
     </div>
     <div class="col-md-6">
       <div class="float-right">
+	{% with request|check_if_instrument_profile_active as instrument_profile %}
 	{% if instrument_profile %}
 	<a href="/apps/instrument-profile/create" class="btn btn-primary my-1">New Instrument</a>
 	{% endif %}
+	{% endwith %}
 	<div class="dropdown show" style="display: inline-block" ng-show="facilityCtrl.showFacilitySelector()" ng-cloak>
           <button class="btn btn-outline-secondary dropdown-toggle"
 		  data-toggle="dropdown">Facility: {{facilityCtrl.selectedFacilityName}}
