@@ -73,6 +73,8 @@ ajax_urls = [
         experiment_recent_datasets),
     url(r'^owned_exps_list/$', retrieve_owned_exps_list,
         name='tardis.tardis_portal.views.retrieve_owned_exps_list'),
+    url(r'^owned_proj_list/$', retrieve_owned_proj_list,
+        name='tardis.tardis_portal.views.retrieve_owned_proj_list'),
     url(r'^shared_exps_list/$', retrieve_shared_exps_list,
         name='tardis.tardis_portal.views.retrieve_shared_exps_list'),
     url(r'^edit_datafile_parameters/(?P<parameterset_id>\d+)/$',
