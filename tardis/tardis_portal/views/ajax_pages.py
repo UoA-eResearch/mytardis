@@ -378,7 +378,7 @@ def retrieve_owned_exps_list(
 @never_cache
 @login_required
 def retrieve_owned_proj_list(
-        request, template_name='tardis_portal/ajax/owned_proj_list.html'):
+        request, template_name='tardis_portal/ajax/proj_list.html'):
 
     projects = Project.safe.owned_and_shared(request.user).order_by('-start_time')
 
