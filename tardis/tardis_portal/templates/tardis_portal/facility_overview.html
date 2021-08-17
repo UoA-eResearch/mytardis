@@ -20,9 +20,9 @@
     <div class="col-md-6">
       <h2 class="float-left" style="color:#999999" ng-cloak>{{facilityCtrl.selectedFacilityName}}</h2>
     </div>
-    <div class="col-md-6">
-      <a href="/instrument-profile/create" class="btn btn-primary">New Instrument</a>
-      <div class="dropdown show float-right" ng-show="facilityCtrl.showFacilitySelector()" ng-cloak>
+    <div class="col-md-6" style="justify-content:right">
+      <a href="/apps/instrument-profile/create" class="btn btn-primary">New Instrument</a>
+      <div class="dropdown show" ng-show="facilityCtrl.showFacilitySelector()" ng-cloak>
         <button class="btn btn-outline-secondary dropdown-toggle"
            data-toggle="dropdown">Facility: {{facilityCtrl.selectedFacilityName}}
           <span class="caret"></span>
