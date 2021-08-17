@@ -495,7 +495,7 @@ def healthz(request):
 
 
 @login_required
-def my_project(request):
+def my_projects(request):
     """
     show owned_and_shared data with credential-based access
     """
