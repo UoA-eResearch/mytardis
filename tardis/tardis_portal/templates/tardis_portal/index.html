@@ -31,13 +31,14 @@
       {% if is_authenticated %}
       <h3>
         Your most recent projects
+        <small>(<a href="{% url 'tardis.tardis_portal.views.my_projects' %}">view all</a>)</small>
       </h3>
 
       <div id="private-projects" class="panel-group projects">
         {% if private_projects_count <= 0 %}
         <div class="card mb-2">
-        <div class="card-body py"> 
-          <p class="card-text mb-1 "> 
+        <div class="card-body py">
+          <p class="card-text mb-1 ">
             You have no recent projects.
           </p>
         </div>
@@ -47,16 +48,16 @@
         <div class="card mb-2">
           <div id="private-toggle-{{project.id}}"
             role="button"
-            class="card-header accordion-toggle private-project py-2" 
+            class="card-header accordion-toggle private-project py-2"
             data-target="#project-collapse-{{project.id}}"
-            data-toggle="collapse" 
+            data-toggle="collapse"
             data-parent="#private-projects"
           >
             <div class="row">
 
               <div class="col-md-8 px-1 pb-1">
                 <input class="project-index" type="hidden" value="{{ forloop.counter }}">
-                <a class="card-title projectlink" 
+                <a class="card-title projectlink"
                   href="{% url 'tardis_portal.view_project' project.id %}">{{ project.name }}</a>
               </div>
 
@@ -87,7 +88,7 @@
                       <p class="card-text small mb-1">
                         {% if project.description|length > 20 %}
                         {{project.description|truncatewords:20|default:"<em>No description</em>|bleach"}}
-                        <a 
+                        <a
                           href="{% url 'tardis_portal.view_project' project.id %}">read more</a>
                         {% else %}
                         {{project.description|default:"<em>No description</em>|bleach"}}
@@ -129,7 +130,7 @@
             <div class="card mb-2">
               <div id="private-toggle-{{exp.id}}"
                    class="card-header accordion-toggle private-experiment py-2"
-                   data-toggle="collapse" 
+                   data-toggle="collapse"
                    data-parent="#private-experiments"
                   >
                   <div class="row">
