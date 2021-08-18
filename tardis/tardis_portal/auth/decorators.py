@@ -646,6 +646,22 @@ def experiment_ownership_required(f):
     return wrap
 
 
+def project_access_required(f):
+
+    def wrap(*args, **kwargs):
+        request = args[0]
+        if not isinstance(request, HttpRequest):
+            request = args[1]
+
+        if not has_access(request, kwargs['project_id'], "project"):
+            return return_response_error(request)
+        return f(*args, **kwargs)
+
+    wrap.__doc__ = f.__doc__
+    wrap.__name__ = f.__name__
+    return wrap
+
+
 def experiment_access_required(f):
 
     def wrap(*args, **kwargs):
