@@ -1,0 +1,24 @@
+{% for exp in experiments|dictsortreversed:"id"|slice:":1" %}
+  {% if forloop.first %}
+    <ul class="list-group borderless mt-2">
+      <li class="list-group-item exp-list-header small px-1 py-1">
+        <em>Latest experiment in this project:</em>
+      </li>
+  {% endif %}
+  <li class="list-group-item exp-list-item small px-2 py-1">
+    <i class="fa fa-folder o-6"></i>
+    <a class="experiment-link"
+       href="{% url 'tardis_portal.view_experiment' exp.id %}">
+      {{ exp.title }}
+    </a>
+  </li>
+  {% if forloop.last %}
+    </ul>
+  {% endif %}
+{% empty %}
+  <ul class="list-group borderless mt-2">
+    <li class="list-group-item exp-list-header small px-1 py-1">
+      <em>There are no experiments in this project.</em>
+    </li>
+  </ul>
+{% endfor %}
