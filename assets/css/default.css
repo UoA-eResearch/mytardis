@@ -140,6 +140,18 @@ a.dataset-link :hover {
     color: black;
 }
 
+/* Exp links */
+
+a.experiment-link {
+    font-size: 110%;
+    color: black;
+}
+
+a.experiment-link :hover {
+    color: black;
+}
+
+
 /* Black links */
 
 a.explink, a.dllink, a[rel=license], table td a {
