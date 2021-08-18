@@ -110,6 +110,26 @@ def experiment_recent_datasets(request, experiment_id):
 
 
 @never_cache
+@authz.project_access_required
+def project_latest_exp(request, project_id):
+    context = dict(experiments=Experiment.safe.all(request.user).filter(project__id=project_id))
+    return render_response_index(
+        request,
+        'tardis_portal/ajax/project_latest_exp.html',
+        context)
+
+
+@never_cache
+@authz.project_access_required
+def project_recent_exps(request, project_id):
+    context = dict(experiments=Experiment.safe.all(request.user).filter(project__id=project_id))
+    return render_response_index(
+        request,
+        'tardis_portal/ajax/project_recent_exps.html',
+        context)
+
+
+@never_cache
 @authz.experiment_access_required
 def experiment_dataset_transfer(request, experiment_id):
     experiments = Experiment.safe.owned(request.user)
