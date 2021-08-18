@@ -1,0 +1,3 @@
+{% for lead_researcher in project.lead_researcher_set.all %}
+  <span property="dc:author">{{ lead_researcher.get_full_name }}{% if not forloop.last %}, {% endif %}</span>
+{% endfor %}
