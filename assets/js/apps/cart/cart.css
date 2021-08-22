@@ -62,15 +62,11 @@ body {
     width: 7rem;
 }
 
-.transfer-screen--remotehost-list {
-    margin-bottom: 2rem;
-}
-
 .invalid-items-warning {
-    border: 1px solid #dee2e6;
+    border: 1px solid #ffc107;
     border-left: 4px solid #ffc107;
-    background-color: #fff7dd;
-    color: #574c29;
+    background-color: #fffcf5;
+    color: #2a2513;
 }
 
 .cart-item--invalid {

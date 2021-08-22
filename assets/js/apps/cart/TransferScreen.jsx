@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useCreateTransferMutation, useGetObjectByIdQuery, useGetRemoteHostsQuery, useGetSiteQuery, useValidateTransferQuery } from "../shared/api";
 import PropTypes from "prop-types";
-import { Accordion, Button, Card, Collapse, FormControl, Modal } from "react-bootstrap";
-import { Link, Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
+import { Accordion, Button, Card, Collapse, Form, FormControl, Modal } from "react-bootstrap";
+import { Link, Redirect, Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getItemsByCategory, removeItem } from "./cartSlice";
+import { addItemsTransferred, clearTransferredItems, getItemsByCategory, removeItem } from "./cartSlice";
 import { BsCheck, BsDashCircle, BsExclamationTriangle, BsExclamationTriangleFill, BsFillExclamationCircleFill, BsPlusCircle, BsTrash } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
 import { CategoryTabs } from "../shared/CategoryTabs";
@@ -381,6 +381,31 @@ function getValidItems(cartItems, invalidItems) {
     return validItems;
 }
 
+function ConfirmTransferDialog({numInvalidItems, onConfirm, onCancel}) {
+    return (
+        <Modal show={true} onHide={onCancel}>
+            <Modal.Header closeButton>
+                <Modal.Title>Do you want to proceed with this transfer?</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{numInvalidItems} {numInvalidItems === 1 ? "file" : "files" } will not be included in the transfer because of restrictions on locations where these files can be transferred.</Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={onCancel}>
+                        Cancel
+                </Button>
+                <Button variant="primary" onClick={onConfirm}>
+                        Yes, proceed
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
+}
+
+ConfirmTransferDialog.propTypes = {
+    numInvalidItems: PropTypes.number.isRequired,
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired
+};
+
 // eslint-disable-next-line complexity
 function CreateTransferDialog({remoteHostId, transferState, setTransferState}) {
     const cartItems = useSelector(state => state.cart.itemsInCart.byId);
@@ -390,6 +415,11 @@ function CreateTransferDialog({remoteHostId, transferState, setTransferState}) {
         items: cartItems
     });
     const numInvalidItems = invalidItems ? getInvalidItemsCount(invalidItems.invalid_items) : 0;
+    let validItems = {};
+    if (invalidItems) {
+        validItems = getValidItems(cartItems, invalidItems.invalid_items);
+    } 
+    const dispatch = useDispatch();
     // const {data: numInvalidItems, isLoading: isValidationLoading} = useInvalidTransferItemsCount({remoteHostId});
     useEffect(() => {
         if (transferState !== TRANSFER_STATE.TransferRequested || isValidationLoading || validationError) {
@@ -408,7 +438,6 @@ function CreateTransferDialog({remoteHostId, transferState, setTransferState}) {
 
     useEffect(() => {
         if (transferState === TRANSFER_STATE.Confirmed) {
-            const validItems = getValidItems(cartItems, invalidItems.invalid_items);
             triggerTransfer({remoteHostId, items: validItems});
             setTransferState(TRANSFER_STATE.Transferring);
         }
@@ -420,26 +449,17 @@ function CreateTransferDialog({remoteHostId, transferState, setTransferState}) {
     }, [transferMutationStatus]);
     if (transferState === TRANSFER_STATE.NeedConfirmation) {
         return (
-            <Modal show={true} onHide={() => setTransferState(TRANSFER_STATE.Initial)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Do you want to proceed with this transfer?</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{numInvalidItems} {numInvalidItems === 1 ? "file" : "files" } will not be included in the transfer because of restrictions on locations where these files can be transferred.</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setTransferState(TRANSFER_STATE.Initial)}>
-                            Cancel
-                    </Button>
-                    <Button variant="primary" onClick={() => setTransferState(TRANSFER_STATE.Confirmed)}>
-                            Yes, proceed
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <ConfirmTransferDialog numInvalidItems={numInvalidItems}
+                onConfirm={() => setTransferState(TRANSFER_STATE.Confirmed)}
+                onCancel={() => setTransferState(TRANSFER_STATE.Initial)}
+            />
         );
     }
     if (transferState === TRANSFER_STATE.Confirmed) {
         return <p>Sending...</p>;
     }
     if (transferState === TRANSFER_STATE.Transferred) {
+        dispatch(addItemsTransferred(validItems));
         return <Redirect to="/transfer/done" />;
     }
     else { 
@@ -452,7 +472,6 @@ function TransferScreen(props) {
     const [transferState, setTransfer] = useState(TRANSFER_STATE.Initial);
     const {data: invalidCount, isLoading: isValidationLoading} = useInvalidTransferItemsCount({remoteHostId: selectedRemoteHost});
     function setTransferState(val) {
-        console.log({val});
         setTransfer(val);
     }
     return <div>
@@ -460,7 +479,7 @@ function TransferScreen(props) {
         <p>Select a transfer destination.</p>
         <RemoteHostDropdown selectedId={selectedRemoteHost} onSelect={setSelectedRemoteHost} />
         {
-            !isValidationLoading && invalidCount > 0 ? <InvalidItemsWarning hostId={selectedRemoteHost} /> : null
+            !isValidationLoading && invalidCount > 0  ? <InvalidItemsWarning hostId={selectedRemoteHost} /> : null
         }
         <div className="d-flex justify-content-between mt-4">
             <Link to="/" className="btn btn-secondary">Cancel and go back to cart</Link>
@@ -483,11 +502,49 @@ function TransferScreen(props) {
     </div>;
 }
 
+function TransferCompletedScreen() {
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const transferredItems = useSelector(state => state.cart.transferredItems);
+    const [shouldRemoveTransferred, setShouldRemoveTransferred] = useState(true);
+    const numTransferred = Object.keys(transferredItems).reduce(
+        (acc, typeId) => acc + transferredItems[typeId].length, 0);
+    const toggleShouldRemoveTransferred = () => {
+        setShouldRemoveTransferred(!shouldRemoveTransferred);
+    };
+    const handleVisitCart = () => {
+        dispatch(clearTransferredItems(shouldRemoveTransferred));
+        history.replace("/");
+    };
+
+    if (numTransferred === 0) {
+        // If there aren't any transferred items, go back to the cart.
+        const redirectPath = "/";
+        return <Redirect to={redirectPath} />;
+    }
+    
+    return <>
+        <h1 className="h3 my-3">Transfer started</h1>
+        <p><strong>{numTransferred} {numTransferred === 1 ? "file" : "files"} have started transferring.</strong></p>
+        <p>Depending on the size of the files it may take several hours for the files to finish transferring to the destination. You can check progress of the transfer through the Transfers page (todo).</p>
+        <Form.Check 
+            type="checkbox" 
+            checked={shouldRemoveTransferred}
+            onChange={toggleShouldRemoveTransferred}
+            id="shouldTransfer"
+            label="Remove transferred files from cart" 
+        />
+        <div className="d-flex justify-content-between mt-4">
+            <Button role="link" onClick={handleVisitCart} className="btn btn-primary" to="/cart">Go back to cart</Button>
+        </div>
+    </>;
+}
+
 function TransferRoute(props) {
     const match = useRouteMatch();
     return <Switch>
         <Route path={`${match.path}/done`}>
-            <p>Transfer finished!</p>
+            <TransferCompletedScreen />
         </Route>
         <Route path={`${match.path}`}>
             <TransferScreen />

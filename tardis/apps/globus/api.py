@@ -304,12 +304,6 @@ class TransferAppResource(Resource):
         bundle = self.create_transfer(bundle)
         return bundle
 
-    def prepend_urls(self):
-        return [
-            #...
-            url(r"^(?P<resource_name>%s)/validate?$" % (self._meta.resource_name), self.wrap_view('validate_transfer')),
-            #...
-        ]
     # ...other methods in your Resource...
 
     def create_transfer(self, bundle):

@@ -47,8 +47,7 @@ const cartSlice = createSlice({
             state.activeNotification = NOTIFICATION_TYPE.ItemsAdded;
         },
         itemRemoved: (state, {payload}) => {
-            const { typeId } = payload;
-            const id = String(payload.id);
+            const { typeId, id } = payload;
             const itemsByType = state.itemsInCart;
             if (!itemsByType.byId || !itemsByType.byId[typeId] || itemsByType.byId[typeId][id]) {
                 return;
@@ -63,6 +62,23 @@ const cartSlice = createSlice({
         },
         notificationDismissed: (state) => {
             state.activeNotification = null;
+        },
+        addItemsTransferred(state, {payload}) {
+            state.transferredItems = payload;
+        },
+        transferredItemsCleared(state, {payload: shouldClearFromCart}) {
+            const transferredItems = state.transferredItems;
+            const itemsInCart = state.itemsInCart.byId;
+            if (shouldClearFromCart) {
+                // First, clear out transferred items from cart
+                Object.keys(transferredItems).forEach(typeId => {
+                    const transferredSet = new Set(transferredItems[typeId]);
+                    itemsInCart[typeId] = itemsInCart[typeId].filter(itemId =>
+                        !transferredSet.has(itemId)
+                    );
+                });
+            }
+            state.transferredItems = {};
         }
     }
 });
@@ -73,7 +89,8 @@ export const {
     objectsValidating,
     objectsValidated,
     itemsLoadFailed,
-    notificationDismissed
+    notificationDismissed,
+    addItemsTransferred
 } = cartSlice.actions;
 
 
@@ -101,6 +118,14 @@ export const removeItem = (typeId, id) => {
         return localStorageUtils.setItem("itemIdsByType", itemsByType);
     };
 };
+
+export function clearTransferredItems(shouldClearFromCart) {
+    return (dispatch, getState) => {
+        dispatch(cartSlice.actions.transferredItemsCleared(shouldClearFromCart));
+        const itemsByType = getState().cart.itemsInCart;
+        return localStorageUtils.setItem("itemIdsByType", itemsByType);
+    };
+}
 
 /**
  * Gets items in cart for category.
