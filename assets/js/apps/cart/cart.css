@@ -47,7 +47,9 @@ body {
 }
 
 .category-item-list {
-    height: 500px;
+    height: 300px;
+    border-top: none;
+    overflow-y: auto;
 }
 
 .category-item-list tr td {

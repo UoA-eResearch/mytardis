@@ -8,6 +8,7 @@ import { CategoryTabs } from "../shared/CategoryTabs";
 // import { getCategoriesAsList, getDefaultSelectedCategory } from "../shared/siteSlice";
 import { useGetObjectByIdQuery, useGetSiteQuery } from "../shared/api";
 import { getItemsByCategory, removeItem } from "./cartSlice";
+import humanFileSize from "../shared/humanFileSize";
 
 function CartItemRow({ typeId, id }) {
     const dispatch = useDispatch();
@@ -47,7 +48,7 @@ function CartItemRow({ typeId, id }) {
             <a href={url} target="_blank" rel="noopener noreferrer">{name} <FiExternalLink /></a> 
         </td>
         <td className="category-item-list--size">
-            <span>{item.size}</span>
+            <span>{humanFileSize(item.size)}</span>
         </td>
     </tr>);
 }
@@ -63,7 +64,8 @@ function CategoryItemList({ typeId }) {
         state => 
             getItemsByCategory(state.cart, typeId));
 
-    return (<table className="table">
+    return (<>
+    <table className="table">
         <thead>
             <tr>
                 <th></th>
@@ -76,7 +78,12 @@ function CategoryItemList({ typeId }) {
                 <CartItemRow typeId={typeId} id={itemId} key={itemId} />
             )}
         </tbody>
-    </table>);
+    </table>
+    {categoryItems.length === 0 && 
+        <div className="mt-5 d-flex justify-content-center" role="status">
+            No items in cart.
+        </div>
+    }</>);
 }
 
 CategoryItemList.propTypes = {

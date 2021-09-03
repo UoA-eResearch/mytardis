@@ -14,7 +14,7 @@ ReactDOM.render(
     <HashRouter>
         <Provider store={store}>
             <div className="container">
-                <main className="cart-content shadow-sm">
+                <main className="cart-content shadow-sm mt-4">
                     <Switch>
                         <Route path="/transfer">
                             <TransferScreen />

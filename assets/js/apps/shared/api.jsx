@@ -22,6 +22,23 @@ export const myTardisApi = createApi({
         getObjectById: builder.query({
             query: ({name, id}) => `${name}/${id}/`
         }),
+        getTotalSize: builder.query({
+            async queryFn(arg, queryApi, extraOptions, fetchWithBQ) {
+                const { data: siteInfo } = await queryApi.dispatch(myTardisApi.endpoints.getSite.initiate());
+                const queries = Object.keys(arg).flatMap(typeId => {
+                    const endpointName = siteInfo.categories[typeId].endpoint_name;
+                    return arg[typeId].map(objectId => 
+                        fetchWithBQ(`${endpointName}/${objectId}`));
+                });
+                const sizes = (await Promise.all(queries)).map(res => {
+                    if (res.error) {
+                        return 0;
+                    }
+                    return res.data.size;
+                });
+                return { data: sizes.reduce((acc, val) => acc + val, 0)};
+            }
+        }),
         getSite: builder.query({
             queryFn: () => {
                 return {
@@ -71,6 +88,7 @@ export const {
     useGetObjectByIdQuery, 
     useGetSiteQuery, 
     useGetRemoteHostsQuery, 
-    useValidateTransferQuery, 
+    useValidateTransferQuery,
+    useGetTotalSizeQuery,
     useCreateTransferMutation
 } = myTardisApi;
