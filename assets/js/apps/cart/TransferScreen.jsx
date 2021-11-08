@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useCreateTransferMutation, useGetObjectByIdQuery, useGetRemoteHostsQuery, useGetSiteQuery, useValidateTransferQuery } from "../shared/api";
 import PropTypes from "prop-types";
-import { Accordion, Button, Card, Collapse, Form, FormControl, Modal } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 import { Link, Redirect, Route, Switch, useHistory, useParams, useRouteMatch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemsTransferred, clearTransferredItems, getItemsByCategory, removeItem } from "./cartSlice";
-import { BsCheck, BsChevronLeft, BsDashCircle, BsExclamationTriangle, BsExclamationTriangleFill, BsFillExclamationCircleFill, BsPlusCircle, BsTrash } from "react-icons/bs";
+import { addItemsTransferred, clearTransferredItems } from "./cartSlice";
+import { BsChevronLeft, BsExclamationTriangle, BsExclamationTriangleFill } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
-import { CategoryTabs } from "../shared/CategoryTabs";
+import { TypeTabs } from "../shared/TypeTabs";
 import { QueryStatus } from "@reduxjs/toolkit/dist/query";
 import { Alert } from "react-bootstrap";
-import { length } from "file-loader";
 import humanFileSize from "../shared/humanFileSize";
 
 // eslint-disable-next-line complexity
 function CartItemRow({ typeId, id, canTransfer }) {
     const dispatch = useDispatch();
     const { data: site, isLoading: isSiteLoading } = useGetSiteQuery();
-    const endpointName = site ? site.categories[typeId].endpoint_name : null;
+    const endpointName = site ? site.types[typeId].endpoint_name : null;
     const { isLoading: isObjectLoading, data: item } = useGetObjectByIdQuery({
         name: endpointName,
         id
@@ -36,18 +35,18 @@ function CartItemRow({ typeId, id, canTransfer }) {
             </td>
         </tr>;
     }
-    const nameField = site.categories[typeId].name_field;
-    const url = site.categories[typeId].details_uri + id;
+    const nameField = site.types[typeId].name_field;
+    const url = site.types[typeId].details_uri + id;
     const name = item[nameField];
     return (<tr className={canTransfer ? null : "cart-item--invalid"}>
-        <td className="category-item-list--remove">
+        <td className="type-item-list--remove">
             {canTransfer ? null : <BsExclamationTriangleFill title="This item can't be transferred because it belongs to a project or dataset that is not associated with the chosen transfer destination." />}
         </td>
-        <td className="category-item-list--name">
+        <td className="type-item-list--name">
             {/* Name cell */}
             <a href={url} target="_blank" rel="noopener noreferrer">{name} <FiExternalLink /></a> 
         </td>
-        <td className="category-item-list--size">
+        <td className="type-item-list--size">
             <span>{humanFileSize(item.size)}</span>
         </td>
     </tr>);
@@ -61,47 +60,47 @@ CartItemRow.propTypes = {
 
 
 
-export function CartCategoryTabs({selectedRemoteHost, selectedType, onChange}) {
+export function CartTypeTabs({selectedRemoteHost, selectedType, onChange}) {
     const {data: site} = useGetSiteQuery({});
     const counts = useSelector(state => {
         if (!site) {
             return null;
         }
-        const categories = site.categories;
-        const categoryKeys = Object.keys(categories);
-        return categoryKeys.map(key => {
-            const categoryItemsInCart = state.cart.itemsInCart.byId[key] || [];
+        const types = site.types;
+        const typeKeys = Object.keys(types);
+        return typeKeys.map(key => {
+            const typeItemsInCart = state.cart.itemsInCart.byId[key] || [];
             return {
-                name: site.categories[key].collection_name,
+                name: site.types[key].collection_name,
                 id: key,
-                hitTotal: categoryItemsInCart.length
+                hitTotal: typeItemsInCart.length
             };
         });
     });
     if (!counts) {
         return null;
     } else {
-        return (<CategoryTabs counts={counts} selectedType={selectedType} onChange={onChange} />);
+        return (<TypeTabs counts={counts} selectedType={selectedType} onChange={onChange} />);
     }
 }
 
 /**
- * Create a React hook for storing the currently selected category. 
- * Get query API, in order to provide a default category.
- * @returns A state variable for a category key, and a callback for changing it.
+ * Create a React hook for storing the currently selected type. 
+ * Get query API, in order to provide a default type.
+ * @returns A state variable for a type key, and a callback for changing it.
  */
-function useSelectedCategoryState() {
-    const [ selectedCategory, setSelectedCategory ] = useState();
+function useSelectedTypeState() {
+    const [ selectedType, setSelectedType ] = useState();
     const {data: site, isLoading } = useGetSiteQuery({});
 
     useEffect(() => {
-        // Set default category when our list of categories is loaded.
-        // Make sure it's only done when categories loaded.
+        // Set default type when our list of types is loaded.
+        // Make sure it's only done when types loaded.
         if (site) {
-            setSelectedCategory(Object.keys(site.categories)[0]);
+            setSelectedType(Object.keys(site.types)[0]);
         }
-    }, [setSelectedCategory, site]);
-    return [ selectedCategory, setSelectedCategory ];
+    }, [setSelectedType, site]);
+    return [ selectedType, setSelectedType ];
 }
 
 function useGetHostInfoQuery(hostId) {
@@ -255,7 +254,7 @@ RemoteHostDropdown.propTypes = {
     onSelect: PropTypes.func.isRequired
 };
 
-function CategoryItemList({ children }) {
+function TypeItemList({ children }) {
     return (<>
     <table className="table">
         <thead>
@@ -276,7 +275,7 @@ function CategoryItemList({ children }) {
     }</>);
 }
 
-CategoryItemList.propTypes = {
+TypeItemList.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
@@ -310,7 +309,7 @@ function getInvalidItemsCount(invalidItems) {
         return 0;
     }
     return Object.keys(invalidItems).reduce(
-        (acc, categoryId) => invalidItems[categoryId].length + acc, 0);
+        (acc, typeId) => invalidItems[typeId].length + acc, 0);
 
 }
 
@@ -318,7 +317,7 @@ function getInvalidItemsCount(invalidItems) {
 // eslint-disable-next-line complexity
 export function TransferrableItemList({selectedRemoteHost}) {
     const {data: site, isLoading, error } = useGetSiteQuery({});
-    const [ selectedCategory, setSelectedCategory ] = useSelectedCategoryState();
+    const [ selectedType, setSelectedType ] = useSelectedTypeState();
     const [ validFilterState, setValidFilterState ] = useState(VALID_TRANSFER_FILTER_STATES.All);
     const cartItems = useSelector(state => state.cart.itemsInCart.byId);
     const hasSelectedRemoteHost = selectedRemoteHost !== undefined && selectedRemoteHost !== null;
@@ -366,28 +365,28 @@ export function TransferrableItemList({selectedRemoteHost}) {
         console.log(validationQueryError.message);
         return <p>Error loading items.</p>;
     }
-    const categories = Object.keys(site.categories);
+    const types = Object.keys(site.types);
     // Compute which items to display.
-    const itemsToDisplay = Object.fromEntries(categories.map(categoryId =>
-        [categoryId, getItemsByState(items.byId[categoryId], validationErrors[categoryId], validFilterState)]
+    const itemsToDisplay = Object.fromEntries(types.map(typeId =>
+        [typeId, getItemsByState(items.byId[typeId], validationErrors[typeId], validFilterState)]
     ));
-    const tabItems = categories.map(categoryId =>
+    const tabItems = types.map(typeId =>
         ({
-            name: site.categories[categoryId].collection_name,
-            id: categoryId,
-            hitTotal: itemsToDisplay[categoryId].length
+            name: site.types[typeId].collection_name,
+            id: typeId,
+            hitTotal: itemsToDisplay[typeId].length
         })
     );
     return <>
-        <CategoryTabs counts={tabItems} selectedType={selectedCategory} onChange={setSelectedCategory} />
-        {categories.map(categoryId => {
-            const invalidItemSet = new Set(validationErrors[categoryId]);
-            return <div className={selectedCategory !== categoryId ? "d-none category-item-list" : "category-item-list"} key={categoryId}>
-                <CategoryItemList>
-                    {itemsToDisplay[categoryId].map(item => (
-                        <CartItemRow typeId={categoryId} id={item} canTransfer={!invalidItemSet.has(item)} key={categoryId + ":" + item} />
+        <TypeTabs counts={tabItems} selectedType={selectedType} onChange={setSelectedType} />
+        {types.map(typeId => {
+            const invalidItemSet = new Set(validationErrors[typeId]);
+            return <div className={selectedType !== typeId ? "d-none type-item-list" : "type-item-list"} key={typeId}>
+                <TypeItemList>
+                    {itemsToDisplay[typeId].map(item => (
+                        <CartItemRow typeId={typeId} id={item} canTransfer={!invalidItemSet.has(item)} key={typeId + ":" + item} />
                     ))}
-                </CategoryItemList>
+                </TypeItemList>
             </div>;
         })}
     </>;
@@ -434,9 +433,9 @@ function useInvalidTransferItemsCount({remoteHostId}) {
 function getValidItems(cartItems, invalidItems) {
     const validItems = {};
     Object.keys(cartItems).forEach(
-        categoryId => {
-            const invalidSet = new Set(invalidItems[categoryId]);
-            validItems[categoryId] = cartItems[categoryId].filter(item => !invalidSet.has(item));
+        typeId => {
+            const invalidSet = new Set(invalidItems[typeId]);
+            validItems[typeId] = cartItems[typeId].filter(item => !invalidSet.has(item));
         }
     );
     return validItems;

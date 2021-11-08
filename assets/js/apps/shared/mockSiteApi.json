@@ -1,5 +1,5 @@
 {
-    "categories": {
+    "types": {
         "project": {
             "name_field": "name",
             "details_uri": "/project/view/",

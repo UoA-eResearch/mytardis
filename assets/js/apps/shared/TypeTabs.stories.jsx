@@ -1,14 +1,14 @@
 import React from "react";
-import { CategoryTabs } from "./CategoryTabs";
+import { TypeTabs } from "./TypeTabs";
 
 export default {
-    component: CategoryTabs,
-    title: "Shared/Category tabs",
+    component: TypeTabs,
+    title: "Shared/Type tabs",
     decorators: [story => <div style={{ padding: "3rem" }}>{story()}</div>],
     parameters: { actions: { argTypesRegex: "^on.*" } }
 };
 
-const Template = (args) => <CategoryTabs {...args} />;
+const Template = (args) => <TypeTabs {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

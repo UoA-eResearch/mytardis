@@ -128,12 +128,12 @@ export function clearTransferredItems(shouldClearFromCart) {
 }
 
 /**
- * Gets items in cart for category.
+ * Gets items in cart for type.
  * @param {*} slice Redux slice for cart state
- * @param {string} typeId Type id of the category (e.g. experiment, dataset, etc.)
+ * @param {string} typeId id of the type (e.g. experiment, dataset, etc.)
  * @returns A list of items currently in cart, returns an empty list if none.
  */
-export function getItemsByCategory(slice, typeId) {
+export function getItemsByType(slice, typeId) {
     return slice.itemsInCart.byId[typeId] || [];
 }
 

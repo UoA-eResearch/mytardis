@@ -4,16 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { BsTrash } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
 // import Button from "react-bootstrap/Button";
-import { CategoryTabs } from "../shared/CategoryTabs";
-// import { getCategoriesAsList, getDefaultSelectedCategory } from "../shared/siteSlice";
+import { TypeTabs } from "../shared/TypeTabs";
 import { useGetObjectByIdQuery, useGetSiteQuery } from "../shared/api";
-import { getItemsByCategory, removeItem } from "./cartSlice";
+import { getItemsByType, removeItem } from "./cartSlice";
 import humanFileSize from "../shared/humanFileSize";
 
 function CartItemRow({ typeId, id }) {
     const dispatch = useDispatch();
     const { data: site, isLoading: isSiteLoading } = useGetSiteQuery();
-    const endpointName = site ? site.categories[typeId].endpoint_name : null;
+    const endpointName = site ? site.types[typeId].endpoint_name : null;
     const { isLoading: isObjectLoading, data: item } = useGetObjectByIdQuery({
         name: endpointName,
         id
@@ -32,22 +31,22 @@ function CartItemRow({ typeId, id }) {
             </td>
         </tr>;
     }
-    const nameField = site.categories[typeId].name_field;
-    const url = site.categories[typeId].details_uri + id;
+    const nameField = site.types[typeId].name_field;
+    const url = site.types[typeId].details_uri + id;
     const name = item[nameField];
     const handleRemoveClicked = (e) => {
         e.preventDefault();
         dispatch(removeItem(typeId, id));
     };
     return (<tr>
-        <td className="category-item-list--remove">
+        <td className="type-item-list--remove">
             <button onClick={handleRemoveClicked} className="btn btn-light"><BsTrash /></button>
         </td>
-        <td className="category-item-list--name">
+        <td className="type-item-list--name">
             {/* Name cell */}
             <a href={url} target="_blank" rel="noopener noreferrer">{name} <FiExternalLink /></a> 
         </td>
-        <td className="category-item-list--size">
+        <td className="type-item-list--size">
             <span>{humanFileSize(item.size)}</span>
         </td>
     </tr>);
@@ -59,10 +58,10 @@ CartItemRow.propTypes = {
 };
 
 
-function CategoryItemList({ typeId }) {
-    const categoryItems = useSelector(
+function TypeItemList({ typeId }) {
+    const typeItems = useSelector(
         state => 
-            getItemsByCategory(state.cart, typeId));
+            getItemsByType(state.cart, typeId));
 
     return (<>
     <table className="table">
@@ -74,82 +73,82 @@ function CategoryItemList({ typeId }) {
             </tr>
         </thead>
         <tbody>
-            {categoryItems.map(itemId => 
+            {typeItems.map(itemId => 
                 <CartItemRow typeId={typeId} id={itemId} key={itemId} />
             )}
         </tbody>
     </table>
-    {categoryItems.length === 0 && 
+    {typeItems.length === 0 && 
         <div className="mt-5 d-flex justify-content-center" role="status">
             No items in cart.
         </div>
     }</>);
 }
 
-CategoryItemList.propTypes = {
+TypeItemList.propTypes = {
     typeId: PropTypes.string.isRequired
 };
 
-export function CartCategoryTabs({selectedType, onChange}) {
+export function CartTypeTabs({selectedType, onChange}) {
     const {data: site} = useGetSiteQuery({});
     const counts = useSelector(state => {
         if (!site) {
             return null;
         }
-        const categories = site.categories;
-        const categoryKeys = Object.keys(categories);
-        return categoryKeys.map(key => {
-            const categoryItemsInCart = state.cart.itemsInCart.byId[key] || [];
+        const types = site.types;
+        const typeKeys = Object.keys(types);
+        return typeKeys.map(key => {
+            const typeItemsInCart = state.cart.itemsInCart.byId[key] || [];
             return {
-                name: site.categories[key].collection_name,
+                name: site.types[key].collection_name,
                 id: key,
-                hitTotal: categoryItemsInCart.length
+                hitTotal: typeItemsInCart.length
             };
         });
     });
     if (!counts) {
         return null;
     } else {
-        return (<CategoryTabs counts={counts} selectedType={selectedType} onChange={onChange} />);
+        return (<TypeTabs counts={counts} selectedType={selectedType} onChange={onChange} />);
     }
 }
 
 /**
- * Create a React hook for storing the currently selected category. 
- * Get query API, in order to provide a default category.
- * @returns A state variable for a category key, and a callback for changing it.
+ * Create a React hook for storing the currently selected type. 
+ * Get query API, in order to provide a default type.
+ * @returns A state variable for a type key, and a callback for changing it.
  */
-function useSelectedCategoryState(site) {
-    const [ selectedCategory, setSelectedCategory ] = useState();
+function useSelectedTypeState(site) {
+    const [ selectedType, setSelectedType ] = useState();
 
     useEffect(() => {
-        // Set default category when our list of categories is loaded.
-        // Make sure it's only done when categories loaded.
+        // Set default type when our list of types is loaded.
+        // Make sure it's only done when types loaded.
         if (site) {
-            setSelectedCategory(Object.keys(site.categories)[0]);
+            setSelectedType(Object.keys(site.types)[0]);
         }
-    }, [setSelectedCategory, site]);
-    return [ selectedCategory, setSelectedCategory ];
+    }, [setSelectedType, site]);
+    return [ selectedType, setSelectedType ];
 }
 
 
 export default function CartItemList() {
     const {data: site, isLoading } = useGetSiteQuery({});
-    const [ selectedCategory, setSelectedCategory ] = useSelectedCategoryState(site);
+    const [ selectedType, setSelectedType ] = useSelectedTypeState(site);
     if (isLoading) {
         return <p>Loading...</p>;
     }
     if (!site) {
         return <p>Error loading cart.</p>;
     }
-    const categories = Object.keys(site.categories);
+    const types = Object.keys(site.types);
 
     return (
         <div>
-            <CartCategoryTabs selectedType={selectedCategory} onChange={setSelectedCategory} />
-            {categories.map(categoryId => (
-                <div className={selectedCategory !== categoryId ? "d-none category-item-list" : "category-item-list"} key={categoryId}>
-                    <CategoryItemList typeId={categoryId} />    
+            <CartTypeTabs selectedType={selectedType} onChange={setSelectedType} />
+            {types.map(typeId => (
+                <div className={selectedType !== typeId ? "d-none type-item-list" : "type-item-list"} key={typeId}>
+                    <TypeItemList typeId={typeId} />    
                 </div>
             ))}
         </div>

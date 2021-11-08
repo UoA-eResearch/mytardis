@@ -46,21 +46,21 @@ body {
     margin: 0.5rem;
 }
 
-.category-item-list {
+.type-item-list {
     height: 300px;
     border-top: none;
     overflow-y: auto;
 }
 
-.category-item-list tr td {
+.type-item-list tr td {
     vertical-align: middle;
 }
 
-.category-item-list--remove {
+.type-item-list--remove {
     width: 3rem;
 }
 
-.category-item-list--size {
+.type-item-list--size {
     width: 7rem;
 }
 

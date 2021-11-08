@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Nav } from "react-bootstrap";
 
 
-export function CategoryTabs({ counts, selectedType, onChange }) {
+export function TypeTabs({ counts, selectedType, onChange }) {
     const handleNavClicked = (key) => {
         if (key !== selectedType) {
             onChange(key);
@@ -33,7 +33,7 @@ export function CategoryTabs({ counts, selectedType, onChange }) {
     );
 }
 
-CategoryTabs.propTypes = {
+TypeTabs.propTypes = {
     counts: PropTypes.arrayOf(PropTypes.shape({
         name: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
