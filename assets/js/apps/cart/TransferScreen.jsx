@@ -14,7 +14,6 @@ import humanFileSize from "../shared/humanFileSize";
 
 // eslint-disable-next-line complexity
 function CartItemRow({ typeId, id, canTransfer }) {
-    const dispatch = useDispatch();
     const { data: site, isLoading: isSiteLoading } = useGetSiteQuery();
     const endpointName = site ? site.types[typeId].endpoint_name : null;
     const { isLoading: isObjectLoading, data: item } = useGetObjectByIdQuery({
@@ -86,7 +85,7 @@ export function CartTypeTabs({selectedRemoteHost, selectedType, onChange}) {
 
 /**
  * Create a React hook for storing the currently selected type. 
- * Get query API, in order to provide a default type.
+ * Get query API, in order to provide an initially-selected type.
  * @returns A state variable for a type key, and a callback for changing it.
  */
 function useSelectedTypeState() {
@@ -138,56 +137,6 @@ function InvalidItemsWarning({ hostId }) {
     return <Alert variant="warning" className="mt-3">
         <BsExclamationTriangle className="mr-1" /> Some cart items can't be transferred to {remoteHostName}.
     </Alert>;
-    // return <div className="d-flex">
-    //         <div style={{fontSize: "2rem"}}>
-                
-    //         </div>
-    //         <div className="pl-4">
-    //             <h2 className="h5">Some cart items can't be transferred to {remoteHosts[selectedId].name}</h2>
-
-    //         </div>
-    //     </div>
-    // </div>
-    // return (
-    //     <>
-    //         <div className="invalid-items-warning my-2 py-2 px-3"
-    //             role="button"
-    //             aria-live="assertive"
-    //             aria-controls="invalid-items-detail"
-    //             aria-expanded={open}
-    //             onClick={() => setOpen(!open)}>
-    //             <span className="float-right">
-    //                 {open ? <BsDashCircle /> : <BsPlusCircle />}
-    //             </span>
-
-    //             <span>
-    //                 <BsExclamationTriangle fontSize="1.25rem" /> Some cart items can&apos;t be transferred to {remoteHostName}.
-    //             </span>
-    //         </div>
-    //         <Collapse in={open}>
-    //             <div id="invalid-items-detail" className="border border-top-0 px-3 py-3"> 
-    //                 Some carts can&apos;t be transferred to the destination because they belong to a project or dataset not associated with the chosen destination. You can review the items that are ready for transfer and start a transfer, change your transfer endpoint, or go back to the cart to remove unwanted items.
-    //             </div>
-    //         </Collapse>
-    //     </>
-    // );
-    // <Accordion>
-    //     <Card className="mt-3">
-    //         <Accordion.Toggle as={Card.Header} className="" eventKey="0">
-    //             <BsExclamationTriangle /> Some cart items can&apos;t be transferred to {hostName}
-    //         </Accordion.Toggle>
-    //         <Accordion.Collapse eventKey="0">
-    //             <Card.Body>
-    //                 <p>
-    //                     This is because they belong to a project or dataset not associated with this destination. You can review the items that are ready for transfer and start a transfer, change your transfer endpoint, or go back to the cart to remove unwanted items.
-    //                 </p>
-    //             </Card.Body>
-    //         </Accordion.Collapse>
-    //     </Card>
-    // </Accordion>
-    //     // <div className="alert alert-primary mt-3" role="alert">
-    //     <BsExclamationTriangle /> Some cart items can't be transferred to {remoteHosts[selectedId].name}.
-    // </div>
 }
 
 // eslint-disable-next-line complexity
@@ -318,11 +267,9 @@ function getInvalidItemsCount(invalidItems) {
 export function TransferrableItemList({selectedRemoteHost}) {
     const {data: site, isLoading, error } = useGetSiteQuery({});
     const [ selectedType, setSelectedType ] = useSelectedTypeState();
-    const [ validFilterState, setValidFilterState ] = useState(VALID_TRANSFER_FILTER_STATES.All);
     const cartItems = useSelector(state => state.cart.itemsInCart.byId);
     const hasSelectedRemoteHost = selectedRemoteHost !== undefined && selectedRemoteHost !== null;
     const { data: validationErrors,
-        isLoading: isValidationLoading,
         error: validationQueryError
     } = useValidateTransferQuery({
         remoteHostId: selectedRemoteHost,
@@ -330,7 +277,7 @@ export function TransferrableItemList({selectedRemoteHost}) {
     }, {
         skip: !hasSelectedRemoteHost,
         selectFromResult: (res) => {
-            if (res.status === "fulfilled") {
+            if (res.isSuccess) {
                 const data = res.data;
                 if (hasSelectedRemoteHost && 
                     data &&
@@ -352,7 +299,6 @@ export function TransferrableItemList({selectedRemoteHost}) {
         }
     });
     const items = useSelector(state => state.cart.itemsInCart || {});
-    let output = null;
     if (isLoading) {
         return <div className="spinner-border" role="status">
             <span className="sr-only">Loading...</span>
@@ -366,24 +312,29 @@ export function TransferrableItemList({selectedRemoteHost}) {
         return <p>Error loading items.</p>;
     }
     const types = Object.keys(site.types);
-    // Compute which items to display.
-    const itemsToDisplay = Object.fromEntries(types.map(typeId =>
-        [typeId, getItemsByState(items.byId[typeId], validationErrors[typeId], validFilterState)]
-    ));
-    const tabItems = types.map(typeId =>
-        ({
+
+    const tabItems = types.map(typeId => {
+        const typeItems = items.byId[typeId];
+        const hitTotal = typeItems ? typeItems.length : 0;
+        // If there are validation errors for this type, display
+        // a warning in the tab.
+        const hasWarning = validationErrors[typeId] && validationErrors[typeId].length > 0;
+        return {
             name: site.types[typeId].collection_name,
             id: typeId,
-            hitTotal: itemsToDisplay[typeId].length
-        })
+            hitTotal: hitTotal,
+            hasWarning
+        };
+    }
     );
     return <>
         <TypeTabs counts={tabItems} selectedType={selectedType} onChange={setSelectedType} />
         {types.map(typeId => {
             const invalidItemSet = new Set(validationErrors[typeId]);
+            const typeItems = items.byId[typeId] || [];
             return <div className={selectedType !== typeId ? "d-none type-item-list" : "type-item-list"} key={typeId}>
                 <TypeItemList>
-                    {itemsToDisplay[typeId].map(item => (
+                    {typeItems.map(item => (
                         <CartItemRow typeId={typeId} id={item} canTransfer={!invalidItemSet.has(item)} key={typeId + ":" + item} />
                     ))}
                 </TypeItemList>
@@ -391,17 +342,6 @@ export function TransferrableItemList({selectedRemoteHost}) {
         })}
     </>;
 }
-    // if (!validationErrors.invalidItems) {
-
-    // }
-    // const hostInfo = hosts[selectedRemoteHost];
-    // const cantTransferItems = Object.keys(itemsInCart).map(typeId => {
-    //     // Create a set for quicker lookup
-    //     const transferrableItems = new Set(hostInfo.transferrableItems[typeId] || []);
-    //     return itemsInCart[typeId].filter(itemId => !transferrableItems.has(itemId));
-    // });
-    // Object.keys(itemsInCart)
-
 const TRANSFER_STATE = {
     Initial: "Initial",
     TransferRequested: "TransferRequested", // set to start a transfer
@@ -569,8 +509,6 @@ function TransferConfirmScreen() {
         <h1 className="mb-2 h4 text-secondary font-weight-light">Transfer to a Globus endpoint</h1>
         <h2 className="mb-3 h1">Review items to be transferred</h2>
         <p className="text-secondary">To change, go back to the cart to add or remove items.</p>
-        <InvalidItemsWarning hostId={hostId} />
-        <TransferrableItemList selectedRemoteHost={hostId} />
         <section className="my-4">
             <dl className="d-flex border-bottom">
                 <dt className="col-md-8">
@@ -584,6 +522,8 @@ function TransferConfirmScreen() {
                 </dd>
             </dl>
         </section>
+        <InvalidItemsWarning hostId={hostId} />
+        <TransferrableItemList selectedRemoteHost={hostId} />
         <div className="mt-4">
             <button 
                 className="btn btn-primary"
