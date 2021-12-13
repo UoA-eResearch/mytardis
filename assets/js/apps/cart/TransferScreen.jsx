@@ -13,7 +13,7 @@ import { Alert } from "react-bootstrap";
 import humanFileSize from "../shared/humanFileSize";
 
 // eslint-disable-next-line complexity
-function CartItemRow({ typeId, id, canTransfer }) {
+function TransferItemRow({ typeId, id, canTransfer }) {
     const { data: site, isLoading: isSiteLoading } = useGetSiteQuery();
     const endpointName = site ? site.types[typeId].endpoint_name : null;
     const { isLoading: isObjectLoading, data: item } = useGetObjectByIdQuery({
@@ -51,7 +51,7 @@ function CartItemRow({ typeId, id, canTransfer }) {
     </tr>);
 }
 
-CartItemRow.propTypes = {
+TransferItemRow.propTypes = {
     typeId: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     canTransfer: PropTypes.bool
@@ -59,7 +59,7 @@ CartItemRow.propTypes = {
 
 
 
-export function CartTypeTabs({selectedRemoteHost, selectedType, onChange}) {
+export function TransferTypeTabs({selectedRemoteHost, selectedType, onChange}) {
     const {data: site} = useGetSiteQuery({});
     const counts = useSelector(state => {
         if (!site) {
@@ -335,7 +335,7 @@ export function TransferrableItemList({selectedRemoteHost}) {
             return <div className={selectedType !== typeId ? "d-none type-item-list" : "type-item-list"} key={typeId}>
                 <TypeItemList>
                     {typeItems.map(item => (
-                        <CartItemRow typeId={typeId} id={item} canTransfer={!invalidItemSet.has(item)} key={typeId + ":" + item} />
+                        <TransferItemRow typeId={typeId} id={item} canTransfer={!invalidItemSet.has(item)} key={typeId + ":" + item} />
                     ))}
                 </TypeItemList>
             </div>;
