@@ -46,7 +46,7 @@ export const myTardisApi = createApi({
         }),
         createTransfer: builder.mutation({
             query: ({remoteHostId, items = {}}) => ({
-                url: "/globus_transfer/",
+                url: "/cart_transfer/",
                 method: "POST",
                 body: Object.assign({
                     "remote_host": remoteHostId
@@ -55,7 +55,7 @@ export const myTardisApi = createApi({
         }),
         validateTransfer: builder.query({
             query: ({remoteHostId, items = {}}) => ({
-                url: "/globus_transfer_validate/",
+                url: "/cart_transfer_validate/",
                 method: "POST",
                 body: { 
                     "remote_host": remoteHostId,
@@ -76,7 +76,7 @@ export const myTardisApi = createApi({
             // }
         }),
         getRemoteHosts: builder.query({
-            query: () => "/globus_remotehost/",
+            query: () => "/cart_remotehost/",
             transformResponse: res => res.objects
         })
     })

@@ -1,5 +1,11 @@
 from django.apps import AppConfig
+from tardis.app_config import AbstractTardisAppConfig
 
 
-class CartConfig(AppConfig):
-    name = 'cart'
+# class GlobusConfig(AbstractTardisAppConfig):
+#     name = 'tardis.apps.globus'
+#     verbose_name = 'Globus'
+
+class CartConfig(AbstractTardisAppConfig):
+    name = 'tardis.apps.cart'
+    verbose_name = "Cart"

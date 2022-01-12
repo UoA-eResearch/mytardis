@@ -6,7 +6,7 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from tardis.tardis_portal.models.project import Project
 from tardis.tardis_portal.models.datafile import DataFile
-from .apps import GlobusConfig
+from .apps import CartConfig
 
 
 @python_2_unicode_compatible
@@ -68,6 +68,6 @@ class TransferLogAdmin(admin.ModelAdmin):
     search_fields = ['id', 'transfer_id']
 
 # Register the models with the admin
-if apps.is_installed(GlobusConfig.name):
+if apps.is_installed(CartConfig.name):
     admin.site.register(RemoteHost, RemoteHostAdmin)
     admin.site.register(TransferLog, TransferLogAdmin)
