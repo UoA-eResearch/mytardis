@@ -7,6 +7,7 @@ import store from "@apps/shared/reduxAppStore";
 import "bootstrap/dist/css/bootstrap.css";
 import TransferScreen from "./TransferScreen";
 import CartScreen from "./CartScreen";
+import DownloadScreen from "./DownloadScreen";
 
 
 
@@ -21,6 +22,9 @@ ReactDOM.render(
                         </Route>
                         <Route path="/">
                             <CartScreen />
+                        </Route>
+                        <Route path="/download">
+                            <DownloadScreen />
                         </Route>
                     </Switch>
                 </main>

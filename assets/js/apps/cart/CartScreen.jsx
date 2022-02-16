@@ -33,7 +33,7 @@ const CartScreen = (props) => {
         <section className="cart-summary">
             <CartTotalSize />
             <div className="cart-summary__actions">
-                <Link to="/transfer" className="btn btn-primary">Transfer to an endpoint</Link>
+                <Link to="/transfer" className="btn btn-primary">Transfer to a Globus endpoint</Link>
                 <Button variant="secondary">Download</Button>
                 <Button variant="secondary">Get manifest</Button>
             </div>
