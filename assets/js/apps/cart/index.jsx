@@ -20,11 +20,11 @@ ReactDOM.render(
                         <Route path="/transfer">
                             <TransferScreen />
                         </Route>
-                        <Route path="/">
-                            <CartScreen />
-                        </Route>
                         <Route path="/download">
                             <DownloadScreen />
+                        </Route>
+                        <Route path="/">
+                            <CartScreen />
                         </Route>
                     </Switch>
                 </main>
