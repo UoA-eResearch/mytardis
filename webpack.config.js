@@ -43,7 +43,7 @@ module.exports = {
         project_app : "./assets/js/apps/projects/view/index.jsx",
         my_projects: glob.sync("./assets/js/apps/projects/my_projects/**/*.js"),
         project_badges: "./assets/js/apps/badges/components/ProjectBadges.jsx",
-
+        cart_app: "./assets/js/apps/cart/index.jsx",
     },
     output: {
         path: path.resolve("./assets/bundles/"),
@@ -149,6 +149,7 @@ module.exports = {
         alias: {
             "jquery": __dirname + "/node_modules/jquery",
             "main": __dirname + "/assets/js/tardis_portal/main",
+            "@apps": __dirname + "/assets/js/apps"
         },
     }
 };

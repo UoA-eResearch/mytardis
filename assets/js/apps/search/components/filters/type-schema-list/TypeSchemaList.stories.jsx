@@ -1,7 +1,7 @@
 import React from 'react'
 import { PureTypeSchemaList } from './TypeSchemaList';
 import { action } from '@storybook/addon-actions';
-import makeMockStore from "../../../util/makeMockStore";
+import makeMockStore from "@apps/shared/makeMockStore";
 import { Provider } from "react-redux";
 
 const mockStore = makeMockStore();
@@ -9,7 +9,7 @@ const mockStore = makeMockStore();
 export default {
   component: PureTypeSchemaList,
   title: 'Filters/Type schema list',
-  decorators: [story =>   
+  decorators: [story =>
     <Provider store={mockStore}>
       <div style={{ padding: '3rem', width:'400px' }}>{story()}</div>
     </Provider>],

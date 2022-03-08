@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 
 export default {
     component: PureResultList,
-    title: 'Result list',
+    title: "Result list",
     decorators: [story => <div style={{ padding: '3rem'}}>{story()}</div>],
     excludeStories: /.*Data$/
 };
@@ -39,8 +39,8 @@ export const viewOnlyResultData = {
 const getResultsProps = (results) => (
     {
         results: results,
-        onItemSelect: action("itemSelected"),
-        selectedItem: null,
+        onItemHighlight: action("itemHighlighted"),
+        highlightedItem: null,
         error: null,
         isLoading: false
     }
@@ -48,8 +48,8 @@ const getResultsProps = (results) => (
 
 const errorProps = {
     results: null,
-    onItemSelect: action("itemSelected"),
-    selectedItem: null,
+    onItemHighlight: action("itemHighlighted"),
+    highlightedItem: null,
     error: "Test error",
     isLoading: false
 }

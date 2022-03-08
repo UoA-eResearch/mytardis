@@ -1,17 +1,32 @@
-import React, {  useCallback } from 'react'
+import React, {  useCallback, useState } from 'react'
 import PropTypes from 'prop-types';
 import { FiPieChart, FiLock, FiRefreshCcw } from 'react-icons/fi';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Nav from 'react-bootstrap/Nav';
 import { useSelector, useDispatch } from "react-redux";
-import { updateSelectedResult, updateSelectedType, totalHitsSelector, pageSizeSelector, pageFirstItemIndexSelector } from "./searchSlice";
+import {
+    updateHighlightedResult,
+    updateSelectedType,
+    totalHitsSelector,
+    pageSizeSelector,
+    pageFirstItemIndexSelector,
+    toggleItemSelected,
+    getSelectedItems,
+    selectPageItems,
+    deselectAllItems,
+    selectAllTypeItems,
+    SELECTION_STATE
+} from "./searchSlice";
 import './ResultSection.css';
 import EntryPreviewCard from './PreviewCard/EntryPreviewCard';
 import Pager from "./sort-paginate/Pager";
 import SortOptionsList from './sort-paginate/SortOptionsList';
 import { typeSelector } from './filters/filterSlice';
 import Button from "react-bootstrap/Button";
+import { addItems } from "@apps/cart/cartSlice";
+import { AiOutlineLoading } from 'react-icons/ai';
+import { Alert, Spinner } from 'react-bootstrap';
 
 export function PureResultTabs({ counts, selectedType, onChange }) {
     const handleNavClicked = (key) => {
@@ -21,7 +36,7 @@ export function PureResultTabs({ counts, selectedType, onChange }) {
     };
 
     return (
-        <Nav variant="tabs" activeKey={selectedType}>
+        <Nav variant="tabs" role="tablist" activeKey={selectedType}>
             {counts.map(({ id, name, hitTotal }) => (
                 <Nav.Item role="tab" key={id}>
                     <Nav.Link onSelect={handleNavClicked.bind(this, id)} eventKey={id}>
@@ -41,7 +56,6 @@ export function PureResultTabs({ counts, selectedType, onChange }) {
         </Nav>
     );
 }
-
 PureResultTabs.propTypes = {
     counts: PropTypes.arrayOf(PropTypes.shape({
         name: PropTypes.string.isRequired,
@@ -51,7 +65,6 @@ PureResultTabs.propTypes = {
     selectedType: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
 };
-
 export const ResultTabs = () => {
     const selectedType = useSelector(state => state.search.selectedType);
     const dispatch = useDispatch();
@@ -77,10 +90,6 @@ export const ResultTabs = () => {
     });
     return (<PureResultTabs counts={hitTotalsByType} selectedType={selectedType} onChange={onSelectType} />);
 };
-
-
-
-
 const NameColumn = {
     "project": "name",
     "experiment": "title",
@@ -88,73 +97,118 @@ const NameColumn = {
     "datafile": "filename"
 };
 
-export function ResultRow({ result, onSelect, isSelected }) {
+export function DownloadRightsIndicator({accessRights}) {
+    if (accessRights === "none") {
+        return <OverlayTrigger overlay={
+            <Tooltip id="tooltip-no-download">
+                You can&apos;t download this item.
+            </Tooltip>
+        }>
+            <span><FiLock title="This item cannot be downloaded." /></span>
+        </OverlayTrigger>;
+
+    } else if (accessRights === "partial") {
+        return <OverlayTrigger overlay={
+            <Tooltip id="tooltip-partial-download">
+                You can&apos;t download some files in this item.
+            </Tooltip>
+        //     <Popover id="blahasdfsdf">
+        //     <PopoverTitle as="h3">Items added to download list.</PopoverTitle>
+        //     <PopoverContent>
+        //             Go to the Download tab to see what’s in your list and download them.
+        //         <Button>OK, Got It.</Button>
+        //     </PopoverContent>
+        // </Popover>
+        }>
+            <span><FiPieChart title="Some files cannot be downloaded." /></span>
+        </OverlayTrigger>;
+    } else {
+        return null;
+    }
+}
+
+export function ResultRow({ result, onHighlight, isHighlighted, isSelected, onSelect }) {
     const type = result.type,
         resultName = result[NameColumn[type]],
-        onKeyboardSelect = (e) => {
+        onKeyboardHighlight = (e) => {
             // Only respond to Enter key selects.
             if (e.key !== "Enter") {
                 return;
             }
-            onSelect(e);
+            onHighlight(result.id);
         };
+    const handleItemSelected = useCallback((e) => {
+        e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
+        onSelect(result.id);
+    }, [onSelect, result.id]);
     return (
-        <tr className={isSelected ? "result-section--row row-active-primary" : "result-section--row row-primary"} onClick={onSelect} onKeyUp={onKeyboardSelect} tabIndex="0" role="button">
+        <tr className={isHighlighted ? "result-section--row row-active-primary" : "result-section--row row-primary"}
+            onClick={onHighlight.bind(this, result.id)}
+            onKeyUp={onKeyboardHighlight}
+            tabIndex="0"
+            role="button">
             <td className="result-row--download-col">
-                {result.userDownloadRights == "none" &&
-                    <OverlayTrigger overlay={
-                        <Tooltip id="tooltip-no-download">
-                            You can't download this item.
-                            </Tooltip>
-                    }>
-                        <span><FiLock title="This item cannot be downloaded." /></span>
-                    </OverlayTrigger>
-                }
-                {result.userDownloadRights == "partial" &&
-                    <OverlayTrigger overlay={
-                        <Tooltip id="tooltip-partial-download">
-                            You can't download some files in this item.
-                            </Tooltip>
-                    }>
-                        <span><FiPieChart title="Some files cannot be downloaded." /></span>
-                    </OverlayTrigger>
-                }
+                <input checked={isSelected}
+                    onChange={handleItemSelected}
+                    className="download-col--selected"
+                    disabled={result.userDownloadRights === "none"}
+                    type="checkbox"
+                />
+                <DownloadRightsIndicator accessRights={result.userDownloadRights} />
             </td>
-            <td><a target="_blank" href={result.url}>{resultName}</a></td>
+            <td><a target="_blank" rel="noopener noreferrer" href={result.url}>{resultName}</a></td>
             <td>
                 {result.userDownloadRights != "none" &&
                     <span>{result.size}</span>
                 }
-                {result.userDownloadRights == "none" &&
+                {result.userDownloadRights === "none" &&
                     <span aria-label="Not applicable">&mdash;</span>
                 }
             </td>
         </tr>
-    )
+    );
 }
 
 ResultRow.propTypes = {
     result: PropTypes.object.isRequired,
-    onSelect: PropTypes.func.isRequired,
-    isSelected: PropTypes.bool.isRequired
-}
+    onHighlight: PropTypes.func.isRequired,
+    isHighlighted: PropTypes.bool.isRequired,
+    isSelected: PropTypes.bool.isRequired,
+    onSelect: PropTypes.func.isRequired
+};
 
-export function PureResultList({ results, selectedItem, onItemSelect, error, isLoading }) {
-    results = results || [];
-    let body, listClassName = "result-section__container";
-    const handleItemSelected = (id) => {
+export function PureResultList({ typeId }) {
+    const dispatch = useDispatch();
+    const isLoading = useSelector(state => state.search.isLoading);
+    const error = useSelector(state => state.search.error);
+    const results = useSelector(state => {
+        const hitsByType = state.search.results ? state.search.results.hits : null;
+        if (!hitsByType) {
+            return [];
+        }
+        // Return the currently selected type of results as an array of items.
+        return hitsByType[typeId].allIds.map(
+            id => hitsByType[typeId].byId[id]
+        );
+    });
+    const typeSelectedItems = useSelector(state => state.search.selected[typeId].items);
+    const highlightedItem = useSelector(state => state.search.highlightedResult);
+    const onItemHighlight = useCallback(highlightedResult => {
         if (isLoading) {
             // During loading, we disable selecting for preview card.
             return;
         }
-        onItemSelect(id);
-    };
-
+        dispatch(updateHighlightedResult(highlightedResult));
+    }, [dispatch, updateHighlightedResult]);
+    const onToggleSelected = useCallback(id => {
+        dispatch(toggleItemSelected({typeId, id: id}));
+    }, [dispatch, typeId, toggleItemSelected]);
+    let body, listClassName = "result-section__container";
     if (isLoading) {
         // Add the loading class to show effect.
         listClassName += " loading";
     }
-
     if (error) {
         return (
             // If there was an error during the search
@@ -164,7 +218,6 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
             </div>
         );
     }
-
     else if (!isLoading && results.length == 0) {
         // If the results are empty...
         body = (
@@ -175,26 +228,29 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
                     </div>
                 </td>
             </tr>
-        )
+        );
     }
 
     else {
         // Render the results in table.
         body = results.map((result) => (
             <ResultRow key={result.id}
-                onSelect={handleItemSelected.bind(this, result.id)}
+                onHighlight={onItemHighlight}
                 result={result}
-                isSelected={result.id === selectedItem}
+                isHighlighted={result.id === highlightedItem}
+                isSelected={!!typeSelectedItems[result.id]}
+                onSelect={onToggleSelected}
             />
         ));
     }
-
     return (
         <div className={listClassName}>
             <table className="table">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>
+                            <SelectAllCheckBox typeId={typeId} />
+                        </th>
                         <th>Name</th>
                         <th>Size</th>
                     </tr>
@@ -208,12 +264,8 @@ export function PureResultList({ results, selectedItem, onItemSelect, error, isL
 }
 
 PureResultList.propTypes = {
-    results: PropTypes.arrayOf(Object),
-    error: PropTypes.string,
-    isLoading: PropTypes.bool,
-    selectedItem: PropTypes.number,
-    onItemSelect: PropTypes.func
-}
+    typeId: PropTypes.number
+};
 
 const ResultSummary = ({typeId}) => {
     const currentCount = useSelector(state => totalHitsSelector(state.search, typeId));
@@ -221,82 +273,159 @@ const ResultSummary = ({typeId}) => {
     const currentFirstItem = useSelector(state => pageFirstItemIndexSelector(state.search, typeId));
     const currentLastItem = Math.min(currentCount, currentFirstItem + currentPageSize - 1);
     return (
-        <p className="result-section--count-summary">
+        <p>
             <span>Showing {currentFirstItem} - {currentLastItem} of {currentCount} {currentCount > 1 ? "results" : "result"}.</span>
         </p>
     );
 };
 
-export function PureResultSection({ resultSets, selectedType,
-    selectedResult, onSelectResult, isLoading, error }) {
-    let selectedEntry = getSelectedEntry(resultSets, selectedResult, selectedType);
-    const currentResultSet = resultSets ? resultSets[selectedType] : null;
+function SelectedItemToolbar({ typeId }) {
+    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
+    const selectedItems = useSelector(state => getSelectedItems(state.search, typeId));
+    const selectionState = useSelector(state => state.search.selected[typeId].selectionState);
+    const numSelected = selectedItems.length;
+    const handleSelectAll = useCallback(e => {
+        e.preventDefault();
+        setIsLoading(true);
+        dispatch(selectAllTypeItems(typeId))
+            // In any case, set loading state to false.
+            .finally(() => setIsLoading(false));
+    }, [dispatch, selectAllTypeItems, typeId]);
+    const handleAddSelectedToCart = useCallback(() => {
+        dispatch(addItems(selectedItems));
+    }, [dispatch, selectedItems]);
+    const handleCloseToolbar = useCallback(() => {
+        dispatch(deselectAllItems({typeId}));
+    }, [dispatch, typeId]);
+    const itemWord = numSelected === 1 ? "item" : "items";
+    const renderSummary = () => {
+        switch (selectionState) {
+            case SELECTION_STATE.All:
+                return `All ${numSelected} result ${itemWord} selected.`;
+            case SELECTION_STATE.Page:
+                return `${numSelected} result ${itemWord} of this page selected.`;
+            default:
+                return `${numSelected} result ${itemWord} selected.`;
+        }
+    };
+
+    if (isLoading) {
+        return <Spinner animation="border" size="sm" role="status" />;
+    }
+
+    return (
+        <Alert variant="secondary" onClose={handleCloseToolbar} dismissible>
+            {renderSummary()}
+            <Button className="ml-2" variant="primary" onClick={handleAddSelectedToCart}>Add to Cart</Button>
+            {selectionState === SELECTION_STATE.Page &&
+                <strong>
+                    <Button variant="link" onClick={handleSelectAll}>Select all results</Button>
+                </strong>
+            }
+        </Alert>);
+}
+
+SelectedItemToolbar.propTypes = {
+    typeId: PropTypes.string.isRequired
+};
+
+function SelectAllCheckBox({ typeId }) {
+    const selectionState = useSelector(state => state.search.selected[typeId].selectionState);
+    const dispatch = useDispatch();
+    const pageOrAllSelected = selectionState === SELECTION_STATE.All || selectionState === SELECTION_STATE.Page;
+    const handleSelectButtonClicked = useCallback(() => {
+        if (pageOrAllSelected) {
+            dispatch(deselectAllItems({typeId}));
+        } else {
+            dispatch(selectPageItems({typeId}));
+        }
+    }, [dispatch, selectionState]);
+    const isSelecting = selectionState === SELECTION_STATE.None || selectionState === SELECTION_STATE.Some;
+    return (
+            <>
+            <label
+                className="sr-only"
+                htmlFor={"select-all-" + typeId}>
+                {isSelecting ? "Select all results on this page" : "Deselect all results"}
+            </label>
+                <input
+                    id={"select-all-" + typeId}
+                    checked={pageOrAllSelected}
+                    onChange={handleSelectButtonClicked}
+                    className="download-col--selected"
+                    type="checkbox"
+                />
+            </>
+    );
+}
+
+export function ResultItemToolbar({typeId}) {
+    const numTypeSelectedItems = useSelector(
+        state => Object.keys(
+            state.search.selected[typeId].items
+        ).length);
+    return (
+        <div className="tabpanel__toolbar">
+            {numTypeSelectedItems > 0 ?
+                <SelectedItemToolbar typeId={typeId} /> :
+                <SortOptionsList typeId={typeId} />
+            }
+        </div>
+    );
+}
+
+export function ResultTabPanes() {
+    const selectedType = useSelector(state => state.search.selectedType);
+    const types = useSelector(state => state.filters.types.allIds);
+    const error = useSelector(state => state.search.error);
+    // Create a tab pane to show each type's results.
+    return types.map(typeId => (
+        <div
+            key={typeId}
+            role="tabpanel"
+            className={"result-section--tabpanel " + ((typeId !== selectedType) ? "d-none" : "")}
+        >
+            {!error && (
+            <>
+                <ResultSummary typeId={typeId} />
+            </>
+            )}
+            <ResultItemToolbar typeId={typeId} />
+            <div className="tabpanel__container--horizontal">
+                <PureResultList
+                    typeId={typeId}
+                />
+                {!error &&
+                <EntryPreviewCard />
+                }
+            </div>
+            {!error &&
+            <Pager objectType={typeId} />
+            }
+        </div>
+    ));
+}
+
+export function PureResultSection({ selectedType, error }) {
     return (
         <section className="d-flex flex-column flex-grow-1 overflow-hidden">
             <ResultTabs />
-            <div role="tabpanel" className="result-section--tabpanel">
-                {!error &&
-                    <>
-                    <ResultSummary typeId={selectedType} />
-                    <SortOptionsList typeId={selectedType} />
-                    </>
-                }
-                <div className="tabpanel__container--horizontal">
-                    <PureResultList results={currentResultSet} selectedItem={selectedResult} onItemSelect={onSelectResult} isLoading={isLoading} error={error} />
-                    {!error &&
-                        <EntryPreviewCard
-                            data={selectedEntry}
-                        />
-                    }
-                </div>
-                {!error &&
-                    <Pager objectType={selectedType} />
-                }
-            </div>
+            <ResultTabPanes />
         </section>
-    )
-}
-
-
-/**
- * Returns the data of the selected row. Returns null if it cannot get find the selected result.
- * @param {*} resultSets
- * @param {*} selectedResult
- * @param {*} selectedType
- */
-function getSelectedEntry(resultSets, selectedResult, selectedType) {
-    let selectedEntry = null;
-    if (resultSets && selectedResult) {
-        selectedEntry = resultSets[selectedType].filter(result => result.id === selectedResult)[0];
-    }
-    return selectedEntry;
+    );
 }
 
 export default function ResultSection() {
     const selectedType = useSelector(state => state.search.selectedType),
-        selectedResult = useSelector(state => state.search.selectedResult),
-        dispatch = useDispatch(),
-        onSelectResult = (selectedResult) => {
-            dispatch(updateSelectedResult(selectedResult));
-        },
-        resultSets = useSelector(
-            (state) => state.search.results ? state.search.results.hits : null
-        ),
         error = useSelector(
             (state) => state.search.error
-        ),
-        isLoading = useSelector(
-            (state) => state.search.isLoading
         );
 
     return (
         <PureResultSection
-            resultSets={resultSets}
             error={error}
-            isLoading={isLoading}
             selectedType={selectedType}
-            selectedResult={selectedResult}
-            onSelectResult={onSelectResult}
         />
-    )
+    );
 }

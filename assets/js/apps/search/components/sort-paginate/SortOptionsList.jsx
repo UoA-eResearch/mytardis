@@ -55,15 +55,15 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
     }, [onSortUpdate]);
     const hasActiveSort = activeSort.length > 0;
     const shouldDisplayPriority = activeSort.length > 1;
-    return (      
-        <DropdownButton 
+    return (
+        <DropdownButton
             title={<>
                 <AiOutlineSortAscending />
                 <span>
                     { getSortSummaryText(activeAttributes) }
                 </span>
-            </>} 
-            variant={hasActiveSort ? "primary" : "outline-primary"}
+            </>}
+            variant={hasActiveSort ? "secondary" : "outline-secondary"}
             className="sortoptions"
             menuRole="menu"
         >
@@ -74,9 +74,9 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
                     const priority = attributeMap[id].priority;
                     return (
                         <Dropdown.ItemText
-                            as="div" 
-                            key={id} 
-                            className="sortoptions--item row-primary" 
+                            as="div"
+                            key={id}
+                            className="sortoptions--item row-primary"
                             role="menuitem"
                             onClick={handleActiveClicked.bind(this, attribute)}
                         >
@@ -93,10 +93,10 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
                                     {full_name}
                                 </label>
                             </span>
-                            <span 
+                            <span
                                 className="sortoptions-item--sortorder-asc"
-                                role="menuitemradio" 
-                                onClick={handleOrderClicked.bind(this, attribute, SORT_ORDER.ascending)}    
+                                role="menuitemradio"
+                                onClick={handleOrderClicked.bind(this, attribute, SORT_ORDER.ascending)}
                             >
                                 <Form.Check
                                     checked={order === SORT_ORDER.ascending}
@@ -109,7 +109,7 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
                                     <AiOutlineSortAscending /><span className="sr-only">Sort ascending</span>
                                 </label>
                             </span>
-                            <span 
+                            <span
                                 className="sortoptions-item--sortorder-desc"
                                 role="menuitemradio"
                                 onClick={handleOrderClicked.bind(this, attribute, SORT_ORDER.descending)}
@@ -129,7 +129,7 @@ export function PureSortOptionsList({attributesToSort = [], activeSort, onSortUp
                                 {shouldDisplayPriority ? priority : null}
                             </span>
                         </Dropdown.ItemText>
-                    ); 
+                    );
                 })
             }
         </DropdownButton>
@@ -181,7 +181,7 @@ export default function SortOptionsList({typeId}) {
     }, [dispatch, typeId]);
 
     return (
-        <PureSortOptionsList 
+        <PureSortOptionsList
             activeSort={activeSort}
             attributesToSort={allSortOptions}
             onSortRemove={handleSortRemove}

@@ -3,42 +3,40 @@ import Cookies from "js-cookie";
 import { batch } from "react-redux";
 import { initialiseFilters, buildFilterQuery, updateFiltersByQuery, typeSelector } from "./filters/filterSlice";
 
-const getResultFromHit = (hit, hitType, urlPrefix) => {
-    // eslint-disable-next-line no-underscore-dangle
-    const source = hit._source;
-    source.type = hitType;
-    source.url = `${urlPrefix}/${source.id}`;
-    return source;
-};
-
 const getResultsFromResponse = (response) => {
-// Grab the "_source" object out of each hit and also
-// add a type attribute to them.
+    const getTypeResultsFromResponse = (type, hitsForType) => {
+        // Grab the "_source" object out of each hit for this type and also
+        // add a type attribute to them.
+        const resultsForType = {
+            byId: {},
+            allIds: []
+        };
+        hitsForType.forEach(hit => {
+            // eslint-disable-next-line no-underscore-dangle
+            const source = hit._source;
+            resultsForType.allIds.push(source.id);
+            source.type = type;
+            source.url = `/${type}/view/${source.id}`;
+            resultsForType.byId[source.id] = source;
+        });
+        return resultsForType;
+    };
     const hits = response.hits;
     const results = {};
     if (hits.project) {
-        results.project = hits.project.map((hit) => {
-            return getResultFromHit(hit, "project", "/project/view");
-        });
+        results.project = getTypeResultsFromResponse("project", hits.project);
     }
     if (hits.experiment) {
-        results.experiment = hits.experiment.map((hit) => {
-            return getResultFromHit(hit, "experiment", "/experiment/view");
-        });
+        results.experiment = getTypeResultsFromResponse("experiment", hits.experiment);
     }
     if (hits.dataset) {
-        results.dataset = hits.dataset.map((hit) => {
-            return getResultFromHit(hit,"dataset","/dataset/view")
-        });
+        results.dataset = getTypeResultsFromResponse("dataset", hits.dataset);
     }
     if (hits.datafile) {
-        results.datafile = hits.datafile.map((hit) => {
-            return getResultFromHit(hit, "datafile", "/datafile/view");
-        });
+        results.datafile = getTypeResultsFromResponse("datafile", hits.datafile);
     }
     return results;
 };
-
 /**
  * Process JSON results from search API and return the results.
  * @private
@@ -61,7 +59,6 @@ function getHitTotalsFromResponse(response) {
     }
     return results;
 }
-
 /**
  * Selector for a type's current page size.
  * @param {*} searchSlice - The Redux state slice for search
@@ -70,7 +67,6 @@ function getHitTotalsFromResponse(response) {
 export const pageSizeSelector = (searchSlice, type) => {
     return searchSlice.pageSize[type];
 };
-
 /**
  * Selector for a type's current page number.
  * @param {*} searchSlice - The Redux state slice for search
@@ -79,14 +75,19 @@ export const pageSizeSelector = (searchSlice, type) => {
 export const pageNumberSelector = (searchSlice, type) => {
     return searchSlice.pageNumber[type];
 };
-
 export const totalHitsSelector = (searchSlice, typeId) => (
     searchSlice.results ? searchSlice.results.totalHits[typeId] : 0
 );
-
 export const SORT_ORDER = {
     ascending: "asc",
     descending: "desc"
+};
+
+export const SELECTION_STATE = {
+    None: "NONE",
+    Some: "SOME",
+    Page: "PAGE",
+    All: "ALL"
 };
 
 /**
@@ -97,7 +98,6 @@ export const SORT_ORDER = {
 export const activeSortSelector = (searchSlice, typeId) => (
     searchSlice.sort[typeId].active
 );
-
 /**
  * Selector for type attributes which are sortable.
  * @param {*} filterSlice Redux state slice for filters
@@ -109,7 +109,6 @@ export const sortableAttributesSelector = (filterSlice, typeId) => {
         typeAttributes.byId[attributeId]
     )).filter(attribute => attribute.sortable);
 };
-
 /**
  * Selector for the sort order of an attribute.
  * @param {*} searchSlice Redux state slice for search
@@ -119,7 +118,6 @@ export const sortableAttributesSelector = (filterSlice, typeId) => {
 export const sortOrderSelector = (searchSlice, typeId, attributeId) => (
     searchSlice.sort[typeId].order[attributeId] || SORT_ORDER.ascending
 );
-
 /**
  * Returns the index of the first item on the current page. For example,
  * if we are on the second page, and each page has 20 items, then this function
@@ -134,7 +132,6 @@ export const pageFirstItemIndexSelector = (searchSlice, typeId) => {
         return pageSizeSelector(searchSlice, typeId) * (pageNumberSelector(searchSlice, typeId) - 1) + 1;
     }
 };
-
 /**
  * Selector for the total number of pages of results for a particular type.
  * @param {*} searchSlice - The Redux state slice for search
@@ -143,7 +140,6 @@ export const pageFirstItemIndexSelector = (searchSlice, typeId) => {
 export const totalPagesSelector = (searchSlice, typeId) => (
     Math.ceil(totalHitsSelector(searchSlice, typeId) / pageSizeSelector(searchSlice, typeId))
 );
-
 /**
  * Selector for the search term, if any, for a particular type.
  * @param {string} typeId MyTardis object type.
@@ -159,13 +155,46 @@ export const searchTermSelector = (searchSlice, typeId) => (
         searchSlice.searchTerm[typeId] : ""
 );
 
+/**
+ * Return a list of selected items.
+ * @param {Object} searchSlice Redux search slice object.
+ * @param {String} typeId ID for object type
+ */
+export const getSelectedItems = (searchSlice, typeId) => {
+    if (!searchSlice.results) {
+        return [];
+    }
+    // Grab all selected items
+    return Object
+        .keys(searchSlice.selected[typeId].items)
+        .map(id => ({typeId, id: parseInt(id)}));
+};
+
 const initialState = {
     searchTerm: {},
     isLoading: false,
     error: null,
     results: null,
     selectedType: "experiment",
-    selectedResult: null,
+    highlightedResult: null,
+    selected: {
+        project: {
+            selectionState: SELECTION_STATE.None,
+            items: {}
+        },
+        experiment: {
+            selectionState: SELECTION_STATE.None,
+            items: {}
+        },
+        dataset: {
+            selectionState: SELECTION_STATE.None,
+            items: {}
+        },
+        datafile: {
+            selectionState: SELECTION_STATE.None,
+            items: {}
+        }
+    },
     pageSize: {
         project: 20,
         experiment: 20,
@@ -199,8 +228,6 @@ const initialState = {
     showSensitiveData: false
 };
 
-
-
 const search = createSlice({
     name: "search",
     initialState,
@@ -218,7 +245,7 @@ const search = createSlice({
                 state.error = null;
                 state.isLoading = false;
             },
-            prepare: (rawResult) => {
+            prepare: rawResult => {
                 // Process the results first to extract hits and fill in URLs.
                 return {
                     payload: {
@@ -251,10 +278,46 @@ const search = createSlice({
                 state.searchTerm = undefined;
             }
         },
+        toggleItemSelected: (state, {payload}) => {
+            const {typeId, id} = payload;
+            const typeSelectedResults = state.selected[typeId].items;
+            if (!typeSelectedResults[id]) {
+                typeSelectedResults[id] = "selected";
+            } else {
+                delete typeSelectedResults[id];
+            }
+            if (Object.keys(typeSelectedResults).length > 0) {
+                state.selected[typeId].selectionState = SELECTION_STATE.Some;
+            } else {
+                state.selected[typeId].selectionState = SELECTION_STATE.None;
+            }
+        },
+        deselectAllItems: (state, {payload}) => {
+            const {typeId} = payload;
+            state.selected[typeId].items = initialState.selected[typeId].items;
+            state.selected[typeId].selectionState = SELECTION_STATE.None;
+        },
+        selectAllItems: (state, {payload}) => {
+            // Select multiple items in results of the same type.
+            const {typeId, itemIds} = payload;
+            itemIds.forEach(id => {
+                state.selected[typeId].items[id] = "selected";
+            });
+            state.selected[typeId].selectionState = SELECTION_STATE.All;
+        },
+        selectPageItems: (state, {payload}) => {
+            // Select multiple items in results of the same type.
+            const {typeId} = payload;
+            const itemIds = state.results.hits[typeId].allIds;
+            itemIds.forEach(id => {
+                state.selected[typeId].items[id] = "selected";
+            });
+            state.selected[typeId].selectionState = SELECTION_STATE.Page;
+        },
         getResultsStart: (state) => {
             state.isLoading = true;
             state.error = null;
-            state.selectedResult = null;
+            state.highlightedResult = null;
         },
         getResultsFailure: (state, {payload: error}) => {
             state.isLoading = false;
@@ -263,10 +326,10 @@ const search = createSlice({
         },
         updateSelectedType: (state, {payload: selectedType}) => {
             state.selectedType = selectedType;
-            state.selectedResult = null;
+            state.highlightedResult = null;
         },
-        updateSelectedResult: (state, {payload: selectedResult}) => {
-            state.selectedResult = selectedResult;
+        updateHighlightedResult: (state, {payload: highlightedResult}) => {
+            state.highlightedResult = highlightedResult;
         },
         updatePageSize: (state, {payload}) => {
             const { typeId, size } = payload;
@@ -320,22 +383,24 @@ const search = createSlice({
         }
     }
 });
-
 export const {
     getResultsStart,
     getResultsSuccess,
     getResultsFailure,
     updateSearchTerm,
     updateSelectedType,
-    updateSelectedResult,
+    updateHighlightedResult,
     toggleShowSensitiveData,
     updateResultSort,
-    removeResultSort
+    removeResultSort,
+    toggleItemSelected,
+    selectPageItems,
+    deselectAllItems,
 } = search.actions;
 
 
 const fetchSearchResults = (queryBody) => {
-    return fetch(`/api/v1/search/`, {
+    return fetch(`/api/v1/search_simple-search/`, {
         method: "post",
         headers: {
             "Accept": "application/json",
@@ -352,8 +417,6 @@ const fetchSearchResults = (queryBody) => {
         throw rejectedError.message;
     });
 };
-
-
 /**
  * Returns search API pagination query.
  * @param {*} searchSlice - Redux search slice
@@ -377,7 +440,6 @@ const buildPaginationQuery = (searchSlice, type) => {
         };
     }
 };
-
 /**
  * Returns search API sort query.
  * @param {*} state The overall Redux state tree
@@ -409,19 +471,22 @@ const buildSortQuery = (state, typeToSearch) => {
     };
 };
 
-const buildQueryBody = (state, typeToSearch) => {
+const buildQueryBody = (state, typeToSearch, shouldApplySortPagination = true) => {
     const term = state.search.searchTerm,
         filters = buildFilterQuery(state.filters, typeToSearch),
         queryBody = {};
 
     // Add sort query
-    Object.assign(queryBody, buildSortQuery(state, typeToSearch));
-
+    if (shouldApplySortPagination) {
+        Object.assign(queryBody, buildSortQuery(state, typeToSearch));
+    }
     if (typeToSearch) {
         // If doing a single type search, include type in query body.
         queryBody.type = typeToSearch;
         // Add pagination query
-        Object.assign(queryBody, buildPaginationQuery(state.search, typeToSearch));
+        if (shouldApplySortPagination) {
+            Object.assign(queryBody, buildPaginationQuery(state.search, typeToSearch));
+        }
     }
     if (term !== null) {
         queryBody.query = term;
@@ -431,7 +496,6 @@ const buildQueryBody = (state, typeToSearch) => {
     }
     return queryBody;
 };
-
 const runSearchWithQuery = (queryBody) => {
     return (dispatch) => {
         dispatch(getResultsStart());
@@ -454,7 +518,6 @@ const runSearchWithQuery = (queryBody) => {
             });
     };
 };
-
 const getDisplayQueryString = (queryBody) => {
     // Determine how to show the query in the URL, depending on what's in the query body.
     if (queryBody.filters || (queryBody.query && Object.keys(queryBody.query).length > 0 )) {
@@ -465,7 +528,6 @@ const getDisplayQueryString = (queryBody) => {
         return location.pathname;
     }
 };
-
 /**
  * Selector for whether there are any active quick search terms.
  * @param {*} searchSlice Redux search slice
@@ -474,8 +536,6 @@ export const hasActiveSearchTermSelector = searchSlice => {
     // Then look through whether there are any quick search terms.
     return Object.keys(searchSlice.searchTerm || {}).length > 0;
 };
-
-
 /**
  * Given the search part of URL, returns the search term or filters serialised in there.
  * @param {string} searchString The search part of URL.
@@ -497,7 +557,6 @@ export const parseQuery = (searchString) => {
             }
         };
     };
-
     const buildResultForParsedQuery = (queryString) => {
         if (!queryString) { return {}; }
         try {
@@ -512,8 +571,6 @@ export const parseQuery = (searchString) => {
             return convertLegacySearchTermQuery(queryString);
         }
     };
-
-
     // Find and return the query string or JSON body.
     if (searchString[0] === "?") {
         searchString = searchString.substring(1);
@@ -529,7 +586,6 @@ export const parseQuery = (searchString) => {
     }
     return buildResultForParsedQuery(queryPart);
 };
-
 /**
  * An async reducer for updating the Redux state tree from saved state.
  * @param {object} queryBody the serialised query body
@@ -545,8 +601,6 @@ const updateWithQuery = (queryBody) => {
         });
     };
 };
-
-
 export const runSearch = () => {
     return (dispatch, getState) => {
         const state = getState();
@@ -556,7 +610,6 @@ export const runSearch = () => {
         window.history.pushState(queryBody, "", getDisplayQueryString(queryBody));
     };
 };
-
 /**
  * An async reducer for running a single type search. This is usually
  * used for sort and pagination requests.
@@ -569,14 +622,12 @@ export const runSingleTypeSearch = (typeToSearch) => {
         dispatch(runSearchWithQuery(queryBody));
     };
 };
-
 export const restoreSearchFromHistory = (restoredState) => {
     return (dispatch) => {
         dispatch(runSearchWithQuery(restoredState));
         dispatch(updateWithQuery(restoredState));
     };
 };
-
 export const initialiseSearch = () => {
     return (dispatch, getState) => {
         const queryBody = parseQuery(window.location.search);
@@ -589,7 +640,6 @@ export const initialiseSearch = () => {
         });
     };
 };
-
 export const updatePageNumberAndRefetch = (typeId, number) => {
     return (dispatch, getState) => {
         const state = getState();
@@ -601,7 +651,6 @@ export const updatePageNumberAndRefetch = (typeId, number) => {
         return dispatch(runSingleTypeSearch(typeId));
     };
 };
-
 export const updatePageSizeAndRefetch = (typeId, size) => {
     return (dispatch, getState) => {
         const state = getState();
@@ -611,6 +660,30 @@ export const updatePageSizeAndRefetch = (typeId, size) => {
         dispatch(search.actions.updatePageSize({typeId, size}));
         dispatch(search.actions.updatePageNumber({typeId, number: newPageNumber}));
         return dispatch(runSingleTypeSearch(typeId));
+    };
+};
+
+/**
+ * Fetches a list of all MyTardis objects of type typeId
+ * that match the current query, then select them. This
+ * action is to support the "Select All" button in the
+ * search UI.
+ * @param {String} typeId
+ * @returns A Promise that is resolved when the list of item IDs is fetched
+ * and dispatched to the Redux store.
+ */
+export const selectAllTypeItems = typeId => {
+    return (dispatch, getState) => {
+        const state = getState();
+        const queryBody = buildQueryBody(state, typeId, false);
+        return fetchSearchResults(queryBody).then(response => {
+            const itemIds = getResultsFromResponse(response)[typeId].allIds;
+            return dispatch(search.actions.selectAllItems({
+                typeId,
+                itemIds
+            }));
+        });
+
     };
 };
 

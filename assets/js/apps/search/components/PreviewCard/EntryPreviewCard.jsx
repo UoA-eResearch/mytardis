@@ -119,7 +119,7 @@ const FileCountSummary = ({ counts, type }) => {
             datafilePlural = pluralise(counts.datafiles, "datafile");
             datasetPlural = pluralise(counts.datasets, "dataset");
             experimentPlural = pluralise(counts.experiments, "experiment");
-        }    
+        }
         switch (type) {
             case "project":
                 return `Contains ${counts.datafiles} ${datafilePlural} from ${counts.datasets} ${datasetPlural}, across ${counts.experiments} ${experimentPlural}.`;
@@ -129,7 +129,7 @@ const FileCountSummary = ({ counts, type }) => {
                 return `Contains ${counts.datafiles} ${datafilePlural}.`;
             default:
                 return null;
-        }    
+        }
     };
     const summary = getSummaryText();
     if (summary) {
@@ -148,7 +148,7 @@ FileCountSummary.propTypes = {
 };
 
 
-export default function EntryPreviewCard({ data }) {
+export function PureEntryPreviewCard({ data }) {
     let type;
     if (data) {
         type = data.type;
@@ -292,6 +292,17 @@ export default function EntryPreviewCard({ data }) {
     );
 }
 
-EntryPreviewCard.propTypes = {
+PureEntryPreviewCard.propTypes = {
     data: PropTypes.object
 };
+
+export default function EntryPreviewCard() {
+    const selectedEntry = useSelector(state => {
+        const results = state.search.results;
+        const typeId = state.search.selectedType;
+        const id = state.search.highlightedResult;
+        const hasSelectedEntry = results && results.hits && typeId && id;
+        return hasSelectedEntry ? results.hits[typeId].byId[id] : null;
+    });
+    return (<PureEntryPreviewCard data={selectedEntry} />);
+}

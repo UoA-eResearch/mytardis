@@ -2,6 +2,10 @@
     width: 100px;
 }
 
+.download-col--selected {
+    margin-right: 1rem;
+}
+
 .result-section--msg {
     display: flex;
     flex-direction: column;
@@ -56,7 +60,7 @@
 
 .result-section__container .result-section--row {
     transition: opacity 0.3s;
-    
+
 }
 
 .result-section--row:nth-child(odd) {

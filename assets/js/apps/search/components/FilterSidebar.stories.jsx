@@ -3,7 +3,7 @@ import FilterSidebar from './FilterSidebar';
 import { Provider } from 'react-redux';
 import {action} from '@storybook/addon-actions';
 import { filtersData } from "./filters/filters-section/FiltersSection.stories";
-import makeMockStore from "../util/makeMockStore";
+import makeMockStore from "@apps/shared/makeMockStore";
 
 export default {
   component: FilterSidebar,

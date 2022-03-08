@@ -1,0 +1,81 @@
+/*
+Make the search page take up the whole viewport, but also to make sure
+search results show up as scrollable.
+*/
+body {
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    /* background-color: rgb(244, 246, 250); */
+    background-color: #fafcff;
+}
+
+#content-container, #content-row, #content, #cart-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+}
+
+.cart-content {
+    margin-top: 1rem;
+    padding: 1rem 1rem 2rem 1rem;
+    background-color: white;
+}
+
+.cart-summary {
+    padding: 2rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    background-color: #f1f5f9;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.cart-summary > * {
+    margin-bottom: 1rem;
+}
+
+.cart-summary__actions > *:first-child {
+    margin-left: 0;
+}
+
+.cart-summary__actions > * {
+    margin: 0.5rem;
+}
+
+.type-item-list {
+    height: 300px;
+    border-top: none;
+    overflow-y: auto;
+}
+
+.type-item-list tr td {
+    vertical-align: middle;
+}
+
+.type-item-list--remove {
+    width: 3rem;
+}
+
+.type-item-list--size {
+    width: 7rem;
+}
+
+.invalid-items-warning {
+    border: 1px solid #ffc107;
+    border-left: 4px solid #ffc107;
+    background-color: #fffcf5;
+    color: #2a2513;
+}
+
+.cart-item--invalid {
+    border-left: 4px solid #ffc107;
+}
+
+#invalid-items-detail {
+    border-left: 4px solid #ffc107;
+    background-color: rgb(255, 251, 240);
+}
