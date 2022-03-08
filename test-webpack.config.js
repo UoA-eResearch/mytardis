@@ -145,6 +145,7 @@ module.exports = {
             "main": __dirname + "/assets/js/tardis_portal/main",
             "experimentabs": __dirname + "/assets/js/tardis_portal/view_experiment/experiment-tabs",
             "experimentshare": __dirname + "/assets/js/tardis_portal/view_experiment/share",
+            "@apps": __dirname + "/assets/js/apps"
         },
     }
 };

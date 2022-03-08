@@ -2,14 +2,12 @@ from django.apps import apps
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 
 from tardis.apps.projects.models import Project
 from tardis.tardis_portal.models.datafile import DataFile
 from .apps import CartConfig
 
 
-@python_2_unicode_compatible
 class RemoteHost(models.Model):
     """``
     A remote host/VM that contains a Globus endpoint
@@ -31,7 +29,6 @@ class RemoteHost(models.Model):
         return self.name + " | " + self.ip_address
 
 
-@python_2_unicode_compatible
 class TransferLog(models.Model):
     """``
     A MyTardis log of a Globus transfer request.
