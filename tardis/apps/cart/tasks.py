@@ -41,7 +41,7 @@ def globus_transfers(**kwargs):
     cc_authorizer = globus_sdk.ClientCredentialsAuthorizer(confidential_client, scopes)
     # create a new client
     tc = globus_sdk.TransferClient(authorizer=cc_authorizer)
-    task_list = list(tc.task_list(num_results=100, filter="status:ACTIVE,INACTIVE"))
+    task_list = list(tc.task_list(limit=100, filter="status:ACTIVE,INACTIVE"))
     task_list = [task["task_id"] for task in task_list]
 
     for transfer_id in transfers_to_check:

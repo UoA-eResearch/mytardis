@@ -11,21 +11,18 @@ from django.conf import settings
 from django.db import transaction
 from tastypie import fields
 from tastypie.resources import Resource, Bundle, ModelResource
-
 from tastypie.serializers import Serializer
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.http import HttpBadRequest, HttpUnauthorized, HttpForbidden, HttpNotFound
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
+from tastypie.validation import Validation
 
 from tardis.apps.projects.models import Project
 from tardis.tardis_portal.api import default_authentication
 from tardis.tardis_portal.auth import decorators as authz
 from tardis.tardis_portal.models import Experiment, Dataset, DataFile
 from .models import RemoteHost, TransferLog
-from django.conf.urls import url
-from django.http import HttpResponse
-from tastypie.validation import Validation
 
 
 class PrettyJSONSerializer(Serializer):
