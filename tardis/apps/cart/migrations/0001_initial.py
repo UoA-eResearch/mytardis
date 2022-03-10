@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                     models.ManyToManyField(
                         blank=True,
                         related_name="remotehosts",
-                        to="apps.projects.Project",
+                        to="projects.project",
                     ),
                 ),
                 (
