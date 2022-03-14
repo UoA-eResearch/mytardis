@@ -196,7 +196,9 @@ class ProjectResource(ModelResource):
         full=True,
         null=True,
     )
-    institution = models.ManyToManyField(Institution, related_name="institutions")
+    institution = fields.ToManyField(
+        "tardis.apps.projects.api.InstitutionResource", "institutions"
+    )
     principal_investigator = fields.ForeignKey(UserResource, "principal_investigator")
 
     # Custom filter for identifiers module based on code example from
