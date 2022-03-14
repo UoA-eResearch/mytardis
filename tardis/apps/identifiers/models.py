@@ -156,6 +156,4 @@ if "tardis.apps.projects" in settings.INSTALLED_APPS:
         DefaultInstitutionPID(institution=instance).save()
 
     if "institution" in settings.OBJECTS_WITH_IDENTIFIERS:
-        post_save.connect(
-            create_default_institution_pid, sender=DefaultInstitutionProfile
-        )
+        post_save.connect(create_default_institution_pid, sender=Institution)

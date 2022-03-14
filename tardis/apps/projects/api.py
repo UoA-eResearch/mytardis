@@ -21,23 +21,32 @@ from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 
-from tardis.tardis_portal.api import (ExperimentResource,
-                                      MyTardisAuthentication,
-                                      ParameterResource, ParameterSetResource,
-                                      PrettyJSONSerializer, UserResource)
-from tardis.tardis_portal.auth.decorators import (has_access,
-                                                  has_sensitive_access,
-                                                  has_write)
+from tardis.tardis_portal.api import (
+    ExperimentResource,
+    MyTardisAuthentication,
+    ParameterResource,
+    ParameterSetResource,
+    PrettyJSONSerializer,
+    UserResource,
+)
+from tardis.tardis_portal.auth.decorators import (
+    has_access,
+    has_sensitive_access,
+    has_write,
+)
 
-from .models import (Institution, Project, ProjectACL, ProjectParameter,
-                     ProjectParameterSet)
+from .models import (
+    Institution,
+    Project,
+    ProjectACL,
+    ProjectParameter,
+    ProjectParameterSet,
+)
 
 if settings.DEBUG:
     default_serializer = PrettyJSONSerializer()
 else:
     default_serializer = Serializer()
-
-PROJECT_INSTITUTION_RESOURCE = "tardis.apps.projects.api.DefaultInstitutionProfile"
 
 
 class ProjectACLAuthorization(Authorization):
@@ -187,9 +196,7 @@ class ProjectResource(ModelResource):
         full=True,
         null=True,
     )
-    institution = fields.ToManyField(
-        PROJECT_INSTITUTION_RESOURCE, "institutions", null=True, full=True
-    )
+    institution = models.ManyToManyField(Institution, related_name="institutions")
     principal_investigator = fields.ForeignKey(UserResource, "principal_investigator")
 
     # Custom filter for identifiers module based on code example from
@@ -454,7 +461,7 @@ class ProjectParameterResource(ParameterResource):
         queryset = ProjectParameter.objects.all()
 
 
-class DefaultInstitutionProfileResource(ModelResource):
+class InstitutionResource(ModelResource):
 
     # Custom filter for identifiers module based on code example from
     # https://stackoverflow.com/questions/10021749/ \
