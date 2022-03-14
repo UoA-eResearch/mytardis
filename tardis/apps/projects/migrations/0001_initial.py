@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="Institution",
+            name="DefaultInstitutionProfile",
             fields=[
                 (
                     "id",
@@ -35,16 +35,6 @@ class Migration(migrations.Migration):
                     "name",
                     models.CharField(default="University of Auckland", max_length=255),
                 ),
-                ("url", models.URLField(blank=True, null=True)),
-                (
-                    "institution_type",
-                    models.CharField(max_length=100, blank=True, null=True),
-                ),
-                ("date_established", models.DateTimeField(blank=True, null=True)),
-                ("address", models.TextField(blank=True, null=True)),
-                ("aliases", models.CharField(max_length=255, blank=True, null=True)),
-                ("status", models.CharField(max_length=255, blank=True, null=True)),
-                ("country", models.CharField(max_length=255, blank=True, null=True)),
             ],
         ),
         migrations.CreateModel(
@@ -97,7 +87,7 @@ class Migration(migrations.Migration):
                     "institution",
                     models.ManyToManyField(
                         related_name="institutions",
-                        to="projects.Institution",
+                        to="projects.DefaultInstitutionProfile",
                     ),
                 ),
                 (
