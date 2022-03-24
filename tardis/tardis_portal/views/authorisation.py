@@ -10,7 +10,7 @@ from urllib.parse import parse_qs, urlencode, urlparse
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.models import Group, Permission, User
+from django.contrib.auth.models import Group, User
 from django.contrib.sites.models import Site
 from django.db import IntegrityError, transaction
 from django.db.models import Prefetch, Q
@@ -21,8 +21,14 @@ from django.views.decorators.http import require_POST
 import ldap3
 
 from ..auth import decorators as authz
-from ..models import (Experiment, ExperimentACL, GroupAdmin, Token,
-                      UserAuthentication, UserProfile)
+from ..models import (
+    Experiment,
+    ExperimentACL,
+    GroupAdmin,
+    Token,
+    UserAuthentication,
+    UserProfile,
+)
 from ..shortcuts import render_response_index
 
 logger = logging.getLogger(__name__)
@@ -788,28 +794,28 @@ def get_user_from_upi(upi):
             if logger:
                 logger.error(error_message)
             raise Exception(error_message)
-        elif len(connection.entries) == 0:
+        if len(connection.entries) == 0:
             error_message = f"No one with {settings.LDAP_USER_LOGIN_ATTR}: {upi} has been found in the LDAP"
             if logger:
                 logger.warning(error_message)
             return None
-        else:
-            person = connection.entries[0]
-            first_name_key = "givenName"
-            last_name_key = "sn"
-            email_key = "mail"
-            username = person[settings.LDAP_USER_LOGIN_ATTR].value
-            first_name = person[first_name_key].value
-            last_name = person[last_name_key].value
-            try:
-                email = person[email_key].value
-            except KeyError:
-                email = ""
-            details = {
-                "username": username,
-                "first_name": first_name,
-                "last_name": last_name,
-                "email": email,
-            }
-            logger.error(details)
-            return details
+
+        person = connection.entries[0]
+        first_name_key = "givenName"
+        last_name_key = "sn"
+        email_key = "mail"
+        username = person[settings.LDAP_USER_LOGIN_ATTR].value
+        first_name = person[first_name_key].value
+        last_name = person[last_name_key].value
+        try:
+            email = person[email_key].value
+        except KeyError:
+            email = ""
+        details = {
+            "username": username,
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+        }
+        logger.error(details)
+        return details
