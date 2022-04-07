@@ -10,6 +10,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const glob = require("glob");
 
 module.exports = {
+    mode: "development",
     context: __dirname,
     entry: {
         main: "./assets/js/index.js",
@@ -46,7 +47,7 @@ module.exports = {
     },
     output: {
         path: path.resolve("./assets/bundles/"),
-        filename: "[name]-[hash].js"
+        filename: "[name]-[contenthash].js"
     },
     devtool: 'source-map',
     optimization: {
@@ -62,9 +63,9 @@ module.exports = {
             maxAsyncRequests: 5,
             maxInitialRequests: 3,
             automaticNameDelimiter: "~",
-            name: true,
+            name: false,
             cacheGroups: {
-                vendors: {
+                defaultVendors: {
                     test: /[\\/]node_modules[\\/]/,
                     priority: -10,
                 },
@@ -85,7 +86,7 @@ module.exports = {
             cleanOnceBeforeBuildPatterns: ["assets/bundles/*"]
         }),
         new MiniCssExtractPlugin({
-            filename: "[name]-[hash].styles.css",
+            filename: "[name]-[contenthash].styles.css",
         })
     ],
     module: {
@@ -104,8 +105,10 @@ module.exports = {
             },
             {
                 test: /\.(woff|woff2|)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: "url-loader?limit=10000&mimetype=application/font-woff",
+                loader: "url-loader",
                 options: {
+                    limit: 10000,
+                    mimeType: "application/font-woff",
                     name: "[name].[ext]",
                     outputPath: "static/bundles/",
                     publicPath: "../static/bundles/"
@@ -119,7 +122,7 @@ module.exports = {
                     publicPath: "/bundles/"
                 }
             },
-          {
+            {
                 test: /\.(gif|png|jpe?g)$/i,
                 loader: "url-loader",
                 options: {
