@@ -17,7 +17,7 @@ require("expose-loader?exposes=ClipboardJS!clipboard/dist/clipboard");
 require('he');
 require('expose-loader?exposes=he!he/he');
 //css
-require("bootstrap/dist/css/bootstrap.css");
+require("../css/custom-bootstrap.scss");
 require("../css/jquery-ui/jquery-ui-1.8.18.custom.css");
 require("font-awesome/css/font-awesome.css");
 require("../css/default.css");

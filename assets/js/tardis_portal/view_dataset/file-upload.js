@@ -4,9 +4,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import TreeView from "../../apps/tree_view/components/TreeView";
 
-require("imports-loader?define=>false&exports=>false!blueimp-file-upload/js/vendor/jquery.ui.widget");
-require("imports-loader?define=>false&exports=>false!blueimp-file-upload/js/jquery.fileupload");
-require("imports-loader?define=>false&exports=>false!blueimp-file-upload/js/jquery.iframe-transport");
+require("imports-loader?additionalCode=var%20define=false;var%20exports=false;!blueimp-file-upload/js/vendor/jquery.ui.widget");
+require("imports-loader?additionalCode=var%20define=false;var%20exports=false;!blueimp-file-upload/js/jquery.fileupload");
+require("imports-loader?additionalCode=var%20define=false;var%20exports=false;!blueimp-file-upload/js/jquery.iframe-transport");
 
 // https://docs.djangoproject.com/en/3.1/ref/csrf/
 function getCookie(name) {

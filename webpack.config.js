@@ -93,6 +93,21 @@ module.exports = {
         rules: [
             {test: /\.jsx?$/, exclude: /node_modules/, loader: "babel-loader"},
             {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: "../static/bundles/"
+                        }
+                    },
+                    // Translates CSS into CommonJS
+                    "css-loader",
+                    // Compiles Sass to CSS
+                    "sass-loader",
+                ],
+            },
+            {
                 test: /\.css$/,
                 use: [
                     {
@@ -110,7 +125,7 @@ module.exports = {
                     limit: 10000,
                     mimeType: "application/font-woff",
                     name: "[name].[ext]",
-                    outputPath: "static/bundles/",
+                    outputPath: "../static/bundles/",
                     publicPath: "../static/bundles/"
                 }
             },
@@ -119,7 +134,7 @@ module.exports = {
                 loader: "file-loader",
                 options: {
                     name: "[name].[ext]",
-                    publicPath: "/bundles/"
+                    publicPath: "../static//bundles/"
                 }
             },
             {
@@ -137,6 +152,7 @@ module.exports = {
                     {loader: "less-loader"}
                 ]
             },
+            
 
         ]
     },
