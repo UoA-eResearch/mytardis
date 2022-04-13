@@ -40,14 +40,15 @@ module.exports = {
         dataset_view_badges: "./assets/js/apps/badges/components/DatasetViewPageBadges.jsx",
         dataset_tiles: "./assets/js/apps/tiles/index.jsx",
         choose_rights: "./assets/js/apps/choose_rights/index.jsx",
-        tardis_portal_create_project: glob.sync("./assets/js/apps/projects/create_project/*.js"),
+        create_project: glob.sync("./assets/js/apps/projects/create_project/**/*.js"),
         project_app : "./assets/js/apps/projects/view/index.jsx",
-        tardis_portal_my_projects: glob.sync("./assets/js/apps/projects/my_projects/*.js"),
-        project_badges: "./assets/js/apps/badges/components/ProjectBadges.jsx"
+        my_projects: glob.sync("./assets/js/apps/projects/my_projects/**/*.js"),
+        project_badges: "./assets/js/apps/badges/components/ProjectBadges.jsx",
+        cart_app: "./assets/js/apps/cart/index.jsx",
     },
     output: {
         path: path.resolve("./assets/bundles/"),
-        filename: "[name]-[contenthash].js"
+        filename: "[name]-[hash].js"
     },
     devtool: 'source-map',
     optimization: {
@@ -87,7 +88,12 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename: "[name]-[contenthash].styles.css",
-        })
+        }),
+        new webpack.ProvidePlugin({
+            // Add polyfill for chunks that use the
+            // fetch AJAX function.
+            "fetch": ["whatwg-fetch","fetch"]
+        }),
     ],
     module: {
         rules: [
@@ -125,7 +131,7 @@ module.exports = {
                     limit: 10000,
                     mimeType: "application/font-woff",
                     name: "[name].[ext]",
-                    outputPath: "../static/bundles/",
+                    outputPath: "static/bundles/",
                     publicPath: "../static/bundles/"
                 }
             },
@@ -134,10 +140,10 @@ module.exports = {
                 loader: "file-loader",
                 options: {
                     name: "[name].[ext]",
-                    publicPath: "../static//bundles/"
+                    publicPath: "/bundles/"
                 }
             },
-            {
+          {
                 test: /\.(gif|png|jpe?g)$/i,
                 loader: "url-loader",
                 options: {
@@ -162,6 +168,7 @@ module.exports = {
         alias: {
             "jquery": __dirname + "/node_modules/jquery",
             "main": __dirname + "/assets/js/tardis_portal/main",
+            "@apps": __dirname + "/assets/js/apps"
         },
     }
 };

@@ -1,0 +1,12 @@
+{
+    "objects": [
+        {
+            "id": 1,
+            "name": "Genomics VM (rvmf00474) /data"
+        },
+        {
+            "id": 14,
+            "name": "NeSI project nobackup drive"
+        }
+    ]
+}

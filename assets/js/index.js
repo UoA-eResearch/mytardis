@@ -23,3 +23,4 @@ require("font-awesome/css/font-awesome.css");
 require("../css/default.css");
 require("../css/facility-overview.css");
 require("blueimp-file-upload/css/jquery.fileupload.css");
+import "@apps/cart/initialiseCartLink";

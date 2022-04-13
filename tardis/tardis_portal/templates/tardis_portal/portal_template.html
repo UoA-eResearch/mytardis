@@ -143,6 +143,10 @@
                 </div>
             </form>
           {% endif %}
+          {% if cart_enabled %}
+            {% comment %} If the cart app is enabled, add element for the cart page link React app. {% endcomment %}
+            <li class="nav-item" id="cart-page-link"></li>
+          {% endif %}
           {% if is_authenticated %}
             <li id="user-menu" class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#user-menu">
