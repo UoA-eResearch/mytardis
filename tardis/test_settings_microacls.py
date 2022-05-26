@@ -1,16 +1,14 @@
 # pylint: disable=wildcard-import,unused-wildcard-import
 from __future__ import absolute_import
 
-from glob import glob
 from os import path
-
-from django.apps import apps  # pylint: disable=wrong-import-order
+from glob import glob
 
 from celery import Celery  # pylint: disable=import-error
+from django.apps import apps  # pylint: disable=wrong-import-order
 
 from .default_settings import *  # noqa # pylint: disable=W0401,W0614
-
-import logging  # pylint: disable=wrong-import-order isort: skip
+import logging  # pylint: disable=wrong-import-order
 
 TEST_RUNNER = "django_nose.NoseTestSuiteRunner"
 
@@ -194,3 +192,5 @@ CHUNK_STORAGE = path.join(DEFAULT_STORAGE_BASE_DIR, "chunks")
 RECALL_URI_TEMPLATES = {
     "tardis.apps.hsm.storage.HsmFileSystemStorage": "/api/v1/hsm_replica/{dfo_id}/recall/"
 }
+
+ONLY_EXPERIMENT_ACLS = False
