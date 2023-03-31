@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 class DatasetID(models.Model):
     """A model that adds a ID field to an dataset model
     :attribute dataset: A ForeignKey pointing to the related Dataset
+    :attribute identifier: A CharField containing the UNIQUE identifier
     """
 
     dataset = models.ForeignKey(
@@ -32,6 +33,7 @@ class DatasetID(models.Model):
 class ExperimentID(models.Model):
     """A model that adds a ID field to an experiment model
     :attribute experiment: A ForeignKey pointing to the related Experiment
+    :attribute identifier: A CharField containing the UNIQUE identifier
     """
 
     experiment = models.ForeignKey(
@@ -50,6 +52,7 @@ class ExperimentID(models.Model):
 class FacilityID(models.Model):
     """A model that adds a ID field to an facility model
     :attribute facility: A ForeignKey pointing to the related Facility
+    :attribute identifier: A CharField containing the UNIQUE identifier
     """
 
     facility = models.ForeignKey(
@@ -68,6 +71,7 @@ class FacilityID(models.Model):
 class InstrumentID(models.Model):
     """A model that adds a ID field to an instrument model
     :attribute instrument: A ForeignKey pointing to the related Instrument
+    :attribute identifier: A CharField containing the UNIQUE identifier
     """
 
     instrument = models.ForeignKey(
@@ -86,6 +90,7 @@ class InstrumentID(models.Model):
 class ProjectID(models.Model):
     """A model that adds a ID field to a Project model
     :attribute project: A ForeignKey pointing to the related Project
+    :attribute identifier: A CharField containing the UNIQUE identifier
     """
 
     project = models.ForeignKey(
@@ -104,6 +109,7 @@ class ProjectID(models.Model):
 class InstitutionID(models.Model):
     """A model that adds a ID field to a Institution model
     :attribute institution: A ForeignKey pointing to the related Institution
+    :attribute identifier: A CharField containing the UNIQUE identifier
     """
 
     institution = models.ForeignKey(
