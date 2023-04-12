@@ -28,6 +28,11 @@ from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 
+from tardis.apps.data_classification.models import (
+    DATA_CLASSIFICATION_SENSITIVE,
+    ProjectDataClassification,
+    classification_to_string,
+)
 from tardis.apps.identifiers.models import InstitutionID, ProjectID
 from tardis.tardis_portal.api import (
     ExperimentResource,
@@ -457,6 +462,10 @@ class ProjectResource(ModelResource):
             )
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
+        if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            bundle.data["classification"] = classification_to_string(
+                bundle.obj.data_classification.classification
+            )
         # admins = project.get_admins()
         # bundle.data["admin_groups"] = [acl.id for acl in admins]
         # members = project.get_groups()
@@ -548,6 +557,14 @@ class ProjectResource(ModelResource):
                             project=project,
                             identifier=str(identifier),
                         )
+            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+                project = bundle.obj
+                classification = DATA_CLASSIFICATION_SENSITIVE
+                if "classification" in bundle.data.keys():
+                    classification = bundle.data.pop("classification")
+                ProjectDataClassification.objects.create(
+                    project=project, classification=classification
+                )
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
                     username, isOwner, canDownload, canSensitive = entry

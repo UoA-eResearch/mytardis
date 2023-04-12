@@ -1,10 +1,17 @@
 import logging
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from tardis.apps.projects.models import Project
 from tardis.tardis_portal.models.dataset import Dataset
 from tardis.tardis_portal.models.experiment import Experiment
+
+DATA_CLASSIFICATION_RESTRICTED = 1
+DATA_CLASSIFICATION_SENSITIVE = 25
+DATA_CLASSIFICATION_INTERNAL = 50
+DATA_CLASSIFICATION_PUBLIC = 100
 
 
 class DataClassification(models.Model):
@@ -12,11 +19,6 @@ class DataClassification(models.Model):
     MyTardis object
     :attribute classification: A PositiveSmallIntegerField containing an
     enumerated data classification"""
-
-    DATA_CLASSIFICATION_RESTRICTED = 1
-    DATA_CLASSIFICATION_SENSITIVE = 25
-    DATA_CLASSIFICATION_INTERNAL = 50
-    DATA_CLASSIFICATION_PUBLIC = 100
 
     DATA_CLASSIFICATION_CHOICES = (
         (DATA_CLASSIFICATION_RESTRICTED, "Restricted"),
@@ -54,3 +56,18 @@ class DatasetDataClassification(DataClassification):
     dataset = models.OneToOneField(
         Dataset, on_delete=models.CASCADE, related_name="data_classification"
     )
+
+
+def classiification_to_string(classification: int) -> str:
+    """Helper function to turn the classification into a String
+
+    Note: Relies on the order of operations in order to distinguish between
+    PUBLIC and INTERNAL. Any PUBLIC data should have been filtered out prior to
+    testing the INTERNAL classification, which simplifies the function."""
+    if classification < DATA_CLASSIFICATION_SENSITIVE:
+        return "Restricted"
+    if classification >= DATA_CLASSIFICATION_PUBLIC:
+        return "Public"
+    if classification >= DATA_CLASSIFICATION_INTERNAL:
+        return "Internal"
+    return "Sensitive"

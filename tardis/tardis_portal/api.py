@@ -47,6 +47,12 @@ from tastypie.utils import trailing_slash
 from uritemplate import URITemplate
 
 from tardis.analytics.tracker import IteratorTracker
+from tardis.apps.data_classification.models import (
+    DATA_CLASSIFICATION_SENSITIVE,
+    DatasetDataClassification,
+    ExperimentDataClassification,
+    classiification_to_string,
+)
 from tardis.apps.identifiers.models import (
     DatasetID,
     ExperimentID,
@@ -1040,7 +1046,10 @@ class ExperimentResource(MyTardisModelResource):
             )
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
-
+        if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            bundle.data["classification"] = classiification_to_string(
+                bundle.obj.data_classification.classification
+            )
         if settings.ONLY_EXPERIMENT_ACLS:
             dataset_count = exp.datasets.all().count()
         else:
@@ -1109,7 +1118,14 @@ class ExperimentResource(MyTardisModelResource):
                 "tardis.apps.identifiers" in settings.INSTALLED_APPS
                 and "experiment" in settings.OBJECTS_WITH_IDENTIFIERS
             ) and "identifiers" in bundle.data.keys():
-                identifiers = bundle.data.pop("identifiers")
+                    identifiers = bundle.data.pop("identifiers")
+
+            # Clean up bundle to remove Data classifications if the app is being used
+            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+                classification = None
+                if "classification" in bundle.data.keys():
+                    classification = bundle.data.pop("classification")
+
             bundle = super().obj_create(bundle, **kwargs)
             # After the obj has been created
             experiment = bundle.obj
@@ -1122,7 +1138,29 @@ class ExperimentResource(MyTardisModelResource):
                         experiment=experiment,
                         identifier=str(identifier),
                     )
-
+            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+                if (
+                    not classification
+                    and "tardis.apps.project" in settings.INSTALLED_APPS
+                ):
+                    classifications = []  # list to hold all data classifications
+                    # this list will be filtered to get the lowest classification
+                    for parent in experiment.projects.all():
+                        classifications.append(
+                            parent.data_classification.classification
+                        )
+                    if len(classifications) > 0:
+                        classification = min(classifications)
+                if not classification:
+                    classification = DATA_CLASSIFICATION_SENSITIVE
+                # At this point the classification should be one of:
+                # - an explicit classification as defined in the input bundle
+                # - An inherited classification which is the most secure of the
+                # parent projects
+                # - Sensitive if neither of the previous apply
+                ExperimentDataClassification.objects.create(
+                    experiment=bundle.obj, classification=classification
+                )
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
                     username, isOwner, canDownload, canSensitive = entry
@@ -1311,6 +1349,10 @@ class DatasetResource(MyTardisModelResource):
             )
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
+        if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            bundle.data["classification"] = classiification_to_string(
+                bundle.obj.data_classification.classification
+            )
         return bundle
 
     def prepend_urls(self):
@@ -1590,6 +1632,11 @@ class DatasetResource(MyTardisModelResource):
                 identifiers = None
                 if "identifiers" in bundle.data.keys():
                     identifiers = bundle.data.pop("identifiers")
+            # Clean up bundle to remove Data classifications if the app is being used
+            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+                classification = None
+                if "classification" in bundle.data.keys():
+                    classification = bundle.data.pop("classification")
             bundle = super().obj_create(bundle, **kwargs)
             # After the obj has been created
             if (
@@ -1603,6 +1650,26 @@ class DatasetResource(MyTardisModelResource):
                             dataset=dataset,
                             identifier=str(identifier),
                         )
+            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+                if not classification:
+                    classifications = []  # list to hold all data classifications
+                    # this list will be filtered to get the lowest classification
+                    for parent in dataset.experiments.all():
+                        classifications.append(
+                            parent.data_classification.classification
+                        )
+                    if len(classifications) > 0:
+                        classification = min(classifications)
+                if not classification:
+                    classification = DATA_CLASSIFICATION_SENSITIVE
+                # At this point the classification should be one of:
+                # - an explicit classification as defined in the input bundle
+                # - An inherited classification which is the most secure of the
+                # parent projects
+                # - Sensitive if neither of the previous apply
+                DatasetDataClassification.objects.create(
+                    dataset=bundle.obj, classification=classification
+                )
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
                     username, isOwner, canDownload, canSensitive = entry
