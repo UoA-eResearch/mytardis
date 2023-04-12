@@ -44,6 +44,12 @@ from tastypie.utils import trailing_slash
 from uritemplate import URITemplate
 
 from tardis.analytics.tracker import IteratorTracker
+from tardis.apps.data_classification.models import (
+    DATA_CLASSIFICATION_SENSITIVE,
+    DatasetDataClassification,
+    ExperimentDataClassification,
+    classiification_to_string,
+)
 from tardis.apps.identifiers.models import (
     DatasetID,
     ExperimentID,
@@ -270,6 +276,7 @@ class ACLAuthorization(Authorization):
             exp_params = ExperimentParameter.objects.filter(
                 parameterset__experiment__in=experiments, id__in=obj_ids
             )
+
             # Generator to filter sensitive exp_parameters when given an exp id
             def get_exp_param(exp_par):
                 if not exp_par.name.sensitive:
@@ -300,6 +307,7 @@ class ACLAuthorization(Authorization):
                 for dp in object_list
                 if has_access(bundle.request, dp.parameterset.dataset.id, "dataset")
             ]
+
             # Generator to filter sensitive exp_parameters when given an exp id
             def get_set_param(set_par):
                 if not set_par.name.sensitive:
@@ -330,6 +338,7 @@ class ACLAuthorization(Authorization):
                 for dp in object_list
                 if has_access(bundle.request, dp.parameterset.datafile.id, "datafile")
             ]
+
             # Generator to filter sensitive exp_parameters when given an exp id
             def get_file_param(file_par):
                 if not file_par.name.sensitive:
@@ -684,7 +693,6 @@ class IntrospectionResource(Resource):
         try:
             profiled_objects = settings.OBJECTS_WITH_PROFILES
         except Exception:  # Ugly hack should tidy this up to catch specific errors
-
             profiled_objects = []
         return [
             IntrospectionObject(
@@ -852,7 +860,6 @@ class FacilityResource(MyTardisModelResource):
             "tardis.apps.identifiers" in settings.INSTALLED_APPS
             and "facility" in settings.OBJECTS_WITH_IDENTIFIERS
         ):
-
             bundle.data["identifiers"] = list(
                 map(str, FacilityID.objects.filter(facility=bundle.obj))
             )
@@ -1026,7 +1033,10 @@ class ExperimentResource(MyTardisModelResource):
             )
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
-
+        if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            bundle.data["classification"] = classiification_to_string(
+                bundle.obj.data_classification.classification
+            )
         if settings.ONLY_EXPERIMENT_ACLS:
             dataset_count = exp.datasets.all().count()
         else:
@@ -1096,6 +1106,13 @@ class ExperimentResource(MyTardisModelResource):
                 identifiers = None
                 if "identifiers" in bundle.data.keys():
                     identifiers = bundle.data.pop("identifiers")
+
+            # Clean up bundle to remove Data classifications if the app is being used
+            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+                classification = None
+                if "classification" in bundle.data.keys():
+                    classification = bundle.data.pop("classification")
+
             bundle = super().obj_create(bundle, **kwargs)
             # After the obj has been created
             if (
@@ -1109,7 +1126,29 @@ class ExperimentResource(MyTardisModelResource):
                             experiment=experiment,
                             identifier=str(identifier),
                         )
-
+            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+                if (
+                    not classification
+                    and "tardis.apps.project" in settings.INSTALLED_APPS
+                ):
+                    classifications = []  # list to hold all data classifications
+                    # this list will be filtered to get the lowest classification
+                    for parent in experiment.projects.all():
+                        classifications.append(
+                            parent.data_classification.classification
+                        )
+                    if len(classifications) > 0:
+                        classification = min(classifications)
+                if not classification:
+                    classification = DATA_CLASSIFICATION_SENSITIVE
+                # At this point the classification should be one of:
+                # - an explicit classification as defined in the input bundle
+                # - An inherited classification which is the most secure of the
+                # parent projects
+                # - Sensitive if neither of the previous apply
+                ExperimentDataClassification.objects.create(
+                    experiment=bundle.obj, classification=classification
+                )
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
                     username, isOwner, canDownload, canSensitive = entry
@@ -1196,7 +1235,6 @@ class ExperimentAuthorResource(MyTardisModelResource):
 
 
 class DatasetResource(MyTardisModelResource):
-
     experiments = fields.ToManyField(
         ExperimentResource, "experiments", related_name="datasets"
     )
@@ -1300,6 +1338,10 @@ class DatasetResource(MyTardisModelResource):
             )
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
+        if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            bundle.data["classification"] = classiification_to_string(
+                bundle.obj.data_classification.classification
+            )
         return bundle
 
     def prepend_urls(self):
@@ -1578,6 +1620,11 @@ class DatasetResource(MyTardisModelResource):
                 identifiers = None
                 if "identifiers" in bundle.data.keys():
                     identifiers = bundle.data.pop("identifiers")
+            # Clean up bundle to remove Data classifications if the app is being used
+            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+                classification = None
+                if "classification" in bundle.data.keys():
+                    classification = bundle.data.pop("classification")
             bundle = super().obj_create(bundle, **kwargs)
             # After the obj has been created
             if (
@@ -1591,6 +1638,26 @@ class DatasetResource(MyTardisModelResource):
                             dataset=dataset,
                             identifier=str(identifier),
                         )
+            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+                if not classification:
+                    classifications = []  # list to hold all data classifications
+                    # this list will be filtered to get the lowest classification
+                    for parent in dataset.experiments.all():
+                        classifications.append(
+                            parent.data_classification.classification
+                        )
+                    if len(classifications) > 0:
+                        classification = min(classifications)
+                if not classification:
+                    classification = DATA_CLASSIFICATION_SENSITIVE
+                # At this point the classification should be one of:
+                # - an explicit classification as defined in the input bundle
+                # - An inherited classification which is the most secure of the
+                # parent projects
+                # - Sensitive if neither of the previous apply
+                DatasetDataClassification.objects.create(
+                    dataset=bundle.obj, classification=classification
+                )
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
                     username, isOwner, canDownload, canSensitive = entry
@@ -1622,7 +1689,6 @@ class DatasetResource(MyTardisModelResource):
                                 )
                                 for grandparent in parent.projects.all()
                             ):
-
                                 for grandparent in parent.projects.all():
                                     from tardis.apps.projects.models import ProjectACL
 
@@ -1932,7 +1998,6 @@ class DataFileResource(MyTardisModelResource):
                                     )
                                     for grandparent in parent.projects.all()
                                 ):
-
                                     for grandparent in parent.projects.all():
                                         from tardis.apps.projects.models import (
                                             ProjectACL,
