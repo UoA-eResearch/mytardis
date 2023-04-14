@@ -20,8 +20,6 @@ from ldap3.utils.conv import escape_filter_chars
 from ldap3.utils.dn import escape_rdn
 from tastypie import fields
 from tastypie.authorization import Authorization
-
-# from tastypie.bundle import Bundle
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie.exceptions import NotFound, Unauthorized
 from tastypie.resources import ModelResource
@@ -31,7 +29,6 @@ from tastypie.utils import trailing_slash
 from tardis.apps.data_classification.models import (
     DATA_CLASSIFICATION_SENSITIVE,
     ProjectDataClassification,
-    classification_to_string,
 )
 from tardis.apps.identifiers.models import InstitutionID, ProjectID
 from tardis.tardis_portal.api import (
@@ -59,6 +56,21 @@ from .models import (
 
 default_serializer = PrettyJSONSerializer() if settings.DEBUG else Serializer()
 PROJECT_INSTITUTION_RESOURCE = "tardis.apps.projects.api.Institution"
+
+
+def classification_to_string(classification: int) -> str:
+    """Helper function to turn the classification into a String
+
+    Note: Relies on the order of operations in order to distinguish between
+    PUBLIC and INTERNAL. Any PUBLIC data should have been filtered out prior to
+    testing the INTERNAL classification, which simplifies the function."""
+    if classification < DATA_CLASSIFICATION_SENSITIVE:
+        return "Restricted"
+    if classification >= DATA_CLASSIFICATION_PUBLIC:
+        return "Public"
+    if classification >= DATA_CLASSIFICATION_INTERNAL:
+        return "Internal"
+    return "Sensitive"
 
 
 def get_user_from_upi(upi):
@@ -284,12 +296,6 @@ class ProjectACLAuthorization(Authorization):
 
 class InstitutionResource(ModelResource):
     """Tastypie class for accessing Instituions"""
-
-    # def filter_id_items(self, bundle):
-    #    resource = InstitutionIDResource()
-    #    new_bundle = Bundle(request=bundle.request)
-    #    objs = resource.obj_get_list(new_bundle)
-    #    return objs.filter(parent_id=bundle.obj.pk)
 
     instituitionid = None
     identifiers = fields.ListField(null=True, blank=True)
@@ -544,6 +550,13 @@ class ProjectResource(ModelResource):
                 identifiers = None
                 if "identifiers" in bundle.data.keys():
                     identifiers = bundle.data.pop("identifiers")
+            # Clean up bundle to remove Data classifications if the app is being used
+            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+                project = bundle.obj
+                classification = DATA_CLASSIFICATION_SENSITIVE
+                if "classification" in bundle.data.keys():
+                    classification = bundle.data.pop("classification")
+
             bundle = super().obj_create(bundle, **kwargs)
             # After the obj has been created
             if (
@@ -557,11 +570,8 @@ class ProjectResource(ModelResource):
                             project=project,
                             identifier=str(identifier),
                         )
+
             if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
-                project = bundle.obj
-                classification = DATA_CLASSIFICATION_SENSITIVE
-                if "classification" in bundle.data.keys():
-                    classification = bundle.data.pop("classification")
                 ProjectDataClassification.objects.create(
                     project=project, classification=classification
                 )
