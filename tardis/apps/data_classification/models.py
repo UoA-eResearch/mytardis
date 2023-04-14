@@ -58,7 +58,7 @@ class DatasetDataClassification(DataClassification):
     )
 
 
-def classiification_to_string(classification: int) -> str:
+def classification_to_string(classification: int) -> str:
     """Helper function to turn the classification into a String
 
     Note: Relies on the order of operations in order to distinguish between
