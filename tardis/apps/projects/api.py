@@ -23,7 +23,6 @@ from ldap3.utils.conv import escape_filter_chars
 from ldap3.utils.dn import escape_rdn
 from tastypie import fields
 from tastypie.authorization import Authorization
-from tastypie.bundle import Bundle
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie.exceptions import NotFound, Unauthorized
 from tastypie.resources import ModelResource
@@ -33,7 +32,6 @@ from tastypie.utils import trailing_slash
 from tardis.apps.data_classification.models import (
     DATA_CLASSIFICATION_SENSITIVE,
     ProjectDataClassification,
-    classification_to_string,
 )
 from tardis.apps.identifiers.models import InstitutionID, ProjectID
 from tardis.tardis_portal.api import (
@@ -74,21 +72,22 @@ PROJECT_INSTITUTION_RESOURCE = "tardis.apps.projects.api.Institution"
 
 logger = logging.getLogger(__name__)
 
+def classification_to_string(classification: int) -> str:
+    """Helper function to turn the classification into a String
 
-def get_user_from_upi(upi: str) -> Optional[Dict[str, str]]:
-    # sourcery skip: raise-from-previous-error
-    """Helper function to access the Active Directory and get details for a user to
-    pass back to the create user functions.
+    Note: Relies on the order of operations in order to distinguish between
+    PUBLIC and INTERNAL. Any PUBLIC data should have been filtered out prior to
+    testing the INTERNAL classification, which simplifies the function."""
+    if classification < DATA_CLASSIFICATION_SENSITIVE:
+        return "Restricted"
+    if classification >= DATA_CLASSIFICATION_PUBLIC:
+        return "Public"
+    if classification >= DATA_CLASSIFICATION_INTERNAL:
+        return "Internal"
+    return "Sensitive"
 
-    Note: This is pretty fragile at the moment and will need some rework to ensure
-    robustness.
 
-    Args:
-        upi (str): The UPI of the person to be searched for
-
-    Returns:
-        Dict[str,str]: A dictionary of fields needed to create a user
-    """
+def get_user_from_upi(upi):
     upi = escape_rdn(upi)
     server = ldap3.Server(settings.LDAP_URL)
     search_filter = f"({settings.LDAP_USER_LOGIN_ATTR}={upi})"
@@ -410,11 +409,7 @@ class ProjectACLAuthorization(Authorization):
 class InstitutionResource(ModelResource):
     """Tastypie class for accessing Instituions
 
-    Attributes:
-        identifiers (fields.ListField): Django ListField to hold 0-X identifiers for the
-            institution.
-    """
-
+    instituitionid = None
     identifiers = fields.ListField(null=True, blank=True)
 
     # Custom filter for identifiers module based on code example from
@@ -734,9 +729,20 @@ class ProjectResource(ModelResource):
             project_lead = get_or_create_user(bundle.data["principal_investigator"])
             bundle.data["principal_investigator"] = project_lead
             # Clean up bundle to remove PIDS if the identifiers app is being used.
-            bundle, identifiers = self.__clean_bundle_of_identifiers(bundle)
+            if (
+                "tardis.apps.identifiers" in settings.INSTALLED_APPS
+                and "project" in settings.OBJECTS_WITH_IDENTIFIERS
+            ):
+                identifiers = None
+                if "identifiers" in bundle.data.keys():
+                    identifiers = bundle.data.pop("identifiers")
             # Clean up bundle to remove Data classifications if the app is being used
-            bundle, classification = self.__clean_bundle_of_data_classification(bundle)
+            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+                project = bundle.obj
+                classification = DATA_CLASSIFICATION_SENSITIVE
+                if "classification" in bundle.data.keys():
+                    classification = bundle.data.pop("classification")
+
             bundle = super().obj_create(bundle, **kwargs)
             # After the obj has been created
             if (
@@ -750,11 +756,8 @@ class ProjectResource(ModelResource):
                             project=project,
                             identifier=str(identifier),
                         )
+
             if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
-                project = bundle.obj
-                classification = DATA_CLASSIFICATION_SENSITIVE
-                if "classification" in bundle.data.keys():
-                    classification = bundle.data.pop("classification")
                 ProjectDataClassification.objects.create(
                     project=project, classification=classification
                 )

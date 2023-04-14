@@ -51,7 +51,7 @@ from tardis.apps.data_classification.models import (
     DATA_CLASSIFICATION_SENSITIVE,
     DatasetDataClassification,
     ExperimentDataClassification,
-    classiification_to_string,
+    classification_to_string,
 )
 from tardis.apps.identifiers.models import (
     DatasetID,
@@ -1067,7 +1067,7 @@ class ExperimentResource(MyTardisModelResource):
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
         if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
-            bundle.data["classification"] = classiification_to_string(
+            bundle.data["classification"] = classification_to_string(
                 bundle.obj.data_classification.classification
             )
         if settings.ONLY_EXPERIMENT_ACLS:
@@ -1371,7 +1371,7 @@ class DatasetResource(MyTardisModelResource):
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
         if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
-            bundle.data["classification"] = classiification_to_string(
+            bundle.data["classification"] = classification_to_string(
                 bundle.obj.data_classification.classification
             )
         return bundle
