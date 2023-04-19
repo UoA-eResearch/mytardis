@@ -652,6 +652,7 @@ class IntrospectionObject(object):
         identified_objects=[],
         profiles_enabled=None,
         profiled_objects=[],
+        data_classification_enabled=None,
         id=None,
     ):
         self.projects_enabled = projects_enabled
@@ -660,6 +661,7 @@ class IntrospectionObject(object):
         self.identified_objects = identified_objects
         self.profiles_enabled = profiles_enabled
         self.profiled_objects = profiled_objects
+        self.data_classification_enabled = data_classification_enabled
         self.id = id
 
 
@@ -672,6 +674,9 @@ class IntrospectionResource(Resource):
     identified_objects = fields.ApiField(attribute="identified_objects", null=True)
     profiles_enabled = fields.ApiField(attribute="profiles_enabled", null=True)
     profiled_objects = fields.ApiField(attribute="profiled_objects", null=True)
+    data_classification_enabled = fields.ApiField(
+        attribute="data_classification_enabled", null=True
+    )
 
     class Meta:
         resource_name = "introspection"
@@ -707,6 +712,8 @@ class IntrospectionResource(Resource):
                 in settings.INSTALLED_APPS,
                 identified_objects=identified_objects,
                 profiles_enabled="tardis.apps.profiles" in settings.INSTALLED_APPS,
+                data_classification_enabled="tardis.apps.data_classification"
+                in settings.INSTALLED_APPS,
                 profiled_objects=profiled_objects,
             )
         ]
