@@ -54,7 +54,7 @@ tardis/apps/*
 !tardis/apps/projects
 !tardis/apps/identifiers
 !tardis/apps/data_classification
-!tardis/apps/archive_delete_times
+!tardis/apps/autoarchive
 
 *.old
 
