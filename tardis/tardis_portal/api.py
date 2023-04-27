@@ -47,6 +47,7 @@ from tastypie.utils import trailing_slash
 from uritemplate import URITemplate
 
 from tardis.analytics.tracker import IteratorTracker
+from tardis.apps.autoarchive.models import DataFileAutoArchive
 from tardis.apps.data_classification.models import (
     DATA_CLASSIFICATION_SENSITIVE,
     DatasetDataClassification,
@@ -677,6 +678,7 @@ class IntrospectionResource(Resource):
     data_classification_enabled = fields.ApiField(
         attribute="data_classification_enabled", null=True
     )
+    autoarchive_enabled = fields.ApiField(attribute="autoarchive_enabled", null=True)
 
     class Meta:
         resource_name = "introspection"
@@ -713,6 +715,8 @@ class IntrospectionResource(Resource):
                 identified_objects=identified_objects,
                 profiles_enabled="tardis.apps.profiles" in settings.INSTALLED_APPS,
                 data_classification_enabled="tardis.apps.data_classification"
+                in settings.INSTALLED_APPS,
+                autoarchive_enabled="tardis.apps.autoarchive"
                 in settings.INSTALLED_APPS,
                 profiled_objects=profiled_objects,
             )
@@ -1773,10 +1777,20 @@ class DataFileResource(MyTardisModelResource):
     # def dehydrate_tags(self, bundle):
     #    return list(map(str, bundle.obj.tags.all()))
 
-    # def save_m2m(self, bundle):
-    #    tags = bundle.data.get("tags", [])
-    #    bundle.obj.tags.set(*tags)
-    #    return super().save_m2m(bundle)
+    def dehydrate(self, bundle):
+        if "tardis.apps.autoarchive" in settings.INSTALLED_APPS:
+            archive = bundle.obj.autoarchive
+            bundle.data["archive_date"] = archive.archive_date
+            bundle.data["archives"] = archive.archives
+            bundle.data["archived"] = archive.archived
+            bundle.data["delete_date"] = archive.delete_date
+            bundle.data["deleted"] = archive.deleted
+        return bundle
+
+    def save_m2m(self, bundle):
+        tags = bundle.data.get("tags", [])
+        bundle.obj.tags.set(*tags)
+        return super().save_m2m(bundle)
 
     class Meta(MyTardisModelResource.Meta):
         object_class = DataFile
@@ -1941,6 +1955,13 @@ class DataFileResource(MyTardisModelResource):
         If a duplicate key error occurs, responds with HTTP Error 409: CONFLICT
         """
         with transaction.atomic():
+            archive = None
+            if "tardis.apps.autoarchive" in settings.INSTALLED_APPS:
+                if "archive" in bundle.data.keys():
+                    archive = bundle.data.pop("archive")
+            # Clean up the bundle
+            # the archive should be a dictionary as per
+            # replicas
             try:
                 retval = super().obj_create(bundle, **kwargs)
             except IntegrityError as err:
@@ -2057,6 +2078,25 @@ class DataFileResource(MyTardisModelResource):
                         expiryDate=parent_acl.expiryDate,
                         aclOwnershipType=parent_acl.aclOwnershipType,
                     )
+            if "tardis.apps.autoarchive" in settings.INSTALLED_APPS and archive:
+                # TODO make this less fragile. Requires checking on ingestion side
+                datafile = bundle.obj
+                archive_date = archive["archive_date"]
+                archives = archive["archives"]
+                archived = archive["archived"]
+                deleted = archive["deleted"]
+                delete_date = None
+                if "delete_date" in archive.keys():
+                    delete_date = archive["delete_date"]
+                DataFileAutoArchive.objects.create(
+                    datafile=datafile,
+                    archive_date=archive_date,
+                    archives=archives,
+                    archived=archived,
+                    deleted=deleted,
+                    delete_date=delete_date,
+                )
+
         return retval
 
     def post_list(self, request, **kwargs):

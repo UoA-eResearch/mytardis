@@ -18,6 +18,7 @@ class DataFileAutoArchive(models.Model):
     :attribute archive_sbox: A many-to-many link that ties  the archive storage boxes to the
          datafile.
     :attribute archived: A Boolean field indicating if the datafile has been archived.
+    :attribute deleted: A Boolean field indicating if the datafile has been deleted.
     """
 
     datafile = models.OneToOneField(
@@ -32,9 +33,10 @@ class DataFileAutoArchive(models.Model):
         blank=False,
     )
     archived = models.BooleanField(null=False, blank=False, default=False)
+    deleted = models.BooleanField(null=False, blank=False, default=False)
 
 
-def copy_to_archive(self, verified_only=True) -> bool:
+def copy_to_archive(self, verified_only: bool = True) -> bool:
     datafile = self.datafile
     archives = self.archives.all()
     archive_sboxes = {sbox.name: sbox for sbox in archives}
@@ -55,7 +57,7 @@ def copy_to_archive(self, verified_only=True) -> bool:
     return True
 
 
-def archive(self, verified_only=True) -> None:
+def archive(self, verified_only: bool = True) -> None:
     """A function called to archive the datafile. The function iterates through the
     datafile objects in the datafile and gets their storage boxes.
 
