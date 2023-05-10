@@ -28,6 +28,7 @@ from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 
+from tardis.apps.autoarchive.models import ProjectAutoArchive
 from tardis.apps.data_classification.models import (
     DATA_CLASSIFICATION_SENSITIVE,
     ProjectDataClassification,
@@ -564,7 +565,14 @@ class ProjectResource(ModelResource):
                 classification = DATA_CLASSIFICATION_SENSITIVE
                 if "classification" in bundle.data.keys():
                     classification = bundle.data.pop("classification")
-
+            if "tardis.apps.autoarchive" in settings.INSTALLED_APPS:
+                project = bundle.obj
+                autoarchive_offset = settings.AUTOARCHIVE_OFFSET
+                delete_offset = -1
+                if "autoarchive_offset" in bundle.data.keys():
+                    autoarchive_offset = bundle.data.pop("autoarchive_offset")
+                if "delete_offset" in bundle.data.keys():
+                    delete_offset = bundle.data.pop("delete_offset")
             bundle = super().obj_create(bundle, **kwargs)
             # After the obj has been created
             if (
@@ -582,6 +590,12 @@ class ProjectResource(ModelResource):
             if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
                 ProjectDataClassification.objects.create(
                     project=project, classification=classification
+                )
+            if "tardis.apps.autoarchive" in settings.INSTALLED_APPS:
+                ProjectAutoArchive.objects.create(
+                    project=project,
+                    offset=autoarchive_offset,
+                    delete_offset=delete_offset,
                 )
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:

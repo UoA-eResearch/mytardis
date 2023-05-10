@@ -10,6 +10,7 @@ Implemented with Tastypie.
 import contextlib
 import json
 import re
+from datetime import datetime, timedelta
 from itertools import chain
 from urllib.parse import quote
 from typing import Optional
@@ -47,7 +48,7 @@ from tastypie.utils import trailing_slash
 from uritemplate import URITemplate
 
 from tardis.analytics.tracker import IteratorTracker
-from tardis.apps.autoarchive.models import DataFileAutoArchive
+from tardis.apps.autoarchive.models import DataFileAutoArchive, ExperimentAutoArchive
 from tardis.apps.data_classification.models import (
     DATA_CLASSIFICATION_SENSITIVE,
     DatasetDataClassification,
@@ -1135,6 +1136,13 @@ class ExperimentResource(MyTardisModelResource):
                 classification = None
                 if "classification" in bundle.data.keys():
                     classification = bundle.data.pop("classification")
+            if "tardis.apps.autoarchive" in settings.INSTALLED_APPS:
+                autoarchive_offset = settings.AUTOARCHIVE_OFFSET
+                delete_offset = -1
+                if "autoarchive_offset" in bundle.data.keys():
+                    autoarchive_offset = bundle.data.pop("autoarchive_offset")
+                if "delete_offset" in bundle.data.keys():
+                    delete_offset = bundle.data.pop("delete_offset")
             bundle = super().obj_create(bundle, **kwargs)
             # After the obj has been created
             experiment = bundle.obj
@@ -1169,6 +1177,15 @@ class ExperimentResource(MyTardisModelResource):
                 # - Sensitive if neither of the previous apply
                 ExperimentDataClassification.objects.create(
                     experiment=bundle.obj, classification=classification
+                )
+            if (
+                "tardis.apps.autoarchive" in settings.INSTALLED_APPS
+                and "tardis.apps.project" not in settings.INSTALLED_APPS
+            ):
+                ExperimentAutoArchive.objects.create(
+                    experiment=experiment,
+                    offset=autoarchive_offset,
+                    delete_offset=delete_offset,
                 )
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
@@ -2081,8 +2098,38 @@ class DataFileResource(MyTardisModelResource):
             if "tardis.apps.autoarchive" in settings.INSTALLED_APPS and archive:
                 # TODO make this less fragile. Requires checking on ingestion side
                 datafile = bundle.obj
-                archive_date = archive["archive_date"]
-                archives = archive["archives"]
+                autoarchive_offset = -1
+                delete_offset = -1
+                archives = []
+                if "tardis.apps.projects" in settings.INSTALLED_APPS:
+                    projects = datafile.dataset.experiments.projects.all()
+                    for project in projects:
+                        if project.autoarchive.offset > autoarchive_offset:
+                            autoarchive_offset = project.autoarchive.offset
+                        if project.autoarchive.delete_offset > delete_offset:
+                            delete_offset = project.autoarchive.delete_offset
+                        archives.extend(project.autoarchive.archives)
+                else:
+                    experiments = datafile.dataset.experiments.all()
+                    for experiment in experiments:
+                        if experiment.autoarchive.offset > autoarchive_offset:
+                            autoarchive_offset = experiment.autoarchive.offset
+                        if experiment.autoarchive.delete_offset > delete_offset:
+                            delete_offset = experiment.autoarchive.delete_offset
+                        archives.extend(experiment.autoarchive.archvies)
+                archives = list(set(archives))
+                if "archive_date" in archive.keys():
+                    archive_date = archive["archive_date"]
+                else:
+                    archive_date = (
+                        datetime.now() + timedelta(days=autoarchive_offset)
+                    ).isoformat()
+                if "delete_date" in archive.keys():
+                    delete_date = archive["delete_date"]
+                else:
+                    delete_date = (
+                        datetime.now() + timedelta(days=delete_offset)
+                    ).isoformat()
                 archived = archive["archived"]
                 deleted = archive["deleted"]
                 delete_date = None
@@ -2465,6 +2512,20 @@ class StorageBoxResource(MyTardisModelResource):
             "id": ("exact",),
             "name": ("exact",),
         }
+
+    def obj_create(self, bundle, **kwargs):
+        """Function to create a storage box via POST."""
+        options = None
+        if "options" in bundle.data.keys():
+            options = bundle.data.pop("options")
+        with transaction.atomic():
+            storage_box = super().obj_create(bundle, **kwargs)
+            if options:
+                for key, value in options.items():
+                    StorageBoxOption.objects.create(
+                        storage_box=storage_box.obj, key=key, value=value
+                    )
+        return storage_box
 
 
 class StorageBoxOptionResource(MyTardisModelResource):
