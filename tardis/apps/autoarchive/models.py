@@ -1,11 +1,68 @@
 import logging
 
+from django.conf import settings
 from django.db import models
 
+from tardis.apps.projects.models import Project
 from tardis.tardis_portal.models.datafile import DataFile
+from tardis.tardis_portal.models.experiment import Experiment
 from tardis.tardis_portal.models.storage import StorageBox
 
 logger = logging.getLogger(__name__)
+
+
+class ProjectAutoArchive(models.Model):
+    """Add an autoarchive offset field to the project model to act as an offset to the
+    creation date for archiving data.
+
+    If there are no projects, then this model should be deprecated in preference for an
+    experiment level model.
+
+    :attribute project: The project that the offset is to be stored on.
+    :attribute offest: The number of days that need to be added to the creation date
+        to define when the datafile can be auto archived
+    """
+
+    project = models.OneToOneField(
+        Project, on_delete=models.CASCADE, related_name="autoarchive"
+    )
+    offset = models.PositiveIntegerField(
+        null=False, blank=False, default=settings.AUTOARCHIVE_OFFSET
+    )
+    delete_offset = models.PositiveIntegerField(null=False, blank=False, default=-1)
+    archives = models.ManyToManyField(
+        StorageBox,
+        related_name="archives",
+        null=False,
+        blank=False,
+    )
+
+
+class ExperimentAutoArchive(models.Model):
+    """Add an autoarchive offset field to the project model to act as an offset to the
+    creation date for archiving data.
+
+    If there are no projects, then this model should be deprecated in preference for an
+    experiment level model.
+
+    :attribute project: The project that the offset is to be stored on.
+    :attribute offest: The number of days that need to be added to the creation date
+        to define when the datafile can be auto archived
+    """
+
+    experiment = models.OneToOneField(
+        Experiment, on_delete=models.CASCADE, related_name="autoarchive"
+    )
+    offset = models.PositiveIntegerField(
+        null=False, blank=False, default=settings.AUTOARCHIVE_OFFSET
+    )
+    delete_offset = models.PositiveIntegerField(null=False, blank=False, default=-1)
+    archives = models.ManyToManyField(
+        StorageBox,
+        related_name="archives",
+        null=False,
+        blank=False,
+    )
 
 
 class DataFileAutoArchive(models.Model):
@@ -26,14 +83,14 @@ class DataFileAutoArchive(models.Model):
     )
     archive_date = models.DateField(null=False, blank=False)
     delete_date = models.DateField(null=True, blank=True)
+    archived = models.BooleanField(null=False, blank=False, default=False)
+    deleted = models.BooleanField(null=False, blank=False, default=False)
     archives = models.ManyToManyField(
         StorageBox,
         related_name="archives",
         null=False,
         blank=False,
     )
-    archived = models.BooleanField(null=False, blank=False, default=False)
-    deleted = models.BooleanField(null=False, blank=False, default=False)
 
 
 def copy_to_archive(self, verified_only: bool = True) -> bool:
