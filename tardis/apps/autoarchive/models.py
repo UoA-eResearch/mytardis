@@ -33,8 +33,6 @@ class ProjectAutoArchive(models.Model):
     archives = models.ManyToManyField(
         StorageBox,
         related_name="project_archives",
-        null=False,
-        blank=False,
     )
 
 
@@ -60,8 +58,6 @@ class ExperimentAutoArchive(models.Model):
     archives = models.ManyToManyField(
         StorageBox,
         related_name="experiment_archives",
-        null=False,
-        blank=False,
     )
 
 
@@ -88,8 +84,6 @@ class DataFileAutoArchive(models.Model):
     archives = models.ManyToManyField(
         StorageBox,
         related_name="archives",
-        null=False,
-        blank=False,
     )
 
 
