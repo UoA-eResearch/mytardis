@@ -32,7 +32,7 @@ class ProjectAutoArchive(models.Model):
     delete_offset = models.PositiveIntegerField(null=False, blank=False, default=-1)
     archives = models.ManyToManyField(
         StorageBox,
-        related_name="archives",
+        related_name="project_archives",
         null=False,
         blank=False,
     )
@@ -59,7 +59,7 @@ class ExperimentAutoArchive(models.Model):
     delete_offset = models.PositiveIntegerField(null=False, blank=False, default=-1)
     archives = models.ManyToManyField(
         StorageBox,
-        related_name="archives",
+        related_name="experiment_archives",
         null=False,
         blank=False,
     )

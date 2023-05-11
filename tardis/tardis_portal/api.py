@@ -1143,6 +1143,8 @@ class ExperimentResource(MyTardisModelResource):
                     autoarchive_offset = bundle.data.pop("autoarchive_offset")
                 if "delete_offset" in bundle.data.keys():
                     delete_offset = bundle.data.pop("delete_offset")
+                if "archives" in bundle.data.keys():
+                    archives = bundle.data["archives"]
             bundle = super().obj_create(bundle, **kwargs)
             # After the obj has been created
             experiment = bundle.obj
@@ -1182,10 +1184,14 @@ class ExperimentResource(MyTardisModelResource):
                 "tardis.apps.autoarchive" in settings.INSTALLED_APPS
                 and "tardis.apps.project" not in settings.INSTALLED_APPS
             ):
+                experiment_archives = []
+                for archive in archives:
+                    experiment_archives.append(StorageBox.objects.filter(name=archive))
                 ExperimentAutoArchive.objects.create(
                     experiment=experiment,
                     offset=autoarchive_offset,
                     delete_offset=delete_offset,
+                    archives=experiment_archives,
                 )
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
@@ -2108,7 +2114,7 @@ class DataFileResource(MyTardisModelResource):
                             autoarchive_offset = project.autoarchive.offset
                         if project.autoarchive.delete_offset > delete_offset:
                             delete_offset = project.autoarchive.delete_offset
-                        archives.extend(project.autoarchive.archives)
+                        archives.extend(project.autoarchive.project_archives)
                 else:
                     experiments = datafile.dataset.experiments.all()
                     for experiment in experiments:
@@ -2116,7 +2122,7 @@ class DataFileResource(MyTardisModelResource):
                             autoarchive_offset = experiment.autoarchive.offset
                         if experiment.autoarchive.delete_offset > delete_offset:
                             delete_offset = experiment.autoarchive.delete_offset
-                        archives.extend(experiment.autoarchive.archvies)
+                        archives.extend(experiment.autoarchive.experiment_archvies)
                 archives = list(set(archives))
                 if "archive_date" in archive.keys():
                     archive_date = archive["archive_date"]
