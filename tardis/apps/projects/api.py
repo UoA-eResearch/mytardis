@@ -545,6 +545,8 @@ class ProjectResource(ModelResource):
                     autoarchive_offset = bundle.data.pop("autoarchive_offset")
                 if "delete_offset" in bundle.data.keys():
                     delete_offset = bundle.data.pop("delete_offset")
+                if "archives" in bundle.data.keys():
+                    archives = bundle.data["archives"]
             bundle = super().obj_create(bundle, **kwargs)
             # After the obj has been created
             if (
@@ -564,10 +566,14 @@ class ProjectResource(ModelResource):
                     project=project, classification=classification
                 )
             if "tardis.apps.autoarchive" in settings.INSTALLED_APPS:
+                projectt_archives = []
+                for archive in archives:
+                    project_archives.append(StorageBox.objects.filter(name=archive))
                 ProjectAutoArchive.objects.create(
-                    project=project,
+                    experiment=experiment,
                     offset=autoarchive_offset,
                     delete_offset=delete_offset,
+                    archives=experiment_archives,
                 )
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
