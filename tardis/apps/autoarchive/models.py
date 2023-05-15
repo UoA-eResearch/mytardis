@@ -20,7 +20,11 @@ class ProjectAutoArchive(models.Model):
 
     :attribute project: The project that the offset is to be stored on.
     :attribute offest: The number of days that need to be added to the creation date
-        to define when the datafile can be auto archived
+        to define when the datafile can be auto archived.
+    :attribute delete_offset" The number of days after the creation date that the datafile
+        can be deleted.
+    :attribute archives: A M2M relationship to the project archive storage boxes.
+    :attribute active_stores: A M2M relationship to the project active storage boxes.
     """
 
     project = models.OneToOneField(
@@ -34,6 +38,9 @@ class ProjectAutoArchive(models.Model):
         StorageBox,
         related_name="project_archives",
     )
+    active_stores = models.ManyToManyField(
+        StorageBox, related_name="project_active_stores"
+    )
 
 
 class ExperimentAutoArchive(models.Model):
@@ -45,7 +52,11 @@ class ExperimentAutoArchive(models.Model):
 
     :attribute project: The project that the offset is to be stored on.
     :attribute offest: The number of days that need to be added to the creation date
-        to define when the datafile can be auto archived
+        to define when the datafile can be auto archived.
+    :attribute delete_offset" The number of days after the creation date that the datafile
+        can be deleted.
+    :attribute archives: A M2M relationship to the experiment archive storage boxes.
+    :attribute active_stores: A M2M relationship to the experiment active storage boxes.
     """
 
     experiment = models.OneToOneField(
@@ -59,6 +70,9 @@ class ExperimentAutoArchive(models.Model):
         StorageBox,
         related_name="experiment_archives",
     )
+    active_stores = models.ManyToManyField(
+        StorageBox, related_name="experiment_active_stores"
+    )
 
 
 class DataFileAutoArchive(models.Model):
@@ -68,7 +82,9 @@ class DataFileAutoArchive(models.Model):
     :attribute archive_date: The date that the datafile should be archived on
     :attribute delete_date: An optional date field that can be used to delete the datafile
          completely
-    :attribute archive_sbox: A many-to-many link that ties  the archive storage boxes to the
+    :attribute archives: A many-to-many link that ties the archive storage boxes to the
+         datafile.
+    :attribute active_stores: A many-to-many link that ties the active storage boxes to the
          datafile.
     :attribute archived: A Boolean field indicating if the datafile has been archived.
     :attribute deleted: A Boolean field indicating if the datafile has been deleted.
@@ -85,6 +101,7 @@ class DataFileAutoArchive(models.Model):
         StorageBox,
         related_name="archives",
     )
+    active_stores = models.ManyToManyField(StorageBox, related_name="active_stores")
 
 
 def copy_to_archive(self, verified_only: bool = True) -> bool:
