@@ -61,6 +61,7 @@ from tardis.apps.identifiers.models import (
     FacilityID,
     InstrumentID,
 )
+from tardis.apps.projects.models import Project
 
 from . import tasks
 from .auth.decorators import (
@@ -976,7 +977,14 @@ class ExperimentResource(MyTardisModelResource):
         full=True,
         null=True,
     )
-    # tags = fields.ListField()
+    tags = fields.ListField()
+    if "tardis.apps.project" in settings.INSTALLED_APPS:
+        projects = fields.ToManyField(
+            "tardis.apps.projects.api.ProjectResource",
+            "projects",
+            related_name="experiments",
+            full=True,
+        )
 
     # Custom filter for identifiers module based on code example from
     # https://stackoverflow.com/questions/10021749/ \
@@ -1281,7 +1289,10 @@ class ExperimentAuthorResource(MyTardisModelResource):
 
 class DatasetResource(MyTardisModelResource):
     experiments = fields.ToManyField(
-        ExperimentResource, "experiments", related_name="datasets"
+        ExperimentResource,
+        "experiments",
+        related_name="datasets",
+        full=True,
     )
     parameter_sets = fields.ToManyField(
         "tardis.tardis_portal.api.DatasetParameterSetResource",
@@ -1385,6 +1396,9 @@ class DatasetResource(MyTardisModelResource):
             bundle.data["classification"] = classification_to_string(
                 bundle.obj.data_classification.classification
             )
+        if "tardis.apps.projects" in settings.INSTALLED_APPS:
+            bundle.data["projects"] = bundle.obj.experiments.projects
+
         return bundle
 
     def prepend_urls(self):
