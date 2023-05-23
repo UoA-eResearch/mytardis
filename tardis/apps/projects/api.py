@@ -5,46 +5,63 @@ Implemented with Tastypie.
 .. moduleauthor:: Mike Laverick <mike.laverick@auckland.ac.nz>
 .. moduleauthor:: Chris Seal <c.seal@auckland.ac.nz>
 """
+import logging
 from itertools import chain
+from typing import Dict, List, Optional, Tuple
 
 from django.conf import settings
 from django.conf.urls import url
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import Group, Permission, User
+from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponseForbidden, JsonResponse
-from django.db import transaction
 
+import ldap3
 from tastypie import fields
 from tastypie.authorization import Authorization
+from tastypie.bundle import Bundle
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie.exceptions import NotFound, Unauthorized
 from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 
-import ldap3
-from tardis.tardis_portal.models.access_control import UserAuthentication
+from tardis.apps.autoarchive.models import ProjectAutoArchive
+from tardis.apps.data_classification.models import (
+    DATA_CLASSIFICATION_INTERNAL,
+    DATA_CLASSIFICATION_PUBLIC,
+    DATA_CLASSIFICATION_SENSITIVE,
+    ProjectDataClassification,
+)
+from tardis.apps.hsm import storage
+from tardis.apps.identifiers.models import InstitutionID, ProjectID
 from tardis.tardis_portal.api import (
+    ExperimentResource,
     MyTardisAuthentication,
-    PrettyJSONSerializer,
     ParameterResource,
     ParameterSetResource,
+    PrettyJSONSerializer,
     UserResource,
-    ExperimentResource,
 )
 from tardis.tardis_portal.auth.decorators import (
     has_access,
     has_sensitive_access,
     has_write,
 )
+from tardis.tardis_portal.models.access_control import UserAuthentication
+from tardis.tardis_portal.models.storage import (
+    StorageBox,
+    StorageBoxAttribute,
+    StorageBoxOption,
+)
+
 from .models import (
+    Institution,
     Project,
     ProjectACL,
     ProjectParameter,
     ProjectParameterSet,
-    Institution,
 )
-
 
 if settings.DEBUG:
     default_serializer = PrettyJSONSerializer()
@@ -52,6 +69,23 @@ else:
     default_serializer = Serializer()
 
 PROJECT_INSTITUTION_RESOURCE = "tardis.apps.projects.api.Institution"
+
+logger = logging.getLogger(__name__)
+
+
+def classification_to_string(classification: int) -> str:
+    """Helper function to turn the classification into a String
+
+    Note: Relies on the order of operations in order to distinguish between
+    PUBLIC and INTERNAL. Any PUBLIC data should have been filtered out prior to
+    testing the INTERNAL classification, which simplifies the function."""
+    if classification < DATA_CLASSIFICATION_SENSITIVE:
+        return "Restricted"
+    if classification >= DATA_CLASSIFICATION_PUBLIC:
+        return "Public"
+    if classification >= DATA_CLASSIFICATION_INTERNAL:
+        return "Internal"
+    return "Sensitive"
 
 
 def get_user_from_upi(upi):
@@ -72,7 +106,7 @@ def get_user_from_upi(upi):
             )
             # if logger:
             #    logger.error(error_message)
-            raise Exception(error_message)
+            raise ValueError(error_message)
         if len(connection.entries) == 0:
             error_message = "No one with {}: {} has been found in the LDAP".format(
                 settings.LDAP_USER_LOGIN_ATTR, upi
@@ -91,13 +125,12 @@ def get_user_from_upi(upi):
             email = person[email_key].value
         except KeyError:
             email = ""
-        details = {
+        return {
             "username": username,
             "first_name": first_name,
             "last_name": last_name,
             "email": email,
         }
-        return details
 
 
 def gen_random_password():
@@ -106,8 +139,7 @@ def gen_random_password():
     random.seed()
     characters = "abcdefghijklmnopqrstuvwxyzABCDFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()?"
     passlen = 16
-    password = "".join(random.sample(characters, passlen))
-    return password
+    return "".join(random.sample(characters, passlen))
 
 
 def get_or_create_user(username):
@@ -163,6 +195,7 @@ class ProjectACLAuthorization(Authorization):
                 for pp in object_list
                 if has_access(bundle.request, pp.parameterset.project.id, "project")
             ]
+
             # Generator to filter sensitive exp_parameters when given an exp id
             def get_set_param(set_par):
                 if not set_par.name.sensitive:
@@ -207,7 +240,7 @@ class ProjectACLAuthorization(Authorization):
     def create_detail(self, object_list, bundle):  # noqa # too complex
         if not bundle.request.user.is_authenticated:
             return False
-        if bundle.request.user.is_authenticated and bundle.request.user.is_superuser:
+        if bundle.request.user.is_superuser:
             return True
 
         if isinstance(bundle.obj, Project):
@@ -220,7 +253,7 @@ class ProjectACLAuthorization(Authorization):
                         this_exp = ExperimentResource.get_via_uri(
                             ExperimentResource(), exp_uri, bundle.request
                         )
-                    except:
+                    except Exception:
                         return False
                     if has_write(bundle.request, this_exp.id, "experiment"):
                         perm = True
@@ -270,6 +303,10 @@ class ProjectACLAuthorization(Authorization):
 
 
 class InstitutionResource(ModelResource):
+    """Tastypie class for accessing Instituions"""
+
+    instituitionid = None
+    identifiers = fields.ListField(null=True, blank=True)
 
     # Custom filter for identifiers module based on code example from
     # https://stackoverflow.com/questions/10021749/ \
@@ -280,26 +317,24 @@ class InstitutionResource(ModelResource):
             filters = {}
         orm_filters = super().build_filters(filters)
 
-        if "tardis.apps.identifiers" in settings.INSTALLED_APPS:
-            if "institution" in settings.OBJECTS_WITH_IDENTIFIERS and "pids" in filters:
-                query = filters["pids"]
-                qset = Q(persistent_id__persistent_id__exact=query) | Q(
-                    persistent_id__alternate_ids__contains=query
-                )
-                orm_filters.update({"pids": qset})
+        if (
+            "tardis.apps.identifiers" in settings.INSTALLED_APPS
+            and "institution" in settings.OBJECTS_WITH_IDENTIFIERS
+            and "identifier" in filters
+        ):
+            query = filters["identifier"]
+            qset = Q(identifiers__identifier__iexact=query)
+            orm_filters.update({"identifier": qset})
         return orm_filters
 
     def apply_filters(self, request, applicable_filters):
-        if "tardis.apps.identifiers" in settings.INSTALLED_APPS:
-            if (
-                "institution" in settings.OBJECTS_WITH_IDENTIFIERS
-                and "pids" in applicable_filters
-            ):
-                custom = applicable_filters.pop("pids")
-            else:
-                custom = None
-        else:
-            custom = None
+        custom = False
+        if (
+            "tardis.apps.identifiers" in settings.INSTALLED_APPS
+            and "institution" in settings.OBJECTS_WITH_IDENTIFIERS
+            and "identifier" in applicable_filters
+        ):
+            custom = applicable_filters.pop("identifier")
 
         semi_filtered = super().apply_filters(request, applicable_filters)
 
@@ -310,6 +345,7 @@ class InstitutionResource(ModelResource):
     class Meta:
         authentication = MyTardisAuthentication()
         authorization = ProjectACLAuthorization()
+        allowed_methods = ["get"]
         serializer = default_serializer
         object_class = Institution
         queryset = Institution.objects.all()
@@ -317,22 +353,19 @@ class InstitutionResource(ModelResource):
             "id": ("exact",),
             "name": ("exact",),
         }
-        if (
-            "tardis.apps.identifiers" in settings.INSTALLED_APPS
-            and "institution" in settings.OBJECTS_WITH_IDENTIFIERS
-        ):
-            filtering.update({"pids": ["pids"]})
         ordering = ["id", "name"]
         always_return_data = True
 
     def dehydrate(self, bundle):
-        institution = bundle.obj
         if (
             "tardis.apps.identifiers" in settings.INSTALLED_APPS
             and "institution" in settings.OBJECTS_WITH_IDENTIFIERS
         ):
-            bundle.data["persistent_id"] = institution.persistent_id.persistent_id
-            bundle.data["alternate_ids"] = institution.persistent_id.alternate_ids
+            bundle.data["identifiers"] = list(
+                map(str, InstitutionID.objects.filter(institution=bundle.obj))
+            )
+            if bundle.data["identifiers"] == []:
+                bundle.data.pop("identifiers")
         return bundle
 
 
@@ -343,6 +376,7 @@ class ProjectResource(ModelResource):
     TODO: catch duplicate schema submissions for parameter sets
     """
 
+    identifiers = fields.ListField(null=True, blank=True)
     created_by = fields.ForeignKey(UserResource, "created_by")
     parameter_sets = fields.ToManyField(
         "tardis.apps.projects.api.ProjectParameterSetResource",
@@ -357,14 +391,6 @@ class ProjectResource(ModelResource):
     principal_investigator = fields.ForeignKey(UserResource, "principal_investigator")
     tags = fields.ListField()
 
-    def dehydrate_tags(self, bundle):
-        return list(map(str, bundle.obj.tags.all()))
-
-    def save_m2m(self, bundle):
-        tags = bundle.data.get("tags", [])
-        bundle.obj.tags.set(*tags)
-        return super().save_m2m(bundle)
-
     # Custom filter for identifiers module based on code example from
     # https://stackoverflow.com/questions/10021749/ \
     # django-tastypie-advanced-filtering-how-to-do-complex-lookups-with-q-objects
@@ -374,32 +400,38 @@ class ProjectResource(ModelResource):
             filters = {}
         orm_filters = super().build_filters(filters)
 
-        if "tardis.apps.identifiers" in settings.INSTALLED_APPS:
-            if "project" in settings.OBJECTS_WITH_IDENTIFIERS and "pids" in filters:
-                query = filters["pids"]
-                qset = Q(persistent_id__persistent_id__exact=query) | Q(
-                    persistent_id__alternate_ids__contains=query
-                )
-                orm_filters.update({"pids": qset})
+        if (
+            "tardis.apps.identifiers" in settings.INSTALLED_APPS
+            and "project" in settings.OBJECTS_WITH_IDENTIFIERS
+            and "identifier" in filters
+        ):
+            query = filters["identifier"]
+            qset = Q(identifiers__identifier__iexact=query)
+            orm_filters.update({"identifier": qset})
         return orm_filters
 
     def apply_filters(self, request, applicable_filters):
-        if "tardis.apps.identifiers" in settings.INSTALLED_APPS:
-            if (
-                "project" in settings.OBJECTS_WITH_IDENTIFIERS
-                and "pids" in applicable_filters
-            ):
-                custom = applicable_filters.pop("pids")
-            else:
-                custom = None
-        else:
-            custom = None
+        custom = None
+        if (
+            "tardis.apps.identifiers" in settings.INSTALLED_APPS
+            and "project" in settings.OBJECTS_WITH_IDENTIFIERS
+            and "identifier" in applicable_filters
+        ):
+            custom = applicable_filters.pop("identifier")
 
         semi_filtered = super().apply_filters(request, applicable_filters)
 
         return semi_filtered.filter(custom) if custom else semi_filtered
 
     # End of custom filter code
+
+    def dehydrate_tags(self, bundle):
+        return list(map(str, bundle.obj.tags.all()))
+
+    def save_m2m(self, bundle):
+        tags = bundle.data.get("tags", [])
+        bundle.obj.tags.set(*tags)
+        return super().save_m2m(bundle)
 
     class Meta:
         authentication = MyTardisAuthentication()
@@ -413,11 +445,6 @@ class ProjectResource(ModelResource):
             "url": ("exact",),
             "institution": ALL_WITH_RELATIONS,
         }
-        if (
-            "tardis.apps.identifiers" in settings.INSTALLED_APPS
-            and "project" in settings.OBJECTS_WITH_IDENTIFIERS
-        ):
-            filtering.update({"pids": ["pids"]})
         ordering = ["id", "name", "url", "start_time", "end_time"]
         always_return_data = True
 
@@ -440,8 +467,21 @@ class ProjectResource(ModelResource):
             "tardis.apps.identifiers" in settings.INSTALLED_APPS
             and "project" in settings.OBJECTS_WITH_IDENTIFIERS
         ):
-            bundle.data["persistent_id"] = project.persistent_id.persistent_id
-            bundle.data["alternate_ids"] = project.persistent_id.alternate_ids
+            bundle.data["identifiers"] = list(
+                map(str, ProjectID.objects.filter(project=bundle.obj))
+            )
+            if bundle.data["identifiers"] == []:
+                bundle.data.pop("identifiers")
+        if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            bundle.data["classification"] = classification_to_string(
+                bundle.obj.data_classification.classification
+            )
+        if "tardis.apps.autoarchive" in settings.INSTALLED_APPS:
+            bundle.data["autoarchive"] = {
+                "archive_offset": bundle.obj.autoarchive.offset,
+                "archives": bundle.obj.autoarchive.archives,
+                "delete_offset": bundle.obj.autoarchive.delete_offset,
+            }
         # admins = project.get_admins()
         # bundle.data["admin_groups"] = [acl.id for acl in admins]
         # members = project.get_groups()
@@ -458,32 +498,234 @@ class ProjectResource(ModelResource):
             ),
         ]
 
-    '''def hydrate_m2m(self, bundle):
+    def __clean_bundle_of_identifiers(
+        self, bundle
+    ) -> Tuple[Bundle, Optional[List[str]]]:
+        """If the bundle has identifiers in it, clean these out prior to
+        creating the project.
+
+        Args:
+            bundle (Bundle): The bundle to be cleaned.
+
+        Returns:
+            Bundle: The cleaned bundle
+            list(str): A list of the identifiers cleaned from the bundle
         """
-        Create experiment-dataset associations first, because they affect
-        authorization for adding other related resources, e.g. metadata
+        identifiers = None
+        if (
+            "tardis.apps.identifiers" in settings.INSTALLED_APPS
+            and "project" in settings.OBJECTS_WITH_IDENTIFIERS
+            and "identifiers" in bundle.data.keys()
+        ):
+            identifiers = bundle.data.pop("identifiers")
+        return (bundle, identifiers)
+
+    def __clean_bundle_of_data_classification(
+        self, bundle
+    ) -> Tuple[Bundle, Optional[int]]:
+        """If the bundle has data_classification in it, clean it out.
+
+        Args:
+            bundle (Bundle): The bundle to be cleaned.
+
+        Returns:
+            Bundle: The cleaned bundle
+            int: An integer representing the data classification, defaults to Sensitive
         """
-        if getattr(bundle.obj, "id", False):
-            for exp_uri in bundle.data.get("experiments", []):
-                try:
-                    exp = ExperimentResource.get_via_uri(
-                        ExperimentResource(), exp_uri, bundle.request
+        classification = None
+        if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            classification = DATA_CLASSIFICATION_SENSITIVE
+            if "classification" in bundle.data.keys():
+                classification = bundle.data.pop("classification")
+        return (bundle, classification)
+
+    def __clean_bundle_of_autoarchive(
+        self, bundle
+    ) -> Tuple[
+        Bundle,
+        Optional[Dict[str, str | List[Dict[str, int | str | Dict[str, str]]]]],
+    ]:
+        """If the bundle has autoarchive data in it, clean it out.
+
+        Args:
+            bundle (Bundle): The bundle to be cleaned.
+
+        Returns:
+            Bundle: The cleaned bundle
+            dict(str, str|list(str)): A dictionary holding the project archive data
+        """
+        autoarchive = None
+        autoarchive = {
+            "autoarchive_offset": settings.AUTOARCHIVE_OFFSET,
+            "delete_offset": -1,
+        }
+        if "tardis.apps.autoarchive" in settings.INSTALLED_APPS:
+            if "autoarchive_offset" in bundle.data.keys():
+                autoarchive["autoarchive_offset"] = bundle.data.pop(
+                    "autoarchive_offset"
+                )
+            if "delete_offset" in bundle.data.keys():
+                autoarchive["delete_offset"] = bundle.data.pop("delete_offset")
+            autoarchive["archives"] = bundle.data.pop("archives")
+            autoarchive["active_stores"] = bundle.pop("active_stores")
+        return (bundle, autoarchive)
+
+    def __create_identifiers(
+        self,
+        bundle: Bundle,
+        identifiers: List[str],
+    ) -> None:
+        """Create the project identifier model.
+
+        Args:
+            bundle (Bundle): The bundle created when the project is created
+            identifiers (List[str]): A list of identifiers to associate with the project
+        """
+        project = bundle.obj
+        for identifier in identifiers:
+            ProjectID.objects.create(
+                project=project,
+                identifier=str(identifier),
+            )
+
+    def __create_data_classification(
+        self,
+        bundle: Bundle,
+        classification: int,
+    ) -> None:
+        """Create the data classification model.
+
+        Args:
+            bundle (Bundle): The bundle created when the project is created
+            data_classification (int): The iteger representaion of the data classification
+        """
+        project = bundle.obj
+        ProjectDataClassification.objects.create(
+            project=project, classification=classification
+        )
+
+    def __create_autoarchive(
+        self,
+        bundle: Bundle,
+        autoarchive: Dict[str, str | List[Dict[str, int | str | Dict[str, str]]]],
+    ) -> None:
+        """Create the autoarchive model and the archive storage boxes if they don't
+        already exist.
+
+        Note: This API call with create the necessary storage boxes should they not
+        already exist. The bundle containing the storage box as POSTed will contain the
+        storage box and any options or attributes necessary in the following format:
+
+        {name: string representation of the storage box name,
+        description: string representation of the storage box description,
+        storage_class: string representation of the django file system e.g.
+            'django.core.files.storage.FileSystemStorage',
+        options: { These include things like the location, the S3 connection options etc.
+            location: File path to the storage box,
+            key: value,
+            key: value,
+            }
+        attributes: {
+            type: StorageBox.DISK for active or StorageBox.TAPE for archive,
+            key: value,
+            }
+        }
+
+        Args:
+            bundle (Bundle): The bundle created when the project is created
+            autoarchive (Dict[str, str | List[str]]): A dictionary containing the
+                information needed to create the storage boxes and to set the date
+                offsets.
+        """
+        # build or get the storage boxes
+        archives = []
+        active_stores = []
+        for archive in autoarchive["archives"]:
+            if isinstance(archive, (str, int)):
+                logger.error(
+                    (
+                        "Unable to create the autoarchive storage box: "
+                        f"{archive}. String or int passed where a dictionary "
+                        "was expected."
                     )
-                    bundle.obj.experiments.add(exp)
-                except NotFound:
-                    pass
-        # acls = process_acls(bundle)
-        # if acls:
-        #    bulk_replace_existing_acls(acls)
-        # if "admins" in bundle.data.keys():
-        #    bundle.data.pop("admins")
-        # if "admin_groups" in bundle.data.keys():
-        #    bundle.data.pop("admin_groups")
-        # if "members" in bundle.data.keys():
-        #    bundle.data.pop("members")
-        # if "member_groups" in bundle.data.keys():
-        #    bundle.data.pop("member_groups")
-        return super().hydrate_m2m(bundle)'''
+                )
+                raise ValueError
+            archives.append(self.__get_or_create_storage_box(archive, "tape"))
+        for active in autoarchive["active_stores"]:
+            if isinstance(active, (str, int)):
+                logger.error(
+                    (
+                        "Unable to create the autoarchive active storage box: "
+                        f"{active}. String or int passed where a dictionary "
+                        "was expected."
+                    )
+                )
+                raise ValueError
+            active_stores.append(self.__get_or_create_storage_box(active, "disk"))
+        # Storage boxes have been created or an error thrown by this stage
+        offset = autoarchive["offset"]
+        delete_offset = autoarchive["delete_offset"]
+        if not isinstance(offset, int):
+            logger.error(
+                (
+                    "The offset needs to be defined as an integer value number "
+                    f"of days. Passed {offset}."
+                )
+            )
+            raise ValueError
+        if not isinstance(delete_offset, int):
+            logger.error(
+                (
+                    "The delete_offset needs to be defined as an integer value number "
+                    f"of days. Passed {delete_offset}."
+                )
+            )
+            raise ValueError
+        ProjectAutoArchive.objects.create(
+            project=bundle.obj,
+            offset=offset,
+            delete_offset=delete_offset,
+            archives=archives,
+            active_stores=active_stores,
+        )
+
+    def __get_or_create_storage_box(
+        self,
+        storage_box: Dict[str, int | str | Dict[str, str]],
+        store_type: str,
+    ) -> StorageBox:
+        attributes = None
+        options = storage_box.pop("options") if "options" in storage_box else None
+        if "attributes" in storage_box:
+            attributes = storage_box.pop("attributes")
+        if not attributes or isinstance(attributes, (int, str)):
+            attributes = {}
+        if "type" not in attributes.keys():
+            attributes["type"] = store_type
+        name = storage_box["name"]
+        sbox, created = StorageBox.objects.get_or_create(name=name)
+        if created:
+            if "description" in storage_box and isinstance(
+                storage_box["description"], str
+            ):
+                sbox.description = storage_box["description"]
+            if "storage_class" in storage_box and isinstance(
+                storage_box["storage_class"], str
+            ):
+                sbox.django_storage_class = storage_box["storage_class"]
+            if options and isinstance(options, dict):
+                for key, value in options.items():
+                    StorageBoxOption.objects.create(
+                        storage_box=sbox,
+                        key=key,
+                        value=value,
+                    )
+            if attributes and isinstance(attributes, dict):
+                for key, value in attributes.items():
+                    StorageBoxAttribute.objects.create(
+                        storage_box=sbox, key=key, value=value
+                    )
+        return sbox
 
     def obj_create(self, bundle, **kwargs):
         """Currently not tested for failed db transactions as sqlite does not
@@ -492,32 +734,23 @@ class ProjectResource(ModelResource):
         user = bundle.request.user
         bundle.data["created_by"] = user
         with transaction.atomic():
+            identifiers = None
             project_lead = get_or_create_user(bundle.data["principal_investigator"])
             bundle.data["principal_investigator"] = project_lead
             # Clean up bundle to remove PIDS if the identifiers app is being used.
-            if (
-                "tardis.apps.identifiers" in settings.INSTALLED_APPS
-                and "project" in settings.OBJECTS_WITH_IDENTIFIERS
-            ):
-                pid = None
-                alternate_ids = None
-                if "persistent_id" in bundle.data.keys():
-                    pid = bundle.data.pop("persistent_id")
-                if "alternate_ids" in bundle.data.keys():
-                    alternate_ids = bundle.data.pop("alternate_ids")
+            bundle, identifiers = self.__clean_bundle_of_identifiers(bundle)
+            # Clean up bundle to remove Data classifications if the app is being used
+            bundle, classification = self.__clean_bundle_of_data_classification(bundle)
+            bundle, autoarchive = self.__clean_bundle_of_autoarchive(bundle)
             bundle = super().obj_create(bundle, **kwargs)
             # After the obj has been created
-            if (
-                "tardis.apps.identifiers" in settings.INSTALLED_APPS
-                and "project" in settings.OBJECTS_WITH_IDENTIFIERS
-            ):
-                project = bundle.obj
-                pid_obj = project.persistent_id
-                if pid:
-                    pid_obj.persistent_id = pid
-                if alternate_ids:
-                    pid_obj.alternate_ids = alternate_ids
-                pid_obj.save()
+            project = bundle.obj
+            if identifiers:
+                self.__create_identifiers(bundle, identifiers)
+            if classification:
+                self.__create_data_classification(bundle, classification)
+            if autoarchive:
+                self.__create_autoarchive(bundle, autoarchive)
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
                     username, isOwner, canDownload, canSensitive = entry
