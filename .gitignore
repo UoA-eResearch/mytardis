@@ -59,7 +59,7 @@ tardis/apps/*
 *.old
 
 *.txt~
-
+venv/
 
 *.py#
 
