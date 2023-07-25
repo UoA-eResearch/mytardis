@@ -1137,8 +1137,11 @@ class ExperimentResource(MyTardisModelResource):
             if (
                 "tardis.apps.identifiers" in settings.INSTALLED_APPS
                 and "experiment" in settings.OBJECTS_WITH_IDENTIFIERS
-                identifiers = bundle.data.pop("identifiers")
-            ) and "identifiers" in bundle.data.keys():
+            ):
+                identifiers = None
+                if "identifiers" in bundle.data.keys():
+                    identifiers = bundle.data.pop("identifiers")
+
             # Clean up bundle to remove Data classifications if the app is being used
             if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
                 classification = None
