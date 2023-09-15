@@ -26,7 +26,7 @@ from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 
-from tardis.apps.data_classification.models import (
+from tardis.apps.dataclassification.models import (
     DATA_CLASSIFICATION_INTERNAL,
     DATA_CLASSIFICATION_PUBLIC,
     DATA_CLASSIFICATION_SENSITIVE,
@@ -470,9 +470,9 @@ class ProjectResource(ModelResource):
             )
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
-        if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+        if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
             bundle.data["classification"] = classification_to_string(
-                bundle.obj.data_classification.classification
+                bundle.obj.dataclassification.classification
             )
         # admins = project.get_admins()
         # bundle.data["admin_groups"] = [acl.id for acl in admins]
@@ -553,7 +553,7 @@ class ProjectResource(ModelResource):
                 if "identifiers" in bundle.data.keys():
                     identifiers = bundle.data.pop("identifiers")
             # Clean up bundle to remove Data classifications if the app is being used
-            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
                 project = bundle.obj
                 classification = DATA_CLASSIFICATION_SENSITIVE
                 if "classification" in bundle.data.keys():
@@ -573,7 +573,7 @@ class ProjectResource(ModelResource):
                             identifier=str(identifier),
                         )
 
-            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
                 ProjectDataClassification.objects.create(
                     project=project, classification=classification
                 )
