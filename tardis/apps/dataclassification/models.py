@@ -38,7 +38,7 @@ class ProjectDataClassification(DataClassification):
     """A concrete model that holds the data classification for a project"""
 
     project = models.OneToOneField(
-        Project, on_delete=models.CASCADE, related_name="data_classification"
+        Project, on_delete=models.CASCADE, related_name="dataclassification"
     )
 
 
@@ -46,7 +46,7 @@ class ExperimentDataClassification(DataClassification):
     """A concrete model that holds the data classification for an experiment"""
 
     experiment = models.OneToOneField(
-        Experiment, on_delete=models.CASCADE, related_name="data_classification"
+        Experiment, on_delete=models.CASCADE, related_name="dataclassification"
     )
 
 
@@ -54,7 +54,7 @@ class DatasetDataClassification(DataClassification):
     """A concrete model that holds the data classification for a project"""
 
     dataset = models.OneToOneField(
-        Dataset, on_delete=models.CASCADE, related_name="data_classification"
+        Dataset, on_delete=models.CASCADE, related_name="dataclassification"
     )
 
 
