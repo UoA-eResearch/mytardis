@@ -55,7 +55,7 @@ tardis/apps/*
 !tardis/apps/projects
 !tardis/apps/identifiers
 !tardis/apps/dataclassification
-tardis/apps/autoarchive
+tardis/apps/archive_delete_times
 
 .DS_Store
 

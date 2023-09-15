@@ -47,7 +47,7 @@ from tastypie.utils import trailing_slash
 from uritemplate import URITemplate
 
 from tardis.analytics.tracker import IteratorTracker
-from tardis.apps.data_classification.models import (
+from tardis.apps.dataclassification.models import (
     DATA_CLASSIFICATION_SENSITIVE,
     DatasetDataClassification,
     ExperimentDataClassification,
@@ -652,7 +652,7 @@ class IntrospectionObject(object):
         identified_objects=[],
         profiles_enabled=None,
         profiled_objects=[],
-        data_classification_enabled=None,
+        dataclassification_enabled=None,
         id=None,
     ):
         self.projects_enabled = projects_enabled
@@ -661,7 +661,7 @@ class IntrospectionObject(object):
         self.identified_objects = identified_objects
         self.profiles_enabled = profiles_enabled
         self.profiled_objects = profiled_objects
-        self.data_classification_enabled = data_classification_enabled
+        self.dataclassification_enabled = dataclassification_enabled
         self.id = id
 
 
@@ -674,8 +674,8 @@ class IntrospectionResource(Resource):
     identified_objects = fields.ApiField(attribute="identified_objects", null=True)
     profiles_enabled = fields.ApiField(attribute="profiles_enabled", null=True)
     profiled_objects = fields.ApiField(attribute="profiled_objects", null=True)
-    data_classification_enabled = fields.ApiField(
-        attribute="data_classification_enabled", null=True
+    dataclassificationenabled = fields.ApiField(
+        attribute="dataclassification_enabled", null=True
     )
 
     class Meta:
@@ -712,10 +712,8 @@ class IntrospectionResource(Resource):
                 in settings.INSTALLED_APPS,
                 identified_objects=identified_objects,
                 profiles_enabled="tardis.apps.profiles" in settings.INSTALLED_APPS,
-                data_classification_enabled="tardis.apps.data_classification"
-                in settings.INSTALLED_APPS,
                 profiled_objects=profiled_objects,
-                data_classification_enabled="tardis.apps.dataclassification"
+                dataclassification_enabled="tardis.apps.dataclassification"
                 in settings.INSTALLED_APPS,
             )
         ]
@@ -983,7 +981,7 @@ class ExperimentResource(MyTardisModelResource):
         )
     if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
         classification = fields.IntegerField(
-            attribute="data_classification.classification",
+            attribute="dataclassification.classification",
             null=True,
         )
     # tags = fields.ListField()
@@ -1068,9 +1066,9 @@ class ExperimentResource(MyTardisModelResource):
             )
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
-        if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+        if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
             bundle.data["classification"] = classification_to_string(
-                bundle.obj.data_classification.classification
+                bundle.obj.dataclassification.classification
             )
         if settings.ONLY_EXPERIMENT_ACLS:
             dataset_count = exp.datasets.all().count()
@@ -1141,10 +1139,10 @@ class ExperimentResource(MyTardisModelResource):
                 "tardis.apps.identifiers" in settings.INSTALLED_APPS
                 and "experiment" in settings.OBJECTS_WITH_IDENTIFIERS
             ) and "identifiers" in bundle.data.keys():
-                    identifiers = bundle.data.pop("identifiers")
+                identifiers = bundle.data.pop("identifiers")
 
             # Clean up bundle to remove Data classifications if the app is being used
-            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
                 classification = None
                 if "classification" in bundle.data.keys():
                     classification = bundle.data.pop("classification")
@@ -1161,7 +1159,7 @@ class ExperimentResource(MyTardisModelResource):
                         experiment=experiment,
                         identifier=str(identifier),
                     )
-            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
                 if (
                     not classification
                     and "tardis.apps.project" in settings.INSTALLED_APPS
@@ -1169,9 +1167,7 @@ class ExperimentResource(MyTardisModelResource):
                     classifications = []  # list to hold all data classifications
                     # this list will be filtered to get the lowest classification
                     for parent in experiment.projects.all():
-                        classifications.append(
-                            parent.data_classification.classification
-                        )
+                        classifications.append(parent.dataclassification.classification)
                     if len(classifications) > 0:
                         classification = min(classifications)
                 if not classification:
@@ -1372,9 +1368,9 @@ class DatasetResource(MyTardisModelResource):
             )
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
-        if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+        if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
             bundle.data["classification"] = classification_to_string(
-                bundle.obj.data_classification.classification
+                bundle.obj.dataclassification.classification
             )
         return bundle
 
@@ -1658,7 +1654,7 @@ class DatasetResource(MyTardisModelResource):
                 if "identifiers" in bundle.data.keys():
                     identifiers = bundle.data.pop("identifiers")
             # Clean up bundle to remove Data classifications if the app is being used
-            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
                 classification = None
                 if "classification" in bundle.data.keys():
                     classification = bundle.data.pop("classification")
@@ -1685,14 +1681,13 @@ class DatasetResource(MyTardisModelResource):
                             dataset=dataset,
                             identifier=str(identifier),
                         )
-            if "tardis.apps.data_classification" in settings.INSTALLED_APPS:
+            if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
+                classification = None
                 if not classification:
                     classifications = []  # list to hold all data classifications
                     # this list will be filtered to get the lowest classification
                     for parent in dataset.experiments.all():
-                        classifications.append(
-                            parent.data_classification.classification
-                        )
+                        classifications.append(parent.dataclassification.classification)
                     if len(classifications) > 0:
                         classification = min(classifications)
                 if not classification:
