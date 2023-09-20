@@ -46,6 +46,7 @@ from ldap3.core.exceptions import (
     LDAPBindError,
     LDAPExceptionError,
     LDAPInvalidCredentialsResult,
+    LDAPSessionTerminatedByServerError,
 )
 from ldap3.utils.conv import escape_filter_chars
 from ldap3.utils.dn import escape_rdn
@@ -137,7 +138,7 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
         except LDAPInvalidCredentialsResult:
             logger.error(f"Invalid credentials for user {username}", exc_info=True)
             return None
-        except LDAPBindError:
+        except LDAPSessionTerminatedByServerError:
             # We failed to bind using the simple method of constructing
             # the userDN, so let's query the directory for the userDN.
             if self._admin_user and self._admin_pass:
@@ -181,7 +182,7 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
             auto_bind="NONE",
         )
         logger.debug(server)
-        logger.debug(user)
+        logger.debug(user_dn)
         if settings.LDAP_USE_LDAPS:
             conn.start_tls()
         conn.open()
