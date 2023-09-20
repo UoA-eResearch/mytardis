@@ -180,7 +180,8 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
             client_strategy=SAFE_SYNC,
             auto_bind="NONE",
         )
-        conn.start_tls()
+        if settings.LDAP_USE_LDAPS:
+            conn.start_tls()
         conn.open()
         conn.bind()
         return conn
