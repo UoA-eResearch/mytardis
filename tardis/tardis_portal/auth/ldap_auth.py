@@ -41,9 +41,8 @@ import logging
 
 from django.conf import settings
 
-from ldap3 import SAFE_SYNC, Connection, Server
+from ldap3 import NTLM, SAFE_SYNC, Connection, Server
 from ldap3.core.exceptions import (
-    LDAPBindError,
     LDAPExceptionError,
     LDAPInvalidCredentialsResult,
     LDAPSessionTerminatedByServerError,
@@ -180,6 +179,7 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
             password=password,
             client_strategy=SAFE_SYNC,
             auto_bind="NONE",
+            authentication=NTLM,
         )
         logger.debug(server)
         logger.debug(user_dn)
@@ -187,8 +187,8 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
             conn.start_tls()
         logger.debug("Connection established")
         logger.debug(conn)
-        # conn.open()
-        # logger.debug("Connection opened")
+        conn.open()
+        logger.debug("Connection opened")
         logger.debug(conn)
         conn.bind()
         logger.debug("Connection bound")
