@@ -114,9 +114,11 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
         server = None
 
         if settings.LDAP_USE_LDAPS:
-            server = Server(settings.LDAP_URI, port=settings.LDAP_PORT, use_ssl=True)
+            server = Server(
+                f"ldaps://{settings.LDAP_URI}", port=settings.LDAP_PORT, use_ssl=True
+            )
         else:
-            server = Server(settings.LDAP_URI, port=settings.LDAP_PORT)
+            server = Server(f"ldap://{settings.LDAP_URI}", port=settings.LDAP_PORT)
 
         try:
             return self._authenticate_with_LDAP(username, server, password)
@@ -178,18 +180,14 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
             user=user_dn,
             password=password,
             client_strategy=SAFE_SYNC,
-            auto_bind="DEFAULT",
-            authentication=NTLM,
             raise_exceptions=False,
         )
         logger.debug(server)
         logger.debug(user_dn)
         if settings.LDAP_USE_LDAPS:
+            logger.debug("Starting TLS")
             conn.start_tls()
         logger.debug("Connection established")
-        logger.debug(conn.result)
-        conn.open()
-        logger.debug("Connection opened")
         logger.debug(conn.result)
         conn.bind()
         logger.debug("Connection bound")
