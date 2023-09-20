@@ -180,16 +180,17 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
             client_strategy=SAFE_SYNC,
             auto_bind="DEFAULT",
             authentication=NTLM,
+            raise_exceptions=False,
         )
         logger.debug(server)
         logger.debug(user_dn)
         if settings.LDAP_USE_LDAPS:
             conn.start_tls()
         logger.debug("Connection established")
-        logger.debug(conn)
+        logger.debug(conn.result)
         conn.open()
         logger.debug("Connection opened")
-        logger.debug(conn)
+        logger.debug(conn.result)
         conn.bind()
         logger.debug("Connection bound")
         logger.debug(conn)
