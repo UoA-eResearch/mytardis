@@ -161,7 +161,9 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
             conn = self._bind(server, admin_dn, self._admin_pass)
             retrieveAttributes = list(self._user_attr_map.keys()) + [self._login_attr]
             ldap_result = conn.search(
-                self._base, user_rdn, attributes=retrieveAttributes
+                self._base,
+                f"({user_rdn})",
+                attributes=retrieveAttributes,
             )
             conn.unbind()
             if ldap_result[0][1][self._login_attr][0] == username.encode():
@@ -191,7 +193,7 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
         logger.debug(conn.result)
         conn.bind()
         logger.debug("Connection bound")
-        logger.debug(conn)
+        logger.debug(conn.bound)
         return conn
 
     def _query(self, base, filterstr, attrlist):
