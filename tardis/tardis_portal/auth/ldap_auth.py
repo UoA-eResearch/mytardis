@@ -185,8 +185,14 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
         logger.debug(user_dn)
         if settings.LDAP_USE_LDAPS:
             conn.start_tls()
+        logger.debug("Connection established")
+        logger.debug(conn)
         conn.open()
+        logger.debug("Connection opened")
+        logger.debug(conn)
         conn.bind()
+        logger.debug("Connection bound")
+        logger.debug(conn)
         return conn
 
     def _query(self, base, filterstr, attrlist):
