@@ -165,6 +165,7 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
                 f"({user_rdn})",
                 attributes=retrieveAttributes,
             )
+            logger.debug(ldap_result)
             conn.unbind()
             if ldap_result[0][1][self._login_attr][0] == username.encode():
                 # check if the given username in combination with the LDAP
