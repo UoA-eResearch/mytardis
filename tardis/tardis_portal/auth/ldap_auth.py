@@ -178,7 +178,7 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
             user=user_dn,
             password=password,
             client_strategy=SAFE_SYNC,
-            auto_bind="NONE",
+            auto_bind="DEFAULT",
             authentication=NTLM,
         )
         logger.debug(server)
