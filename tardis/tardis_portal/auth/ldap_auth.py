@@ -41,12 +41,8 @@ import logging
 
 from django.conf import settings
 
-from ldap3 import NTLM, SAFE_SYNC, Connection, Server
-from ldap3.core.exceptions import (
-    LDAPExceptionError,
-    LDAPInvalidCredentialsResult,
-    LDAPSessionTerminatedByServerError,
-)
+from ldap3 import SAFE_SYNC, Connection, Server
+from ldap3.core.exceptions import LDAPExceptionError, LDAPInvalidCredentialsResult
 from ldap3.utils.conv import escape_filter_chars
 from ldap3.utils.dn import escape_rdn
 
@@ -139,26 +135,26 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
         except LDAPInvalidCredentialsResult:
             logger.error(f"Invalid credentials for user {username}", exc_info=True)
             return None
-        except LDAPSessionTerminatedByServerError:
-            # We failed to bind using the simple method of constructing
-            # the userDN, so let's query the directory for the userDN.
-            if self._admin_user and self._admin_pass:
-                admin_dn = f"{self._login_attr}={self._admin_user},{self._user_base}"
-                logger.debug("Using Admin account")
-                conn = self._bind(server, admin_dn, self._admin_pass)
-                logger.debug(conn.bound)
-                ldap_result = conn.search(self._base, user_rdn)
-                userDN = ldap_result[0][0]
-                conn.unbind()
-                conn = self._bind(server, userDN, password)
-                logger.debug(conn.bound)
-                conn.unbind()
+        # except LDAPSessionTerminatedByServerError:
+        # We failed to bind using the simple method of constructing
+        # the userDN, so let's query the directory for the userDN.
+        # if self._admin_user and self._admin_pass:
+        #    admin_dn = f"{self._login_attr}={self._admin_user},{self._user_base}"
+        #    logger.debug("Using Admin account")
+        #    conn = self._bind(server, admin_dn, self._admin_pass)
+        #    logger.debug(conn.bound)
+        #    ldap_result = conn.search(self._base, user_rdn)
+        #    userDN = ldap_result[0][0]
+        #    conn.unbind()
+        #    conn = self._bind(server, userDN, password)
+        #    logger.debug(conn.bound)
+        #    conn.unbind()
 
         # No LDAPError raised so far, so authentication was successful.
         # Now let's get the attributes we need for this user:
         if self._admin_user and self._admin_pass:
-            admin_dn = f"{self._login_attr}={self._admin_user},{self._user_base}"
-            conn = self._bind(server, admin_dn, self._admin_pass)
+            # admin_dn = f"{self._login_attr}={self._admin_user},{self._user_base}"
+            conn = self._bind(server, self._admin_user, self._admin_pass)
             retrieveAttributes = list(self._user_attr_map.keys()) + [self._login_attr]
             ldap_result = conn.search(
                 self._base,
@@ -167,10 +163,13 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
             )
             logger.debug(ldap_result)
             conn.unbind()
-            if ldap_result[0][1][self._login_attr][0] == username.encode():
+            if (
+                ldap_result[2][0]["raw_attributes"][self._login_attr][0]
+                == username.encode()
+            ):
                 # check if the given username in combination with the LDAP
                 # auth method is already in the UserAuthentication table
-                user = ldap_result[0][1]
+                user = ldap_result[2][0]["raw_attributes"]
                 return {
                     tardis_key: user[ldap_key][0].decode()
                     for ldap_key, tardis_key in self._user_attr_map.items()
@@ -209,8 +208,7 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
 
         try:
             if self._admin_user and self._admin_pass:
-                admin_dn = f"{self._login_attr}={self._admin_user},{self._user_base}"
-                conn = self._bind(server, admin_dn, self._admin_pass)
+                conn = self._bind(server, self._admin_user, self._admin_pass)
             else:
                 return None
         except LDAPExceptionError as err:
@@ -225,7 +223,7 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
 
         try:
             ldap_result = conn.search(base, dn, attributes=attrlist)
-            return ldap_result.entries
+            return ldap_result[2][0]["raw_attributes"]
         except LDAPExceptionError as err:
             logger.error(err, exc_info=True)
         finally:
@@ -259,7 +257,7 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
         if not result:
             return None
 
-        for key, val in result[0][1].items():
+        for key, val in result.items():
             user[self._user_attr_map[key]] = val[0].decode()
         return user
 
@@ -290,8 +288,8 @@ class LDAPBackend(AuthProvider, UserProvider, GroupProvider):
             ldap_result = conn.entries
 
             logger.debug(ldap_result)
-            if ldap_result[0][1][self._login_attr][0]:
-                return ldap_result[0][1][self._login_attr][0]
+            if ldap_result[2][0]["raw_attributes"][self._login_attr][0]:
+                return ldap_result[2][0]["raw_attributes"][self._login_attr][0]
             return None
 
         except LDAPExceptionError:
