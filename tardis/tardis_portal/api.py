@@ -49,8 +49,6 @@ from uritemplate import URITemplate
 from tardis.analytics.tracker import IteratorTracker
 from tardis.apps.dataclassification.models import (
     DATA_CLASSIFICATION_SENSITIVE,
-    DatasetDataClassification,
-    ExperimentDataClassification,
     classification_to_string,
 )
 from tardis.apps.identifiers.models import (
@@ -1177,9 +1175,9 @@ class ExperimentResource(MyTardisModelResource):
                 # - An inherited classification which is the most secure of the
                 # parent projects
                 # - Sensitive if neither of the previous apply
-                ExperimentDataClassification.objects.create(
-                    experiment=bundle.obj, classification=classification
-                )
+                exp_class = experiment.dataclassification
+                exp_class.classification = classification
+                exp_class.save()
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
                     username, isOwner, canDownload, canSensitive = entry
@@ -1697,9 +1695,9 @@ class DatasetResource(MyTardisModelResource):
                 # - An inherited classification which is the most secure of the
                 # parent projects
                 # - Sensitive if neither of the previous apply
-                DatasetDataClassification.objects.create(
-                    dataset=bundle.obj, classification=classification
-                )
+                dataset_class = dataset.dataclassification
+                dataset_class.classification = classification
+                dataset_class.save()
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
                     username, isOwner, canDownload, canSensitive = entry

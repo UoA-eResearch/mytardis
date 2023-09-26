@@ -25,7 +25,7 @@ from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie.exceptions import NotFound, Unauthorized
-from tastypie.resources import ModelResource
+from tastypie.resources import Bundle, ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 
@@ -33,8 +33,8 @@ from tardis.apps.dataclassification.models import (
     DATA_CLASSIFICATION_INTERNAL,
     DATA_CLASSIFICATION_PUBLIC,
     DATA_CLASSIFICATION_SENSITIVE,
-    ProjectDataClassification,
 )
+from tardis.apps.identifiers.enumerators import IdentifierObjects
 from tardis.apps.identifiers.models import InstitutionID, ProjectID
 from tardis.tardis_portal.api import (
     ExperimentResource,
@@ -73,6 +73,7 @@ default_serializer = PrettyJSONSerializer() if settings.DEBUG else Serializer()
 PROJECT_INSTITUTION_RESOURCE = "tardis.apps.projects.api.Institution"
 
 logger = logging.getLogger(__name__)
+
 
 def classification_to_string(classification: int) -> str:
     """Helper function to turn the classification into a String
@@ -417,6 +418,7 @@ class InstitutionResource(ModelResource):
     # Custom filter for identifiers module based on code example from
     # https://stackoverflow.com/questions/10021749/ \
     # django-tastypie-advanced-filtering-how-to-do-complex-lookups-with-q-objects
+    """
 
     def build_filters(
         self,
@@ -760,9 +762,9 @@ class ProjectResource(ModelResource):
                         )
 
             if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
-                ProjectDataClassification.objects.create(
-                    project=project, classification=classification
-                )
+                proj_class = project.dataclassification
+                proj_class.classification = classification
+                proj_class.save()
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
                     username, isOwner, canDownload, canSensitive = entry

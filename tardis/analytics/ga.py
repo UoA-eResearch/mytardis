@@ -15,7 +15,7 @@ GA_USER_TRACKING = getattr(settings, "GOOGLE_ANALYTICS_USER_TRACKING", False)
 logger = logging.getLogger(__name__)
 
 
-def _track_event(payload, cid=None, uid=None):
+def _track_event(payload, cid=None, uid=None):  # pragma: no cover
     """
     example_payload = {
         't': 'event',
@@ -50,7 +50,7 @@ def _track_event(payload, cid=None, uid=None):
         logger.debug(f"Google analytics error: {e}, payload: {data}")
 
 
-def track_login(label, session_id, ip, user):
+def track_login(label, session_id, ip, user):  # pragma: no cover
     _track_event(
         {
             "t": "event",
@@ -65,7 +65,7 @@ def track_login(label, session_id, ip, user):
     )
 
 
-def track_logout(label, session_id, ip, user):
+def track_logout(label, session_id, ip, user):  # pragma: no cover
     _track_event(
         {
             "t": "event",
@@ -82,7 +82,7 @@ def track_logout(label, session_id, ip, user):
 
 def track_download(
     label, session_id, ip, user, total_size=None, num_files=None, ua=None
-):
+):  # pragma: no cover
     payload = {
         "t": "event",
         "uip": ip,

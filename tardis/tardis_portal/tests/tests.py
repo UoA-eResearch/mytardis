@@ -46,12 +46,6 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test.client import Client
 
-from tardis.apps.dataclassification.models import (
-    DATA_CLASSIFICATION_SENSITIVE,
-    DatasetDataClassification,
-    ExperimentDataClassification,
-)
-
 from ..models import Dataset, DatasetACL, Experiment, ExperimentACL
 
 
@@ -110,10 +104,6 @@ class UserInterfaceTestCase(TestCase):
             isOwner=True,
         )
         acl.save()
-        expclassification = ExperimentDataClassification(
-            experiment=experiment, classification=DATA_CLASSIFICATION_SENSITIVE
-        )
-        expclassification.save()
         dataset = Dataset(description="test dataset")
         dataset.save()
         dataset.experiments.add(experiment)
@@ -130,10 +120,6 @@ class UserInterfaceTestCase(TestCase):
                 isOwner=True,
             )
             acl.save()
-        dsetclassification = DatasetDataClassification(
-            dataset=dataset, classification=DATA_CLASSIFICATION_SENSITIVE
-        )
-        dsetclassification.save()
 
         # Test everything works
         c = Client()

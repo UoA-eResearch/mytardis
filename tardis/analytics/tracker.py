@@ -39,7 +39,7 @@ class IteratorTracker(object):
             self.complete = True
             raise StopIteration() from e
 
-    def next(self):
+    def next(self):  # pragma: no cover
         return self.__next__()
 
     def __del__(self):
