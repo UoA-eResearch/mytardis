@@ -9,7 +9,7 @@ Implemented with Tastypie.
 import contextlib
 import logging
 from itertools import chain
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple  # List,
 
 from django.conf import settings
 from django.contrib.auth.models import Group, Permission, User
