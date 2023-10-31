@@ -11,13 +11,14 @@ from tardis.tardis_portal.models import DataFile, Dataset
 from tardis.tardis_portal.tests.api import MyTardisResourceTestCase
 
 
+@modify_settings(INSTALLED_APPS={"append": "django_elasticsearch_dsl"})
 @override_settings(
     SINGLE_SEARCH_ENABLED=True,
     ELASTICSEARCH_DSL={
         "default": {"hosts": os.environ.get("ELASTICSEARCH_URL", None)},
     },
+    ELASTICSEARCH_DSL_AUTOSYNC=True,
 )
-@modify_settings(INSTALLED_APPS={"append": "django_elasticsearch_dsl"})
 @unittest.skipUnless(
     os.environ.get("ELASTICSEARCH_URL", None), "--elasticsearch not set"
 )
