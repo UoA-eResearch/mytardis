@@ -9,7 +9,7 @@ Implemented with Tastypie.
 import contextlib
 import logging
 from itertools import chain
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple  # List,
 
 from django.conf import settings
 from django.contrib.auth.models import Group, Permission, User
@@ -25,7 +25,7 @@ from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie.exceptions import NotFound, Unauthorized
-from tastypie.resources import ModelResource
+from tastypie.resources import Bundle, ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 
@@ -33,8 +33,8 @@ from tardis.apps.dataclassification.models import (
     DATA_CLASSIFICATION_INTERNAL,
     DATA_CLASSIFICATION_PUBLIC,
     DATA_CLASSIFICATION_SENSITIVE,
-    ProjectDataClassification,
 )
+from tardis.apps.identifiers.enumerators import IdentifierObjects
 from tardis.apps.identifiers.models import InstitutionID, ProjectID
 from tardis.tardis_portal.api import (
     ExperimentResource,
@@ -73,6 +73,7 @@ default_serializer = PrettyJSONSerializer() if settings.DEBUG else Serializer()
 PROJECT_INSTITUTION_RESOURCE = "tardis.apps.projects.api.Institution"
 
 logger = logging.getLogger(__name__)
+
 
 def classification_to_string(classification: int) -> str:
     """Helper function to turn the classification into a String
@@ -417,6 +418,7 @@ class InstitutionResource(ModelResource):
     # Custom filter for identifiers module based on code example from
     # https://stackoverflow.com/questions/10021749/ \
     # django-tastypie-advanced-filtering-how-to-do-complex-lookups-with-q-objects
+    """
 
     def build_filters(
         self,
@@ -590,81 +592,81 @@ class ProjectResource(ModelResource):
             ),
         ]
 
-    def __clean_bundle_of_identifiers(
-        self,
-        bundle: Bundle,
-    ) -> Tuple[Bundle, Optional[List[str]]]:
-        """If the bundle has identifiers in it, clean these out prior to
-        creating the project.
+    # def __clean_bundle_of_identifiers(
+    #    self,
+    #    bundle: Bundle,
+    # ) -> Tuple[Bundle, Optional[List[str]]]:
+    #    """If the bundle has identifiers in it, clean these out prior to
+    #    creating the project.
+    #
+    #    Args:
+    #        bundle (Bundle): The bundle to be cleaned.
+    #
+    #    Returns:
+    #        Bundle: The cleaned bundle
+    #        list(str): A list of the identifiers cleaned from the bundle
+    #    """
+    #    identifiers = None
+    #    if (
+    #        "tardis.apps.identifiers" in settings.INSTALLED_APPS
+    #        and "project" in settings.OBJECTS_WITH_IDENTIFIERS
+    #        and "identifiers" in bundle.data.keys()
+    #    ):
+    #        identifiers = bundle.data.pop("identifiers")
+    #    return (bundle, identifiers)
 
-        Args:
-            bundle (Bundle): The bundle to be cleaned.
+    # def __clean_bundle_of_data_classification(
+    #    self,
+    #    bundle: Bundle,
+    # ) -> Tuple[Bundle, Optional[int]]:
+    #    """If the bundle has data_classification in it, clean it out.
+    #
+    #    Args:
+    #        bundle (Bundle): The bundle to be cleaned.
+    #
+    #    Returns:
+    #        Bundle: The cleaned bundle
+    #        int: An integer representing the data classification, defaults to Sensitive
+    #    """
+    #    classification = None
+    #    if AppList.DATA_CLASSIFICATION.value in settings.INSTALLED_APPS:
+    #        classification = DATA_CLASSIFICATION_SENSITIVE
+    #        if "classification" in bundle.data.keys():
+    #            classification = bundle.data.pop("classification")
+    #    return (bundle, classification)
 
-        Returns:
-            Bundle: The cleaned bundle
-            list(str): A list of the identifiers cleaned from the bundle
-        """
-        identifiers = None
-        if (
-            "tardis.apps.identifiers" in settings.INSTALLED_APPS
-            and "project" in settings.OBJECTS_WITH_IDENTIFIERS
-            and "identifiers" in bundle.data.keys()
-        ):
-            identifiers = bundle.data.pop("identifiers")
-        return (bundle, identifiers)
+    # def __create_identifiers(
+    #    self,
+    #    bundle: Bundle,
+    #    identifiers: List[str],
+    # ) -> None:
+    #    """Create the project identifier model.
+    #
+    #    Args:
+    #        bundle (Bundle): The bundle created when the project is created
+    #        identifiers (List[str]): A list of identifiers to associate with the project
+    #    """
+    #    project = bundle.obj
+    #    for identifier in identifiers:
+    #        ProjectID.objects.create(
+    #            project=project,
+    #            identifier=str(identifier),
+    #        )
 
-    def __clean_bundle_of_data_classification(
-        self,
-        bundle: Bundle,
-    ) -> Tuple[Bundle, Optional[int]]:
-        """If the bundle has data_classification in it, clean it out.
-
-        Args:
-            bundle (Bundle): The bundle to be cleaned.
-
-        Returns:
-            Bundle: The cleaned bundle
-            int: An integer representing the data classification, defaults to Sensitive
-        """
-        classification = None
-        if AppList.DATA_CLASSIFICATION.value in settings.INSTALLED_APPS:
-            classification = DATA_CLASSIFICATION_SENSITIVE
-            if "classification" in bundle.data.keys():
-                classification = bundle.data.pop("classification")
-        return (bundle, classification)
-
-    def __create_identifiers(
-        self,
-        bundle: Bundle,
-        identifiers: List[str],
-    ) -> None:
-        """Create the project identifier model.
-
-        Args:
-            bundle (Bundle): The bundle created when the project is created
-            identifiers (List[str]): A list of identifiers to associate with the project
-        """
-        project = bundle.obj
-        for identifier in identifiers:
-            ProjectID.objects.create(
-                project=project,
-                identifier=str(identifier),
-            )
-
-    def __create_data_classification(
-        self,
-        bundle: Bundle,
-        classification: int,
-    ) -> Bundle:
-        """Create the data classification model.
-
-        Args:
-            bundle (Bundle): The bundle created when the project is created
-            classification (int): The iteger representaion of the data classification
-        """
-        # project = bundle.obj
-        bundle.obj.data_classification.classification = classification
-        return bundle
+    # def __create_data_classification(
+    #    self,
+    #    bundle: Bundle,
+    #    classification: int,
+    # ) -> Bundle:
+    #    """Create the data classification model.
+    #
+    #    Args:
+    #        bundle (Bundle): The bundle created when the project is created
+    #        classification (int): The iteger representaion of the data classification
+    #    """
+    #    # project = bundle.obj
+    #    bundle.obj.data_classification.classification = classification
+    #    return bundle
 
     def hydrate_m2m(self, bundle):
         """
@@ -760,9 +762,9 @@ class ProjectResource(ModelResource):
                         )
 
             if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
-                ProjectDataClassification.objects.create(
-                    project=project, classification=classification
-                )
+                proj_class = project.dataclassification
+                proj_class.classification = classification
+                proj_class.save()
             if bundle.data.get("users", False):
                 for entry in bundle.data["users"]:
                     username, isOwner, canDownload, canSensitive = entry

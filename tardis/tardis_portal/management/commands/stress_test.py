@@ -150,8 +150,7 @@ def create_acl(
     sensitive=False,
     delete=False,
     isowner=False,
-):
-
+):  # pragma: no cover
     if entity_type == "django_user":
         """if object.get_ct().model == "project":
         testacl = ProjectACL(project=object,
@@ -257,7 +256,7 @@ def create_acl(
             testacl.save()
 
 
-def create_owner_acl(owner, object):
+def create_owner_acl(owner, object):  # pragma: no cover
     create_acl(
         owner,
         django_user,
@@ -270,11 +269,11 @@ def create_owner_acl(owner, object):
     )
 
 
-def create_user_acl(user, object):
+def create_user_acl(user, object):  # pragma: no cover
     create_acl(user, django_user, object)
 
 
-def create_group_acl(group, object, group_flag):
+def create_group_acl(group, object, group_flag):  # pragma: no cover
     if group_flag == "adm":
         create_acl(
             group, django_group, object, download=True, write=True, sensitive=True
@@ -285,8 +284,7 @@ def create_group_acl(group, object, group_flag):
         create_acl(group, django_group, object)
 
 
-class Command(BaseCommand):
-
+class Command(BaseCommand):  # pragma: no cover
     help = "Stress-test the database by inserting/removing objects"
 
     def add_arguments(self, parser):

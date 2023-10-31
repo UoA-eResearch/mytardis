@@ -1,8 +1,6 @@
-import logging
-
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 from tardis.apps.projects.models import Project
 from tardis.tardis_portal.models.dataset import Dataset
@@ -33,6 +31,11 @@ class DataClassification(models.Model):
         default=DATA_CLASSIFICATION_SENSITIVE,
     )
 
+    class Meta:
+        abstract = True
+        app_label = "dataclassification"
+        ordering = ["id"]
+
 
 class ProjectDataClassification(DataClassification):
     """A concrete model that holds the data classification for a project"""
@@ -51,7 +54,7 @@ class ExperimentDataClassification(DataClassification):
 
 
 class DatasetDataClassification(DataClassification):
-    """A concrete model that holds the data classification for a project"""
+    """A concrete model that holds the data classification for a dataset"""
 
     dataset = models.OneToOneField(
         Dataset, on_delete=models.CASCADE, related_name="dataclassification"
@@ -71,3 +74,21 @@ def classification_to_string(classification: int) -> str:
     if classification >= DATA_CLASSIFICATION_INTERNAL:
         return "Internal"
     return "Sensitive"
+
+
+def create_classification(instance, created, **kwargs):
+    # Post-save function to create classification model on creation of a
+    # Proj/Exp/Set instance
+    if created:
+        if isinstance(instance, Project):
+            ProjectDataClassification.objects.create(project=instance)
+        if isinstance(instance, Experiment):
+            ExperimentDataClassification.objects.create(experiment=instance)
+        if isinstance(instance, Dataset):
+            DatasetDataClassification.objects.create(dataset=instance)
+
+
+if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
+    post_save.connect(create_classification, sender=Project)
+    post_save.connect(create_classification, sender=Experiment)
+    post_save.connect(create_classification, sender=Dataset)
