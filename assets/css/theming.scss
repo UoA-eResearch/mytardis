@@ -1,1 +1,43 @@
+@font-face {
+    font-family: 'NationalBold';
+    src: url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-Bold.eot");
+  
+    src: url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-Bold.woff2") format("woff2"), url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-Bold.woff") format("woff");
+     }
+  
+  @font-face {
+    font-family: 'NationalBoldItalic';
+    src: url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-BoldItalic.eot");
+  
+    src: url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-BoldItalic.woff2") format("woff2"), url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-BoldItalic.woff") format("woff");
+     }
+  
+  @font-face {
+    font-family: 'NationalBook';
+    src: url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-Book.eot");
+  
+    src: url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-Book.woff2") format("woff2"), url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-Book.woff") format("woff");
+     }
+  
+  @font-face {
+    font-family: 'NationalBookItalic';
+    src: url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-BookItalic.eot");
+  
+    src: url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-BookItalic.woff2") format("woff2"), url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-BookItalic.woff") format("woff");
+     }
+
+
+
 $blue: #00467f;
+$font-family-sans-serif: "NationalBook", system-ui, sans-serif;
+$headings-font-family: "NationalBold", system-ui, sans-serif;
+
+.nav-bg-brand {
+    background-color: #00467f;
+}
+
+
+
+h1, h2 {
+    color: $blue;
+}

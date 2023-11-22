@@ -2,7 +2,7 @@
 Component for top navigation cart icon.
 */
 import React, { useCallback } from "react";
-import { Badge, Button, Popover, OverlayTrigger, PopoverContent, PopoverTitle } from "react-bootstrap";
+import { Badge, Button, Popover, OverlayTrigger, PopoverBody, PopoverHeader } from "react-bootstrap";
 import { FaShoppingCart } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { notificationDismissed, NOTIFICATION_TYPE } from "./cartSlice";
@@ -11,11 +11,11 @@ import PropTypes from "prop-types";
 function ItemAddedNotification({onDismiss}) {
     return (
         <Popover id="cart-item-added">
-            <PopoverTitle as="h3">Items added to download list.</PopoverTitle>
-            <PopoverContent>
+            <PopoverHeader as="h3">Items added to download list.</PopoverHeader>
+            <PopoverBody>
                 <p>Go to the Cart tab to see what’s in your list and download them.</p>
                 <Button onClick={onDismiss}>OK, Got It.</Button>
-            </PopoverContent>
+            </PopoverBody>
         </Popover>
     );
 }
@@ -27,11 +27,11 @@ ItemAddedNotification.propTypes = {
 function ItemRemovedNotification({onDismiss}) {
     return (
         <Popover id="cart-item-removed">
-            <PopoverTitle as="h3">Item removed from download list.</PopoverTitle>
-            <PopoverContent>
+            <PopoverHeader as="h3">Item removed from download list.</PopoverHeader>
+            <PopoverBody>
                 <p>Go to the Cart tab to see what’s in your list and download them.</p>
                 <Button onClick={onDismiss}>OK, Got It</Button>
-            </PopoverContent>
+            </PopoverBody>
         </Popover>
     );
 }
@@ -44,7 +44,7 @@ function CartNavLinkText({numberOfItems}) {
     let itemNumBadge = null;
     if (numberOfItems !== undefined) {
         itemNumBadge = (
-            <Badge variant="secondary">
+            <Badge bg="secondary">
                 {numberOfItems}
                 <span className="sr-only">items in cart</span>
             </Badge>

@@ -7,6 +7,7 @@ __pycache__/
 *.pyc
 *.sqlite
 *.wsgi
+*.venv
 .idea/
 .installed.cfg
 .noseids

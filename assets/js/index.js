@@ -20,7 +20,7 @@ require('expose-loader?exposes=he!he/he');
 require("../css/custom-bootstrap.scss");
 require("../css/jquery-ui/jquery-ui-1.8.18.custom.css");
 require("font-awesome/css/font-awesome.css");
-require("../css/default.css");
+require("../css/default.scss");
 require("../css/facility-overview.css");
 require("blueimp-file-upload/css/jquery.fileupload.css");
 import "@apps/cart/initialiseCartLink";

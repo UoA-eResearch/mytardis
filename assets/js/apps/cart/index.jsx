@@ -4,7 +4,6 @@ import "./cart.css";
 import { Provider } from "react-redux";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import store from "@apps/shared/reduxAppStore";
-import "bootstrap/dist/css/bootstrap.css";
 import TransferScreen from "./TransferScreen";
 import CartScreen from "./CartScreen";
 import DownloadScreen from "./DownloadScreen";
