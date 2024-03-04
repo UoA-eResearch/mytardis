@@ -259,7 +259,7 @@ def cleaning_acls(
     canSensitive=False,
     canDownload=False,
     prefetch_fields=None,
-    values_list=None,
+    value_fields=None,
     flat=True,
 ):
     """
@@ -281,7 +281,7 @@ def cleaning_acls(
         canSensitive=canSensitive,
         canDownload=canDownload,
         prefetch_fields=prefetch_fields,
-        values_list=values_list,
+        value_fields=value_fields,
         flat=flat,
     )
     for group in groups:
@@ -301,7 +301,7 @@ def cleaning_acls(
             canSensitive=canSensitive,
             canDownload=canDownload,
             prefetch_fields=prefetch_fields,
-            values_list=values_list,
+            value_fields=value_fields,
             flat=flat,
         )
     return [*query.distinct()]
@@ -313,7 +313,7 @@ def cleaning_acl_query(
     canSensitive=False,
     canDownload=False,
     prefetch_fields=None,
-    values_list=None,
+    value_fields=None,
     flat=True,
 ):
     """
@@ -342,8 +342,8 @@ def cleaning_acl_query(
     # add OBJ__id to values_list return
     value_list_to_add = [objtype + "__id"]
     # if list of extra values_list specified, add them to query
-    if values_list is not None:
-        value_list_to_add.extend(*values_list)
+    if value_fields is not None:
+        value_list_to_add.extend(*value_fields)
 
     return query.values_list(*value_list_to_add, flat=flat)
 
