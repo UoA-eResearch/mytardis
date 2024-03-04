@@ -345,7 +345,7 @@ def cleaning_acl_query(
     if values_list is not None:
         value_list_to_add.extend(*values_list)
 
-    return query.values_list(value_list_to_add, flat=flat)
+    return query.values_list(*value_list_to_add, flat=flat)
 
 
 def query_add_sorting(request_sorting, obj, sort_dict):
