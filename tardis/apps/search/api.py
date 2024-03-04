@@ -1,4 +1,4 @@
-# pylint: disable=C0302,R1702
+# pylint: disable=C0302
 """
 RESTful API for MyTardis search.
 Implemented with Tastypie.
@@ -131,7 +131,7 @@ class SchemasAppResource(Resource):
             "experiment": Experiment,
             "dataset": Dataset,
             "datafile": DataFile,
-        }:
+        }.items():
             result_dict[string] = [
                 *{
                     *model.safe.all(user=request.user)

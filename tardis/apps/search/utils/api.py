@@ -324,9 +324,9 @@ def cleaning_acl_query(
     query = entity_acls.select_related(objtype)
 
     # apply specific ACL perm filter
-    if canSensitive == True:
+    if canSensitive is True:
         query = query.filter(canSensitive=True)
-    if canDownload == True:
+    if canDownload is True:
         query = query.filter(canSensitive=True)
 
     # if prefetch_fields are specified, add prefetch to query
@@ -353,54 +353,53 @@ def query_add_sorting(request_sorting, obj, sort_dict):
     Function to build up sorting filters that need to be applied to
     a search query
     """
-    # make sure sorting request contains info
-    if request_sorting is not None:
-        # check if current object/model is in sorting request
-        if obj in request_sorting:
-            # iterate over sort options
-            for sort in request_sorting[obj]:
+    # make sure sorting request contains info and current object/model is in sorting request
+    if (request_sorting is not None) and (obj in request_sorting):
+        # check if
+        # iterate over sort options
+        for sort in request_sorting[obj]:
 
-                # process nested sort filters
-                if len(sort["field"]) > 1:
-                    # if in this dict then field adds .raw to end of sort
-                    if sort["field"][-1] in {
-                        "fullname",
-                        "name",
-                        "title",
-                        "description",
-                        "filename",
-                    }:
-                        search_field = ".".join(sort["field"]) + ".raw"
-                    else:
-                        search_field = ".".join(sort["field"])
-                    # build up sorting dict options
-                    sort_dict[search_field] = {
-                        "order": sort["order"],
-                        "nested_path": ".".join(sort["field"][:-1]),
-                    }
-                # process non-nested sort filters
-                if len(sort["field"]) == 1:
-                    # these fields need to have .raw added to them
-                    if sort["field"][0] in {
-                        "principal_investigator",
-                        "name",
-                        "title",
-                        "description",
-                        "filename",
-                    }:
-                        sort_dict[sort["field"][0] + ".raw"] = {"order": sort["order"]}
-                    # size field needs specific handling
-                    elif sort["field"][0] == "size":
-                        # for datafile size is easy to calculate
-                        if obj == "datafile":
-                            sort_dict[sort["field"][0]] = {"order": sort["order"]}
-                        # for parent models we need ACL context for this,
-                        # which is currently not available in ES.
-                        else:
-                            # DO THIS SORTING AFTER ELASTICSEARCH
-                            pass
-                    else:
+            # process nested sort filters
+            if len(sort["field"]) > 1:
+                # if in this dict then field adds .raw to end of sort
+                if sort["field"][-1] in {
+                    "fullname",
+                    "name",
+                    "title",
+                    "description",
+                    "filename",
+                }:
+                    search_field = ".".join(sort["field"]) + ".raw"
+                else:
+                    search_field = ".".join(sort["field"])
+                # build up sorting dict options
+                sort_dict[search_field] = {
+                    "order": sort["order"],
+                    "nested_path": ".".join(sort["field"][:-1]),
+                }
+            # process non-nested sort filters
+            if len(sort["field"]) == 1:
+                # these fields need to have .raw added to them
+                if sort["field"][0] in {
+                    "principal_investigator",
+                    "name",
+                    "title",
+                    "description",
+                    "filename",
+                }:
+                    sort_dict[sort["field"][0] + ".raw"] = {"order": sort["order"]}
+                # size field needs specific handling
+                elif sort["field"][0] == "size":
+                    # for datafile size is easy to calculate
+                    if obj == "datafile":
                         sort_dict[sort["field"][0]] = {"order": sort["order"]}
+                    # for parent models we need ACL context for this,
+                    # which is currently not available in ES.
+                    else:
+                        # DO THIS SORTING AFTER ELASTICSEARCH
+                        pass
+                else:
+                    sort_dict[sort["field"][0]] = {"order": sort["order"]}
     return sort_dict
 
 
@@ -552,8 +551,8 @@ def _query_filter_on_parameters(query_obj, filter, obj, filter_level, hierarchy,
         # as before, combine filter query with existing query
         query_obj = query_obj & query_obj_filt
 
-        # return both the query_obj and the filter level variable
-        return query_obj, filter_level
+    # return both the query_obj and the filter level variable
+    return query_obj, filter_level
 
 
 def _query_filter_on_intrinsic_schemas(query_obj, filter, oper):
