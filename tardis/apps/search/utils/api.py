@@ -343,7 +343,7 @@ def cleaning_acl_query(
     value_list_to_add = [objtype + "__id"]
     # if list of extra values_list specified, add them to query
     if value_fields is not None:
-        value_list_to_add.extend(*value_fields)
+        value_list_to_add.extend(value_fields)
 
     return query.values_list(*value_list_to_add, flat=flat)
 
