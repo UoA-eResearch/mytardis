@@ -13,19 +13,9 @@ from django.conf import settings
 
 from rest_framework import serializers
 
-from tardis.apps.dataclassification.models import ExperimentDataClassification
 from tardis.apps.identifiers.models import ExperimentID
-from tardis.apps.projects.models import Project
-from tardis.tardis_portal.api_v2.serializers.project import ProjectIDSerializer
-from tardis.tardis_portal.api_v2.serializers.schema import (
-    ParameterNameSerializer,
-    SchemaSerializer,
-)
-from tardis.tardis_portal.api_v2.serializers.user import UserSerializer
-from tardis.tardis_portal.auth.decorators import (
-    get_accessible_projects_for_experiment,
-    has_sensitive_access,
-)
+from tardis.tardis_portal.api.serializers.dataset import DatasetSerializer
+from tardis.tardis_portal.api.serializers.user import UserSerializer
 from tardis.tardis_portal.models.experiment import Experiment
 from tardis.tardis_portal.models.parameters import (
     ExperimentParameter,
@@ -33,9 +23,13 @@ from tardis.tardis_portal.models.parameters import (
 )
 
 
-class ExperimentParameterSerializer(serializers.ModelSerializer):
-    name = ParameterNameSerializer()
+class ExperimentIDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExperimentID
+        fields = ["identifier"]
 
+
+class ExperimentParameterSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExperimentParameter
         fields = [
@@ -47,77 +41,24 @@ class ExperimentParameterSerializer(serializers.ModelSerializer):
 
 
 class ExperimentParameterSetSerializer(serializers.ModelSerializer):
-    parameters = serializers.SerializerMethodField("get_safe_parameters")
-    schema = SchemaSerializer()
+    parameters = ExperimentParameterSerializer(many=True)
 
     class Meta:
         model = ExperimentParameterSet
-        fields = ["schema", "parameters"]
-
-    def get_safe_parameters(self, parameterset_obj):
-        experiment = parameterset_obj.experiment
-        queryset = ExperimentParameter.objects.filter(parameterset=parameterset_obj)
-        parameters = ExperimentParameterSerializer(
-            queryset, many=True, context=self.context
-        ).data
-        if has_sensitive_access(self.context["request"], experiment.pk, "experiment"):
-            return parameters
-        return [item for item in parameters if item.name.sensitive is not True]
+        fields = ["parameters"]
 
 
-class ExperimentIDSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ExperimentID
-        fields = ["identifier"]
-
-
-class ExperimentDataclassificationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ExperimentDataClassification
-        fields = ["classification"]
-
-
-class ExperimentProjectSerializer(serializers.ModelSerializer):
-    """A subset Project serializer to prevent infinite recursion"""
-
-    if (
-        "tardis.apps.identifiers" in settings.INSTALLED_APPS
-        and "project" in settings.OBJECTS_WITH_IDENTIFIERS
-    ):
-        identifiers = ProjectIDSerializer(many=True)
-
-    class Meta:
-        model = Project
-        fields = [
-            "id",
-            "name",
-        ]
-        if (
-            "tardis.apps.identifiers" in settings.INSTALLED_APPS
-            and "project" in settings.OBJECTS_WITH_IDENTIFIERS
-        ):
-            fields.append("identifiers")
-
-
-# TODO: Add an ExperimentDatasetSerializer to provide more useful data than just the id
-
-
-class ExperimentSerializer(serializers.ModelSerializer):
-    experimentparameterset_set = ExperimentParameterSetSerializer(many=True)
-    created_by = UserSerializer(many=False)
-    user_acls = serializers.SerializerMethodField("get_user_acls")
-    group_acls = serializers.SerializerMethodField("get_group_acls")
-    projects = serializers.SerializerMethodField("get_projects")
+class ExperimentSerializer(serializers.HyperlinkedModelSerializer):
+    parametersets = ExperimentParameterSetSerializer(many=True)
+    created_by = UserSerializer(many=True)
 
     # datasets = serializers.SerializerMethodField("get_datasets")
 
     if (
-        "tardis.apps.identifiers" in settings.INSTALLED_APPS
+        "tardis.apps.identifiers" in settings.INSTALLED_APS
         and "experiment" in settings.OBJECTS_WITH_IDENTIFIERS
     ):
         identifiers = ExperimentIDSerializer(many=True)
-    if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
-        data_classification = ExperimentDataclassificationSerializer()
 
     class Meta:
         model = Experiment
@@ -130,49 +71,11 @@ class ExperimentSerializer(serializers.ModelSerializer):
             "update_time",
             "created_by",
             "datasets",
-            "experimentparameterset_set",
+            "parametersets",
             "url",
-            "user_acls",
-            "group_acls",
         ]
         if (
-            "tardis.apps.identifiers" in settings.INSTALLED_APPS
+            "tardis.apps.identifiers" in settings.INSTALLED_APS
             and "experiment" in settings.OBJECTS_WITH_IDENTIFIERS
         ):
             fields.append("identifiers")
-        if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
-            fields.append("data_classification")
-        if "tardis.apps.projects" in settings.INSTALLED_APPS:
-            fields.append("projects")
-
-    def get_user_acls(self, obj):  # TODO wrap in tests for micro/macro ACLS
-        acls = obj.experimentacl_set.select_related("user").filter(user__isnull=False)
-        return [
-            {
-                "user": acl.get_related_object().username,
-                "can_download": acl.canDownload,
-                "see_sensitive": acl.canSensitive,
-                "is_owner": acl.isOwner,
-            }
-            for acl in acls
-        ]
-
-    def get_group_acls(self, obj):  # TODO wrap in tests for micro/macro ACLS
-        acls = obj.experimentacl_set.select_related("group").filter(group__isnull=False)
-        return [
-            {
-                "group": acl.get_related_object().name,
-                "can_download": acl.canDownload,
-                "see_sensitive": acl.canSensitive,
-                "is_owner": acl.isOwner,
-            }
-            for acl in acls
-        ]
-
-    def get_projects(self, obj):
-        queryset = get_accessible_projects_for_experiment(
-            self.context["request"], obj.id
-        )
-        return ExperimentProjectSerializer(
-            queryset, many=True, context=self.context
-        ).data
