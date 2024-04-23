@@ -5,11 +5,12 @@ from typing import Any, Dict, Optional
 from yaml import SafeLoader
 
 from tardis.apps.yaml_dump.models.access_control import IAccessControl
+from tardis.apps.yaml_dump.models.datastatus import IDataStatus
 from tardis.apps.yaml_dump.models.yaml_dataclass import YAMLDataclass
 
 
 @dataclass
-class Datafile(YAMLDataclass, IAccessControl):
+class Datafile(YAMLDataclass, IAccessControl, IDataStatus):
     """
     A class representing MyTardis Datafile objects.
     """
@@ -17,7 +18,6 @@ class Datafile(YAMLDataclass, IAccessControl):
     yaml_tag = "!Datafile"
     yaml_loader = SafeLoader
     filename: str = ""
-    data_status: int = 5
     directory: Path = field(default_factory=Path)
     # This is for temporarily storing the absolute path,
     # required for generating relative path when saving.

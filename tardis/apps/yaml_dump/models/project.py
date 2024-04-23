@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from yaml import SafeLoader
@@ -9,42 +8,54 @@ from tardis.apps.yaml_dump.models.access_control import IAccessControl
 from tardis.apps.yaml_dump.models.dataclassification import IDataClassification
 from tardis.apps.yaml_dump.models.datastatus import IDataStatus
 from tardis.apps.yaml_dump.models.identifiers import IIdentifiers
+from tardis.apps.yaml_dump.models.username import Username
 from tardis.apps.yaml_dump.models.yaml_dataclass import YAMLDataclass
 
 
 @dataclass
-class Dataset(YAMLDataclass, IAccessControl, IDataClassification, IDataStatus):
+class Project(YAMLDataclass, IAccessControl, IDataClassification, IDataStatus):
     """
-    A class representing MyTardis Dataset objects.
+    A class representing MyTardis Project objects.
+
+    Attributes:
+        name (str): The name of the project.
+        description (str): A brief description of the project.
+        identifiers (List[str]): A list of identifiers for the project.
+        data_classification (DataClassification): The data classification of the project.
+        principal_investigator (str): The name of the principal investigator for the project.
     """
 
-    yaml_tag = "!Dataset"
+    yaml_tag = "!Project"
     yaml_loader = SafeLoader
     description: str = ""
-    experiments: List[str] = field(default_factory=list)
-    instrument: str = ""
+    name: str = ""
+    principal_investigator: Username = field(
+        default=Username(), metadata={"label": "Username"}
+    )
     identifiers: list[str] = field(default_factory=list)
     metadata: Optional[Dict[str, Any]] = None
     object_schema: str = ""  # MTUrl in ingestion script
     # fields to add for updated data status
-    directory: Optional[Path] = None
-    immutable: bool = False
-    created_time: Optional[datetime | str] = None
-    modified_time: Optional[datetime | str] = None
+    created_by: Optional[str] = None
+    institution: Optional[List[str]] = None
+    start_time: Optional[datetime | str] = None
+    end_time: Optional[datetime | str] = None
+    embargo_until: Optional[datetime | str] = None
+    delete_in_days: int = -1
+    archive_in_days: int = 365
+    url: Optional[str] = None
     _store: Optional["IngestionMetadata"] = field(repr=False, default=None)
 
     def __post_init__(self) -> None:
-        """Dataclass lifecycle method that runs after an object is initialised.
-        This method initialises the identifier delegate class for this model."""
-        self.identifiers_delegate = DatasetIdentifiers(self)
+        self.identifiers_delegate = ProjectIdentifiers(self)
 
 
-class DatasetIdentifiers(IIdentifiers):
-    """Dataset-specific methods related to identifiers."""
+class ProjectIdentifiers(IIdentifiers):
+    """Project-specific methods related to identifiers."""
 
-    def __init__(self, dataset: Dataset):
-        self.dataset = dataset
-        super().__init__(dataset.identifiers)
+    def __init__(self, project: Project):
+        self.project = project
+        super().__init__(project.identifiers)
 
     def _is_unique(self, id: str) -> bool:
         """Private method to check whether an id is unique across all
@@ -56,10 +67,10 @@ class DatasetIdentifiers(IIdentifiers):
         Returns:
             bool: True if the identifier is unique, False if not.
         """
-        assert self.dataset._store is not None
+        assert self.project._store is not None
         return not any(
-            dataset.identifiers_delegate.has(id)
-            for dataset in self.dataset._store.datasets
+            project.identifiers_delegate.has(id)
+            for project in self.project._store.projects
         )
 
     def add(self, value: str) -> bool:
@@ -76,8 +87,8 @@ class DatasetIdentifiers(IIdentifiers):
         return super().add(value) if self._is_unique(value) else False
 
     def update(self, old_id: str, id: str) -> bool:
-        """Updates an existing identifier in this Dataset and
-        all related Datafiles in the store. Checks if the identifier
+        """Updates an existing identifier in this Project and
+        all related Experiments in the store. Checks if the identifier
         is unique. Returns True if successful, False if not.
 
         Args:
@@ -87,18 +98,22 @@ class DatasetIdentifiers(IIdentifiers):
         Returns:
             bool: True if successfully updated, False if not unique.
         """
-        assert self.dataset._store is not None
-        if not self._is_unique(id):
-            return False
+        assert self.project._store is not None
         # Find all experiments and update their IDs.
-        for datafile in self.dataset._store.datafiles:
-            if datafile.dataset == old_id:
-                datafile.dataset = id
+        if not self._is_unique(id):
+            # Check if the new ID is unique.
+            return False
+        for experiment in self.project._store.experiments:
+            if old_id in experiment.projects:
+                # Update the projects list with the new_id
+                experiment.projects.remove(old_id)
+                experiment.projects.append(id)
+
         return super().update(old_id, id)
 
     def delete(self, id_to_delete: str) -> bool:
-        """Deletes an identifier in this Dataset,
-        and updates identifiers in related Datafiles to use
+        """Deletes an identifier in this Project,
+        and updates identifiers in related objects to use
         an alternative identifier.
         Returns True if successfully deleted and updated, False if
         there are no other identifiers to use for related objects.
@@ -116,8 +131,10 @@ class DatasetIdentifiers(IIdentifiers):
             return False
         super().delete(id_to_delete)
         new_id = self.first()
-        assert self.dataset._store is not None
-        for datafile in self.dataset._store.datafiles:
-            if datafile.dataset == id_to_delete:
-                datafile.dataset = new_id
+        assert self.project._store is not None
+        for experiment in self.project._store.experiments:
+            if id_to_delete in experiment.projects:
+                # Replace id_to_delete with the new_id within projects list
+                experiment.projects.remove(id_to_delete)
+                experiment.projects.append(new_id)
         return True
