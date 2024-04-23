@@ -140,8 +140,6 @@ def get_or_create_user(username):
         )
         user.set_password(gen_random_password())
         user.save()
-        for permission in settings.DEFAULT_PERMISSIONS:
-            user.permissions.add(Permission.objects.get(codename=permission))
     else:
         user = User.objects.get(username=username)
     return user
