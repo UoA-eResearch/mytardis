@@ -111,7 +111,7 @@ class PrettyJSONSerializer(Serializer):
 if settings.DEBUG:
     default_serializer = PrettyJSONSerializer()
 else:
-    default_serializer = Serializer(
+    default_serializer = Serializer()
 
 
 def gen_random_password():
@@ -126,10 +126,12 @@ def gen_random_password():
 
 def get_or_create_user(username):
     if not User.objects.filter(username=username).exists():
-        new_user = {"username": username,
-                    "first_name": "",
-                    "last_name": "",
-                    "email": ""}
+        new_user = {
+            "username": username,
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+        }
         user = User.objects.create(
             username=new_user["username"],
             first_name=new_user["first_name"],
