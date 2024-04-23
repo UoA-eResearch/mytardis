@@ -111,53 +111,7 @@ class PrettyJSONSerializer(Serializer):
 if settings.DEBUG:
     default_serializer = PrettyJSONSerializer()
 else:
-    default_serializer = Serializer()
-
-
-def get_user_from_upi(upi):
-    server = ldap3.Server(settings.LDAP_URL)
-    search_filter = "({}={})".format(settings.LDAP_USER_LOGIN_ATTR, upi)
-    with ldap3.Connection(
-        server,
-        auto_bind="TLS_BEFORE_BIND",
-        user=settings.LDAP_ADMIN_USER,
-        password=settings.LDAP_ADMIN_PASSWORD,
-    ) as connection:
-        connection.search(settings.LDAP_USER_BASE, search_filter, attributes=["*"])
-        if len(connection.entries) > 1:
-            error_message = (
-                "More than one person with {}: {} has been found in the LDAP".format(
-                    settings.LDAP_USER_LOGIN_ATTR, upi
-                )
-            )
-            # if logger:
-            #    logger.error(error_message)
-            raise Exception(error_message)
-        if len(connection.entries) == 0:
-            error_message = "No one with {}: {} has been found in the LDAP".format(
-                settings.LDAP_USER_LOGIN_ATTR, upi
-            )
-            # if logger:
-            #    logger.warning(error_message)
-            return None
-        person = connection.entries[0]
-        first_name_key = "givenName"
-        last_name_key = "sn"
-        email_key = "mail"
-        username = person[settings.LDAP_USER_LOGIN_ATTR].value
-        first_name = person[first_name_key].value
-        last_name = person[last_name_key].value
-        try:
-            email = person[email_key].value
-        except KeyError:
-            email = ""
-        details = {
-            "username": username,
-            "first_name": first_name,
-            "last_name": last_name,
-            "email": email,
-        }
-        return details
+    default_serializer = Serializer(
 
 
 def gen_random_password():
@@ -172,7 +126,10 @@ def gen_random_password():
 
 def get_or_create_user(username):
     if not User.objects.filter(username=username).exists():
-        new_user = get_user_from_upi(username)
+        new_user = {"username": username,
+                    "first_name": "",
+                    "last_name": "",
+                    "email": ""}
         user = User.objects.create(
             username=new_user["username"],
             first_name=new_user["first_name"],
@@ -181,12 +138,6 @@ def get_or_create_user(username):
         )
         user.set_password(gen_random_password())
         user.save()
-        authentication = UserAuthentication(
-            userProfile=user.userprofile,
-            username=new_user["username"],
-            authenticationMethod=settings.LDAP_METHOD,
-        )
-        authentication.save()
         for permission in settings.DEFAULT_PERMISSIONS:
             user.permissions.add(Permission.objects.get(codename=permission))
     else:
