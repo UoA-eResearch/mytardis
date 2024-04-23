@@ -72,96 +72,6 @@ PROJECT_INSTITUTION_RESOURCE = "tardis.apps.projects.api.Institution"
 
 logger = logging.getLogger(__name__)
 
-
-def get_user_from_upi(upi: str) -> Optional[Dict[str, str]]:
-    # sourcery skip: raise-from-previous-error
-    """Helper function to access the Active Directory and get details for a user to
-    pass back to the create user functions.
-
-    Note: This is pretty fragile at the moment and will need some rework to ensure
-    robustness.
-
-    Args:
-        upi (str): The UPI of the person to be searched for
-
-    Returns:
-        Dict[str,str]: A dictionary of fields needed to create a user
-    """
-    upi = escape_rdn(upi)
-    if settings.LDAP_USE_LDAPS:
-        server = ldap3.Server(
-            f"ldaps://{settings.LDAP_URI}", port=settings.LDAP_PORT, use_ssl=True
-        )
-    else:
-        server = ldap3.Server(f"ldap://{settings.LDAP_URI}", port=settings.LDAP_PORT)
-    search_filter = f"({settings.LDAP_USER_LOGIN_ATTR}={upi})"
-    with ldap3.Connection(
-        server,
-        user=settings.LDAP_ADMIN_USER,
-        password=settings.LDAP_ADMIN_PASSWORD,
-        client_strategy=ldap3.SAFE_SYNC,
-    ) as connection:
-        if settings.LDAP_USE_LDAPS:
-            connection.start_tls()
-        try:
-            data = _get_data_from_active_directory_(connection, search_filter)
-            if not data:
-                error_message = f"No one with {settings.LDAP_USER_LOGIN_ATTR}: {upi} has been found in the LDAP"
-                if logger:
-                    logger.warning(error_message)
-            return data
-        except ValueError:
-            error_message = f"More than one person with {settings.LDAP_USER_LOGIN_ATTR}: {upi} has  been found in the LDAP"
-            if logger:
-                logger.error(error_message)
-            raise ValueError(error_message)
-
-
-def _get_data_from_active_directory_(
-    connection: ldap3.Connection,
-    search_filter: str,
-) -> Optional[Dict[str, str]]:
-    """With connection to Active Directory, run a query
-
-    Args:
-        connection (ldap3.Connection): An established connection to the active directory
-        search_filter (str): The search query to run
-
-    Raises:
-        ValueError: Represents a lack of uniqueness in the query
-
-    Returns:
-        Optional[Dict[str, str]]: The dictionary of resutls from the search query run or None
-    """
-    connection.bind()
-    connection.search(
-        settings.LDAP_USER_BASE,
-        escape_filter_chars(search_filter),
-        attributes=["*"],
-    )
-    if len(connection.entries) > 1:
-        raise ValueError()
-    if len(connection.entries) == 0:
-        return None
-    person = connection.entries[0]
-    first_name_key = "givenName"
-    last_name_key = "sn"
-    email_key = "mail"
-    username = person[settings.LDAP_USER_LOGIN_ATTR].value
-    first_name = person[first_name_key].value
-    last_name = person[last_name_key].value
-    try:
-        email = person[email_key].value
-    except KeyError:
-        email = ""
-    return {
-        "username": username,
-        "first_name": first_name,
-        "last_name": last_name,
-        "email": email,
-    }
-
-
 # TODO: Migrate this out to settings?
 def gen_random_password() -> str:
     """Helper function to generate a random password internally.
@@ -173,7 +83,7 @@ def gen_random_password() -> str:
 
     random.seed()
     characters = "abcdefghijklmnopqrstuvwxyzABCDFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()?"
-    passlen = 16
+    passlen = 32
     return "".join(random.sample(characters, passlen))
 
 
@@ -196,7 +106,12 @@ def get_or_create_user(username: str) -> User:
     """
     if not User.objects.filter(username=username).exists():
         try:
-            new_user = get_user_from_upi(username)
+            new_user = {
+                "username": username,
+                "first_name": "",
+                "last_name": "",
+                "email": "",
+            }
         except Exception as error:
             raise error
         if not new_user:
@@ -211,17 +126,12 @@ def get_or_create_user(username: str) -> User:
         )
         user.set_password(gen_random_password())
         user.save()
-        authentication = UserAuthentication(
-            userProfile=user.userprofile,
-            username=new_user["username"],
-            authenticationMethod=settings.LDAP_METHOD,
-        )
-        authentication.save()
         for permission in settings.DEFAULT_PERMISSIONS:
             user.permissions.add(Permission.objects.get(codename=permission))
     else:
         user = User.objects.get(username=username)
     return user
+
 
 class ProjectACLAuthorization(Authorization):
     """A Project-specific Authorisation class for Tastypie, rather than bloating
@@ -539,7 +449,7 @@ class ProjectResource(ModelResource):
             )
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
-        if 'tardis.apps.dataclassification' in settings.INSTALLED_APPS:
+        if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
             bundle.data[
                 "classification"
             ] = bundle.obj.data_classification.classification
@@ -602,7 +512,7 @@ class ProjectResource(ModelResource):
             int: An integer representing the data classification, defaults to Sensitive
         """
         classification = None
-        if 'tardis.apps.dataclassification' in settings.INSTALLED_APPS:
+        if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
             classification = DATA_CLASSIFICATION_SENSITIVE
             if "classification" in bundle.data.keys():
                 classification = bundle.data.pop("classification")
