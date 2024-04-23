@@ -111,7 +111,7 @@ class PrettyJSONSerializer(Serializer):
 if settings.DEBUG:
     default_serializer = PrettyJSONSerializer()
 else:
-    default_serializer = Serializer()
+    default_serializer = Serializer(
 
 
 def gen_random_password():
