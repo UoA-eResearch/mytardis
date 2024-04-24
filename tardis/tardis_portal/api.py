@@ -16,7 +16,7 @@ from urllib.parse import quote
 from wsgiref.util import FileWrapper
 
 from django.conf import settings
-from django.contrib.auth.models import AnonymousUser, Group, Permission, User
+from django.contrib.auth.models import AnonymousUser, Group, User
 from django.core.paginator import EmptyPage, InvalidPage, Paginator
 from django.db import IntegrityError, transaction
 from django.db.models import Model, Q
@@ -30,7 +30,6 @@ from django.http import (
 from django.shortcuts import redirect
 from django.urls import re_path
 
-import ldap3
 from tastypie import fields
 from tastypie.authentication import (
     ApiKeyAuthentication,
@@ -64,12 +63,7 @@ from .auth.decorators import (
     has_sensitive_access,
     has_write,
 )
-from .models.access_control import (
-    DatafileACL,
-    DatasetACL,
-    ExperimentACL,
-    UserAuthentication,
-)
+from .models.access_control import DatafileACL, DatasetACL, ExperimentACL
 from .models.datafile import DataFile, DataFileObject, compute_checksums
 from .models.dataset import Dataset
 from .models.experiment import Experiment, ExperimentAuthor

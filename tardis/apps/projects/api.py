@@ -12,15 +12,12 @@ from itertools import chain
 from typing import Any, Dict, List, Optional, Tuple
 
 from django.conf import settings
-from django.contrib.auth.models import Group, Permission, User
+from django.contrib.auth.models import Group, User
 from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponseForbidden, JsonResponse
 from django.urls import re_path
 
-import ldap3
-from ldap3.utils.conv import escape_filter_chars
-from ldap3.utils.dn import escape_rdn
 from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.bundle import Bundle
@@ -48,7 +45,6 @@ from tardis.tardis_portal.auth.decorators import (
     has_sensitive_access,
     has_write,
 )
-from tardis.tardis_portal.models.access_control import UserAuthentication
 
 from .models import (
     Institution,
