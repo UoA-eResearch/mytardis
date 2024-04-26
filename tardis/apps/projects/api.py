@@ -31,7 +31,7 @@ from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 
 # Data classification app
-from tardis.apps.dataclassification.models import SENSITIVE
+from tardis.apps.dataclassification.models import DataClassificationEnum.SENSITIVE
 
 # Identifiers app
 from tardis.apps.identifiers.models import InstitutionID, ProjectID
@@ -603,8 +603,8 @@ class ProjectResource(ModelResource):
             int: An integer representing the data classification, defaults to Sensitive
         """
         classification = None
-        if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
-            classification = SENSITIVE
+        if 'tardis.apps.dataclassification' in settings.INSTALLED_APPS:
+            classification = DataClassificationEnum.SENSITIVE
             if "classification" in bundle.data.keys():
                 classification = bundle.data.pop("classification")
         return (bundle, classification)
