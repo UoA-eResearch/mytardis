@@ -16,7 +16,7 @@ from urllib.parse import quote
 from wsgiref.util import FileWrapper
 
 from django.conf import settings
-from django.contrib.auth.models import AnonymousUser, Group, Permission, User
+from django.contrib.auth.models import AnonymousUser, Group, User
 from django.core.paginator import EmptyPage, InvalidPage, Paginator
 from django.db import IntegrityError, transaction
 from django.db.models import Model, Q
@@ -30,7 +30,6 @@ from django.http import (
 from django.shortcuts import redirect
 from django.urls import re_path
 
-import ldap3
 from tastypie import fields
 from tastypie.authentication import (
     ApiKeyAuthentication,
@@ -64,12 +63,7 @@ from .auth.decorators import (
     has_sensitive_access,
     has_write,
 )
-from .models.access_control import (
-    DatafileACL,
-    DatasetACL,
-    ExperimentACL,
-    UserAuthentication,
-)
+from .models.access_control import DatafileACL, DatasetACL, ExperimentACL
 from .models.datafile import DataFile, DataFileObject, compute_checksums
 from .models.dataset import Dataset
 from .models.experiment import Experiment, ExperimentAuthor
@@ -114,52 +108,6 @@ else:
     default_serializer = Serializer()
 
 
-def get_user_from_upi(upi):
-    server = ldap3.Server(settings.LDAP_URL)
-    search_filter = "({}={})".format(settings.LDAP_USER_LOGIN_ATTR, upi)
-    with ldap3.Connection(
-        server,
-        auto_bind="TLS_BEFORE_BIND",
-        user=settings.LDAP_ADMIN_USER,
-        password=settings.LDAP_ADMIN_PASSWORD,
-    ) as connection:
-        connection.search(settings.LDAP_USER_BASE, search_filter, attributes=["*"])
-        if len(connection.entries) > 1:
-            error_message = (
-                "More than one person with {}: {} has been found in the LDAP".format(
-                    settings.LDAP_USER_LOGIN_ATTR, upi
-                )
-            )
-            # if logger:
-            #    logger.error(error_message)
-            raise Exception(error_message)
-        if len(connection.entries) == 0:
-            error_message = "No one with {}: {} has been found in the LDAP".format(
-                settings.LDAP_USER_LOGIN_ATTR, upi
-            )
-            # if logger:
-            #    logger.warning(error_message)
-            return None
-        person = connection.entries[0]
-        first_name_key = "givenName"
-        last_name_key = "sn"
-        email_key = "mail"
-        username = person[settings.LDAP_USER_LOGIN_ATTR].value
-        first_name = person[first_name_key].value
-        last_name = person[last_name_key].value
-        try:
-            email = person[email_key].value
-        except KeyError:
-            email = ""
-        details = {
-            "username": username,
-            "first_name": first_name,
-            "last_name": last_name,
-            "email": email,
-        }
-        return details
-
-
 def gen_random_password():
     import random
 
@@ -172,7 +120,12 @@ def gen_random_password():
 
 def get_or_create_user(username):
     if not User.objects.filter(username=username).exists():
-        new_user = get_user_from_upi(username)
+        new_user = {
+            "username": username,
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+        }
         user = User.objects.create(
             username=new_user["username"],
             first_name=new_user["first_name"],
@@ -181,14 +134,6 @@ def get_or_create_user(username):
         )
         user.set_password(gen_random_password())
         user.save()
-        authentication = UserAuthentication(
-            userProfile=user.userprofile,
-            username=new_user["username"],
-            authenticationMethod=settings.LDAP_METHOD,
-        )
-        authentication.save()
-        for permission in settings.DEFAULT_PERMISSIONS:
-            user.permissions.add(Permission.objects.get(codename=permission))
     else:
         user = User.objects.get(username=username)
     return user
