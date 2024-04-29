@@ -9,7 +9,6 @@ Contributors:
     Chris Seal <c.seal@auckland.ac.nz>
 """
 
-from django.conf import settings
 from django.contrib.auth.models import Group
 
 from rest_framework import serializers

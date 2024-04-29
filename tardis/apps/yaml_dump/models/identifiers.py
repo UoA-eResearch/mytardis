@@ -22,8 +22,7 @@ class IIdentifiers:
         """
         if self.identifiers is not None and len(self.identifiers) > 0:
             return self.identifiers[0]
-        else:
-            return ""
+        return ""
 
     def has(self, ids: str | List[str]) -> bool:
         """Returns whether this object has identifier `ids`_ .
@@ -38,17 +37,16 @@ class IIdentifiers:
         """
         if self.identifiers is None:
             return False
-        elif isinstance(ids, str):
+        if isinstance(ids, str):
             return ids in self.identifiers
-        else:
-            # If we are comparing with a list of ids,
-            # create sets with each list then get the
-            # intersection of the sets. If there are none,
-            # then we don't have any of the identifiers.
-            id_set = set(self.identifiers or [])
-            compare_set = set(ids)
-            intersection = id_set & compare_set
-            return len(intersection) > 0
+        # If we are comparing with a list of ids,
+        # create sets with each list then get the
+        # intersection of the sets. If there are none,
+        # then we don't have any of the identifiers.
+        id_set = set(self.identifiers or [])
+        compare_set = set(ids)
+        intersection = id_set & compare_set
+        return len(intersection) > 0
 
     def add(self, value: str) -> bool:
         """Adds an identifier to the list. Classes
@@ -61,15 +59,14 @@ class IIdentifiers:
             # Create the identifiers list with the new value.
             self.identifiers = [value]
             return True
-        elif value not in self.identifiers:
+        if value not in self.identifiers:
             # If the value is not in the identifiers list,
             # then add to list.
             self.identifiers.append(value)
             return True
-        else:
-            # If the id is already in the list,
-            # then don't do anything.
-            return False
+        # If the id is already in the list,
+        # then don't do anything.
+        return False
 
     def update(self, old_id: str, id: str) -> bool:
         """Method for updating an identifier. Classes

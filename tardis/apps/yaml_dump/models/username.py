@@ -40,10 +40,9 @@ class Username(str):
             raise TypeError(f'Unexpected type for Username: "{type(value)}"')
         if match := user_regex.fullmatch(value.lower()):
             return cls(f"{match.group(0)}")
-        else:
-            raise ValueError(
-                f'Passed string value "{value}" is not a well formatted Username'
-            )
+        raise ValueError(
+            f'Passed string value "{value}" is not a well formatted Username'
+        )
 
     def __repr__(self) -> str:
         """Indicate that the username object is a username"""
