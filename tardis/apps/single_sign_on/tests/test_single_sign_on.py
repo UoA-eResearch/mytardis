@@ -19,14 +19,16 @@ class SingleSignOnUserTest(SSOTestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        user_headers: Dict[str, str] = {
+        self.user_headers: Dict[str, str] = {
             f"HTTP_{settings.REMOTE_AUTH_HEADER}": "tuse001",
             f"HTTP_{settings.REMOTE_AUTH_EMAIL_HEADER}": "test@test.com",
             f"HTTP_{settings.REMOTE_AUTH_FIRST_NAME_HEADER}": "Test",
             f"HTTP_{settings.REMOTE_AUTH_SURNAME_HEADER}": "User",
             f"HTTP_{settings.REMOTE_AUTH_ORCID_HEADER}": "0000-0000-0000",
         }
-        request_factory = Client(headers=user_headers)
+    
+    def test_single_sign_on_creates_user(self)
+        request_factory = Client(headers=self.user_headers)
         request_factory.get("/login/")
         user = User.objects.get(pk=2)
         self.assertEqual(user.username, "tuse001")
