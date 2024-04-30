@@ -4,49 +4,24 @@ Tests of the Single Sign On authentication
 .. moduleauthor:: Chris Seal <c.seal@auckland.ac.nz>
 """
 
-import logging
-import sys
-from contextlib import contextmanager
 from typing import Dict
+from unittest.mock import patch
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 
-from tardis.apps.single_sign_on.tests import SSOTestCase
 from tardis.tardis_portal.models.access_control import UserAuthentication
 
 
-@contextmanager
-def streamhandler_to_console(lggr):
-    # Use 'up to date' value of sys.stdout for StreamHandler,
-    # as set by test runner.
-    stream_handler = logging.StreamHandler(sys.stdout)
-    lggr.addHandler(stream_handler)
-    yield
-    lggr.removeHandler(stream_handler)
-
-
-def testcase_log_console(lggr):
-    def testcase_decorator(func):
-        def testcase_log_console(*args, **kwargs):
-            with streamhandler_to_console(lggr):
-                return func(*args, **kwargs)
-
-        return testcase_log_console
-
-    return testcase_decorator
-
-
-logger = logging.getLogger("django_test")
-
-
-class SingleSignOnUserTest(SSOTestCase):
+class SingleSignOnUserTest(TestCase):
     """Test case to ensure that users are created, updated and authenticated appropriately"""
 
     def setUp(self) -> None:
-        super().setUp()
+        self.PUBLIC_USER = User.objects.create_user(username="PUBLIC_USER_TEST")
+        self.assertEqual(self.PUBLIC_USER.id, settings.PUBLIC_USER_ID)
 
+    @patch("webpack_loader.loader.WebpackLoader.get_bundle")
     def test_single_sign_on_creates_user(self):
         user_headers: Dict[str, str] = {
             f"HTTP_{settings.REMOTE_AUTH_HEADER}": "tuse001",
@@ -55,7 +30,7 @@ class SingleSignOnUserTest(SSOTestCase):
             f"HTTP_{settings.REMOTE_AUTH_SURNAME_HEADER}": "User",
             f"HTTP_{settings.REMOTE_AUTH_ORCID_HEADER}": "0000-0000-0000",
         }
-        request_factory = Client()
+        request_factory = Client(headers=user_headers)
         request_factory.get("/")
         user = User.objects.get(pk=2)
 
