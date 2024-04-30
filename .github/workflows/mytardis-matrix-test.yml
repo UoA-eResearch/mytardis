@@ -84,12 +84,12 @@ jobs:
       id: runMacroTests
       run: |
         mkdir -p var/store
-        poetry run python test.py -v 2
+        poetry run python test.py
    
     - name: run microacl tests
       if: always() && (steps.runMacroTests.outcome == 'success' || steps.runMacroTests.outcome == 'failure')
       run: |
-        poetry run python test_micro.py -v 2
+        poetry run python test_micro.py
     - name: run pylint
       run: |
         poetry run pylint --rcfile .pylintrc --django-settings-module=tardis.test_settings tardis
