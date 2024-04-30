@@ -55,7 +55,7 @@ class SingleSignOnUserTest(SSOTestCase):
             f"HTTP_{settings.REMOTE_AUTH_SURNAME_HEADER}": "User",
             f"HTTP_{settings.REMOTE_AUTH_ORCID_HEADER}": "0000-0000-0000",
         }
-        request_factory = Client(headers=user_headers)
+        request_factory = Client()
         request_factory.get("/")
         user = User.objects.get(pk=2)
 
