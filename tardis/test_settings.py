@@ -227,3 +227,10 @@ REMOTE_AUTH_FIRST_NAME_HEADER = "GIVENNAME"
 REMOTE_AUTH_SURNAME_HEADER = "SN"
 REMOTE_AUTH_ORCID_HEADER = "PERSISTENT_ID"
 SESSION_COOKIE_AGE = 3600  # seconds = 1 hr, which times out at the same rate as SSO
+MIDDLEWARE += (
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "tardis.apps.single_sign_on.auth.middleware.SSOUserMiddleware",
+)
+
+AUTHENTICATION_BACKENDS += ("tardis.apps.single_sign_on.auth.backend.SSOUserBackend",)
