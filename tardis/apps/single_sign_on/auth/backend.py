@@ -54,9 +54,7 @@ class SSOUserBackend(RemoteUserBackend, AuthProvider):
         # instead we use get_or_create when creating unknown users since it has
         # built-in safeguards for multiple threads.
         if self.create_unknown_user:
-            user, _ = User.objects.get_or_create(
-                username=username
-            )
+            user, _ = User.objects.get_or_create(username=username)
         else:
             try:
                 user = User.objects.get_by_natural_key(username)
@@ -71,14 +69,17 @@ class SSOUserBackend(RemoteUserBackend, AuthProvider):
         user: User,
     ) -> User:  # type: ignore
         try:
-            email = request.META[settings.REMOTE_AUTH_EMAIL_HEADER] or None
+            email = request.META[f"HTTP_{settings.REMOTE_AUTH_EMAIL_HEADER}"] or None
         except KeyError:
             email = None
-        first_name = request.META[settings.REMOTE_AUTH_FIRST_NAME_HEADER]
-        surname = request.META[settings.REMOTE_AUTH_SURNAME_HEADER]
+        first_name = request.META[f"HTTP_{settings.REMOTE_AUTH_FIRST_NAME_HEADER}"]
+        surname = request.META[f"HTTP_{settings.REMOTE_AUTH_SURNAME_HEADER}"]
         orcid = None
-        if "identifiers" in settings.INSTALLED_APPS and "user" in settings.OBJECTS_WITH_IDENTIFIERS:
-            orcid = request.META[settings.REMOTE_AUTH_ORCID_HEADER] or None
+        if (
+            "identifiers" in settings.INSTALLED_APPS
+            and "user" in settings.OBJECTS_WITH_IDENTIFIERS
+        ):
+            orcid = request.META[f"HTTP_{settings.REMOTE_AUTH_ORCID_HEADER}"] or None
         updated_flag = False
         if user.first_name != first_name:
             user.first_name = first_name
@@ -90,13 +91,15 @@ class SSOUserBackend(RemoteUserBackend, AuthProvider):
             user.email = email
             updated_flag = True
         if orcid:
-            identifiers = [*UserPID.objects.all(user=user).values_list("identifier", flat=True)]
+            identifiers = [
+                *UserPID.objects.all(user=user).values_list("identifier", flat=True)
+            ]
             if orcid not in identifiers:
                 identifier = UserPID.objects.create(user=user, identifier=orcid)
                 identifier.save()
         if updated_flag:
             user.save()
-        if user.userprofile.isDjangoAccount: #type: ignore
+        if user.userprofile.isDjangoAccount:  # type: ignore
             user.userprofile.isDjangoAccount = False  # type: ignore
             user.userprofile.save()  # type: ignore
         try:
