@@ -19,18 +19,19 @@ class SingleSignOnUserTest(SSOTestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.user_headers: Dict[str, str] = {
+
+    def test_single_sign_on_creates_user(self):
+        user_headers: Dict[str, str] = {
             f"HTTP_{settings.REMOTE_AUTH_HEADER}": "tuse001",
             f"HTTP_{settings.REMOTE_AUTH_EMAIL_HEADER}": "test@test.com",
             f"HTTP_{settings.REMOTE_AUTH_FIRST_NAME_HEADER}": "Test",
             f"HTTP_{settings.REMOTE_AUTH_SURNAME_HEADER}": "User",
             f"HTTP_{settings.REMOTE_AUTH_ORCID_HEADER}": "0000-0000-0000",
         }
-
-    def test_single_sign_on_creates_user(self):
-        request_factory = Client(headers=self.user_headers)
-        request_factory.get("/login/")
+        request_factory = Client()
+        request_factory.get("/", headers=user_headers)
         user = User.objects.get(pk=2)
+
         self.assertEqual(user.username, "tuse001")
         self.assertEqual(user.email, "test@test.com")
         self.assertEqual(user.first_name, "Test")
@@ -38,3 +39,7 @@ class SingleSignOnUserTest(SSOTestCase):
         user_auth = UserAuthentication.objects.get(userProfile__user=user)
         self.assertEqual(user_auth.authenticationMethod, "sso")
         self.assertFalse(user.userprofile.isDjangoAccount)
+
+    # def test_single_sign_on_authenticates_user(self):
+    #    request_factory = Client(headers=user_headers)
+    #    request_factory.get("/login/")
