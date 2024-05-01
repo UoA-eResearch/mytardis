@@ -26,7 +26,7 @@ class SSOUserMiddleware(RemoteUserMiddleware):
 
     @property
     def header(self):
-        return settings.REMOTE_AUTH_HEADER
+        return f"HTTP_{settings.REMOTE_AUTH_HEADER}"
 
     def process_request(self, request):
         if not settings.REMOTE_AUTH_ENABLED:

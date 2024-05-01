@@ -218,3 +218,19 @@ ELASTICSEARCH_DSL = {
 
 ELASTICSEARCH_DSL_AUTOSYNC = False
 ELASTICSEARCH_DSL_INDEX_SETTINGS = {"number_of_shards": 10}
+
+REMOTE_AUTH_ENABLED = True
+REMOTE_AUTH_AUTO_CREATE_USER = True
+REMOTE_AUTH_HEADER = "UID"
+REMOTE_AUTH_EMAIL_HEADER = "MAIL"
+REMOTE_AUTH_FIRST_NAME_HEADER = "GIVENNAME"
+REMOTE_AUTH_SURNAME_HEADER = "SN"
+REMOTE_AUTH_ORCID_HEADER = "PERSISTENT_ID"
+SESSION_COOKIE_AGE = 3600  # seconds = 1 hr, which times out at the same rate as SSO
+MIDDLEWARE += (
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "tardis.apps.single_sign_on.auth.middleware.SSOUserMiddleware",
+)
+
+AUTHENTICATION_BACKENDS += ("tardis.apps.single_sign_on.auth.backend.SSOUserBackend",)
