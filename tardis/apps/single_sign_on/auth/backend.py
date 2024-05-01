@@ -104,7 +104,7 @@ class SSOUserBackend(RemoteUserBackend, AuthProvider):
             user.userprofile.save()  # type: ignore
         try:
             user_auth = UserAuthentication.objects.get(
-                username=user,
+                userProfile__user=user,
             )
         except UserAuthentication.DoesNotExist:
             user_auth = UserAuthentication(
@@ -112,6 +112,7 @@ class SSOUserBackend(RemoteUserBackend, AuthProvider):
                 username=user.username,
                 authenticationMethod=auth_key,
             )
+            user_auth.save()
         if user_auth.authenticationMethod != auth_key:
             user_auth.authenticationMethod = auth_key
             user_auth.save()
