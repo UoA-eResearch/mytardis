@@ -134,8 +134,8 @@ class DatasetSerializer(serializers.ModelSerializer):
         if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
             fields.append("data_classification")
 
-    # def get_instrument(self, obj):
-    #    instrument = obj.instrument
+    # TODO: Note that as currently written the ACLs returned will not honour the dsitinction between
+    # None and [] <- Needs to be resolved for POSTing in particular
 
     def get_user_acls(self, obj):  # TODO wrap in tests for micro/macro ACLS
         acls = obj.datasetacl_set.select_related("user").filter(user__isnull=False)

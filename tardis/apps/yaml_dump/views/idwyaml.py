@@ -26,14 +26,6 @@ class IDWYAMLView(generics.ListAPIView):
     experiment_serialiser_class = ExperimentSerializer
     dataset_serialiser_class = DatasetSerializer
 
-    # def get_serializer_context(self):
-    #    context = super().get_serializer_context()
-    #    context["request"] = self.request
-    #    return context
-
-    # def get_queryset(self):
-    #    return Project.safe.all(user=self.request.user)
-
     def get(self, request, *args, **kwargs):
         ingestion_metadata = IngestionMetadata()
         logger.debug(request.user)
@@ -75,6 +67,3 @@ class IDWYAMLView(generics.ListAPIView):
         response = HttpResponse(data, content_type="application/yaml")
         response["Content-Disposition"] = 'attachment; filename="ingestion.yaml"'
         return response
-
-    # def wrangle_projects(self, projects):
-    #    for project in projects:

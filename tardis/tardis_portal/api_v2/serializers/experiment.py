@@ -145,6 +145,8 @@ class ExperimentSerializer(serializers.ModelSerializer):
         if "tardis.apps.projects" in settings.INSTALLED_APPS:
             fields.append("projects")
 
+    # TODO: Note that as currently written the ACLs returned will not honour the dsitinction between
+    # None and [] <- Needs to be resolved for POSTing in particular
     def get_user_acls(self, obj):  # TODO wrap in tests for micro/macro ACLS
         acls = obj.experimentacl_set.select_related("user").filter(user__isnull=False)
         return [
