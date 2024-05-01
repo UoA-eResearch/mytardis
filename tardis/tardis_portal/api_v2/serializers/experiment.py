@@ -62,7 +62,7 @@ class ExperimentParameterSetSerializer(serializers.ModelSerializer):
         ).data
         if has_sensitive_access(self.context["request"], experiment.pk, "experiment"):
             return parameters
-        return [item for item in parameters if item.name.sensitive is not True]
+        return [item for item in parameters if item["name"]["sensitive"] is not True]
 
 
 class ExperimentIDSerializer(serializers.ModelSerializer):
