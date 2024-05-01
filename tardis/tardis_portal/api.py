@@ -1212,8 +1212,11 @@ class ExperimentResource(MyTardisModelResource):
                         canSensitive=canSensitive,
                         isOwner=isOwner,
                     )
-            if not any(
-                [bundle.data.get("users", False), bundle.data.get("groups", False)]
+            if (
+                not any(
+                    [bundle.data.get("users", False), bundle.data.get("groups", False)]
+                )
+                and "tardis.apps.projects" in settings.INSTALLED_APPS
             ):
                 for parent in experiment.projects.all():
                     for parent_acl in parent.projectacl_set.all():
@@ -1231,6 +1234,26 @@ class ExperimentResource(MyTardisModelResource):
                             effectiveDate=parent_acl.effectiveDate,
                             expiryDate=parent_acl.expiryDate,
                             aclOwnershipType=parent_acl.aclOwnershipType,
+                        )
+            elif (
+                "tardis.apps.projects" in settings.INSTALLED_APPS
+            ):  # Check there is an ACL for the PI
+                for parent in experiment.projects.all():
+                    principal_investigator = User.objects.get(
+                        pk=parent.principal_investigator.id
+                    )
+                    if principal_investigator.username not in bundle.data.get(
+                        "users", False
+                    ):
+                        ExperimentACL.objects.create(
+                            experiment=experiment,
+                            user=principal_investigator,
+                            canRead=True,
+                            canDownload=False,
+                            canWrite=True,
+                            canSensitive=False,
+                            canDelete=True,
+                            isOwner=True,
                         )
             return bundle
 
@@ -1719,6 +1742,7 @@ class DatasetResource(MyTardisModelResource):
                                         canRead=True,
                                         aclOwnershipType=ProjectACL.OWNER_OWNED,
                                     )
+
             if bundle.data.get("groups", False):
                 for entry in bundle.data["groups"]:
                     if not isinstance(entry, dict):
@@ -1764,6 +1788,27 @@ class DatasetResource(MyTardisModelResource):
                             expiryDate=parent_acl.expiryDate,
                             aclOwnershipType=parent_acl.aclOwnershipType,
                         )
+            elif (
+                "tardis.apps.projects" in settings.INSTALLED_APPS
+            ):  # Check if an ACL exists for the PI
+                for experiment in dataset.experiments.all():
+                    for project in experiment.projects.all():
+                        principal_investigator = User.objects.get(
+                            pk=project.principal_investigator.id
+                        )
+                        if principal_investigator.username not in bundle.data.get(
+                            "users", False
+                        ):
+                            DatasetACL.objects.create(
+                                experiment=experiment,
+                                user=principal_investigator,
+                                canRead=True,
+                                canDownload=False,
+                                canWrite=True,
+                                canSensitive=False,
+                                canDelete=True,
+                                isOwner=True,
+                            )
             return bundle
 
 
@@ -2168,6 +2213,27 @@ class DataFileResource(MyTardisModelResource):
                         expiryDate=parent_acl.expiryDate,
                         aclOwnershipType=parent_acl.aclOwnershipType,
                     )
+            elif (
+                "tardis.apps.projects" in settings.INSTALLED_APPS
+            ):  # Check if an ACL exists for the PI
+                for experiment in dataset.experiments.all():
+                    for project in experiment.projects.all():
+                        principal_investigator = User.objects.get(
+                            pk=project.principal_investigator.id
+                        )
+                        if principal_investigator.username not in bundle.data.get(
+                            "users", False
+                        ):
+                            DatasetACL.objects.create(
+                                experiment=experiment,
+                                user=principal_investigator,
+                                canRead=True,
+                                canDownload=False,
+                                canWrite=True,
+                                canSensitive=False,
+                                canDelete=True,
+                                isOwner=True,
+                            )
         return retval
 
     def post_list(self, request, **kwargs):
