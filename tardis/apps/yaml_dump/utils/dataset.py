@@ -56,7 +56,7 @@ def wrangle_dataset_into_IDW_YAML(dataset: Dict[str, Any]) -> Dataset:
             and "experiment" in settings.OBJECTS_WITH_IDENTIFIERS
             and experiment["identifiers"]
         )
-        else experiment["name"]
+        else experiment["title"]
         for experiment in experiments
     ]
 
