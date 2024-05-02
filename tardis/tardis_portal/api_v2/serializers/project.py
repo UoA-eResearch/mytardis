@@ -98,7 +98,7 @@ class ProjectParameterSetSerializer(serializers.ModelSerializer):
         ).data
         if has_sensitive_access(self.context["request"], project.pk, "project"):
             return parameters
-        return [item for item in parameters if item.name.sensitive is not True]
+        return [item for item in parameters if item["name"]["sensitive"] is not True]
 
 
 class ProjectIDSerializer(serializers.ModelSerializer):

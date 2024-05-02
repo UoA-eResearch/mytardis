@@ -58,7 +58,7 @@ class DatasetParameterSetSerializer(serializers.ModelSerializer):
         ).data
         if has_sensitive_access(self.context["request"], dataset.pk, "dataset"):
             return parameters
-        return [item for item in parameters if item.name.sensitive is not True]
+        return [item for item in parameters if item["name"]["sensitive"] is not True]
 
 
 class DatasetIDSerializer(serializers.ModelSerializer):
