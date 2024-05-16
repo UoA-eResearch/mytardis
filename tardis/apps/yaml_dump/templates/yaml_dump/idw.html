@@ -1,0 +1,56 @@
+{% extends "tardis_portal/portal_template.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1> Get the Instrument Data Wizard App</h1>
+    </div>
+    <p>Instrument Data Wizard is a companion app for your computer, used for preparing your data for ingestion into {{site_title}}.</p>
+    
+    <section class="text-center py-3">
+    <div>
+    <img class="py-2" height="300" src="{% static 'yaml_dump/wizard.png' %}">
+    </div>
+    <a id="binary-download-link" class="btn btn-primary btn-lg">
+        Download for Windows
+    </a>
+    </section>
+    <h2>Starter file</h2>
+    <p>After installing the Instrument Data Wizard app, you need to download your personal starter file and open it with the app. The file contains a list of your projects, experiments, and datasets, so the Instrument Data Wizard can pre-populate the information for you.</p>
+
+    <p><a href="{% url 'tardis.apps.yaml_dump:idw-yaml' %}">Download starter file</a></p>
+    <h2>Get started and documentation</h2>
+    <p>Find instructions on getting started and tips in the <a href="https://uoa-eresearch.github.io/mytardis_ime/">Instrument Data Wizard documentation</a>.</p>
+    <h2>Do I need Instrument Data Wizard?</h2>
+    <p>Currently, you only need to use Instrument Data Wizard if you are working with instruments from these groups.</p>
+    <ul>
+        <li>Biomedical Imaging Research Unit.</li>
+    </ul>
+    <p>If you are using an instrument not listed above, you may need to use a different way to ingest data into {{site_title}}.</p>
+</div>
+<script type="text/javascript">
+    const binaryLinks = {
+        "Windows": "https://github.com/UoA-eResearch/mytardis_ime/releases/download/v5.0.0-beta.1/binary-windows-latest.zip",
+        "macOS": "https://github.com/UoA-eResearch/mytardis_ime/releases/download/v5.0.0-beta.1/binary-macos-latest.zip",
+        "Linux": "https://github.com/UoA-eResearch/mytardis_ime/releases/download/v5.0.0-beta.1/binary-ubuntu-latest.zip"
+    };
+    var osName;
+    if (navigator.userAgent.indexOf("Windows") != -1) {
+        osName = "Windows"
+    } else if (navigator.userAgent.indexOf("Mac") != -1) {
+        osName = "macOs"
+    } else if (navigator.userAgent.indexOf("Linux") != -1) {
+        osName = "Linux"
+    } else {
+        // Show Windows binary link by default
+        osName = "Windows"
+    }
+    const downloadElem = document.getElementById("binary-download-link");
+    if (!downloadElem) {
+        throw new Error("Could not find binary download element.")
+    }
+    downloadElem.href = binaryLinks[osName];
+    downloadElem.firstChild.textContent = "Download for " + osName;
+
+</script>
+{% endblock content %}
