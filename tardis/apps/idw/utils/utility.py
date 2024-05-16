@@ -5,11 +5,11 @@ import contextlib
 from typing import Any, Dict, Union
 
 from tardis.apps.dataclassification.decorators import DATA_CLASSIFICATION_ACTIVE
-from tardis.apps.yaml_dump.models import Project
-from tardis.apps.yaml_dump.models.access_control import GroupACL, UserACL
-from tardis.apps.yaml_dump.models.dataset import Dataset
-from tardis.apps.yaml_dump.models.experiment import Experiment
-from tardis.apps.yaml_dump.models.username import Username
+from tardis.apps.idw.models import Project
+from tardis.apps.idw.models.access_control import GroupACL, UserACL
+from tardis.apps.idw.models.dataset import Dataset
+from tardis.apps.idw.models.experiment import Experiment
+from tardis.apps.idw.models.username import Username
 
 
 def add_data_classification_to_dataclass(

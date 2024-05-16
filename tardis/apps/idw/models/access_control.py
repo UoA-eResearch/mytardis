@@ -3,8 +3,8 @@ from typing import List, Optional
 
 from yaml import SafeLoader
 
-from tardis.apps.yaml_dump.models.username import Username
-from tardis.apps.yaml_dump.models.yaml_dataclass import YAMLDataclass
+from tardis.apps.idw.models.username import Username
+from tardis.apps.idw.models.yaml_dataclass import YAMLDataclass
 
 
 @dataclass
