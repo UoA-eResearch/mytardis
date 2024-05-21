@@ -4,8 +4,8 @@ from typing import Any, Dict, Optional
 
 from yaml import SafeLoader
 
-from tardis.apps.idw.models.access_control import IAccessControl
-from tardis.apps.idw.models.yaml_dataclass import YAMLDataclass
+from tardis.apps.idw_download.models.access_control import IAccessControl
+from tardis.apps.idw_download.models.yaml_dataclass import YAMLDataclass
 
 
 @dataclass

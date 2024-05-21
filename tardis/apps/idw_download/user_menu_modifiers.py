@@ -7,7 +7,7 @@ from tardis.tardis_portal.templatetags.approved_user_tags import (
     check_if_user_not_approved,
 )
 
-from tardis.apps.idw.views.idw import IDWIndexView
+from tardis.apps.idw_download.views.idw import IDWIndexView
 
 
 def add_idw_menu_item(request, user_menu):
@@ -23,7 +23,7 @@ def add_idw_menu_item(request, user_menu):
     # if check_if_user_not_approved(request):
     #     return user_menu
     idw_menu_item = {
-        "url": reverse("tardis.apps.idw:index"),
+        "url": reverse("tardis.apps.idw_download:index"),
         "icon": "fa fa-magic",
         "label": "Get Instrument Data Wizard"
     }

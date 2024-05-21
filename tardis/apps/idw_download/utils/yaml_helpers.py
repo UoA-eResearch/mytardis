@@ -8,7 +8,7 @@ from pathlib import Path
 import yaml
 from yaml import Dumper, FullLoader, Loader, Node, ScalarNode, UnsafeLoader
 
-from tardis.apps.idw.models.username import Username
+from tardis.apps.idw_download.models.username import Username
 
 
 def Path_yaml_representer(dumper: Dumper, data: Path) -> ScalarNode:

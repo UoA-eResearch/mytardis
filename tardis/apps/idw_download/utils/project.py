@@ -8,9 +8,9 @@ from typing import Any, Dict
 
 from django.conf import settings
 
-from tardis.apps.idw.models.project import Project
-from tardis.apps.idw.models.username import Username
-from tardis.apps.idw.utils.utility import (
+from tardis.apps.idw_download.models.project import Project
+from tardis.apps.idw_download.models.username import Username
+from tardis.apps.idw_download.utils.utility import (
     add_acls_to_dataclass,
     add_data_classification_to_dataclass,
     add_metadata_to_dataclass,

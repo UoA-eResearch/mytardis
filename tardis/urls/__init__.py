@@ -10,7 +10,7 @@ from django.views.static import serve
 
 from tardis.app_config import format_app_name_for_url, get_tardis_apps
 from tardis.apps.search.urls import urlpatterns as search_urls
-from tardis.apps.idw.urls import urlpatterns as idw_urls
+from tardis.apps.idw_download.urls import urlpatterns as idw_urls
 from tardis.tardis_portal.views import IndexView, login, rcauth, upload
 from tardis.tardis_portal.views.pages import site_routed_view
 

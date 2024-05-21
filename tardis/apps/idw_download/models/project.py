@@ -4,11 +4,11 @@ from typing import Any, Dict, List, Optional
 
 from yaml import SafeLoader
 
-from tardis.apps.idw.models.access_control import IAccessControl
-from tardis.apps.idw.models.dataclassification import IDataClassification
-from tardis.apps.idw.models.identifiers import IIdentifiers
-from tardis.apps.idw.models.username import Username
-from tardis.apps.idw.models.yaml_dataclass import YAMLDataclass
+from tardis.apps.idw_download.models.access_control import IAccessControl
+from tardis.apps.idw_download.models.dataclassification import IDataClassification
+from tardis.apps.idw_download.models.identifiers import IIdentifiers
+from tardis.apps.idw_download.models.username import Username
+from tardis.apps.idw_download.models.yaml_dataclass import YAMLDataclass
 
 
 @dataclass

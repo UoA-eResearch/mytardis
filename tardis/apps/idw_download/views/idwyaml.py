@@ -6,10 +6,10 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from tardis.apps.projects.models import Project
-from tardis.apps.idw.models.ingestion_metadata import IngestionMetadata
-from tardis.apps.idw.utils.dataset import wrangle_dataset_into_IDW_YAML
-from tardis.apps.idw.utils.experiment import wrangle_experiment_into_IDW_YAML
-from tardis.apps.idw.utils.project import wrangle_project_into_IDW_YAML
+from tardis.apps.idw_download.models.ingestion_metadata import IngestionMetadata
+from tardis.apps.idw_download.utils.dataset import wrangle_dataset_into_IDW_YAML
+from tardis.apps.idw_download.utils.experiment import wrangle_experiment_into_IDW_YAML
+from tardis.apps.idw_download.utils.project import wrangle_project_into_IDW_YAML
 from tardis.tardis_portal.api_v2.serializers.dataset import DatasetSerializer
 from tardis.tardis_portal.api_v2.serializers.experiment import ExperimentSerializer
 from tardis.tardis_portal.api_v2.serializers.project import ProjectSerializer
