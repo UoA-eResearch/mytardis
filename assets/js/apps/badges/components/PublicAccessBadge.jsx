@@ -12,19 +12,19 @@ const PublicAccessBadge = ({ experimentData }) => {
     if (accessType === 1) {
       setPublicAccess(' Private');
       setTitle(' No public access');
-      setvariantType('secondary');
+      setvariantType('light');
     } else if (accessType === 100) {
       setPublicAccess(' Public');
       setTitle(' All data is public');
-      setvariantType('secondary');
+      setvariantType('light');
     } else if (accessType === 25) {
       setPublicAccess(' [PUBLICATION] Awaiting release');
       setTitle(' Under embargo and awaiting release');
-      setvariantType('secondary');
+      setvariantType('light');
     } else if (accessType === 50) {
       setPublicAccess(' Metadata');
       setTitle(' Only descriptions are public, not data');
-      setvariantType('secondary');
+      setvariantType('light');
     }
   }, [experimentData]);
 
@@ -32,6 +32,7 @@ const PublicAccessBadge = ({ experimentData }) => {
     <Fragment>
       <Badge
         bg={variantType}
+        text="dark"
         content={title}
         title={title}
       >
