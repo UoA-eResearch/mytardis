@@ -16,7 +16,7 @@ const HSMDataFileCountBadge = ({ datasetId }) => {
 
   return (
     <Fragment>
-      <Badge variant="info" title={`${onlineFilesCount} of ${totalFileCount} Files online`}>
+      <Badge bg="secondary" title={`${onlineFilesCount} of ${totalFileCount} Files online`}>
         <i className="fa fa-file" />
 &nbsp;
         {totalFileCount}

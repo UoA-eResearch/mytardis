@@ -15,7 +15,7 @@ const DatasetDatafileCountBadge = ({ datasetData }) => {
 
   return (
     <Fragment>
-      <Badge variant="info" title={title}>
+      <Badge bg="secondary" title={title}>
         <i className="fa fa-file" />
 &nbsp;
         {count}
