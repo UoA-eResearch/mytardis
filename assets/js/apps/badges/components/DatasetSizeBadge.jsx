@@ -16,7 +16,7 @@ const DatasetSizeBadge = ({ datasetData }) => {
 
   return (
     <Fragment>
-      <Badge variant="info" title={title}>
+      <Badge bg="secondary" title={title}>
         {datasetSize}
       </Badge>
     </Fragment>

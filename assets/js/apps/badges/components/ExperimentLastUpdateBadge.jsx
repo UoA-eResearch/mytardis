@@ -20,7 +20,7 @@ const ExperimentLastUpdatedBadge = ({ experimentData }) => {
       {loading
         ? <span className=" float-end spinner-grow spinner-grow-sm" role="status" aria-hidden="true" />
         : (
-          <Badge variant="info" title={title}>
+          <Badge bg="secondary" title={title}>
             <i className="fa fa-clock-o" />
 &nbsp;
             {lastUpdatedTime}
