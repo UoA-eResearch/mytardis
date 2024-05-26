@@ -286,7 +286,7 @@ exports[`render dataset tiles on page load should match snapshot 1`] = `
               >
                 <p>
                   <span
-                    class="badge badge-info"
+                    class="badge text-dark bg-light"
                     title="4 of 4 Files online"
                   >
                     <i
@@ -298,10 +298,10 @@ exports[`render dataset tiles on page load should match snapshot 1`] = `
                 </p>
                 <p>
                   <span
-                    class="badge badge-info"
+                    class="badge text-dark bg-light"
                     title="Dataset size is"
                   >
-                    160.64 KB
+                    160.64 KiB
                   </span>
                 </p>
               </div>
@@ -390,7 +390,7 @@ exports[`render dataset tiles on page load should match snapshot 1`] = `
               >
                 <p>
                   <span
-                    class="badge badge-info"
+                    class="badge text-dark bg-light"
                     title="4 of 4 Files online"
                   >
                     <i
@@ -402,10 +402,10 @@ exports[`render dataset tiles on page load should match snapshot 1`] = `
                 </p>
                 <p>
                   <span
-                    class="badge badge-info"
+                    class="badge text-dark bg-light"
                     title="Dataset size is"
                   >
-                    342.35 KB
+                    342.35 KiB
                   </span>
                 </p>
               </div>
@@ -536,7 +536,7 @@ exports[`render dataset tiles on page load should match snapshot 1`] = `
               >
                 <p>
                   <span
-                    class="badge badge-info"
+                    class="badge text-dark bg-light"
                     title="4 of 4 Files online"
                   >
                     <i
@@ -548,10 +548,10 @@ exports[`render dataset tiles on page load should match snapshot 1`] = `
                 </p>
                 <p>
                   <span
-                    class="badge badge-info"
+                    class="badge text-dark bg-light"
                     title="Dataset size is"
                   >
-                    160.64 KB
+                    160.64 KiB
                   </span>
                 </p>
               </div>
@@ -624,7 +624,7 @@ exports[`render dataset tiles on page load should match snapshot 1`] = `
               >
                 <p>
                   <span
-                    class="badge badge-info"
+                    class="badge text-dark bg-light"
                     title="4 of 4 Files online"
                   >
                     <i
@@ -636,10 +636,10 @@ exports[`render dataset tiles on page load should match snapshot 1`] = `
                 </p>
                 <p>
                   <span
-                    class="badge badge-info"
+                    class="badge text-dark bg-light"
                     title="Dataset size is"
                   >
-                    342.35 KB
+                    342.35 KiB
                   </span>
                 </p>
               </div>

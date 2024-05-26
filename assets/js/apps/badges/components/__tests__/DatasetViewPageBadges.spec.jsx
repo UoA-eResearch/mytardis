@@ -73,6 +73,6 @@ describe('renders badges on experiment view page', () => {
       ReactDOM.render(<DatasetViewPageBadges datasetID="123" hsmEnabled />, container);
     });
     expect(container.querySelectorAll('span')[4].textContent.trim())
-      .toEqual('13.56 MB');
+      .toEqual('13.56 MiB');
   });
 });
