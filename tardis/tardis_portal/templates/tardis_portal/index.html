@@ -151,8 +151,7 @@
                 <div class="row">
                   <div class="col-md-8 px-1 pb-1">
                     <input type="hidden" class="proj-index" value="{{ forloop.counter }}">
-                    <a class="card-title projlink"
-                      href="{% url 'tardis.apps.projects.view_project' proj.id %}">{{ proj.name }}</a>
+                    <span class="card-title projlink">{{ proj.name }}</span>
                   </div>
                   <div class="col">
                     <div class="projectbadges" id="badge-{{proj.id}}"></div>
@@ -185,6 +184,8 @@
                     </div> {% comment %}class="accordion-inner"{% endcomment %}
                   </div>
                 </div>
+                <a class="btn btn-light mt-3 w-100"
+                href="{% url 'tardis.apps.projects.view_project' proj.id %}">View Project</a>
               </div>
             </div> {% comment %}class="card"{% endcomment %}
             {% empty %}
@@ -208,8 +209,7 @@
               <div class="row">
                 <div class="col-md-8 px-1 pb-1">
                   <input type="hidden" class="exp-index" value="{{ forloop.counter }}">
-                  <a class="card-title explink"
-                     href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
+                  <span class="card-title">{{ exp.title }}</span>
                 </div>
                 <div class="col">
                   <div class="badges" id="badge-{{exp.id}}"></div>
@@ -248,6 +248,7 @@
                   </div> {% comment %}class="accordion-inner"{% endcomment %}
                 </div>
               </div>
+              <a class="btn btn-light mt-3 w-100" href="{% url 'tardis_portal.view_experiment' exp.id %}">View Experiment</a>
             </div>
           </div> {% comment %}class="card"{% endcomment %}
           {% empty %}
