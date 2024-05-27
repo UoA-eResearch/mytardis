@@ -38,7 +38,7 @@
             <div class="card mb-2">
               <div id="private-toggle-{{proj.id}}"
                    class="card-header accordion-toggle private-project py-2"
-                   data-bs-toggle="collapse" data-parent="#private-projects">
+                   data-bs-toggle="collapse" data-bs-parent="#private-projects">
                   <div class="row">
                     <div class="col-md-8 px-1 pb-1">
                       <input type="hidden" class="proj-index" value="{{ forloop.counter }}">
@@ -64,7 +64,7 @@
                     </div>
                   </div>
               </div>
-              <div id="collapse-{{proj.id}}" class="card-body py-2 collapse" data-parent="#private-projects">
+              <div id="collapse-{{proj.id}}" class="card-body py-2 collapse" data-bs-parent="#private-projects">
                   <div class="row">
                     <div class="col-md-9 px-1">
                       <div class="accordion-inner">
@@ -89,7 +89,7 @@
             <div class="card mb-2">
               <div id="private-toggle-{{exp.id}}"
                    class="card-header accordion-toggle private-experiment py-2"
-                   data-bs-toggle="collapse" data-parent="#private-experiments">
+                   data-bs-toggle="collapse" data-bs-parent="#private-experiments">
                   <div class="row">
                     <div class="col-md-8 px-1 pb-1">
                       <input type="hidden" class="exp-index" value="{{ forloop.counter }}">
@@ -120,7 +120,7 @@
                     </div>
                   </div>
               </div>
-              <div id="collapse-{{exp.id}}" class="card-body py-2 collapse" data-parent="#private-experiments">
+              <div id="collapse-{{exp.id}}" class="card-body py-2 collapse" data-bs-parent="#private-experiments">
                   <div class="row">
                     <div class="col-md-9 px-1">
                       <div class="accordion-inner">
@@ -147,7 +147,7 @@
             <div class="card mb-2">
               <div id="public-toggle-{{proj.id}}"
                    class="card-header accordion-toggle public-project py-2"
-                   data-bs-toggle="collapse" data-parent="#public-projects">
+                   data-bs-toggle="collapse" data-bs-parent="#public-projects">
                 <div class="row">
                   <div class="col-md-8 px-1 pb-1">
                     <input type="hidden" class="proj-index" value="{{ forloop.counter }}">
@@ -176,7 +176,7 @@
                   </div>
                 </div>
               </div>
-              <div id="collapsepub-{{proj.id}}" class="card-body py-2 collapse" data-parent="#public-projects">
+              <div id="collapsepub-{{proj.id}}" class="card-body py-2 collapse" data-bs-parent="#public-projects">
                 <div class="row">
                   <div class="col-md-9 px-1">
                     <div class="accordion-inner">
@@ -204,7 +204,7 @@
           <div class="card mb-2">
             <div id="public-toggle-{{exp.id}}"
                  class="card-header accordion-toggle public-experiment py-2"
-                 data-bs-toggle="collapse" data-parent="#public-experiments">
+                 data-bs-toggle="collapse" data-bs-parent="#public-experiments">
               <div class="row">
                 <div class="col-md-8 px-1 pb-1">
                   <input type="hidden" class="exp-index" value="{{ forloop.counter }}">
@@ -239,7 +239,7 @@
                 </div>
               </div>
             </div>
-            <div id="collapsepub-{{exp.id}}" class="card-body py-2 collapse" data-parent="#public-experiments">
+            <div id="collapsepub-{{exp.id}}" class="card-body py-2 collapse" data-bs-parent="#public-experiments">
               <div class="row">
                 <div class="col-md-9 px-1">
                   <div class="accordion-inner">
