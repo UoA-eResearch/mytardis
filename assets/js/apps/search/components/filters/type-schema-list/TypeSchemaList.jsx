@@ -98,18 +98,18 @@ export const PureTypeSchemaList = ({ value: schemaValue, onValueChange, options 
                         return null;
                     }
                     return (
-                        <Card key={name}>
-                            <Card.Header>
-                                <Accordion.Toggle as="button" className="btn btn-link" eventKey={id}>
+                        <Accordion.Item key={name}>
+                            <Accordion.Header>
+                                {/* <Accordion.Toggle as="button" className="btn btn-link" eventKey={id}> */}
                                     {name} filters
-                                </Accordion.Toggle>
-                            </Card.Header>
-                            <Accordion.Collapse eventKey={id}>
-                                <Card.Body>
+                                {/* </Accordion.Toggle> */}
+                            </Accordion.Header>
+                            {/* <Accordion.Collapse eventKey={id}> */}
+                                <Accordion.Body>
                                     <SchemaFilterList schema={schema} />
-                                </Card.Body>
-                            </Accordion.Collapse>
-                        </Card>
+                                </Accordion.Body>
+                            {/* </Accordion.Collapse> */}
+                        </Accordion.Item>
                     );
                 })}
             </Accordion>

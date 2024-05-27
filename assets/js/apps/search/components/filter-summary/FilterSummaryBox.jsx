@@ -18,7 +18,7 @@ import {
 } from "../searchSlice";
 
 function InvalidFilterBadge() {
-    return <Badge variant="secondary">(Invalid filter)</Badge>;
+    return <Badge bg="secondary">(Invalid filter)</Badge>;
 }
 
 function AndOperatorBadge() {
@@ -29,7 +29,7 @@ function MultiValueContentBadge({ content }) {
     return content.map(filterValue =>
         <Badge
             key={filterValue}
-            variant="secondary"
+            bg="secondary"
             className="filter-summary-box__badge"
         >
             {filterValue}
@@ -42,7 +42,7 @@ MultiValueContentBadge.propTypes = {
 
 function SingleValueContentBadge({ content }) {
     return <Badge
-        variant="secondary"
+        bg="secondary"
         className="filter-summary-box__badge"
     >
         {content}
@@ -56,10 +56,10 @@ SingleValueContentBadge.propTypes = {
 function FilterBadge({ fieldName, value }) {
     
     return <div className="filter-summary-box__badge-group">
-        <Badge variant="secondary" className="filter-summary-box__badge">{fieldName}</Badge>
+        <Badge bg="secondary" className="filter-summary-box__badge">{fieldName}</Badge>
         {value.map(({ op, content }) =>
             <Fragment key={Array.isArray(content) ? content.join(",") : content}>
-                <Badge variant="secondary" className="filter-summary-box__badge filter-summarybox__badge--op">{op}</Badge>
+                <Badge bg="secondary" className="filter-summary-box__badge filter-summarybox__badge--op">{op}</Badge>
                 {op === "is" ?
                     <MultiValueContentBadge content={content} />
                     : <SingleValueContentBadge content={content} />}

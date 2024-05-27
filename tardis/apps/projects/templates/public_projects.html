@@ -39,7 +39,7 @@
       <div id="public-projects" class="panel-group projects">
         {% for proj in public_projects %}
           <div class="card mb-2">
-              <div class="card-header accordion-toggle" data-parent="#public-projects"
+              <div class="card-header accordion-toggle" data-bs-parent="#public-projects"
                    data-bs-toggle="collapse" onclick="$('#collapse{{proj.id}}').collapse('toggle');">
                 <div class="row">
                   <div class="col-md-8 px-1 pb-1">
@@ -69,7 +69,7 @@
                   </div>
                 </div>
               </div>
-              <div id="collapse{{proj.id}}" class="card-body collapse in py-2" data-parent="#public-projects">
+              <div id="collapse{{proj.id}}" class="card-body collapse in py-2" data-bs-parent="#public-projects">
                 <div class="row">
                   <div class="col-md-9 px-1">
                   <div class="accordion-inner">
