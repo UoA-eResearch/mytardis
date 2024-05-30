@@ -19,8 +19,7 @@
       <div class="row">
         <div class="col-md-8 px-1 pb-1">
           <input type="hidden" class="proj-index" value="{{ forloop.counter }}">
-          <a class="explink"
-             href="{% url 'tardis.apps.projects.view_project' proj.id %}">{{ proj.name }}</a>
+          <span class="card-title">{{ proj.name }}</span>
         </div>
         <div class="col">
           <div class="projectbadges" id="badge-{{proj.id}}"></div>
@@ -36,6 +35,8 @@
           </div>
         </div>
       </div>
+      <a class="btn btn-light mt-3 w-100"
+      href="{% url 'tardis.apps.projects.view_project' proj.id %}">View Project</a>
     </div>
   </div>
 {% empty %}
