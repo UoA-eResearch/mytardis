@@ -148,12 +148,13 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
     };
 
     const checkValidation = (val) => {
-        // for all date points (e.g start or end) if it is an invalid Moment object set invalid values to true
-        let valid = Object.keys(val).every(key => {
-            let date = val[key];
-            return date._isAMomentObject;
-        })
-        setIsValidValue(valid)
+        // Validity is based on whether the start and end date is a valid date object.
+        // If start is not hidden, then check whether it's a date. Otherwise assume valid.
+        // If end is not hidden, then check whether it's a date. Otherwise assume valid.
+        // isValid is a combination of the two values.
+        const isValid = (options.hideStart ? true : val.start._isAMomentObject) && 
+            (options.hideEnd ? true : val.end._isAMomentObject)
+        setIsValidValue(isValid)
     }
 
     // We should disable the filter button if there's nothing in the filter box.
@@ -177,7 +178,7 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
         <Form className="date-range-filter" onSubmit={handleSubmit}>
             {options.hideStart ? null :
                 <Form.Group className="date-range-filter__field">
-                    <Form.Label htmlFor={startFieldId} srOnly={options.hideLabels}>Start</Form.Label>
+                    <Form.Label htmlFor={startFieldId} visuallyHidden={options.hideLabels}>Start</Form.Label>
                     <Datetime
                         value={localValue.start}
                         onChange={handleStartValueChange}
@@ -193,7 +194,7 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
             }
             {options.hideEnd ? null :
                 <Form.Group className="date-range-filter__field">
-                    <Form.Label htmlFor={endFieldId} srOnly={options.hideLabels}>End</Form.Label>
+                    <Form.Label htmlFor={endFieldId} visuallyHidden={options.hideLabels}>End</Form.Label>
                     <Datetime
                         isInvalid={!isValidValue}
                         value={localValue.end}
@@ -217,7 +218,7 @@ const DateRangeFilter = ({ id = "missingFilterName", value, options, onValueChan
             }
             <Button
                 type="submit"
-                className="date-range-filter__button"
+                className="date-range-filter__button mt-3"
                 aria-label="Filter results"
                 variant={canChangeValue ? "secondary" : "outline-secondary"}
             >

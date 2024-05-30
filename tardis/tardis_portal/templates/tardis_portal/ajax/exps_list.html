@@ -15,13 +15,12 @@
 {% for exp in experiments %}
   <div class="card mb-2">
     <div id="toggle-{{exp.id}}"
-         class="card-header accordion-toggle py-2" data-parent="#experiments"
+         class="card-header accordion-toggle py-2" data-bs-parent="#experiments"
          data-bs-toggle="collapse">
       <div class="row">
         <div class="col-md-8 px-1 pb-1">
           <input type="hidden" class="exp-index" value="{{ forloop.counter }}">
-          <a class="explink"
-             href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
+          <span class="card-title">{{ exp.title }}</span>
         </div>
         <div class="col">
           <div class="badges" id="badge-{{exp.id}}"></div>
@@ -47,6 +46,7 @@
           </div>
         </div>
       </div>
+      <a class="btn btn-light mt-3 w-100" href="{% url 'tardis_portal.view_experiment' exp.id %}">View Experiment</a>
     </div>
   </div>
 {% empty %}

@@ -8,10 +8,9 @@
 {% load capture %}
 
 {% block content %}
-<div id="content" class="container-fluid">
+<main id="content" class="container">
   <div class="row">
-    <div class="col-md-12">
-      <h3 class="d-block d-sm-none">Experiments</h3>
+    <div class="page-header col-md-12">
       {% if not disable_creation_forms %}
         <div class="pull-right pb-1">
           {% if perms.tardis_portal.add_experiment %}
@@ -24,9 +23,9 @@
         </div>  <!-- class="pull-right" -->
       {% endif %}
       <div class="pull-left">
-        <h3 class="d-none d-sm-block" style="text-align: center">Experiments</h3>
+        <h1 class="mb-1">Experiments</h3>
       </div>
-    </div>  <!-- class="col-md-12" -->
+    </div> <!-- class="col-md-12" -->
   </div>  <!-- class="row" -->
 
   <div class="row">
@@ -55,7 +54,7 @@
       {% endif %}
     </div>  <!-- class="col-md-12" -->
   </div>  <!-- class="row" -->
-</div>  <!-- id="content" -->
+</main>  <!-- id="content" -->
 
 <input type="hidden" id="exps-expand-accordion" value="{{ exps_expand_accordion }}">
 {% render_bundle 'tardis_portal_shared' %}

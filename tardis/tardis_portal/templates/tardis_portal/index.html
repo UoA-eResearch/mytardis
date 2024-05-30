@@ -9,7 +9,7 @@
 {% endblock script %}
 
 {% block content %}
-<div id="content" class="container-fluid">
+<main id="content" class="container">
   <div class="page-header">
     <h1 class="mb-1">Home</h1>
   </div>
@@ -38,12 +38,11 @@
             <div class="card mb-2">
               <div id="private-toggle-{{proj.id}}"
                    class="card-header accordion-toggle private-project py-2"
-                   data-bs-toggle="collapse" data-parent="#private-projects">
+                   data-bs-toggle="collapse" data-bs-parent="#private-projects">
                   <div class="row">
                     <div class="col-md-8 px-1 pb-1">
                       <input type="hidden" class="proj-index" value="{{ forloop.counter }}">
-                      <a class="card-title projlink"
-                         href="{% url 'tardis.apps.projects.view_project' proj.id %}">{{ proj.name }}</a>
+                      <span class="card-title">{{ proj.name }}</span>
                     </div>
                     <div class="col">
                      <div class="projectbadges" id="badge-{{proj.id}}"></div>
@@ -65,7 +64,7 @@
                     </div>
                   </div>
               </div>
-              <div id="collapse-{{proj.id}}" class="card-body py-2 collapse" data-parent="#private-projects">
+              <div id="collapse-{{proj.id}}" class="card-body py-2 collapse" data-bs-parent="#private-projects">
                   <div class="row">
                     <div class="col-md-9 px-1">
                       <div class="accordion-inner">
@@ -74,6 +73,8 @@
                       </div> {% comment %}class="accordion-inner"{% endcomment %}
                     </div>
                   </div>
+                  <a class="btn btn-light mt-3 w-100"
+                         href="{% url 'tardis.apps.projects.view_project' proj.id %}">View Project</a>
               </div>
           </div>
           {% endfor %}
@@ -88,12 +89,11 @@
             <div class="card mb-2">
               <div id="private-toggle-{{exp.id}}"
                    class="card-header accordion-toggle private-experiment py-2"
-                   data-bs-toggle="collapse" data-parent="#private-experiments">
+                   data-bs-toggle="collapse" data-bs-parent="#private-experiments">
                   <div class="row">
                     <div class="col-md-8 px-1 pb-1">
                       <input type="hidden" class="exp-index" value="{{ forloop.counter }}">
-                      <a class="card-title explink"
-                         href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
+                      <span class="card-title">{{ exp.title }}</span>
                     </div>
                     <div class="col">
                      <div class="badges" id="badge-{{exp.id}}"></div>
@@ -120,7 +120,7 @@
                     </div>
                   </div>
               </div>
-              <div id="collapse-{{exp.id}}" class="card-body py-2 collapse" data-parent="#private-experiments">
+              <div id="collapse-{{exp.id}}" class="card-body py-2 collapse" data-bs-parent="#private-experiments">
                   <div class="row">
                     <div class="col-md-9 px-1">
                       <div class="accordion-inner">
@@ -129,6 +129,7 @@
                       </div> {% comment %}class="accordion-inner"{% endcomment %}
                     </div>
                   </div>
+                  <a class="btn btn-light mt-3 w-100" href="{% url 'tardis_portal.view_experiment' exp.id %}">View Experiment</a>
               </div>
           </div>
         {% endfor %}
@@ -146,12 +147,11 @@
             <div class="card mb-2">
               <div id="public-toggle-{{proj.id}}"
                    class="card-header accordion-toggle public-project py-2"
-                   data-bs-toggle="collapse" data-parent="#public-projects">
+                   data-bs-toggle="collapse" data-bs-parent="#public-projects">
                 <div class="row">
                   <div class="col-md-8 px-1 pb-1">
                     <input type="hidden" class="proj-index" value="{{ forloop.counter }}">
-                    <a class="card-title projlink"
-                      href="{% url 'tardis.apps.projects.view_project' proj.id %}">{{ proj.name }}</a>
+                    <span class="card-title projlink">{{ proj.name }}</span>
                   </div>
                   <div class="col">
                     <div class="projectbadges" id="badge-{{proj.id}}"></div>
@@ -175,7 +175,7 @@
                   </div>
                 </div>
               </div>
-              <div id="collapsepub-{{proj.id}}" class="card-body py-2 collapse" data-parent="#public-projects">
+              <div id="collapsepub-{{proj.id}}" class="card-body py-2 collapse" data-bs-parent="#public-projects">
                 <div class="row">
                   <div class="col-md-9 px-1">
                     <div class="accordion-inner">
@@ -184,6 +184,8 @@
                     </div> {% comment %}class="accordion-inner"{% endcomment %}
                   </div>
                 </div>
+                <a class="btn btn-light mt-3 w-100"
+                href="{% url 'tardis.apps.projects.view_project' proj.id %}">View Project</a>
               </div>
             </div> {% comment %}class="card"{% endcomment %}
             {% empty %}
@@ -203,12 +205,11 @@
           <div class="card mb-2">
             <div id="public-toggle-{{exp.id}}"
                  class="card-header accordion-toggle public-experiment py-2"
-                 data-bs-toggle="collapse" data-parent="#public-experiments">
+                 data-bs-toggle="collapse" data-bs-parent="#public-experiments">
               <div class="row">
                 <div class="col-md-8 px-1 pb-1">
                   <input type="hidden" class="exp-index" value="{{ forloop.counter }}">
-                  <a class="card-title explink"
-                     href="{% url 'tardis_portal.view_experiment' exp.id %}">{{ exp.title }}</a>
+                  <span class="card-title">{{ exp.title }}</span>
                 </div>
                 <div class="col">
                   <div class="badges" id="badge-{{exp.id}}"></div>
@@ -238,7 +239,7 @@
                 </div>
               </div>
             </div>
-            <div id="collapsepub-{{exp.id}}" class="card-body py-2 collapse" data-parent="#public-experiments">
+            <div id="collapsepub-{{exp.id}}" class="card-body py-2 collapse" data-bs-parent="#public-experiments">
               <div class="row">
                 <div class="col-md-9 px-1">
                   <div class="accordion-inner">
@@ -247,6 +248,7 @@
                   </div> {% comment %}class="accordion-inner"{% endcomment %}
                 </div>
               </div>
+              <a class="btn btn-light mt-3 w-100" href="{% url 'tardis_portal.view_experiment' exp.id %}">View Experiment</a>
             </div>
           </div> {% comment %}class="card"{% endcomment %}
           {% empty %}
@@ -256,7 +258,7 @@
 
     </div> {% comment %}class="col-md-12"{% endcomment %}
   </div> {% comment %}class="row"{% endcomment %}
-</div> {% comment %}id="content"{% endcomment %}
+</main> {% comment %}id="content"{% endcomment %}
 <input type="hidden" id="exps-expand-accordion" value="{{ exps_expand_accordion }}">
 <input type="hidden" id="proj-expand-accordion" value="{{ proj_expand_accordion }}">
 
