@@ -58,7 +58,7 @@ overridable_urls = [
 app_urls = []
 for app_name, app in get_tardis_apps():
     try:
-        if app_name in ["projects", "search", "idw"]:
+        if app_name in ["projects", "search"]:
             continue
         app_urls += [
             re_path(
@@ -74,7 +74,6 @@ urlpatterns = [
     re_path(r"^api/", include(api_urls)),
     # tastypie_swagger endpoints for API auto-documentation
     # re_path(r"^api/", include(tastypie_swagger_urls)),
-    re_path(r"^idw/", include(idw_urls)),
     # Experiment Views
     re_path(r"^experiment/", include(experiment_urls)),
     # Dataset Views
