@@ -1050,9 +1050,9 @@ class ExperimentResource(MyTardisModelResource):
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
         if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
-            bundle.data[
-                "classification"
-            ] = bundle.obj.data_classification.classification
+            bundle.data["classification"] = (
+                bundle.obj.data_classification.classification
+            )
 
         if settings.ONLY_EXPERIMENT_ACLS:
             dataset_count = exp.datasets.all().count()
@@ -1361,9 +1361,9 @@ class DatasetResource(MyTardisModelResource):
             if bundle.data["identifiers"] == []:
                 bundle.data.pop("identifiers")
         if "tardis.apps.dataclassification" in settings.INSTALLED_APPS:
-            bundle.data[
-                "classification"
-            ] = bundle.obj.data_classification.classification
+            bundle.data["classification"] = (
+                bundle.obj.data_classification.classification
+            )
         return bundle
 
     def prepend_urls(self):
@@ -1651,6 +1651,10 @@ class DatasetResource(MyTardisModelResource):
                     classification = bundle.data.pop("classification")
             bundle = super().obj_create(bundle, **kwargs)
             dataset = bundle.obj
+            if not dataset.directory:
+                # Create a dataset directory
+                dataset.directory = f"ds-{dataset.id}/data/"
+                dataset.save()
             # After the obj has been created
             if (
                 "tardis.apps.identifiers" in settings.INSTALLED_APPS
