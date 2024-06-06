@@ -315,4 +315,16 @@ def df_save_metadata(df_id, name, schema, metadata):
                                 dfp.save()
                     else:
                         dfp.string_value = metadata[pname.name]
+
                         dfp.save()
+
+
+@tardis_app.task(name="tardis_portal.dataset.build_directory", ignore_result=True)
+def dataset_build_directory(**kwargs):
+    from tardis.tardis_portal.models.dataset import Dataset
+
+    datasets = Dataset.objects.filter(directory__isnull=True, directory__exact="")
+    for dataset in datasets:
+        primary_key = dataset.pk
+        dataset.directory = f"ds-{primary_key}/data/"
+        dataset.save()
