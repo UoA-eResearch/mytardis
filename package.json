@@ -71,7 +71,7 @@
     "whatwg-fetch": "^3.6.20"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^7.6.17",
+    "@storybook/addon-actions": "^8.1.6",
     "@storybook/addon-links": "^8.0.9",
     "@storybook/addons": "^6.4.19",
     "@storybook/addon-storyshots": "^6.4.19",
