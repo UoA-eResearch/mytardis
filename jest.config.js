@@ -1,6 +1,7 @@
 automock = false;
 transformIgnorePatterns = ["/node_modules/"];
 module.exports = {
+  testEnvironment: "jsdom",
   moduleNameMapper: {
     "\\.css$": "identity-obj-proxy",
     // Ignore index.js file as it only contains
