@@ -3,7 +3,7 @@
 exports[`Storyshots EntryPreviewCard Data File 1`] = `
 <div
   style={
-    Object {
+    {
       "border": "2px solid black",
     }
   }
@@ -22,7 +22,7 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
         <div
           className="tab-sticker"
           style={
-            Object {
+            {
               "backgroundColor": "#70ffae",
             }
           }
@@ -52,7 +52,7 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
           strokeLinejoin="round"
           strokeWidth="2"
           style={
-            Object {
+            {
               "color": undefined,
             }
           }
@@ -130,7 +130,7 @@ exports[`Storyshots EntryPreviewCard Data File 1`] = `
 exports[`Storyshots EntryPreviewCard Data Set 1`] = `
 <div
   style={
-    Object {
+    {
       "border": "2px solid black",
     }
   }
@@ -149,7 +149,7 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
         <div
           className="tab-sticker"
           style={
-            Object {
+            {
               "backgroundColor": "#ffcce8",
             }
           }
@@ -179,7 +179,7 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
           strokeLinejoin="round"
           strokeWidth="2"
           style={
-            Object {
+            {
               "color": undefined,
             }
           }
@@ -273,7 +273,7 @@ exports[`Storyshots EntryPreviewCard Data Set 1`] = `
 exports[`Storyshots EntryPreviewCard Experiment 1`] = `
 <div
   style={
-    Object {
+    {
       "border": "2px solid black",
     }
   }
@@ -292,7 +292,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
         <div
           className="tab-sticker"
           style={
-            Object {
+            {
               "backgroundColor": "#abe2ff",
             }
           }
@@ -322,7 +322,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
           strokeLinejoin="round"
           strokeWidth="2"
           style={
-            Object {
+            {
               "color": undefined,
             }
           }
@@ -370,7 +370,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
       </span>
       <div
         style={
-          Object {
+          {
             "MozTransition": "opacity 0.25s",
             "MozUserSelect": "none",
             "WebkitTapHighlightColor": "rgba(0, 0, 0, 0)",
@@ -394,7 +394,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
           onClick={[Function]}
           onMouseDown={[Function]}
           style={
-            Object {
+            {
               "MozTransition": "background 0.25s",
               "WebkitTransition": "background 0.25s",
               "background": "#888888",
@@ -417,7 +417,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
           onTouchMove={[Function]}
           onTouchStart={[Function]}
           style={
-            Object {
+            {
               "MozTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
               "WebkitTransition": "background-color 0.25s, transform 0.25s, box-shadow 0.15s",
               "background": "#ffffff",
@@ -448,7 +448,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
           onKeyUp={[Function]}
           role="switch"
           style={
-            Object {
+            {
               "border": 0,
               "clip": "rect(0 0 0 0)",
               "height": 1,
@@ -503,7 +503,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
               strokeLinejoin="round"
               strokeWidth="2"
               style={
-                Object {
+                {
                   "color": undefined,
                 }
               }
@@ -557,7 +557,7 @@ exports[`Storyshots EntryPreviewCard Experiment 1`] = `
 exports[`Storyshots EntryPreviewCard No Children 1`] = `
 <div
   style={
-    Object {
+    {
       "border": "2px solid black",
     }
   }
@@ -576,7 +576,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
         <div
           className="tab-sticker"
           style={
-            Object {
+            {
               "backgroundColor": "#f7db8d",
             }
           }
@@ -606,7 +606,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
           strokeLinejoin="round"
           strokeWidth="2"
           style={
-            Object {
+            {
               "color": undefined,
             }
           }
@@ -720,7 +720,7 @@ exports[`Storyshots EntryPreviewCard No Children 1`] = `
 exports[`Storyshots EntryPreviewCard No Date 1`] = `
 <div
   style={
-    Object {
+    {
       "border": "2px solid black",
     }
   }
@@ -739,7 +739,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
         <div
           className="tab-sticker"
           style={
-            Object {
+            {
               "backgroundColor": "#f7db8d",
             }
           }
@@ -769,7 +769,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
           strokeLinejoin="round"
           strokeWidth="2"
           style={
-            Object {
+            {
               "color": undefined,
             }
           }
@@ -877,7 +877,7 @@ exports[`Storyshots EntryPreviewCard No Date 1`] = `
 exports[`Storyshots EntryPreviewCard No Preview Data 1`] = `
 <div
   style={
-    Object {
+    {
       "border": "2px solid black",
     }
   }
@@ -893,7 +893,7 @@ exports[`Storyshots EntryPreviewCard No Preview Data 1`] = `
 exports[`Storyshots EntryPreviewCard Project 1`] = `
 <div
   style={
-    Object {
+    {
       "border": "2px solid black",
     }
   }
@@ -912,7 +912,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
         <div
           className="tab-sticker"
           style={
-            Object {
+            {
               "backgroundColor": "#f7db8d",
             }
           }
@@ -942,7 +942,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
           strokeLinejoin="round"
           strokeWidth="2"
           style={
-            Object {
+            {
               "color": undefined,
             }
           }
@@ -1056,7 +1056,7 @@ exports[`Storyshots EntryPreviewCard Project 1`] = `
 exports[`Storyshots Filter Error Popup Custom Messages 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -1082,7 +1082,7 @@ exports[`Storyshots Filter Error Popup Custom Messages 1`] = `
 exports[`Storyshots Filter Error Popup Date Range 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -1108,7 +1108,7 @@ exports[`Storyshots Filter Error Popup Date Range 1`] = `
 exports[`Storyshots Filter Error Popup Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -1134,7 +1134,7 @@ exports[`Storyshots Filter Error Popup Default 1`] = `
 exports[`Storyshots Filter Error Popup Number Range 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -1160,7 +1160,7 @@ exports[`Storyshots Filter Error Popup Number Range 1`] = `
 exports[`Storyshots Filter Error Popup With Label 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -1189,7 +1189,7 @@ exports[`Storyshots Filter Error Popup With Label 1`] = `
       strokeLinejoin="round"
       strokeWidth="2"
       style={
-        Object {
+        {
           "color": undefined,
         }
       }
@@ -1222,7 +1222,7 @@ exports[`Storyshots Filter Error Popup With Label 1`] = `
 exports[`Storyshots Filter sidebar Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -1250,7 +1250,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <div
             className="tab-sticker"
             style={
-              Object {
+              {
                 "backgroundColor": "#f7db8d",
               }
             }
@@ -1276,7 +1276,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <div
             className="tab-sticker"
             style={
-              Object {
+              {
                 "backgroundColor": "#abe2ff",
               }
             }
@@ -1302,7 +1302,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <div
             className="tab-sticker"
             style={
-              Object {
+              {
                 "backgroundColor": "#ffcce8",
               }
             }
@@ -1328,7 +1328,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
           <div
             className="tab-sticker"
             style={
-              Object {
+              {
                 "backgroundColor": "#70ffae",
               }
             }
@@ -6684,7 +6684,7 @@ exports[`Storyshots Filter sidebar Default 1`] = `
 exports[`Storyshots Filter summary box Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -6815,7 +6815,7 @@ exports[`Storyshots Filter summary box Default 1`] = `
 exports[`Storyshots Filters/Category filter Check All By Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -6888,7 +6888,7 @@ exports[`Storyshots Filters/Category filter Check All By Default 1`] = `
 exports[`Storyshots Filters/Category filter Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -6961,7 +6961,7 @@ exports[`Storyshots Filters/Category filter Default 1`] = `
 exports[`Storyshots Filters/Category filter None Selected 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -7034,7 +7034,7 @@ exports[`Storyshots Filters/Category filter None Selected 1`] = `
 exports[`Storyshots Filters/Date range filter Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -8043,7 +8043,7 @@ exports[`Storyshots Filters/Date range filter Default 1`] = `
 exports[`Storyshots Filters/Date range filter Empty 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -9052,7 +9052,7 @@ exports[`Storyshots Filters/Date range filter Empty 1`] = `
 exports[`Storyshots Filters/Date range filter No Labels 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -10061,7 +10061,7 @@ exports[`Storyshots Filters/Date range filter No Labels 1`] = `
 exports[`Storyshots Filters/Date range filter Only Show End 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -10578,7 +10578,7 @@ exports[`Storyshots Filters/Date range filter Only Show End 1`] = `
 exports[`Storyshots Filters/Date range filter Only Show Start 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -11095,7 +11095,7 @@ exports[`Storyshots Filters/Date range filter Only Show Start 1`] = `
 exports[`Storyshots Filters/Filters section Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "400px",
     }
@@ -11121,7 +11121,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <div
           className="tab-sticker"
           style={
-            Object {
+            {
               "backgroundColor": "#f7db8d",
             }
           }
@@ -11147,7 +11147,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <div
           className="tab-sticker"
           style={
-            Object {
+            {
               "backgroundColor": "#abe2ff",
             }
           }
@@ -11173,7 +11173,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <div
           className="tab-sticker"
           style={
-            Object {
+            {
               "backgroundColor": "#ffcce8",
             }
           }
@@ -11199,7 +11199,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
         <div
           className="tab-sticker"
           style={
-            Object {
+            {
               "backgroundColor": "#70ffae",
             }
           }
@@ -16554,7 +16554,7 @@ exports[`Storyshots Filters/Filters section Default 1`] = `
 exports[`Storyshots Filters/Filters section Error 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "400px",
     }
@@ -16569,7 +16569,7 @@ exports[`Storyshots Filters/Filters section Error 1`] = `
 exports[`Storyshots Filters/Filters section Loading 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "400px",
     }
@@ -16584,7 +16584,7 @@ exports[`Storyshots Filters/Filters section Loading 1`] = `
 exports[`Storyshots Filters/Filters section No Filters 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "400px",
     }
@@ -16595,7 +16595,7 @@ exports[`Storyshots Filters/Filters section No Filters 1`] = `
 exports[`Storyshots Filters/Number range filter Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -16654,7 +16654,7 @@ exports[`Storyshots Filters/Number range filter Default 1`] = `
 exports[`Storyshots Filters/Number range filter Empty 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "300px",
     }
@@ -16713,7 +16713,7 @@ exports[`Storyshots Filters/Number range filter Empty 1`] = `
 exports[`Storyshots Filters/Text filter Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -16752,7 +16752,7 @@ exports[`Storyshots Filters/Text filter Default 1`] = `
 exports[`Storyshots Filters/Text filter Empty 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -16791,7 +16791,7 @@ exports[`Storyshots Filters/Text filter Empty 1`] = `
 exports[`Storyshots Filters/Type schema list Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "400px",
     }
@@ -17134,7 +17134,7 @@ exports[`Storyshots Filters/Type schema list Default 1`] = `
 exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "400px",
     }
@@ -17477,7 +17477,7 @@ exports[`Storyshots Filters/Type schema list No Schema Selected 1`] = `
 exports[`Storyshots Filters/Type schema list No Schemas 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "400px",
     }
@@ -17488,7 +17488,7 @@ exports[`Storyshots Filters/Type schema list No Schemas 1`] = `
 exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
       "width": "400px",
     }
@@ -17692,7 +17692,7 @@ exports[`Storyshots Filters/Type schema list Only One Selected 1`] = `
 exports[`Storyshots Pager Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -17967,7 +17967,7 @@ exports[`Storyshots Pager Default 1`] = `
 exports[`Storyshots Pager Last Page 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -18201,7 +18201,7 @@ exports[`Storyshots Pager Last Page 1`] = `
 exports[`Storyshots Pager Less Than Five Pages 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -18400,7 +18400,7 @@ exports[`Storyshots Pager Less Than Five Pages 1`] = `
 exports[`Storyshots Pager No Pages 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -18544,7 +18544,7 @@ exports[`Storyshots Pager No Pages 1`] = `
 exports[`Storyshots Pager One Page 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -18704,7 +18704,7 @@ exports[`Storyshots Pager One Page 1`] = `
 exports[`Storyshots Quick search box Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -18735,7 +18735,7 @@ exports[`Storyshots Quick search box Default 1`] = `
 exports[`Storyshots Quick search box Filled 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -18766,7 +18766,7 @@ exports[`Storyshots Quick search box Filled 1`] = `
 exports[`Storyshots Result list All Access 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -18822,7 +18822,7 @@ exports[`Storyshots Result list All Access 1`] = `
 exports[`Storyshots Result list Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -18893,7 +18893,7 @@ exports[`Storyshots Result list Default 1`] = `
                 strokeLinejoin="round"
                 strokeWidth="2"
                 style={
-                  Object {
+                  {
                     "color": undefined,
                   }
                 }
@@ -18951,7 +18951,7 @@ exports[`Storyshots Result list Default 1`] = `
                 strokeLinejoin="round"
                 strokeWidth="2"
                 style={
-                  Object {
+                  {
                     "color": undefined,
                   }
                 }
@@ -19001,7 +19001,7 @@ exports[`Storyshots Result list Default 1`] = `
 exports[`Storyshots Result list Empty 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -19046,7 +19046,7 @@ exports[`Storyshots Result list Empty 1`] = `
 exports[`Storyshots Result list Error 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -19072,7 +19072,7 @@ exports[`Storyshots Result list Error 1`] = `
           strokeLinejoin="round"
           strokeWidth="2"
           style={
-            Object {
+            {
               "color": undefined,
             }
           }
@@ -19100,7 +19100,7 @@ exports[`Storyshots Result list Error 1`] = `
 exports[`Storyshots Result list Loading 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -19131,7 +19131,7 @@ exports[`Storyshots Result list Loading 1`] = `
 exports[`Storyshots Result list Some Access 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -19178,7 +19178,7 @@ exports[`Storyshots Result list Some Access 1`] = `
                 strokeLinejoin="round"
                 strokeWidth="2"
                 style={
-                  Object {
+                  {
                     "color": undefined,
                   }
                 }
@@ -19221,7 +19221,7 @@ exports[`Storyshots Result list Some Access 1`] = `
 exports[`Storyshots Result list View Only Access 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -19268,7 +19268,7 @@ exports[`Storyshots Result list View Only Access 1`] = `
                 strokeLinejoin="round"
                 strokeWidth="2"
                 style={
-                  Object {
+                  {
                     "color": undefined,
                   }
                 }
@@ -19318,7 +19318,7 @@ exports[`Storyshots Result list View Only Access 1`] = `
 exports[`Storyshots Result tabs Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -19454,7 +19454,7 @@ exports[`Storyshots Result tabs Default 1`] = `
 exports[`Storyshots Result tabs Empty Counts 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -19617,7 +19617,7 @@ exports[`Storyshots Search page Default 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#f7db8d",
                   }
                 }
@@ -19643,7 +19643,7 @@ exports[`Storyshots Search page Default 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#abe2ff",
                   }
                 }
@@ -19669,7 +19669,7 @@ exports[`Storyshots Search page Default 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#ffcce8",
                   }
                 }
@@ -19695,7 +19695,7 @@ exports[`Storyshots Search page Default 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#70ffae",
                   }
                 }
@@ -25334,7 +25334,7 @@ exports[`Storyshots Search page Default 1`] = `
                 stroke="currentColor"
                 strokeWidth="0"
                 style={
-                  Object {
+                  {
                     "color": undefined,
                   }
                 }
@@ -25420,7 +25420,7 @@ exports[`Storyshots Search page Default 1`] = `
                           strokeLinejoin="round"
                           strokeWidth="2"
                           style={
-                            Object {
+                            {
                               "color": undefined,
                             }
                           }
@@ -25478,7 +25478,7 @@ exports[`Storyshots Search page Default 1`] = `
                           strokeLinejoin="round"
                           strokeWidth="2"
                           style={
-                            Object {
+                            {
                               "color": undefined,
                             }
                           }
@@ -25718,7 +25718,7 @@ exports[`Storyshots Search page Error 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#f7db8d",
                   }
                 }
@@ -25744,7 +25744,7 @@ exports[`Storyshots Search page Error 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#abe2ff",
                   }
                 }
@@ -25770,7 +25770,7 @@ exports[`Storyshots Search page Error 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#ffcce8",
                   }
                 }
@@ -25796,7 +25796,7 @@ exports[`Storyshots Search page Error 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#70ffae",
                   }
                 }
@@ -31387,7 +31387,7 @@ exports[`Storyshots Search page Error 1`] = `
                     strokeLinejoin="round"
                     strokeWidth="2"
                     style={
-                      Object {
+                      {
                         "color": undefined,
                       }
                     }
@@ -31451,7 +31451,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#f7db8d",
                   }
                 }
@@ -31477,7 +31477,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#abe2ff",
                   }
                 }
@@ -31503,7 +31503,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#ffcce8",
                   }
                 }
@@ -31529,7 +31529,7 @@ exports[`Storyshots Search page Loading 1`] = `
               <div
                 className="tab-sticker"
                 style={
-                  Object {
+                  {
                     "backgroundColor": "#70ffae",
                   }
                 }
@@ -37128,7 +37128,7 @@ exports[`Storyshots Search page Loading 1`] = `
                 stroke="currentColor"
                 strokeWidth="0"
                 style={
-                  Object {
+                  {
                     "color": undefined,
                   }
                 }
@@ -37317,7 +37317,7 @@ exports[`Storyshots Search page Loading 1`] = `
 exports[`Storyshots Sort options list Default 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -37339,7 +37339,7 @@ exports[`Storyshots Sort options list Default 1`] = `
         stroke="currentColor"
         strokeWidth="0"
         style={
-          Object {
+          {
             "color": undefined,
           }
         }
@@ -37362,7 +37362,7 @@ exports[`Storyshots Sort options list Default 1`] = `
 exports[`Storyshots Sort options list Multi Selected 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -37384,7 +37384,7 @@ exports[`Storyshots Sort options list Multi Selected 1`] = `
         stroke="currentColor"
         strokeWidth="0"
         style={
-          Object {
+          {
             "color": undefined,
           }
         }
@@ -37407,7 +37407,7 @@ exports[`Storyshots Sort options list Multi Selected 1`] = `
 exports[`Storyshots Sort options list Sort Active 1`] = `
 <div
   style={
-    Object {
+    {
       "padding": "3rem",
     }
   }
@@ -37429,7 +37429,7 @@ exports[`Storyshots Sort options list Sort Active 1`] = `
         stroke="currentColor"
         strokeWidth="0"
         style={
-          Object {
+          {
             "color": undefined,
           }
         }
@@ -37453,7 +37453,7 @@ exports[`Storyshots Tab Stickers Data Set 1`] = `
 <div
   className="tab-sticker"
   style={
-    Object {
+    {
       "backgroundColor": "#ffcce8",
     }
   }
@@ -37470,7 +37470,7 @@ exports[`Storyshots Tab Stickers Datafile 1`] = `
 <div
   className="tab-sticker"
   style={
-    Object {
+    {
       "backgroundColor": "#70ffae",
     }
   }
@@ -37487,7 +37487,7 @@ exports[`Storyshots Tab Stickers Experiment 1`] = `
 <div
   className="tab-sticker"
   style={
-    Object {
+    {
       "backgroundColor": "#abe2ff",
     }
   }
@@ -37504,7 +37504,7 @@ exports[`Storyshots Tab Stickers Project 1`] = `
 <div
   className="tab-sticker"
   style={
-    Object {
+    {
       "backgroundColor": "#f7db8d",
     }
   }

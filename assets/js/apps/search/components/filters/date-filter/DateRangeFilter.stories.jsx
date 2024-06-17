@@ -1,12 +1,12 @@
 import React from "react";
 import DateRangeFilter from "./DateRangeFilter";
+import { fn } from "@storybook/test";
 
 export default {
     component: DateRangeFilter,
     title: "Filters/Date range filter",
     decorators: [story => <div style={{ padding: "3rem", width: "300px" }}>{story()}</div>],
-    excludeStories: /.*Data$/,
-    parameters: { actions: { argTypesRegex: "^on.*" } }
+    excludeStories: /.*Data$/
 };
 
 export const dateRangeFilterData = {
@@ -49,7 +49,7 @@ export const noLabelsFilterData = Object.assign({}, dateRangeFilterData, {
     })
 });
 
-const Template = (args) => <DateRangeFilter {...args} />;
+const Template = (args) => <DateRangeFilter onValueChange={fn()} {...args} />;
 
 export const Default = Template.bind({});
 Default.args = dateRangeFilterData;
