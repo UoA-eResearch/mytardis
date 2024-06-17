@@ -4,10 +4,10 @@ from typing import Any, List, Optional
 
 from yaml import dump_all
 
-from tardis.apps.yaml_dump.models.datafile import Datafile
-from tardis.apps.yaml_dump.models.dataset import Dataset
-from tardis.apps.yaml_dump.models.experiment import Experiment
-from tardis.apps.yaml_dump.models.project import Project
+from tardis.apps.idw_download.models.datafile import Datafile
+from tardis.apps.idw_download.models.dataset import Dataset
+from tardis.apps.idw_download.models.experiment import Experiment
+from tardis.apps.idw_download.models.project import Project
 
 
 @dataclass

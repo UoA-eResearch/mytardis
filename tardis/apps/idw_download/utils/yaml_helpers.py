@@ -8,7 +8,7 @@ from pathlib import Path
 import yaml
 from yaml import Dumper, FullLoader, Loader, Node, ScalarNode, UnsafeLoader
 
-from tardis.apps.yaml_dump.models.username import Username
+from tardis.apps.idw_download.models.username import Username
 
 
 def Path_yaml_representer(dumper: Dumper, data: Path) -> ScalarNode:
@@ -93,7 +93,7 @@ def Username_yaml_constructor(
 
 def initialise_yaml_helpers() -> None:
     """Initialises YAML constructor and representer required to parse
-    and serialise MyTardis model data. This is called when the yaml_dump.models
+    and serialise MyTardis model data. This is called when the idw.models
     module is loaded and do not need a separate call.
     """
     yaml.SafeLoader.add_constructor("!Username", Username_yaml_constructor)
