@@ -1,7 +1,7 @@
 import React from "react";
 import { PureSortOptionsList } from "./SortOptionsList";
 import { SORT_ORDER } from "../searchSlice";
-
+import { fn } from "@storybook/test";
 
 export default {
     component: PureSortOptionsList,
@@ -52,7 +52,7 @@ export const multiSelectedData = Object.assign({}, sortData, {
     activeSort: ["name", "createdDate"]
 });
 
-const Template = (args) => <PureSortOptionsList {...args} />;
+const Template = (args) => <PureSortOptionsList onSortRemove={fn()} onSortUpdate={fn()} {...args} />;
 
 export const Default = Template.bind({});
 Default.args = sortData;

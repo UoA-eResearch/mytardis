@@ -16,7 +16,7 @@ const ExperimentCountBadge = ({ projectData }) => {
 
   return (
     <Fragment>
-      <Badge variant="info" title={title}>
+      <Badge bg="light" text="dark" title={title}>
         <i className="fa fa-cogs" />
 &nbsp;
         {experimentCount}
