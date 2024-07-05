@@ -16,7 +16,7 @@ const DatasetCountBadge = ({ experimentData }) => {
 
   return (
     <Fragment>
-      <Badge variant="info" title={title}>
+      <Badge bg="light" text="dark" title={title}>
         <i className="fa fa-folder" />
 &nbsp;
         {datasetCount}

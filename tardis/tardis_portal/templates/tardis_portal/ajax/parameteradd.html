@@ -6,7 +6,7 @@
 {% else %}
   <form id="add_metadata_form"
         action='{{prefix}}/ajax/add_{{type}}_parameters/{{parentObject.id}}/{{schema.id}}/'
-        method='post' data-type="{{type}}" data-parent_object_id="{{parentObject.id}}">
+        method='post' data-type="{{type}}" data-bs-parent_object_id="{{parentObject.id}}">
     {% csrf_token %}
     <div class="form-horizontal">
       <div class="form-group">
@@ -17,7 +17,7 @@
              </label>
           </div>
           <div class="col-md-9 ml-4 mr-0">
-            <select id="schemaselect" class="form-control" data-type="{{type}}" data-parent_object_id="{{parentObject.id}}">
+            <select id="schemaselect" class="form-control" data-type="{{type}}" data-bs-parent_object_id="{{parentObject.id}}">
             {% for schema in all_schema %}
               <option value="{{schema.id}}" {% if schema.id == schema_id %}selected{% endif %}>{{schema.name}}</option>
             {% endfor %}

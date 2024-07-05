@@ -40,7 +40,7 @@ $(document).on("change", "#schemaselect", function(e) {
     var $jqmContentDiv = $this.closest(".modal-body");
 
     var type = $this.attr("data-type");
-    var parentObjectId = $this.attr("data-parent_object_id");
+    var parentObjectId = $this.attr("data-bs-parent_object_id");
     var href = "/ajax/add_" + type + "_parameters/" + parentObjectId + "/?schema_id=" + $this.val();
     $.get(href, function(data) {
         $jqmContentDiv.html(data);
@@ -73,7 +73,7 @@ $(document).on("submit", "#add_metadata_form", function(e) {
 
     var schemaId = $("#schemaselect").val();
     var type = form.attr("data-type");
-    var parentObjectId = form.attr("data-parent_object_id");
+    var parentObjectId = form.attr("data-bs-parent_object_id");
     var href = "/ajax/add_" + type + "_parameters/" + parentObjectId + "/?schema_id=" + schemaId;
 
     $.ajax({

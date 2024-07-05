@@ -15,7 +15,7 @@ const ExperimentSizeBadge = ({ experimentData }) => {
   }, []);
   return (
     <Fragment>
-      <Badge variant="info" title={title}>
+      <Badge bg="light" text="dark" title={title}>
         {experimentSize}
       </Badge>
     </Fragment>
