@@ -1,13 +1,8 @@
-from django.urls import reverse
 import logging
 
+from django.urls import reverse
+
 logger = logging.getLogger(__name__)
-
-from tardis.tardis_portal.templatetags.approved_user_tags import (
-    check_if_user_not_approved,
-)
-
-from tardis.apps.idw_download.views.idw import IDWIndexView
 
 
 def add_idw_menu_item(request, user_menu):
@@ -25,7 +20,7 @@ def add_idw_menu_item(request, user_menu):
     idw_menu_item = {
         "url": reverse("tardis.apps.idw_download:index"),
         "icon": "fa fa-magic",
-        "label": "Get Instrument Data Wizard"
+        "label": "Get Instrument Data Wizard",
     }
     # Find the index of "Manage Account" item so we can add item after it.
     # If we can't find it, just insert it at the beginning
