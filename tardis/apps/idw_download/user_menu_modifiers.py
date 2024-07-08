@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 
 def add_idw_menu_item(request, user_menu):
-    """Add a 'Manage SSH Keys' item to the user menu
+    """Add a 'Get Instrument Data Wizard' item to the user menu
 
     :param request: an HTTP Request instance
     :type request: :class:`django.http.HttpRequest`

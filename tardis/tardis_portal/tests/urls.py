@@ -5,6 +5,7 @@ from django.template import RequestContext, Template
 from django.urls import include, re_path
 
 from tardis.apps import sftp
+from tardis.apps import idw_download
 
 from ...urls.accounts import accounts_urls
 from ...urls.download import download_urls
@@ -56,5 +57,6 @@ urlpatterns += [
     re_path(r"^accounts/", include(accounts_urls)),
     re_path(r"^download/", include(download_urls)),
     re_path(r"^apps/sftp/", include(sftp.urls)),
+    re_path(r"^apps/idw_download/", include(idw_download.urls)),
     re_path(r"^logout/$", LogoutView.as_view(), {"next_page": "/"}, name="logout"),
 ]
